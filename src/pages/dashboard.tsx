@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { supabase } from '../services/supabase'
 
-export default function Dashboard({ user }) {
+export default function Dashboard ({ user }) {
   const { signOut } = useAuth()  
 
   const handleSignOut = () => signOut()
@@ -39,7 +39,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     return {
       props: {},
       redirect: {
-        destination: '/'
+        destination: '/sign-in',
+        permanent: false
       }
     }
   }
