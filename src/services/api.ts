@@ -1,9 +1,7 @@
 import axios from "axios"
 
-const api = () => {
-  axios.create({
-    baseURL: 'http://localhost:3000/api'
-  })  
-}
+const baseURL = process.env.NEXT_PUBLIC_BASEURL
+
+const api = axios.create({ baseURL })  
 
 export { api }

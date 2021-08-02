@@ -1,52 +1,107 @@
-import { createContext, ReactNode } from "react";
-import { useContext, useState } from "react";
-import { api } from "../services/api";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+import { useRouter } from 'next/router'
+
 import { supabase } from "../services/supabase";
 
+import { Session, AuthChangeEvent } from "@supabase/supabase-js";
+import axios from "axios";
+
 type AuthContextProps = {
-  signIn: (values: AuthProps) => Promise<SessionProps>
+  signIn: (values: SignInProps) => Promise<{
+    error: Error
+  }>;
+  signUp: (values: SignUpProps) => Promise<{
+    error: Error
+  }>;
+  signOut: () => void;
   session: string;
 }
 
-type SessionProps = string;
-
 type AuthProviderProps = {
-  children: ReactNode;
+  children: ReactNode;  
 }
 
-type AuthProps = {
+type SignInProps = {
   email: string;
   password: string;
+}
+
+type SignUpProps = {
+  email: string;
+  password: string;
+  password_verify: string;
 }
 
 const AuthContext = createContext({} as AuthContextProps)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [session, setSession] = useState<SessionProps>('')
+  const router = useRouter()
 
-  const signIn = async ({ email, password }: AuthProps) => {    
-    try {
-      const response = await supabase.auth.signIn({
-        email,
-        password
-      })
+  const [session, setSession] = useState('not-authenticated')
 
-      if(!response) throw new Error('Nome de usuário ou senha inválidos')
+  const signUp = async(values: SignUpProps) => {
+    const { email, password } = values
 
-      console.log(response)
-
-      setSession('Authenticated')
-
-      return session
-    } catch (error) {
-      throw new Error(error.message)
-    }
-
+    return await supabase.auth.signUp({
+      email,
+      password
+    })
   }
+  
+  const signIn = async (values: SignInProps) => {   
+    const { email, password } = values
+
+    return await supabase.auth.signIn({
+      email,
+      password
+    })
+  }
+
+  const signOut = async () => await supabase.auth.signOut()
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      handleAuthChange(event, session)
+
+      if (event === 'SIGNED_IN') {
+        setSession('authenticated')
+        router.push('/dashboard')
+      }
+
+      if (event === 'SIGNED_OUT') {
+        setSession('not-authenticated')
+        router.push('/')
+      }
+    })
+
+    checkUser()
+
+    return () => authListener.unsubscribe()
+    
+  }, [router])
+
+  async function handleAuthChange(event: AuthChangeEvent, session: Session) {
+    await axios.post('/api/auth', {
+      event,
+      session
+    })
+  }
+
+  function checkUser() {
+    const user = supabase.auth.user()
+
+    if (user) {
+      setSession('authenticated')
+    }
+  }
+
   return (
     <AuthContext.Provider value={{
       signIn,
-      session,
+      signUp,
+      signOut,
+      session
     }}>
       {children}
     </AuthContext.Provider>

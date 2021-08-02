@@ -1,6 +1,5 @@
-import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -8,8 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from '../hooks/useAuth'
 
 import { Input } from '../components/Input'
-
-import { supabase } from '../services/supabase'
 
 import { 
   Container, 
@@ -21,25 +18,27 @@ import {
 type SignInProps = {
   email: string;
   password: string;
+  password_verify: string;
 }
 
 const signInFormSchema = yup.object().shape({
   email: yup.string().required('E-mail obrigatório').email('E-mail inválido').trim(),
-  password: yup.string().required('Senha obrigatória').trim()
+  password: yup.string().min(6, 'A senha deve ter no mínimo 6 caracteres').required('Senha obrigatória').trim(),
+  password_verify: yup.string().oneOf(
+    [yup.ref('password')],
+    'As senhas não coincidem'
+    ).required('Por favor confirme a sua senha')
 })
 
-export default function SignIn() {  
-  const router = useRouter()
-
-  const { signIn } = useAuth()
+export default function SignUp () {  
+  const { signUp } = useAuth()
 
   const toast = useToast()
 
   const { 
     register, 
     handleSubmit, 
-    formState,
-    reset
+    formState
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })  
@@ -50,34 +49,14 @@ export default function SignIn() {
     isDirty,
   } = formState
 
-  const handleSignIn: SubmitHandler<SignInProps> = async (values) => {    
-    const { error } = await signIn(values)
-    
-    if(error) {
-      toast({
-        title: 'Erro ao fazer o login',
-        description: 'Nome de usuário ou senha inválidos',
-        duration: 3000,
-        status: 'error',
-        isClosable: true
-      })
+  const handleSignUp: SubmitHandler<SignInProps> = async (values) => {
+    try {
+      await signUp(values)
+      
+    } catch (error) {
+      console.log(error)
 
-      reset({
-        ...values,
-        password: ''
-      })
-
-      return
     }
-    
-    toast({
-      title: 'Login efetuado com sucesso',
-      description: 'Seu login foi feito com sucesso, redirecionando...',
-      duration: 3000,
-      status: 'success'
-    })
-
-    router.push('/dashboard')
   }
 
   return (
@@ -87,7 +66,7 @@ export default function SignIn() {
         <meta name="description" content="Página de Login da Marka" />
       </Head>
       <Container p={8} display="flex" alignItems="center" justifyContent="center" h="100vh">
-        <Stack as="form" spacing={3} w="100%" onSubmit={handleSubmit(handleSignIn)}>
+        <Stack as="form" spacing={3} w="100%" onSubmit={handleSubmit(handleSignUp)}>
           <Input 
             type="email"
             label="E-mail"
@@ -100,6 +79,12 @@ export default function SignIn() {
             error={errors?.password}
             {...register('password')}
           />
+          <Input 
+            type="password"
+            label="Cofirme sua Senha"
+            error={errors?.password_verify}
+            {...register('password_verify')}
+          />
 
           <Button
             type="submit"
@@ -107,29 +92,9 @@ export default function SignIn() {
             size="lg"
             isLoading={isSubmitting}
             isDisabled={!isDirty}
-          >Entrar</Button>
+          >Cadastrar</Button>
         </Stack>
       </Container>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)  
-
-  if(!user) { 
-    return {
-      props: {},
-      redirect: {
-        destination: '/'
-      }
-    }
-  }
-
-  return {
-    props: {},
-    redirect: {
-      destination: '/dashboard'
-    }
-  }
 }
