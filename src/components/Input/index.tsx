@@ -11,13 +11,13 @@ import {
 interface InputProps extends ChakraInputProps {
   name: string;  
   label?: string;
-  error?: FieldError;
+  error?: FieldError;    
 }
 
 const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> = 
   ({ label, name, error = null, ...rest }, ref) => {    
     return (
-      <FormControl id={name} isInvalid={!!error}>
+      <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
         { label && <FormLabel htmlFor={name}>{label}</FormLabel> }
         <ChakraInput
           id={name}

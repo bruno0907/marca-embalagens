@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router'
 
-import { Container, Button } from "@chakra-ui/react";
+import { Container, Button, Heading } from "@chakra-ui/react";
 
 export default function Home () {
   const router = useRouter()
 
   return (
-    <Container minH="100vh" display="flex" alignItems="center" justifyContent="center">
+    <Container minH="100vh" display="flex" flexDir="column" alignItems="center" justifyContent="center">
+      <Heading mb="8">Marka | Bem-vindo</Heading>
       <Button colorScheme="blue" onClick={() => router.push('/dashboard')}>Entrar</Button>
     </Container>
   )

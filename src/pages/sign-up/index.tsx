@@ -1,18 +1,21 @@
 import Head from 'next/head'
-import Router from 'next/router'
+import Link from 'next/link'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '../../hooks/useAuth'
 
-import { Input } from '../components/Input'
+import { Input } from '../../components/Input'
 
 import { 
   Container, 
   Stack,
   Button,  
   useToast,
+  Text,
+  Link as ChakraLink,
+  Heading
 } from '@chakra-ui/react'
 
 type SignInProps = {
@@ -62,11 +65,12 @@ export default function SignUp () {
   return (
     <>
       <Head>
-        <title>Marka | Entrar</title>
-        <meta name="description" content="Página de Login da Marka" />
+        <title>Marka | Cadastre-se</title>
+        <meta name="description" content="Página de Cadastro da Marka" />
       </Head>
-      <Container p={8} display="flex" alignItems="center" justifyContent="center" h="100vh">
-        <Stack as="form" spacing={3} w="100%" onSubmit={handleSubmit(handleSignUp)}>
+      <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
+        <Heading mb="8">Marka | Cadastre-se</Heading>
+        <Stack as="form" spacing={3} mb="8" w="100%" onSubmit={handleSubmit(handleSignUp)}>
           <Input 
             type="email"
             label="E-mail"
@@ -94,6 +98,11 @@ export default function SignUp () {
             isDisabled={!isDirty}
           >Cadastrar</Button>
         </Stack>
+        <Text>Já é cadastrado?
+          <Link href="/sign-in" passHref>
+            <ChakraLink fontWeight="bold" color="blue.500" _hover={{ color: 'blue.600' }}> Faça seu login aqui!</ChakraLink>
+          </Link>              
+        </Text>
       </Container>
     </>
   )
