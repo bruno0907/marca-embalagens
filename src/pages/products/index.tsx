@@ -1,5 +1,21 @@
-export default function Orders() {
+import { Header } from '../../components/Header'
+import { SideMenu } from '../../components/SideMenu'
+
+import { 
+  Flex,
+  Heading
+} from '@chakra-ui/react'
+
+export default function Products() {
   return (
-    <h1>Pedidos</h1>
+    <Flex p="8">
+      <Header title="Marka | Produtos"/>
+      <Flex flexDir="row">
+        <SideMenu />
+        <Flex p="8">
+          <Heading>Tela da lista de produtos</Heading>
+        </Flex>
+      </Flex>
+    </Flex>
   )
 }

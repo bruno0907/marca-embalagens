@@ -22,6 +22,7 @@ import {
   Button,
   Icon,
   Heading,
+  useToast
 } from '@chakra-ui/react'
 
 
@@ -44,10 +45,48 @@ interface UsersListProps {
 }
 
 export default function Users({ user }: UsersProps) {
+  const toast = useToast()
   const [usersList, setUsersList] = useState<UsersListProps[]>(null)
 
+  async function handleDeleteUser (id: string) {
+    try {
+      const { error } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', id)
+
+      if (error) throw new Error('Não foi possível excluir o registro do cliente')
+
+      await supabase
+        .from('addresses')
+        .delete()
+        .eq('user_id', id)
+
+      const currentUsersList = [...usersList]
+
+      const updatedUsersList = currentUsersList.filter(user => user.id !== id)
+
+      setUsersList(updatedUsersList)
+
+      toast({      
+        description: 'Usuário excluído com sucesso',
+        status: 'success',
+        duration: 3000
+      })
+      
+    } catch (error){
+      toast({
+        title: 'Houve um erro',
+        description: error.message,
+        status: 'error',
+        duration: 3000
+      })
+
+    }
+  }
+
   useEffect(() => {
-    async function getUsers () {
+    async function getUsers() {
       const { data, error } = await supabase
         .from<UsersListProps>('users')
         .select(`*`)
@@ -104,7 +143,15 @@ export default function Users({ user }: UsersProps) {
                             </NextLink>
                           </Td>
                           <Td w="36">
-                            <Button as="a" size="sm" fontSize="sm" lineHeight="base" colorScheme="blue" leftIcon={<Icon as={FiX}/>}>Excluir</Button>
+                            <Button 
+                              as="a" 
+                              size="sm" 
+                              fontSize="sm" 
+                              lineHeight="base" 
+                              colorScheme="blue" 
+                              leftIcon={<Icon as={FiX}/>}
+                              onClick={() => handleDeleteUser(user.id)}
+                            >Excluir</Button>
                           </Td>
                         </Tr>
                       )

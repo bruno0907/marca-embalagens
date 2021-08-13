@@ -78,74 +78,88 @@ export default function NewUser({ user }: NewUserProps) {
   } = formState
 
   const handleNewUser: SubmitHandler<NewUserDataProps> = async values => {
-    const user_id = user.id
-    const {
-      name,
-      phone_number,
-      mobile_number,
-      email,
-      address,
-      city,
-      state,
-      district,
-      zip_code,
-      complement
-    } = values
+    try {
+      const user_id = user.id
+      const {
+        name,
+        phone_number,
+        mobile_number,
+        email,
+        address,
+        city,
+        state,
+        district,
+        zip_code,
+        complement
+      } = values
 
-    const newUser = {
-      user_id,
-      user_type: 'Cliente',
-      name,
-      phone_number,
-      mobile_number,
-      email,
-    }
+      const newUserData = {
+        user_id,
+        user_type: 'Cliente',
+        name,
+        phone_number,
+        mobile_number,
+        email,
+      }
 
-    const newAddress = {
-      user_id,
-      address,
-      city,
-      state,
-      district,
-      zip_code,
-      complement,
-    }
+      const { error: newUserError, data: newUser } = await supabase
+        .from('users')
+        .insert([ newUserData ])
+      
+      if (newUserError) {
+        throw new Error('Houve um erro ao cadastrar o cliente.')
 
-    console.log({
-      newUser,
-      newAddress
-    })
+      }
 
-    const { error: newUserError } = await supabase
-      .from('users')
-      .insert([ newUser ])
+      const newAddressData = {
+        user_id: newUser[0].id,
+        address,
+        city,
+        state,
+        district,
+        zip_code,
+        complement,
+      }
+  
+      const { error: newAddressError } = await supabase
+        .from('addresses')
+        .insert([ newAddressData ])
 
-    const { error: newAddressError } = await supabase
-      .from('addresses')
-      .insert([ newAddress ])
+      if (newAddressError) {
+        console.log(newUser[0].id)
 
-    if(newUserError || newAddressError){
-      console.log(newUserError || newAddressError)
+        await supabase
+          .from('users')
+          .delete()
+          .eq('user_id', newUser[0].id)
+
+        throw new Error('Houve um erro ao cadastrar o endereço do cliente.')
+
+      }
 
       toast({
+        title: 'Usuário cadastrado com sucesso',
+        description: 'Aguarde, redirecionando...',
+        status: 'success',
+        duration: 3000
+      })
+      
+      router.push('/users')
+
+    } catch (error) {
+      toast({
         title: 'Ocorreu um error',
-        description: 'Não foi possível cadastrar novo cliente',
+        description: error.message,
         status: 'error',
         duration: 5000
       })
+      
     }
-
-    toast({
-      title: 'Usuário cadastrado com sucesso',
-      description: 'Aguarde, redirecionando...',
-      status: 'success',
-      duration: 3000
-    })
-
-    router.push('/users')
   }
 
-  const handleSubmitErrors: SubmitErrorHandler<Error> = errors => console.log(errors)
+  const handleSubmitErrors: SubmitErrorHandler<Error> = errors => {
+    console.log(errors)
+  }
 
   const handleCancel = () => {
     reset()
@@ -217,18 +231,18 @@ export default function NewUser({ user }: NewUserProps) {
                 </HStack>
                 <HStack spacing={3}>
                   <Input
-                    name="city"
-                    label="Cidade*"
-                    bgColor="gray.50"                      
-                    error={errors?.city}
-                    {...register('city')}
-                  />
-                  <Input
                     name="state"
                     label="Estado*"
                     bgColor="gray.50"                          
                     error={errors?.state}
                     {...register('state')}                
+                  />
+                  <Input
+                    name="city"
+                    label="Cidade*"
+                    bgColor="gray.50"                      
+                    error={errors?.city}
+                    {...register('city')}
                   />
                   <Input
                     name="zip_code"
