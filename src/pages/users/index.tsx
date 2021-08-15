@@ -95,10 +95,9 @@ export default function Users({ user }: UsersProps) {
       
       setUsersList(data)
     }
-
     getUsers()
 
-  }, [user.id])  
+  }, [user.id])
 
   return !usersList ? <Loader /> : (
     <>

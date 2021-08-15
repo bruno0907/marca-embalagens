@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import Head from 'next/head'
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -6,12 +8,16 @@ import { Header } from '../../components/Header'
 import { SideMenu } from "../../components/SideMenu";
 
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { supabase } from '../../services/supabase';
 
+import axios from 'axios';
+
 import { Input } from '../../components/Input';
+import { Select } from '../../components/Select';
 
 import { 
   Box,
@@ -45,6 +51,17 @@ type NewUserDataProps = {
   complement: string
 }
 
+type StateProps = {
+  id: number;
+  sigla: string;
+  nome: string;
+}
+
+type CityProps = {
+  id: number;
+  nome: string;
+}
+
 const newUserFormSchema = yup.object().shape({
   name: yup.string().required('O nome é obrigatório').trim(),
   phone_number: yup.string().trim(),
@@ -62,11 +79,14 @@ export default function NewUser({ user }: NewUserProps) {
   const router = useRouter()
   const toast = useToast()
 
+  const [states, setStates] = useState<StateProps[]>([])
+  const [cities, setCities] = useState<CityProps[]>([])
+
   const {
     handleSubmit,    
     formState,
     register,
-    reset,
+    reset,    
   } = useForm<NewUserDataProps>({
     resolver: yupResolver(newUserFormSchema)
   })
@@ -104,11 +124,10 @@ export default function NewUser({ user }: NewUserProps) {
 
       const { error: newUserError, data: newUser } = await supabase
         .from('users')
-        .insert([ newUserData ])
+        .insert(newUserData)
       
       if (newUserError) {
         throw new Error('Houve um erro ao cadastrar o cliente.')
-
       }
 
       const newAddressData = {
@@ -123,18 +142,15 @@ export default function NewUser({ user }: NewUserProps) {
   
       const { error: newAddressError } = await supabase
         .from('addresses')
-        .insert([ newAddressData ])
+        .insert(newAddressData)
 
       if (newAddressError) {
-        console.log(newUser[0].id)
-
         await supabase
           .from('users')
           .delete()
           .eq('user_id', newUser[0].id)
 
         throw new Error('Houve um erro ao cadastrar o endereço do cliente.')
-
       }
 
       toast({
@@ -159,6 +175,14 @@ export default function NewUser({ user }: NewUserProps) {
 
   const handleSubmitErrors: SubmitErrorHandler<Error> = errors => {
     console.log(errors)
+
+    toast({
+      title: 'Um erro ocorreu',
+      description: 'Um erro inexperado ocorreu, contate o suporte.',
+      status: 'error',
+      duration: 5000,
+      isClosable: true
+    })
   }
 
   const handleCancel = () => {
@@ -166,6 +190,23 @@ export default function NewUser({ user }: NewUserProps) {
     router.push('/users')
   }
 
+  
+  
+  useEffect(() => {
+    async function fetchStates() {
+      const { data } = await axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome')
+      setStates(data)
+    }
+    fetchStates()
+    
+  }, [])
+
+  
+  async function fetchCity(uf: string) {            
+    const { data } = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
+    setCities(data)
+  }
+  
   return (
     <>
       <Head>
@@ -230,20 +271,38 @@ export default function NewUser({ user }: NewUserProps) {
                   </Box>
                 </HStack>
                 <HStack spacing={3}>
-                  <Input
+                  <Select
                     name="state"
                     label="Estado*"
                     bgColor="gray.50"                          
-                    error={errors?.state}
+                    error={errors?.state}  
+                    
                     {...register('state')}                
-                  />
-                  <Input
+                    onChange={(event) => fetchCity(event.target.value)}                                      
+                  >
+                    <option key="stateList" disabled selected aria-readonly>Selecione um estado...</option>
+                    { states.map(state => {
+                        return (                          
+                          <option key={state.id} value={state.sigla}>{state.nome}</option>                          
+                        )
+                      })
+                    }
+                  </Select>
+                  <Select
                     name="city"
                     label="Cidade*"
                     bgColor="gray.50"                      
                     error={errors?.city}
+                    isDisabled={!Boolean(cities.length)}
                     {...register('city')}
-                  />
+                    >                    
+                    <option disabled selected aria-readonly>Escolha uma cidade</option> 
+                    { cities.map(city => {
+                      return (
+                        <option key={city.id}>{city.nome}</option>
+                      )
+                    })}
+                  </Select>
                   <Input
                     name="zip_code"
                     label="CEP"
