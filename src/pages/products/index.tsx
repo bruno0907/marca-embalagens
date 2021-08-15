@@ -1,21 +1,165 @@
+import { useEffect, useState } from 'react'
+import { GetServerSideProps, GetStaticPaths } from 'next'
+import Head from 'next/head'
+import NextLink from 'next/link'
+
+import { supabase } from '../../services/supabase'
+
 import { Header } from '../../components/Header'
 import { SideMenu } from '../../components/SideMenu'
+import { Loader } from '../../components/Loader'
 
-import { 
+import { FiEdit, FiPlus, FiX } from 'react-icons/fi'
+
+import {  
   Flex,
-  Heading
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,  
+  Button,
+  Icon,
+  Heading,
+  useToast
 } from '@chakra-ui/react'
 
-export default function Products() {
-  return (
-    <Flex p="8">
-      <Header title="Marka | Produtos"/>
-      <Flex flexDir="row">
-        <SideMenu />
-        <Flex p="8">
-          <Heading>Tela da lista de produtos</Heading>
+
+interface UsersProps {
+  user: UserProps;
+}
+
+type UserProps = {
+  id: string;
+}
+
+interface ProductProps {
+  user_id: string;
+}
+
+export default function Products({ user }: UsersProps) {
+  const toast = useToast()
+  const [suppliers, setSuppliers] = useState<ProductProps[]>([])
+
+  // async function handleDeleteUser (id: string) {
+  //   try {
+  //     const { error } = await supabase
+  //       .from('users')
+  //       .delete()
+  //       .eq('id', id)
+
+  //     if (error) throw new Error('Não foi possível excluir o registro do cliente')
+
+  //     await supabase
+  //       .from('addresses')
+  //       .delete()
+  //       .eq('user_id', id)
+
+  //     const currentUsersList = [...usersList]
+
+  //     const updatedUsersList = currentUsersList.filter(user => user.id !== id)
+
+  //     setUsersList(updatedUsersList)
+
+  //     toast({      
+  //       description: 'Usuário excluído com sucesso',
+  //       status: 'success',
+  //       duration: 3000
+  //     })
+      
+  //   } catch (error){
+  //     toast({
+  //       title: 'Houve um erro',
+  //       description: error.message,
+  //       status: 'error',
+  //       duration: 3000
+  //     })
+
+  //   }
+  // }
+
+  useEffect(() => {
+    async function getSuppliers() {
+      const { data, error } = await supabase
+        .from<ProductProps>('products')
+        .select(`*`)
+        .eq(`user_id`, user.id)        
+      
+      setSuppliers(data)
+    }
+    getSuppliers()
+
+  }, [user.id])
+
+  // return !suppliers ? <Loader /> : (
+    return (
+    <>
+      <Head>
+        <title>Marka | Produtos</title>
+        <meta name="description" content="Página dos produtos da Marka" />
+      </Head>
+      <Flex p="8" flexDir="column">
+        <Header title="Marka" />
+        <Flex pt="16">
+          <SideMenu />
+          <Flex ml="16" flex="1" flexDir="column" bgColor="gray.100" p="8" borderRadius="8">
+            <Flex justifyContent="space-between" mb="16">
+              <Heading>Produtos</Heading>
+              <NextLink href="/users/new-product" passHref>
+                <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo produto</Button>
+              </NextLink>
+            </Flex>        
+              <Table colorScheme="blue" variant="striped">
+                <Thead>
+                  <Tr>                  
+                    <Th>Produto</Th>
+                    <Th>Descrição</Th>
+                    <Th>Tipo</Th>
+                    <Th>Valor</Th>
+                    <Th />                    
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {/* { 
+                    products.map(supplier => {
+                      return (
+                        <Tr key="1">
+                          <Td>{}</Td>
+                          <Td>{}</Td>
+                          <Td>{}</Td>
+                          <Td>{}</Td>
+                          <Td w="36">
+                            <NextLink href={`/users/${user.id}`} passHref>
+                              <Button as="a" size="sm" fontSize="sm" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiEdit}/>}>Editar</Button>
+                            </NextLink>
+                          </Td>                          
+                        </Tr>
+                      )
+                  }) } */}
+                </Tbody>
+            </Table>
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+
+  if(!user) { 
+    return {
+      props: {},
+      redirect: {
+        destination: '/sign-in',
+        permanent: false
+      }
+    }
+  } 
+  
+  return {
+    props: { user }
+  }
 }

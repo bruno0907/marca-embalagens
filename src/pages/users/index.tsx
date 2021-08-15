@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticPaths } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
@@ -11,8 +11,8 @@ import { Loader } from '../../components/Loader'
 
 import { FiEdit, FiPlus, FiX } from 'react-icons/fi'
 
-import {
-  Box,
+import {  
+  Flex,
   Table,
   Thead,
   Tbody,
@@ -105,17 +105,17 @@ export default function Users({ user }: UsersProps) {
         <title>Marka | CLientes</title>
         <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
-      <Box p="8" display="flex" flexDir="column">
+      <Flex p="8" flexDir="column">
         <Header title="Marka" />
-        <Box display="flex" pt="16">
+        <Flex pt="16">
           <SideMenu />
-          <Box ml="16" display="flex" flex="1" flexDir="column" bgColor="gray.100" p="8" borderRadius="8">
-            <Box display="flex" justifyContent="space-between" mb="16">
+          <Flex ml="16" flex="1" flexDir="column" bgColor="gray.100" p="8" borderRadius="8">
+            <Flex justifyContent="space-between" mb="16">
               <Heading>Clientes </Heading>
               <NextLink href="/users/new-user" passHref>
                 <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo cliente</Button>
               </NextLink>
-            </Box>        
+            </Flex>        
               <Table colorScheme="blue" variant="striped">
                 <Thead>
                   <Tr>                  
@@ -123,8 +123,7 @@ export default function Users({ user }: UsersProps) {
                     <Th>Telefone</Th>
                     <Th>Celular</Th>
                     <Th>E-mail</Th>
-                    <Th />
-                    <Th />
+                    <Th />                    
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -140,26 +139,15 @@ export default function Users({ user }: UsersProps) {
                             <NextLink href={`/users/${user.id}`} passHref>
                               <Button as="a" size="sm" fontSize="sm" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiEdit}/>}>Editar</Button>
                             </NextLink>
-                          </Td>
-                          <Td w="36">
-                            <Button 
-                              as="a" 
-                              size="sm" 
-                              fontSize="sm" 
-                              lineHeight="base" 
-                              colorScheme="blue" 
-                              leftIcon={<Icon as={FiX}/>}
-                              onClick={() => handleDeleteUser(user.id)}
-                            >Excluir</Button>
-                          </Td>
+                          </Td>                          
                         </Tr>
                       )
                   }) }
                 </Tbody>
             </Table>
-          </Box>
-        </Box>
-      </Box>
+          </Flex>
+        </Flex>
+      </Flex>
     </>
   )
 }
