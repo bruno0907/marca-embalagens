@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GetServerSideProps, GetStaticPaths } from 'next'
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import NextLink from 'next/link'
 
@@ -9,7 +9,7 @@ import { Header } from '../../components/Header'
 import { SideMenu } from '../../components/SideMenu'
 import { Loader } from '../../components/Loader'
 
-import { FiEdit, FiPlus, FiX } from 'react-icons/fi'
+import { FiPlus } from 'react-icons/fi'
 
 import {  
   Flex,
@@ -22,19 +22,15 @@ import {
   Button,
   Icon,
   Heading,
-  useToast
+  useToast, 
+  Text
 } from '@chakra-ui/react'
 
-
 interface UsersProps {
-  user: UserProps;
+  data: UsersDataProps[];
 }
 
-type UserProps = {
-  id: string;
-}
-
-interface UsersListProps {
+interface UsersDataProps {
   id: string;
   user_id: string;
   user_type: string;
@@ -42,11 +38,12 @@ interface UsersListProps {
   email: string;
   phone_number: string;
   mobile_number: string;
+  status: boolean;
 }
 
-export default function Users({ user }: UsersProps) {
+export default function Users({ data }: UsersProps) {
   const toast = useToast()
-  const [usersList, setUsersList] = useState<UsersListProps[]>(null)
+  const [usersData, setUsersData] = useState<UsersDataProps[]>(null)
 
   async function handleDeleteUser (id: string) {
     try {
@@ -62,11 +59,11 @@ export default function Users({ user }: UsersProps) {
         .delete()
         .eq('user_id', id)
 
-      const currentUsersList = [...usersList]
+      const currentUsersList = [...usersData]
 
       const updatedUsersList = currentUsersList.filter(user => user.id !== id)
 
-      setUsersList(updatedUsersList)
+      setUsersData(updatedUsersList)
 
       toast({      
         description: 'Usuário excluído com sucesso',
@@ -86,27 +83,29 @@ export default function Users({ user }: UsersProps) {
   }
 
   useEffect(() => {
-    async function getUsers() {
-      const { data, error } = await supabase
-        .from<UsersListProps>('users')
-        .select(`*`)
-        .eq(`user_id`, user.id)
-        .eq('user_type', 'Cliente')
+    // async function getUsers() {
+    //   const { data, error } = await supabase
+    //     .from<UsersListProps>('users')
+    //     .select(`*`)
+    //     .eq(`user_id`, user.id)
+    //     .eq('user_type', 'Cliente')
       
-      setUsersList(data)
-    }
-    getUsers()
+    //   setUsersList(data)
+    // }
+    // getUsers()
 
-  }, [user.id])
+    setUsersData(data)
 
-  return !usersList ? <Loader /> : (
+  }, [data])
+
+  return !usersData ? <Loader /> : (
     <>
       <Head>
-        <title>Marka | CLientes</title>
+        <title>MARCA | Clientes</title>
         <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
       <Flex p="8" flexDir="column">
-        <Header title="Marka" />
+        <Header />
         <Flex pt="16">
           <SideMenu />
           <Flex ml="16" flex="1" flexDir="column" bgColor="gray.100" p="8" borderRadius="8">
@@ -123,24 +122,26 @@ export default function Users({ user }: UsersProps) {
                     <Th>Telefone</Th>
                     <Th>Celular</Th>
                     <Th>E-mail</Th>
-                    <Th />                    
+                    <Th>Situação</Th>                                     
                   </Tr>
                 </Thead>
                 <Tbody>
                   { 
-                    usersList.map(user => {
+                    usersData.map(user => {
                       return (
-                        <Tr key={user.id}>
-                          <Td>{user.name}</Td>
-                          <Td>{user.phone_number}</Td>
-                          <Td>{user.mobile_number}</Td>
-                          <Td>{user.email}</Td>
-                          <Td w="36">
-                            <NextLink href={`/users/${user.id}`} passHref>
-                              <Button as="a" size="sm" fontSize="sm" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiEdit}/>}>Editar</Button>
-                            </NextLink>
-                          </Td>                          
-                        </Tr>
+                        <NextLink key={user.id} href={`/users/${user.id}`} passHref>
+                          <Tr>
+                            <Td>{user.name}</Td>
+                            <Td>{user.phone_number}</Td>
+                            <Td>{user.mobile_number}</Td>
+                            <Td>{user.email}</Td>                            
+                            <Td w="36">{
+                              user.status === false 
+                              ? <Text color="gray.300">Inativo</Text> 
+                              : <Text color="blue.500">Ativo</Text>
+                            }</Td>                           
+                            </Tr>
+                        </NextLink>
                       )
                   }) }
                 </Tbody>
@@ -163,9 +164,23 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         permanent: false
       }
     }
+  }
+  
+  const { data } = await supabase
+    .from<UsersDataProps>('users')
+    .select(`*`)
+    .eq(`user_id`, user.id)
+    .eq('user_type', 'Cliente')
+
+  if(!data) {
+    return {
+      props: {}
+    }
   } 
   
   return {
-    props: { user }
+    props: { 
+      data 
+    }
   }
 }
