@@ -8,6 +8,8 @@ import {
   FormErrorMessage
 } from "@chakra-ui/react"
 
+import { InfoIcon } from '@chakra-ui/icons'
+
 interface InputProps extends ChakraInputProps {
   name: string;  
   label?: string;

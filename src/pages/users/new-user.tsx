@@ -69,13 +69,13 @@ const newUserFormSchema = yup.object().shape({
   email: yup.string().email().trim(),
   address: yup.string().required('O endereço é obrigatório').trim(),  
   district: yup.string().required('O bairo/distrito é obrigatório'),  
-  state: yup.string().required().trim().test({        
+  state: yup.string().required('Você deve selecionar um estado').test({
     message: 'Selecione um estado',
-    test: value => value !== 'default'
+    test: state => state !== 'default'
   }).trim(),
-  city: yup.string().required('Você deve selecionar um estado').test({
-    message: 'Selecione uma cidade',
-    test: value => value !== 'default'
+  city: yup.string().required('Você deve selecionar um estado').test({    
+    message: 'Você deve selecionar uma cidade',
+    test: city => city !== 'default'
   }).trim(),
   zip_code: yup.string().trim(),
   complement: yup.string().trim(),
@@ -93,7 +93,9 @@ export default function NewUser({ user }: NewUserProps) {
     handleSubmit,    
     formState,
     register,
-    reset,    
+    reset,  
+    clearErrors,
+    setError  
   } = useForm<NewUserDataProps>({
     resolver: yupResolver(newUserFormSchema)
   })
@@ -196,9 +198,13 @@ export default function NewUser({ user }: NewUserProps) {
   
   async function fetchCity(uf: string) {            
     const { data } = await axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`)
-    setCities(data)
-    
+    setCities(data)    
     setHasCities(false)
+
+    clearErrors('state')
+    setError('city', {
+      message: 'Você deve selecionar uma cidade'
+    })
   }
   
   return (
@@ -218,11 +224,11 @@ export default function NewUser({ user }: NewUserProps) {
                 <Input
                   name="name"
                   label="Nome*"
-                  bgColor="gray.50"                                    
+                  bgColor="gray.50"                  
                   error={errors?.name}
                   {...register('name')}              
                 />
-                <HStack spacing={3}>
+                <HStack spacing={3} pt="4">
                   <Input
                     name="phone_number"
                     label="Telefone"
@@ -246,7 +252,7 @@ export default function NewUser({ user }: NewUserProps) {
                     {...register('email')}             
                   />
                 </HStack>
-                <HStack spacing={3}>
+                <HStack spacing={3} display="flex" alignItems="flex-start" w="100%" pt="4">
                   <Input
                     name="address"
                     label="Endereço*"
@@ -264,7 +270,7 @@ export default function NewUser({ user }: NewUserProps) {
                     />
                   </Box>
                 </HStack>
-                <HStack spacing={3}>
+                <HStack spacing={3} display="flex" alignItems="flex-start" w="100%" pt="4" pb="4">
                   <Select
                     name="state"
                     label="Estado*"
@@ -300,7 +306,7 @@ export default function NewUser({ user }: NewUserProps) {
                   <Input
                     name="zip_code"
                     label="CEP"
-                    bgColor="gray.50"                        
+                    bgColor="gray.50"                                           
                     error={errors?.zip_code}
                     {...register('zip_code')}
                   />
@@ -313,7 +319,7 @@ export default function NewUser({ user }: NewUserProps) {
                   {...register('complement')}
                 />
               </Stack>
-              <HStack spacing={3} mt="8" justifyContent="flex-end">
+              <HStack spacing={3} mt="8" justifyContent="flex-end" display="flex" alignItems="flex-start" w="100%">
                 <Button
                   colorScheme="blue"
                   variant="ghost"
