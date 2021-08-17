@@ -19,12 +19,12 @@ export default function Dashboard () {
   return (
     <> 
       <Head>
-        <title>Marka | Home</title>
+        <title>Marca | Home</title>
         <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
       <Box display="flex" flexDir="column" minH="100vh" p="8">        
-        <Header title="Marka | Home"/>
-        <Box mt="12" display="flex" justifyContent="space-evenly">
+        <Header />
+        <Box display="flex" justifyContent="space-evenly">
           <Button href="/orders" icon={FiEdit}>Pedidos</Button>
           <Button href="/users" icon={FiUsers}>Clientes</Button>
           <Button href="/products" icon={FiPackage}>Produtos</Button>

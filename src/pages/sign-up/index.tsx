@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -34,9 +35,10 @@ const signInFormSchema = yup.object().shape({
 })
 
 export default function SignUp () {  
-  const { signUp } = useAuth()
-
+  const router = useRouter()
   const toast = useToast()
+  
+  const { signUp } = useAuth()
 
   const { 
     register, 
@@ -55,9 +57,17 @@ export default function SignUp () {
   const handleSignUp: SubmitHandler<SignInProps> = async (values) => {
     try {
       await signUp(values)
-      
+      router.push('/profile')
+
+      return
     } catch (error) {
-      console.log(error)
+      toast({
+        title: 'Um error ocorreu',
+        description: 'Ocorreu um erro ao efetuar seu cadastro.',
+        status: 'error',
+        isClosable: true
+      })
+      return
 
     }
   }
@@ -65,11 +75,11 @@ export default function SignUp () {
   return (
     <>
       <Head>
-        <title>Marka | Cadastre-se</title>
+        <title>Marca | Cadastre-se</title>
         <meta name="description" content="Página de Cadastro da Marka" />
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-        <Heading mb="8">Marka | Cadastre-se</Heading>
+        <Heading mb="8">MARCA | Cadastre-se</Heading>
         <Stack as="form" spacing={3} mb="8" w="100%" onSubmit={handleSubmit(handleSignUp)}>
           <Input 
             type="email"

@@ -89,11 +89,11 @@ export default function SignIn () {
   return (
     <>
       <Head>
-        <title>Marka | Faça seu login</title>
+        <title>Marca | Faça seu login</title>
         <meta name="description" content="Página de Login da Marka" />
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-        <Heading mb="8">Marka | Login</Heading>
+        <Heading mb="8">MARCA | Login</Heading>
         <Stack as="form" spacing={3} mb="8" w="100%" onSubmit={handleSubmit(handleSignIn)}>          
           <Input 
             type="email"

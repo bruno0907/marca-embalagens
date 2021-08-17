@@ -7,7 +7,7 @@ export default function Home () {
 
   return (
     <Container minH="100vh" display="flex" flexDir="column" alignItems="center" justifyContent="center">
-      <Heading mb="8">Marka | Bem-vindo</Heading>
+      <Heading mb="8">MARCA | Bem-vindo</Heading>
       <Button colorScheme="blue" onClick={() => router.push('/dashboard')}>Entrar</Button>
     </Container>
   )

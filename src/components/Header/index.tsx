@@ -5,7 +5,7 @@ const Header = () => {
   const { signOut } = useAuth()
 
   return (
-    <Box display="flex" justifyContent="space-between">
+    <Box display="flex" justifyContent="space-between" pb="16">
       <Heading>MARCA</Heading>
       <Button onClick={signOut} colorScheme="blue">Sair</Button>
     </Box>
