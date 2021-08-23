@@ -4,9 +4,6 @@ import Head from "next/head";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import { Header } from "../../components/Header";
-import { SideMenu } from "../../components/SideMenu";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import * as yup from "yup";
@@ -16,6 +13,7 @@ import { supabase } from "../../services/supabase";
 
 import axios from "axios";
 
+import { Layout } from "../../components/Layout";
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
 
@@ -29,7 +27,6 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { Content } from "../../components/Content";
 
 type NewUserProps = {
   user: UserProps;
@@ -210,7 +207,7 @@ export default function NewUser({ user }: NewUserProps) {
         <title>MARCA | Novo Cliente</title>
         <meta name="description" content="Página de cadastro de novo cliente" />
       </Head>
-      <Content withGoBack>
+      <Layout withGoBack>
         <Box bgColor="gray.100" p="8" borderRadius="8">
           <Flex
             as="form"
@@ -364,7 +361,7 @@ export default function NewUser({ user }: NewUserProps) {
             </Text>
           </Flex>
         </Box>
-      </Content>
+      </Layout>
     </>
   );
 }

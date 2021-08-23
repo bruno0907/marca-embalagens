@@ -1,33 +1,15 @@
 import { ReactNode } from "react"
+import { Box } from "@chakra-ui/react"
 
-import { Header } from "../Header"
-import { SideMenu } from "../SideMenu"
-import { GoBack } from "../GoBack"
-
-type LayoutProps = {
+type ContentProps = {
   children: ReactNode;
-  withGoBack?: boolean;
 }
 
-import { 
-  Box,
-  Flex,  
-} from '@chakra-ui/react'
-
-const Content = ({ children, withGoBack }: LayoutProps) => {
+const Content = ({ children }: ContentProps) => {
   return (
-    <Box p="8">
-      <Header />
-      <Flex>
-        <SideMenu />
-        <Flex flex="1" flexDir="column">
-          { withGoBack && <GoBack /> }
-          <Box>
-              {children}
-          </Box>
-          </Flex>
-        </Flex>
-      </Box> 
+    <Box as="main" bgColor="gray.100" p="8" borderRadius="8">
+      {children}
+    </Box>
   )
 }
 

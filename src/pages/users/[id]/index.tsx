@@ -4,7 +4,11 @@ import { useRouter } from 'next/router'
 
 import { supabase } from '../../../services/supabase'
 
-import { Content } from '../../../components/Content'
+import { Layout } from '../../../components/Layout'
+
+import { UserInfo } from './components/userInfo'
+import { UserAddresses } from './components/userAddresses'
+import { UserOrders } from './components/userOrders'
 
 import {   
   Box,
@@ -14,9 +18,6 @@ import {
   TabPanels,
   TabPanel,
 } from '@chakra-ui/react'
-import { UserInfo } from './components/userInfo'
-import { UserAddresses } from './components/userAddresses'
-import { UserOrders } from './components/userOrders'
 
 interface UserDataProps {
   id: string;
@@ -53,8 +54,8 @@ export default function User({ user, addresses }: UserProps) {
         <title>MARCA | {user[0].name}</title>
         <meta name="description" content="Página de cadastro de novo cliente" />
       </Head>
-      <Content withGoBack>
-        <Box bgColor="gray.100" p="8" borderRadius="8" mb="8">          
+      <Layout withGoBack>
+        <Box bgColor="gray.100" p="8" borderRadius="8">          
           <Tabs variant="enclosed" borderColor="blue.500" isLazy>
             <TabList>
               <Tab _selected={{ bg: 'blue.500', color: 'gray.50' }}>Dados do Cliente</Tab>
@@ -74,7 +75,7 @@ export default function User({ user, addresses }: UserProps) {
             </TabPanels>
           </Tabs>
         </Box>
-      </Content>
+      </Layout>
     </>
   )
 }

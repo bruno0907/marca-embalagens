@@ -5,6 +5,7 @@ import NextLink from 'next/link'
 
 import { supabase } from '../../services/supabase'
 
+import { Layout } from '../../components/Layout'
 import { Loader } from '../../components/Loader'
 
 import { FiPlus } from 'react-icons/fi'
@@ -23,7 +24,6 @@ import {
   Heading,
   useToast
 } from '@chakra-ui/react'
-import { Content } from '../../components/Content'
 
 
 interface UsersProps {
@@ -54,9 +54,9 @@ export default function Suppliers({ user }: UsersProps) {
         <title>Marka | Fornecedores</title>
         <meta name="description" content="Página de fornecedores da Marka" />
       </Head>
-      <Content>
+      <Layout>
         <Box bgColor="gray.100" p="8" borderRadius="8">
-          <Flex justifyContent="space-between" mb="16">
+          <Flex justify="space-between" mb="16">
             <Heading>Fornecedores</Heading>
               <NextLink href="/users/new-supplier" passHref>
               <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo fornecedor</Button>
@@ -81,7 +81,7 @@ export default function Suppliers({ user }: UsersProps) {
             </Tbody>
           </Table>
         </Box>
-      </Content>
+      </Layout>
     </>
   )
 }

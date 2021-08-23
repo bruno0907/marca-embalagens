@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 
 import { supabase } from '../../services/supabase'
 
-import { Content } from '../../components/Content'
+import { Layout } from '../../components/Layout'
 import { Loader } from '../../components/Loader'
 
 import { FiPlus } from 'react-icons/fi'
@@ -96,9 +96,9 @@ export default function Users({ data }: UsersProps) {
         <title>MARCA | Clientes</title>
         <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
-      <Content>
+      <Layout>
         <Box bgColor="gray.100" p="8" borderRadius="8">
-          <Flex justifyContent="space-between" mb="16">
+          <Flex justify="space-between" mb="16">
             <Heading>Clientes</Heading>
             <NextLink href="/users/new-user" passHref>
               <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo cliente</Button>
@@ -135,7 +135,7 @@ export default function Users({ data }: UsersProps) {
               </Tbody>
             </Table>
           </Box>
-      </Content>
+      </Layout>
     </>
   )
 }

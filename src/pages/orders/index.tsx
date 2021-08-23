@@ -6,11 +6,11 @@ import NextLink from 'next/link'
 
 import { supabase } from '../../services/supabase'
 
+import { Layout } from '../../components/Layout'
 import { Content } from '../../components/Content'
 
 import {  
   Flex,
-  Box,
   Table,
   Thead,
   Tbody,
@@ -24,6 +24,7 @@ import {
 } from '@chakra-ui/react'
 
 import {FiPlus} from 'react-icons/fi'
+
 
 interface UsersProps {
   user: UserProps;
@@ -54,9 +55,9 @@ export default function Orders({ user }: UsersProps) {
         <title>Marca | Pedidos</title>
         <meta name="description" content="Página de pedidos da Marka" />
       </Head>
-      <Content>
-        <Box bgColor="gray.100" p="8" borderRadius="8" mb="8">
-          <Flex justifyContent="space-between" mb="16">
+      <Layout>
+        <Content>
+          <Flex justify="space-between" mb="16">
             <Heading>Pedidos</Heading>
             <NextLink href="/users/new-order" passHref>
               <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo pedido</Button>
@@ -80,8 +81,8 @@ export default function Orders({ user }: UsersProps) {
               </Tr>
             </Tbody>
           </Table>
-        </Box>
-      </Content>
+        </Content>
+      </Layout>
     </>
   )
 }

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 import NextLink from 'next/link'
 
 import { supabase } from '../../services/supabase'
 
+import { Layout } from '../../components/Layout'
 import { Content } from '../../components/Content'
 
 import {    
@@ -20,7 +21,6 @@ import {
   Flex,
   Button,
   Icon,
-  Box
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
@@ -54,9 +54,9 @@ export default function Products({ user }: UsersProps) {
         <title>Marca | Produtos</title>
         <meta name="description" content="Página dos produtos da Marka" />
       </Head>
-      <Content>
-        <Box bgColor="gray.100" p="8" borderRadius="8">
-          <Flex justifyContent="space-between" mb="16">
+      <Layout>
+        <Content>
+          <Flex justify="space-between" mb="16">
             <Heading>Produtos</Heading>
             <NextLink href="/users/new-user" passHref>
               <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo cliente</Button>
@@ -90,8 +90,8 @@ export default function Products({ user }: UsersProps) {
                 }
               </Tbody>
           </Table>
-        </Box>
-      </Content>
+        </Content>
+      </Layout>
     </>
   )
 }
