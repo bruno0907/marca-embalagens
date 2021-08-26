@@ -9,8 +9,8 @@ export const theme = extendTheme({
     global: {
       body: {
         bg: 'gray.50',
-        color: 'gray.700'        
-      }
-    }
+        color: 'gray.600',        
+      },
+    },    
   }
 })

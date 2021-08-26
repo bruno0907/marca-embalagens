@@ -307,6 +307,7 @@ export default function NewUser({ user }: NewUserProps) {
                   isDisabled={hasCities}
                   defaultValue="default"
                   {...register("city")}
+                  onChange={() => clearErrors('city')}
                 >
                   <option value="default" hidden aria-readonly>
                     Selecione uma cidade...
@@ -315,6 +316,7 @@ export default function NewUser({ user }: NewUserProps) {
                     return <option key={city.id}>{city.nome}</option>;
                   })}
                 </Select>
+                
                 <Input
                   name="zip_code"
                   label="CEP"

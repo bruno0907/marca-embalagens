@@ -51,34 +51,34 @@ export default function SignIn () {
     isDirty,
   } = formState
 
-  const handleSignIn: SubmitHandler<SignInProps> = async (values) => {    
-    const { error } = await signIn(values)
-    
-    if(error) {
+  const handleSignIn: SubmitHandler<SignInProps> = async (values) => {
+    try {
+      await signIn(values)
+
+      toast({
+        title: 'Login efetuado com sucesso',
+        description: 'Seu login foi feito com sucesso, redirecionando...',
+        duration: 3000,
+        status: 'success'
+      })
+      
+    } catch (error) {
       toast({
         title: 'Erro ao fazer o login',
-        description: 'Nome de usuário ou senha inválidos',
+        description: error.message,
         duration: 3000,
         status: 'error',
         isClosable: true
       })
-
+  
       reset({
         ...values,
         password: ''
       })
-
+  
       return
-    }
-    
-    toast({
-      title: 'Login efetuado com sucesso',
-      description: 'Seu login foi feito com sucesso, redirecionando...',
-      duration: 3000,
-      status: 'success'
-    })
-
-    return
+      
+    }    
   }
 
   useEffect(() => {

@@ -7,7 +7,7 @@ type ContentProps = {
 
 const Content = ({ children }: ContentProps) => {
   return (
-    <Box as="main" bgColor="gray.100" p="8" borderRadius="8">
+    <Box p="8">
       {children}
     </Box>
   )

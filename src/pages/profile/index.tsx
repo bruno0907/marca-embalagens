@@ -36,7 +36,7 @@ export default function Profile({ user }: ProfileProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
+  const { user } = await supabase.auth.api.getUserByCookie(req)  
 
   if(!user) {
     return {

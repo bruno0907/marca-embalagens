@@ -23,8 +23,9 @@ import {
   Button,
   Icon,
   Heading,
-  useToast, 
-  Text,
+  useToast,   
+  Divider,
+  Badge
 } from '@chakra-ui/react'
 
 interface UsersProps {
@@ -90,30 +91,31 @@ export default function Users({ data }: UsersProps) {
 
   }, [data])
 
-  return !usersData ? <Loader /> : (
+  return (
     <>
       <Head>
         <title>MARCA | Clientes</title>
         <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
-      <Layout>
-        <Box bgColor="gray.100" p="8" borderRadius="8">
-          <Flex justify="space-between" mb="16">
-            <Heading>Clientes</Heading>
-            <NextLink href="/users/new-user" passHref>
-              <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo cliente</Button>
-            </NextLink>
-          </Flex>        
-          <Table colorScheme="blue" variant="striped">
-            <Thead>
-              <Tr>                  
-                <Th>Nome</Th>
-                <Th>Telefone</Th>
-                <Th>Celular</Th>
-                <Th>E-mail</Th>
-                <Th>Situação</Th>                                     
-              </Tr>
-            </Thead>
+      <Layout>        
+        <Flex justify="space-between">
+          <Heading>Clientes</Heading>
+          <NextLink href="/users/new-user" passHref>
+            <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo cliente</Button>
+          </NextLink>
+        </Flex> 
+        <Divider my="16" borderColor="gray.600"/>
+        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">      
+            <Table colorScheme="gray" variant="striped">
+              <Thead>
+                <Tr>                  
+                  <Th>Nome</Th>
+                  <Th>Telefone</Th>
+                  <Th>Celular</Th>
+                  <Th>E-mail</Th>
+                  <Th>Situação</Th>                                     
+                </Tr>
+              </Thead>
               <Tbody>
                 { usersData.map(user => {
                     return (
@@ -123,9 +125,9 @@ export default function Users({ data }: UsersProps) {
                         <Td>{user.mobile_number}</Td>
                         <Td>{user.email}</Td>                            
                         <Td w="36">{
-                          user.status === false 
-                          ? <Text color="gray.500" fontWeight="500">Inativo</Text> 
-                          : <Text color="blue.500" fontWeight="500">Ativo</Text>
+                          user.status === false                         
+                            ? <Badge variant="subtle" colorScheme="red" py="1" px="4" borderRadius="md">Inativo</Badge> 
+                            : <Badge variant="subtle" colorScheme="blue" py="1" px="4" borderRadius="md">Ativo</Badge>
                           }
                         </Td>                           
                       </Tr>
@@ -134,7 +136,7 @@ export default function Users({ data }: UsersProps) {
                 }
               </Tbody>
             </Table>
-          </Box>
+        </Box>
       </Layout>
     </>
   )
@@ -142,7 +144,7 @@ export default function Users({ data }: UsersProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user } = await supabase.auth.api.getUserByCookie(req)
-
+  
   if(!user) { 
     return {
       props: {},

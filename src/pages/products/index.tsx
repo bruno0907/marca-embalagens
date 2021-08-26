@@ -7,7 +7,6 @@ import NextLink from 'next/link'
 import { supabase } from '../../services/supabase'
 
 import { Layout } from '../../components/Layout'
-import { Content } from '../../components/Content'
 
 import {    
   Table,
@@ -15,12 +14,14 @@ import {
   Tbody,
   Tr,
   Th,
-  Td,  
-  Text,
+  Td,    
   Heading,
   Flex,
+  Box,
   Button,
   Icon,
+  Badge,
+  Divider
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
@@ -55,14 +56,22 @@ export default function Products({ user }: UsersProps) {
         <meta name="description" content="Página dos produtos da Marka" />
       </Head>
       <Layout>
-        <Content>
-          <Flex justify="space-between" mb="16">
-            <Heading>Produtos</Heading>
-            <NextLink href="/users/new-user" passHref>
-              <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo cliente</Button>
-            </NextLink>
-          </Flex>  
-          <Table colorScheme="blue" variant="striped">
+        <Flex justify="space-between">
+          <Heading>Produtos</Heading>
+          <NextLink href="/users/new-user" passHref>
+            <Button
+              as="a"
+              colorScheme="blue"
+              lineHeight="base"
+              leftIcon={<Icon as={FiPlus} />}
+            >
+              Cadastrar novo produto
+            </Button>
+          </NextLink>
+        </Flex>  
+        <Divider my="16" borderColor="gray.600"/>
+        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">
+          <Table colorScheme="gray" variant="striped" bgColor="gray.50">
             <Thead>
               <Tr>                  
                 <Th>Produto</Th>
@@ -79,8 +88,8 @@ export default function Products({ user }: UsersProps) {
                         <Td>Etiqueta branca térmica limpa 6x10 rolo 30m</Td>
                         <Td w="36">{
                           index === 2
-                          ? <Text color="gray.500" fontWeight="500">Inativo</Text> 
-                          : <Text color="blue.500" fontWeight="500">Ativo</Text>
+                          ? <Badge variant="subtle" colorScheme="red" py="1" px="4" borderRadius="md">Inativo</Badge> 
+                          : <Badge variant="subtle" colorScheme="blue" py="1" px="4" borderRadius="md">Ativo</Badge>
                           }
                         </Td>   
                         <Td>R$ 30,00</Td>                        
@@ -90,7 +99,8 @@ export default function Products({ user }: UsersProps) {
                 }
               </Tbody>
           </Table>
-        </Content>
+
+        </Box>
       </Layout>
     </>
   )

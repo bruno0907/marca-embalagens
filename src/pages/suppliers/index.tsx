@@ -6,7 +6,6 @@ import NextLink from 'next/link'
 import { supabase } from '../../services/supabase'
 
 import { Layout } from '../../components/Layout'
-import { Loader } from '../../components/Loader'
 
 import { FiPlus } from 'react-icons/fi'
 
@@ -22,9 +21,9 @@ import {
   Button,
   Icon,
   Heading,
-  useToast
+  useToast,
+  Divider
 } from '@chakra-ui/react'
-
 
 interface UsersProps {
   user: UserProps;
@@ -54,15 +53,16 @@ export default function Suppliers({ user }: UsersProps) {
         <title>Marka | Fornecedores</title>
         <meta name="description" content="Página de fornecedores da Marka" />
       </Head>
-      <Layout>
-        <Box bgColor="gray.100" p="8" borderRadius="8">
-          <Flex justify="space-between" mb="16">
-            <Heading>Fornecedores</Heading>
-              <NextLink href="/users/new-supplier" passHref>
-              <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo fornecedor</Button>
-            </NextLink>
-          </Flex>        
-          <Table colorScheme="blue" variant="striped">
+      <Layout>        
+        <Flex justify="space-between">
+          <Heading>Fornecedores</Heading>
+            <NextLink href="/users/new-supplier" passHref>
+            <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo fornecedor</Button>
+          </NextLink>            
+        </Flex> 
+        <Divider my="16" borderColor="gray.600"/>
+        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">
+          <Table colorScheme="gray" variant="striped">
             <Thead>
               <Tr>                  
                 <Th>Nome</Th>
@@ -81,6 +81,7 @@ export default function Suppliers({ user }: UsersProps) {
             </Tbody>
           </Table>
         </Box>
+        
       </Layout>
     </>
   )
@@ -88,7 +89,7 @@ export default function Suppliers({ user }: UsersProps) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user } = await supabase.auth.api.getUserByCookie(req)
-
+  
   if(!user) { 
     return {
       props: {},

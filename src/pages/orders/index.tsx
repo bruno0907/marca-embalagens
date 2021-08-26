@@ -7,7 +7,6 @@ import NextLink from 'next/link'
 import { supabase } from '../../services/supabase'
 
 import { Layout } from '../../components/Layout'
-import { Content } from '../../components/Content'
 
 import {  
   Flex,
@@ -20,11 +19,12 @@ import {
   Button,
   Icon,
   Heading,
-  useToast
+  useToast,
+  Divider,
+  Box
 } from '@chakra-ui/react'
 
 import {FiPlus} from 'react-icons/fi'
-
 
 interface UsersProps {
   user: UserProps;
@@ -56,14 +56,15 @@ export default function Orders({ user }: UsersProps) {
         <meta name="description" content="Página de pedidos da Marka" />
       </Head>
       <Layout>
-        <Content>
-          <Flex justify="space-between" mb="16">
-            <Heading>Pedidos</Heading>
-            <NextLink href="/users/new-order" passHref>
-              <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo pedido</Button>
-            </NextLink>
-          </Flex>
-          <Table colorScheme="blue" variant="striped">
+        <Flex justify="space-between">
+          <Heading>Pedidos</Heading>
+          <NextLink href="/users/new-order" passHref>
+            <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo pedido</Button>
+          </NextLink>
+        </Flex>
+        <Divider my="16" borderColor="gray.600"/>
+        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">
+          <Table colorScheme="gray" variant="striped">
             <Thead>
               <Tr>                  
                 <Th w="32">Pedido</Th>
@@ -81,7 +82,7 @@ export default function Orders({ user }: UsersProps) {
               </Tr>
             </Tbody>
           </Table>
-        </Content>
+        </Box>
       </Layout>
     </>
   )

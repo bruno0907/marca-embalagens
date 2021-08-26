@@ -43,10 +43,7 @@ interface UserProps {
 }
 
 export default function User({ user, addresses }: UserProps) {  
-  const router = useRouter()
-  const { id } = router.query
-
-  console.log(id)
+  const router = useRouter()  
 
   return (
     <>
@@ -64,7 +61,7 @@ export default function User({ user, addresses }: UserProps) {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <UserInfo user={user}/>
+                <UserInfo user={user[0]}/>
               </TabPanel>
               <TabPanel>
                 <UserAddresses addresses={addresses}/>
@@ -81,7 +78,7 @@ export default function User({ user, addresses }: UserProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req, params }) => {
-  const { user: session } = await supabase.auth.api.getUserByCookie(req)  
+  const { user: session } = await supabase.auth.api.getUserByCookie(req)    
 
   if(!session) {
     return {

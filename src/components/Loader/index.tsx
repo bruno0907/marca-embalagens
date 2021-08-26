@@ -1,13 +1,13 @@
-import { Container, Spinner } from '@chakra-ui/react'
+import { Center, Spinner } from '@chakra-ui/react'
 
 const Loader = () => {
   return (
-    <Container minH="100vh" display="flex" alignItems="center" justifyContent="center">
+    <Center w="100%" m="16">
       <Spinner 
-        size="xl"
+        size="md"
         color="blue.500"
       />
-    </Container>
+    </Center>
   )
 }
 

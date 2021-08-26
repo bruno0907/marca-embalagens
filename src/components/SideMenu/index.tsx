@@ -1,54 +1,72 @@
-import Link from "next/link"
-import { useRouter } from "next/router"
+import { Logo } from "../Logo"
+import { ActiveLink } from "./ActiveLink"
+
+import { useAuth } from "../../hooks/useAuth"
 
 import { 
-  Icon, 
-  Link as ChakraLink, 
-  Box,
-  Stack 
+  Flex,
+  Stack,  
+  Button
 } from "@chakra-ui/react"
 
-import { FiEdit, FiUsers, FiPackage, FiPhoneCall, FiHome } from "react-icons/fi"
-
+import { 
+  FiEdit, 
+  FiUsers, 
+  FiPackage, 
+  FiPhoneCall, 
+  FiHome,
+  FiLogOut
+} from "react-icons/fi"
 
 const SideMenu = () => {
-  const { asPath } = useRouter()
+  const { signOut } = useAuth()
 
   return (
-    <Box as="aside" pt="2" mr="16">
-      <Stack as="nav" spacing="4" >
-        <Link href="/dashboard" passHref>
-          <ChakraLink display="flex" alignItems="center" color={asPath.includes('/dashboard') && 'blue.500'} fontWeight="bold" _hover={{ color: "blue.500" }}>
-            <Icon as={FiHome} mr="2"/>
-            Página inicial
-          </ChakraLink>
-        </Link>
-        <Link href="/orders" passHref>
-          <ChakraLink display="flex" alignItems="center" color={asPath.includes('/orders') && 'blue.500'} fontWeight="bold" _hover={{ color: "blue.500" }}>
-            <Icon as={FiEdit} mr="2"/>
-            Pedidos
-          </ChakraLink>
-        </Link>
-        <Link href="/users" passHref>
-          <ChakraLink display="flex" alignItems="center" color={asPath.includes('/users') && 'blue.500'} fontWeight="bold" _hover={{ color: "blue.500" }}>
-            <Icon as={FiUsers} mr="2"/>
-            Clientes
-          </ChakraLink>
-        </Link>
-        <Link href="/products" passHref>
-          <ChakraLink display="flex" alignItems="center" color={asPath.includes('/products') && 'blue.500'} fontWeight="bold" _hover={{ color: "blue.500" }}>
-            <Icon as={FiPackage} mr="2"/>
-            Produtos
-          </ChakraLink>
-        </Link>
-        <Link href="/suppliers" passHref>
-          <ChakraLink display="flex" alignItems="center" color={asPath.includes('/suppliers') && 'blue.500'} fontWeight="bold" _hover={{ color: "blue.500" }}>
-            <Icon as={FiPhoneCall} mr="2"/>
-            Fornecedores
-          </ChakraLink>
-        </Link>
-      </Stack>      
-    </Box>
+    <Flex
+      as="aside"
+      flexDir="column"      
+      align="center"
+      justify="space-between"
+      px="8"
+      py="10"
+      bgColor="gray.50"                  
+    >
+      <Logo />
+      <Stack as="nav" spacing="4" my="4">        
+        <ActiveLink 
+          href="/dashboard"
+          icon={FiHome}
+          label="Página Inicial"
+        />
+        <ActiveLink 
+          href="/orders"
+          icon={FiEdit}
+          label="Pedidos"
+        />
+        <ActiveLink 
+          href="/users"
+          icon={FiUsers}
+          label="Clientes"
+        />
+        <ActiveLink 
+          href="/products"
+          icon={FiPackage}
+          label="Produtos"
+        />
+        <ActiveLink 
+          href="/suppliers"
+          icon={FiPhoneCall}
+          label="Fornecedores"
+        />        
+      </Stack>   
+      <Button
+        rightIcon={<FiLogOut />}        
+        onClick={signOut}
+        colorScheme="blue"
+        flexShrink={0}
+        w="100%"        
+      >Sair</Button>
+    </Flex>
   )
 }
 

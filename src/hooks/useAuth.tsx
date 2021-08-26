@@ -1,19 +1,15 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router'
 
 import { supabase } from "../services/supabase";
 
 import { Session, AuthChangeEvent } from "@supabase/supabase-js";
+
 import axios from "axios";
 
 type AuthContextProps = {
-  signIn: (values: SignInProps) => Promise<{
-    error: Error
-  }>;
-  signUp: (values: SignUpProps) => Promise<{
-    error: Error
-  }>;
+  signIn: (values: AuthProps) => Promise<void>;
+  signUp: (values: AuthProps) => Promise<void>;
   signOut: () => void;
   session: string;
 }
@@ -22,15 +18,9 @@ type AuthProviderProps = {
   children: ReactNode;  
 }
 
-type SignInProps = {
+type AuthProps = {
   email: string;
   password: string;
-}
-
-type SignUpProps = {
-  email: string;
-  password: string;
-  password_verify: string;
 }
 
 const AuthContext = createContext({} as AuthContextProps)
@@ -40,27 +30,39 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const [session, setSession] = useState('not-authenticated')
 
-  const signUp = async(values: SignUpProps) => {
+  const signUp = async (values: AuthProps) => {
     const { email, password } = values
 
-    return await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password
     })
+
+    if(error) {
+      throw new Error('O e-mail informado já está cadastrado')
+    }
+
+    return
   }
   
-  const signIn = async (values: SignInProps) => {   
+  const signIn = async (values: AuthProps) => {   
     const { email, password } = values
 
-    return await supabase.auth.signIn({
+    const { error } = await supabase.auth.signIn({
       email,
       password
     })
+
+    if(error) {
+      throw new Error('E-mail ou senha inválidos')
+    }
+
+    return
   }
 
   const signOut = () => supabase.auth.signOut()
 
-  useEffect(() => {    
+  useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       handleAuthChange(event, session)
 
@@ -77,8 +79,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     checkUser()
 
-    return () => authListener.unsubscribe()
-    
+    return () => authListener.unsubscribe()    
   })
 
   async function handleAuthChange(event: AuthChangeEvent, session: Session) {

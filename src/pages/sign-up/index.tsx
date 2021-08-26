@@ -62,13 +62,13 @@ export default function SignUp () {
       return
     } catch (error) {
       toast({
-        title: 'Um error ocorreu',
-        description: 'Ocorreu um erro ao efetuar seu cadastro.',
+        description: error.message,
         status: 'error',
-        isClosable: true
+        isClosable: true,
+        duration: 5000
       })
-      return
 
+      return
     }
   }
 

@@ -8,9 +8,10 @@ import { Layout } from '../../components/Layout'
 import {   
   Heading, 
   Text,
-  Stack
+  Stack,
+  Divider,
+  Box
 } from '@chakra-ui/react'
-import { Content } from '../../components/Content'
 
 export default function Dashboard () {      
   return (
@@ -20,21 +21,22 @@ export default function Dashboard () {
         <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
       <Layout>
-        <Content>
-          <Heading mb="16">Página Inicial</Heading>
+        <Heading>Página Inicial</Heading>
+        <Divider my="16" borderColor="gray.600"/>
+        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">
           <Stack spacing={3}>
             <Text>Total Pedidos: 0</Text>
             <Text>Total Clientes: 0</Text>
             <Text>Total Produtos: 0</Text>
           </Stack>
-          </Content>
+        </Box>
       </Layout>
     </>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
+  const { user } = await supabase.auth.api.getUserByCookie(req)  
 
   if(!user) { 
     return {
@@ -44,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         permanent: false
       }
     }
-  } 
+  }
   
   return {
     props: { user }

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -11,11 +11,17 @@ import {
   Stack,
   Text,
   Box,
-  HStack
+  HStack,
+  useToast,
+  Spinner,
+  Flex,
 } from "@chakra-ui/react"
 
+import { supabase } from "../../../../services/supabase"
+import { useCallback } from "react"
+
 type UserInfoProps = {
-  user: UserProps[]
+  user: UserProps;
 }
 
 interface UserProps {
@@ -34,20 +40,21 @@ const updateUserFormSchema = yup.object().shape({
 })
 
 const UserInfo = ({ user }: UserInfoProps) => {
-  const [willEdit, setWillEdit] = useState(false)
+  const toast = useToast()
+  const [willEdit, setWillEdit] = useState(false)  
 
   const { 
     handleSubmit,
     formState,
     register,
-    reset
+    reset,
   } = useForm<UserProps>({
     resolver: yupResolver(updateUserFormSchema),
     defaultValues: {
-      name: user[0].name,
-      phone_number: user[0].phone_number,
-      mobile_number: user[0].mobile_number,
-      email: user[0].email
+      name: user.name,
+      email: user.email,
+      phone_number: user.phone_number,
+      mobile_number: user.mobile_number
     }
   })
 
@@ -60,29 +67,64 @@ const UserInfo = ({ user }: UserInfoProps) => {
     setWillEdit(true)
   }
 
-  const handleUpdateUser: SubmitHandler<UserProps> = async values => {
-    console.log(values)
+  const handleUpdateUser: SubmitHandler<UserProps> = useCallback(async values => {    
+    const updatedUser: UserProps = {
+      ...user,
+      name: values.name,
+      email: values.email,
+      phone_number: values.phone_number,
+      mobile_number: values.mobile_number
+    }
+    const { error, data } = await supabase
+      .from('users')
+      .upsert(updatedUser)
+      .eq('id', user.id)      
+
+    if(error){
+      toast({
+        description: 'Não foi possível atualizar os dados do cliente',
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      })
+    }   
+    
+    toast({
+      description: `Os dados do cliente ${data[0].name} foram atualizados`,
+      status: "success",
+      duration: 5000,
+      isClosable: true
+    })
     setWillEdit(false)
-  }
+
+  }, [user, toast])
+    
+  
 
   function handleCancel() {
     reset()
     setWillEdit(false)
-  }
-  
-  function setUserToUpdate() {
-    setWillEdit(false)
+  }  
+
+  if(!user) {
+    return (
+      <Flex>
+        <Spinner size="lg" color="blue.500" />
+      </Flex>
+    )
   }
 
   return !willEdit ? (
-    <Box>
-      <Stack mt="8" mb="12" spacing={3}>
-        <Text><strong>Nome completo: </strong>{user[0].name}</Text>              
-        <Text><strong>Telefone: </strong>{user[0].phone_number}</Text>
-        <Text><strong>Celular: </strong>{user[0].mobile_number}</Text>
-        <Text><strong>E-mail: </strong>{user[0].email}</Text>
-      </Stack>
-      <Button colorScheme="blue" onClick={handleEditUser}>Editar cliente</Button>
+    <Box pt="8">       
+      <>
+        <Stack mb="12" spacing={3}>
+          <Text><strong>Nome completo: </strong>{user.name}</Text>              
+          <Text><strong>Telefone: </strong>{user.phone_number}</Text>
+          <Text><strong>Celular: </strong>{user.mobile_number}</Text>
+          <Text><strong>E-mail: </strong>{user.email}</Text>
+        </Stack>
+        <Button colorScheme="blue" onClick={handleEditUser}>Editar cliente</Button>
+      </>
     </Box>
   ) : (
     <Box as="form" onSubmit={handleSubmit(handleUpdateUser)}>
@@ -92,13 +134,15 @@ const UserInfo = ({ user }: UserInfoProps) => {
           label="Nome"
           bgColor="gray.50"
           error={errors?.name}
-          {...register('name')}
+          isDisabled={isSubmitting}
+          {...register('name')}          
         />
         <Input 
           name="phone_number"
           label="Telefone"
           bgColor="gray.50"
           error={errors?.phone_number}
+          isDisabled={isSubmitting}
           {...register('phone_number')}
         />
         <Input 
@@ -106,6 +150,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
           label="Celular"
           bgColor="gray.50"
           error={errors?.mobile_number}
+          isDisabled={isSubmitting}
           {...register('mobile_number')}
         />
         <Input 
@@ -113,6 +158,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
           label="E-mail"
           bgColor="gray.50"
           error={errors?.email}
+          isDisabled={isSubmitting}
           {...register('email')}
         />
       </Stack>
