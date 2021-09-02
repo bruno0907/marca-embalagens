@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GetServerSideProps } from 'next'
+
 import Head from 'next/head'
 import NextLink from 'next/link'
 
@@ -85,22 +85,4 @@ export default function Suppliers({ user }: UsersProps) {
       </Layout>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-  
-  if(!user) { 
-    return {
-      props: {},
-      redirect: {
-        destination: '/sign-in',
-        permanent: false
-      }
-    }
-  } 
-  
-  return {
-    props: { user }
-  }
 }

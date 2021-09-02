@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 
 import { Content } from "../../components/Content";
@@ -25,7 +24,7 @@ export default function Profile({ user }: ProfileProps) {
         <title>Marca | Perfil</title>
         <meta name="description" content="Página do perfil do usuário" />
       </Head>
-      <Layout withGoBack>
+      <Layout>
         <Content>
           <Heading>Perfil</Heading>
           <Text>{user.id}</Text>
@@ -33,24 +32,4 @@ export default function Profile({ user }: ProfileProps) {
       </Layout>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)  
-
-  if(!user) {
-    return {
-      props: {},
-      redirect: {
-        destination: '/sign-in',
-        permanent: false
-      }
-    }
-  }
-
-  return {
-    props: {
-      user
-    }
-  }
 }

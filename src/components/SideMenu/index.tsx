@@ -6,7 +6,8 @@ import { useAuth } from "../../hooks/useAuth"
 import { 
   Flex,
   Stack,  
-  Button
+  Button,
+  Spacer
 } from "@chakra-ui/react"
 
 import { 
@@ -23,16 +24,19 @@ const SideMenu = () => {
 
   return (
     <Flex
+      h="100vh"
       as="aside"
-      flexDir="column"      
+      flexDir="column"  
+      justify="flex-start"    
       align="center"
-      justify="space-between"
       px="8"
       py="10"
-      bgColor="gray.50"                  
+      bgColor="gray.50"  
+      borderTopRightRadius="3xl"
+      borderBottomRightRadius="3xl"                
     >
-      <Logo />
-      <Stack as="nav" spacing="4" my="4">        
+      <Logo /> 
+      <Stack as="nav" spacing="4" mt="24">        
         <ActiveLink 
           href="/dashboard"
           icon={FiHome}
@@ -58,13 +62,14 @@ const SideMenu = () => {
           icon={FiPhoneCall}
           label="Fornecedores"
         />        
-      </Stack>   
+      </Stack>
+      <Spacer />
       <Button
         rightIcon={<FiLogOut />}        
         onClick={signOut}
         colorScheme="blue"
         flexShrink={0}
-        w="100%"        
+        w="100%"                             
       >Sair</Button>
     </Flex>
   )

@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, useEffect } from "react"
 
 import { SideMenu } from "../SideMenu"
 
@@ -6,11 +6,29 @@ type LayoutProps = {
   children: ReactNode;  
 }
 
-import { Flex } from '@chakra-ui/react'
+import { Center, Flex, Spinner } from '@chakra-ui/react'
+import { supabase } from "../../services/supabase"
+import { useRouter } from "next/dist/client/router"
 
 const Layout = ({ children }: LayoutProps) => {
+  const router = useRouter()
+  const user = supabase.auth.user()
+  
+  useEffect(() => {
+    if(!user) router.push('/sign-in')
+    
+  }, [user, router])
+  
+  if(!user) {
+    return (
+      <Center minW="100%" minH="100vh">
+        <Spinner size="lg" color="blue.500" />
+      </Center>
+    )
+  }
+  
   return (
-    <Flex minH="100vh">
+    <Flex maxW="100vw" maxH="100vh">
       <SideMenu />
       <Flex
         as="main"
@@ -18,10 +36,7 @@ const Layout = ({ children }: LayoutProps) => {
         px="8"
         py="10"        
         flexDir="column"
-        minH="100vh"
-        bgColor="gray.100"
-        borderTopLeftRadius="3xl"
-        borderBottomLeftRadius="3xl"
+        overflowY="auto"
       >
         {children}
       </Flex>

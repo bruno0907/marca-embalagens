@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GetServerSideProps } from 'next'
+
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import NextLink from 'next/link'
@@ -7,6 +7,8 @@ import NextLink from 'next/link'
 import { supabase } from '../../services/supabase'
 
 import { Layout } from '../../components/Layout'
+import { Content } from '../../components/Content'
+import { Divider } from '../../components/Divider'
 
 import {    
   Table,
@@ -20,8 +22,7 @@ import {
   Box,
   Button,
   Icon,
-  Badge,
-  Divider
+  Badge,  
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
@@ -69,8 +70,9 @@ export default function Products({ user }: UsersProps) {
             </Button>
           </NextLink>
         </Flex>  
-        <Divider my="16" borderColor="gray.600"/>
-        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">
+        <Divider />
+        <Content>
+
           <Table colorScheme="gray" variant="striped" bgColor="gray.50">
             <Thead>
               <Tr>                  
@@ -99,27 +101,8 @@ export default function Products({ user }: UsersProps) {
                 }
               </Tbody>
           </Table>
-
-        </Box>
+        </Content>
       </Layout>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-
-  if(!user) { 
-    return {
-      props: {},
-      redirect: {
-        destination: '/sign-in',
-        permanent: false
-      }
-    }
-  } 
-  
-  return {
-    props: { user }
-  }
 }

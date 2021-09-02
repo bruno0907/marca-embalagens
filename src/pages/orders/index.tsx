@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { GetServerSideProps } from 'next'
+
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import NextLink from 'next/link'
@@ -7,6 +7,8 @@ import NextLink from 'next/link'
 import { supabase } from '../../services/supabase'
 
 import { Layout } from '../../components/Layout'
+import { Divider } from '../../components/Divider'
+import { Content } from '../../components/Content'
 
 import {  
   Flex,
@@ -19,8 +21,7 @@ import {
   Button,
   Icon,
   Heading,
-  useToast,
-  Divider,
+  useToast,  
   Box
 } from '@chakra-ui/react'
 
@@ -48,8 +49,8 @@ export default function Orders({ user }: UsersProps) {
 
   }, [])
 
-  // return !orders ? <Loader /> : (
-    return (
+  
+  return (
     <>
       <Head>
         <title>Marca | Pedidos</title>
@@ -62,8 +63,8 @@ export default function Orders({ user }: UsersProps) {
             <Button as="a" colorScheme="blue" lineHeight="base" leftIcon={<Icon as={FiPlus} />}>Cadastrar novo pedido</Button>
           </NextLink>
         </Flex>
-        <Divider my="16" borderColor="gray.600"/>
-        <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md">
+        <Divider />
+        <Content>
           <Table colorScheme="gray" variant="striped">
             <Thead>
               <Tr>                  
@@ -82,26 +83,8 @@ export default function Orders({ user }: UsersProps) {
               </Tr>
             </Tbody>
           </Table>
-        </Box>
+        </Content>
       </Layout>
     </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-
-  if(!user) { 
-    return {
-      props: {},
-      redirect: {
-        destination: '/sign-in',
-        permanent: false
-      }
-    }
-  } 
-  
-  return {
-    props: { user }
-  }
 }
