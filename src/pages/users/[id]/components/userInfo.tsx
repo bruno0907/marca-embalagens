@@ -16,16 +16,10 @@ import {
 
 import { FiEdit, FiMail, FiPhone, FiSmartphone, FiUser } from 'react-icons/fi'
 
+import { UserProps } from '../../../../types'
+
 type UserInfoProps = {
   user: UserProps;
-}
-
-interface UserProps {
-  id: string;
-  name: string;
-  phone_number: string;
-  mobile_number: string;
-  email: string;  
 }
 
 const UserInfo = ({ user }: UserInfoProps) => {
@@ -53,7 +47,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
                 <Icon as={FiUser} fontSize="24" color="gray.500"/>
                 <Box ml="4">
                   <Text fontSize="sm" color="gray.500" fontWeight="medium">Nome</Text>
-                  <Text fontSize="sm" color="gray.700" fontWeight="medium">{user.name}</Text>
+                  <Text fontSize="sm" color="gray.700" fontWeight="medium">{user.nome}</Text>
                 </Box>
               </Flex>
             </Box>
@@ -62,7 +56,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
                 <Icon as={FiPhone} fontSize="24" color="gray.500"/>
                 <Box ml="4">
                   <Text fontSize="sm" color="gray.500" fontWeight="medium">Telefone</Text>
-                  <Text fontSize="sm" color="gray.700" fontWeight="medium">{user.phone_number || 'Não possui'}</Text>                        
+                  <Text fontSize="sm" color="gray.700" fontWeight="medium">{user.telefone || 'Não possui'}</Text>                        
                 </Box>
               </Flex>
             </Box>
@@ -71,7 +65,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
                 <Icon as={FiSmartphone} fontSize="24" color="gray.500"/>
                 <Box ml="4">
                   <Text fontSize="sm" color="gray.500" fontWeight="medium">Celular</Text>
-                  <Text fontSize="sm" color="gray.700" fontWeight="medium">{user.mobile_number || 'Não possui'}</Text>                        
+                  <Text fontSize="sm" color="gray.700" fontWeight="medium">{user.celular || 'Não possui'}</Text>                        
                 </Box>
               </Flex>
             </Box>

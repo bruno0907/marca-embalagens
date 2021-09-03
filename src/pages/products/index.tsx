@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import NextLink from 'next/link'
 
 import { supabase } from '../../services/supabase'
 
 import { Layout } from '../../components/Layout'
 import { Content } from '../../components/Content'
 import { Divider } from '../../components/Divider'
+import { Modal } from '../../components/Modal'
+import { NewProductForm } from '../../components/NewProductForm'
 
 import {    
   Table,
@@ -18,31 +19,28 @@ import {
   Th,
   Td,    
   Heading,
-  Flex,
-  Box,
+  Flex,  
   Button,
   Icon,
-  Badge,  
+  Badge,
+  useDisclosure,    
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
 
-interface UsersProps {
-  user: UserProps;
-}
+import { ProductProps } from '../../types'
 
-type UserProps = {
-  id: string;
-}
-
-interface ProductProps {
-  user_id: string;
-}
-
-export default function Products({ user }: UsersProps) {  
+export default function Products() { 
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const router = useRouter()
 
-  const [products, setProducts] = useState<ProductProps[]>([])  
+  const user = supabase.auth.user() 
+
+  const [products, setProducts] = useState<ProductProps[]>([]) 
+  
+  function handleModalOpen() {
+    onOpen()
+  }
 
   useEffect(() => {
     //TODO: setProducts com a listagem de produtos
@@ -58,17 +56,15 @@ export default function Products({ user }: UsersProps) {
       </Head>
       <Layout>
         <Flex justify="space-between">
-          <Heading>Produtos</Heading>
-          <NextLink href="/users/new-user" passHref>
-            <Button
-              as="a"
+          <Heading>Produtos</Heading>          
+            <Button              
               colorScheme="blue"
               lineHeight="base"
               leftIcon={<Icon as={FiPlus} />}
+              onClick={handleModalOpen}
             >
               Cadastrar novo produto
-            </Button>
-          </NextLink>
+            </Button>          
         </Flex>  
         <Divider />
         <Content>
@@ -103,6 +99,12 @@ export default function Products({ user }: UsersProps) {
           </Table>
         </Content>
       </Layout>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <NewProductForm onClose={onClose}/>
+      </Modal>
     </>
   )
 }

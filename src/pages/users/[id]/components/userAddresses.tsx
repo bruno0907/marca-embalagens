@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react'
-
 import { Content } from '../../../../components/Content'
 
 import { 
@@ -16,15 +14,7 @@ import {
 
 import { FiEdit, FiHome } from 'react-icons/fi'
 
-type AddressProps = {
-  id: string;
-  address: string;
-  district: string;
-  city: string;
-  state: string;
-  zip_code: string;
-  complement: string;
-}
+import { AddressProps } from '../../../../types'
 
 type UserAddressesProps = {
   addresses: AddressProps[];
@@ -51,9 +41,9 @@ const UserAddresses = ({ addresses }: UserAddressesProps) => {
                   <Flex align="center">
                     <Icon as={FiHome} fontSize="24" color="gray.500"/>
                     <Box ml="4">
-                      <Text fontSize="sm" color="gray.700" fontWeight="medium">{address.address} - {address.district}</Text>
-                      <Text fontSize="sm" color="gray.700" fontWeight="medium">{address.city}/{address.state} - {address.zip_code}</Text>                      
-                      <Text fontSize="sm" color="gray.700" fontWeight="medium">{address.complement}</Text>
+                      <Text fontSize="sm" color="gray.700" fontWeight="medium">{address.endereco} - {address.bairro}</Text>
+                      <Text fontSize="sm" color="gray.700" fontWeight="medium">{address.cidade}/{address.estado} - {address.cep}</Text>                      
+                      <Text fontSize="sm" color="gray.700" fontWeight="medium">{address.complemento}</Text>
                     </Box>
                     <Button ml="auto" mb="auto" variant="link" _hover={{ svg: { color: "blue.600" } }}>
                       <Icon as={FiEdit} fontSize="24" color="blue.500"/>

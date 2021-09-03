@@ -26,29 +26,20 @@ import {
 } from '@chakra-ui/react'
 
 import {FiPlus} from 'react-icons/fi'
+import { OrderProps } from '../../types'
 
-interface UsersProps {
-  user: UserProps;
-}
+export default function Orders() {
+  const user = supabase.auth.user()
 
-type UserProps = {
-  id: string;
-}
-
-interface OrdersProps {
-  user_id: string;
-}
-
-export default function Orders({ user }: UsersProps) {
   const toast = useToast()
   const router = useRouter()
-  const [orders, setOrders] = useState<OrdersProps[]>([])  
+
+  const [orders, setOrders] = useState<OrderProps[]>([])  
 
   useEffect(() => {
     //TODO: setOrders com a listagem dos pedidos
 
   }, [])
-
   
   return (
     <>

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { supabase } from "../services/supabase";
 
-import { Session, AuthChangeEvent } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 
 import axios from "axios";
 
@@ -11,7 +11,7 @@ type AuthContextProps = {
   signIn: (values: AuthProps) => Promise<void>;
   signUp: (values: AuthProps) => Promise<void>;
   signOut: () => void;
-  session: string;
+  session: Session;
 }
 
 type AuthProviderProps = {
@@ -27,8 +27,39 @@ const AuthContext = createContext({} as AuthContextProps)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter()
+  const [session, setSession] = useState<Session>(() => {
+    const data = supabase.auth.session()
 
-  const [session, setSession] = useState('not-authenticated')
+    if(!data) {
+      return null
+    }
+
+    return data
+  })
+
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      async function handleAuthChange() {
+        await axios.post('/api/auth', {
+          event,
+          session
+        })
+      }
+      handleAuthChange()
+      
+      if (event === 'SIGNED_IN') {
+        setSession(session)
+        router.push('/dashboard')
+      }
+      
+      if (event === 'SIGNED_OUT') {
+        setSession(null)
+        router.push('/')
+      }      
+    })
+
+    return () => authListener.unsubscribe()
+  }, [router])
 
   const signUp = async (values: AuthProps) => {
     const { email, password } = values
@@ -61,41 +92,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   const signOut = () => supabase.auth.signOut()
-
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      handleAuthChange(event, session)
-
-      if (event === 'SIGNED_IN') {
-        setSession('authenticated')
-        router.push('/dashboard')
-      }
-
-      if (event === 'SIGNED_OUT') {
-        setSession('not-authenticated')
-        router.push('/')
-      }
-    })
-
-    checkUser()
-
-    return () => authListener.unsubscribe()    
-  })
-
-  async function handleAuthChange(event: AuthChangeEvent, session: Session) {
-    await axios.post('/api/auth', {
-      event,
-      session
-    })
-  }
-
-  function checkUser() {
-    const user = supabase.auth.user()
-
-    if (user) {
-      setSession('authenticated')
-    }
-  }
 
   return (
     <AuthContext.Provider value={{

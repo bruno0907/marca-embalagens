@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import { supabase } from '../../../services/supabase'
 
 import { Layout } from '../../../components/Layout'
+import { Divider } from '../../../components/Divider'
+import { GoBack } from '../../../components/GoBack'
 
 import { UserInfo } from './components/userInfo'
 import { UserAddresses } from './components/userAddresses'
@@ -18,41 +20,17 @@ import {
   Box,
   SimpleGrid,  
   GridItem,
-  Flex,
-  Icon
+  Flex,  
 } from '@chakra-ui/react'
 
-import { Divider } from '../../../components/Divider'
-import { FiArrowLeft } from 'react-icons/fi'
-import { GoBack } from '../../../components/GoBack'
-interface UserInfoProps {
-  id: string;
-  name: string;
-  phone_number: string;
-  mobile_number: string;
-  email: string;  
-}
-
-interface UserAddressesProps {
-  id: string;
-  address: string;
-  district: string;
-  city: string;
-  state: string;
-  zip_code: string;
-  complement: string;  
-}
+import { AddressProps, UserProps } from '../../../types'
 
 export default function User() {  
   const router = useRouter()
   const { id } = router.query
 
-  const [user, setUser] = useState<UserInfoProps>(null)
-  const [addresses, setAddresses] = useState<UserAddressesProps[]>([])
-
-  function handleGoBack() {
-    router.back()
-  }
+  const [user, setUser] = useState<UserProps>(null)
+  const [addresses, setAddresses] = useState<AddressProps[]>([])
 
   useEffect(() => {
     async function fetchUser() {
@@ -80,7 +58,7 @@ export default function User() {
   return (
     <>
       <Head>
-        <title>MARCA | {user?.name}</title>
+        <title>MARCA | {user?.nome}</title>
         <meta name="description" content="Página de cadastro de novo cliente" />
       </Head>
       <Layout>

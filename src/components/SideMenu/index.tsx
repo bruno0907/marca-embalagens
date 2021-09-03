@@ -25,7 +25,6 @@ const SideMenu = () => {
   return (
     <Flex
       h="100vh"
-      as="aside"
       flexDir="column"  
       justify="flex-start"    
       align="center"
