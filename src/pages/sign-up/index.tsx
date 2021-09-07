@@ -56,8 +56,15 @@ export default function SignUp () {
 
   const handleSignUp: SubmitHandler<SignInProps> = async (values) => {
     try {
-      await signUp(values)
-      router.push('/profile')
+      await signUp(values)      
+
+      toast({
+        title: 'Cadastro efetuado com sucesso',
+        description: 'Redirecionando...',
+        duration: 3000,
+        isClosable: true,
+        onCloseComplete: () => router.push('/profile')
+      })
 
       return
     } catch (error) {
@@ -84,18 +91,21 @@ export default function SignUp () {
           <Input 
             type="email"
             label="E-mail"
+            isDisabled={isSubmitting}
             error={errors?.email}
             {...register('email')}
           />
           <Input 
             type="password"
             label="Senha"
+            isDisabled={isSubmitting}
             error={errors?.password}
             {...register('password')}
           />
           <Input 
             type="password"
             label="Cofirme sua Senha"
+            isDisabled={isSubmitting}
             error={errors?.password_verify}
             {...register('password_verify')}
           />

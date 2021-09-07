@@ -1,3 +1,5 @@
+import { Content } from "../Content"
+
 import { 
   Button, 
   Flex, 
@@ -10,19 +12,10 @@ import {
   Tr,
   Badge 
 } from "@chakra-ui/react"
-import { Content } from "../../../../components/Content"
 
-type OrdersProps = {}
-
-type UserOrdersProps = {
-  orders?: OrdersProps[];
-}
-
-const UserOrders = ({ orders }: UserOrdersProps) => {
-  console.log(orders)
-
+const UserOrders = () => {
   return (
-    <Content>
+    <Content w="100%">
       <Flex align="center" justify="space-between">
         <Heading fontSize="2xl">Ultimos pedidos</Heading>
         <Button variant="link" colorScheme="blue">Ver todos os pedidos do cliente</Button>

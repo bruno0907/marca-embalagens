@@ -24,6 +24,7 @@ const ActiveLink = ({ icon, label, href, ...rest }: ActiveLinkProps) => {
         display="flex"
         alignItems="center"
         fontWeight="bold"
+        p="2"
         _hover={{ color: "blue.500" }}
         {...rest}
       >

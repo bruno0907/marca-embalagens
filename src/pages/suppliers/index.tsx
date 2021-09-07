@@ -43,16 +43,19 @@ export default function Suppliers() {
     onOpen()
   }
 
-  useEffect(() => {
-    const user = supabase.auth.user()
+  useEffect(() => {    
+    async function fetchUsers() {      
+      const user = supabase.auth.user()
 
-    async function fetchUsers() {
-      const { data } = await supabase
-        .from('users')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('tipo_cliente', 'Fornecedor')
-        setSuppliers(data)
+      if(user) {
+        const { data } = await supabase
+          .from('users')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('tipo_cliente', 'Fornecedor')
+          setSuppliers(data)
+      }
+      return
     }
     fetchUsers()
 

@@ -1,4 +1,4 @@
-import { Content } from '../../../../components/Content'
+import { Content } from '../Content'
 
 import { 
   Stack,
@@ -14,7 +14,7 @@ import {
 
 import { FiEdit, FiHome } from 'react-icons/fi'
 
-import { AddressProps } from '../../../../types'
+import { AddressProps } from '../../types'
 
 type UserAddressesProps = {
   addresses: AddressProps[];
@@ -23,7 +23,7 @@ type UserAddressesProps = {
 const UserAddresses = ({ addresses }: UserAddressesProps) => {
   
   return (
-    <Content>
+    <Content w="100%">
       <Flex align='center' justify="space-between">
         <Heading fontSize="2xl">Endereços</Heading>
         <Button colorScheme="blue" leftIcon={<FiEdit />}>Novo endereço</Button>
@@ -37,7 +37,7 @@ const UserAddresses = ({ addresses }: UserAddressesProps) => {
             return (              
               <Box key={address.id} my="8">
                 <Stack mb="8">
-                  <Box p="4" bgColor="gray.100" borderRadius="16" border="1" borderColor="gray.600">
+                <Box py="2" px="4" bgColor="gray.100" borderRadius="8" border="1" borderColor="gray.600">
                   <Flex align="center">
                     <Icon as={FiHome} fontSize="24" color="gray.500"/>
                     <Box ml="4">
@@ -59,6 +59,5 @@ const UserAddresses = ({ addresses }: UserAddressesProps) => {
     </Content>
   )
 }
-
 
 export { UserAddresses }

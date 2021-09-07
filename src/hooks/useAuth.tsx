@@ -3,14 +3,14 @@ import { useRouter } from 'next/router'
 
 import { supabase } from "../services/supabase";
 
-import { Session } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 
 import axios from "axios";
 
 type AuthContextProps = {
-  signIn: (values: AuthProps) => Promise<void>;
-  signUp: (values: AuthProps) => Promise<void>;
-  signOut: () => void;
+  signIn: (values: AuthProps) => Promise<Session | Error>;
+  signUp: (values: AuthProps) => Promise<Session | User | Error>;
+  signOut: () => Promise<unknown>;
   session: Session;
 }
 
@@ -35,7 +35,39 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
 
     return data
-  })
+  })  
+
+  const signUp = async (values: AuthProps) => {
+    const { email, password } = values
+
+    const { error, data } = await supabase.auth.signUp({
+      email,
+      password
+    })
+
+    if(error) {
+      throw new Error('O e-mail informado já está cadastrado')
+    }
+
+    return data
+  }
+  
+  const signIn = async (values: AuthProps) => {   
+    const { email, password } = values
+
+    const { error, data } = await supabase.auth.signIn({
+      email,
+      password
+    })
+
+    if(error) {
+      throw new Error('E-mail ou senha inválidos')
+    }
+
+    return data
+  }
+
+  const signOut = async () => await supabase.auth.signOut()
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -49,7 +81,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (event === 'SIGNED_IN') {
         setSession(session)
-        router.push('/dashboard')
       }
       
       if (event === 'SIGNED_OUT') {
@@ -61,44 +92,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     return () => authListener.unsubscribe()
   }, [router])
 
-  const signUp = async (values: AuthProps) => {
-    const { email, password } = values
-
-    const { error } = await supabase.auth.signUp({
-      email,
-      password
-    })
-
-    if(error) {
-      throw new Error('O e-mail informado já está cadastrado')
-    }
-
-    return
-  }
-  
-  const signIn = async (values: AuthProps) => {   
-    const { email, password } = values
-
-    const { error } = await supabase.auth.signIn({
-      email,
-      password
-    })
-
-    if(error) {
-      throw new Error('E-mail ou senha inválidos')
-    }
-
-    return
-  }
-
-  const signOut = () => supabase.auth.signOut()
-
   return (
     <AuthContext.Provider value={{
       signIn,
       signUp,
       signOut,
-      session
+      session,      
     }}>
       {children}
     </AuthContext.Provider>

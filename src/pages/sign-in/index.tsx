@@ -31,16 +31,18 @@ const signInFormSchema = yup.object().shape({
 })
 
 export default function SignIn () {  
-  const { signIn, session } = useAuth()
+  const { signIn } = useAuth()
   const router = useRouter()
-
   const toast = useToast()
 
   const { 
     register, 
     handleSubmit, 
     formState,
-    reset
+    reset,
+    setError,
+    setFocus,
+    clearErrors
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })  
@@ -49,7 +51,7 @@ export default function SignIn () {
     errors,
     isSubmitting,
     isDirty,
-  } = formState
+  } = formState  
 
   const handleSignIn: SubmitHandler<SignInProps> = async (values) => {
     try {
@@ -57,16 +59,19 @@ export default function SignIn () {
 
       toast({
         title: 'Login efetuado com sucesso',
-        description: 'Seu login foi feito com sucesso, redirecionando...',
+        description: 'Redirecionando...',
         duration: 3000,
-        status: 'success'
+        status: 'success',
+        onCloseComplete: () => router.push('/dashboard')
       })
+
+      return
       
     } catch (error) {
       toast({
         title: 'Erro ao fazer o login',
         description: error.message,
-        duration: 3000,
+        duration: 5000,
         status: 'error',
         isClosable: true
       })
@@ -75,16 +80,17 @@ export default function SignIn () {
         ...values,
         password: ''
       })
-  
-      return
       
-    }    
+      setError('email', {
+        message: 'Usuário ou senha inválidos',        
+      })
+
+      setFocus('password')
+
+      return
+    }
+    
   }
-
-  useEffect(() => {
-    session === 'authenticated' && router.push('/dashboard')
-
-  }, [router, session])
 
   return (
     <>
@@ -98,14 +104,17 @@ export default function SignIn () {
           <Input 
             type="email"
             label="E-mail"
+            isDisabled={isSubmitting}
             error={errors?.email}
             {...register('email')}
           />
           <Input 
             type="password"
             label="Senha"
+            isDisabled={isSubmitting}
             error={errors?.password}
             {...register('password')}
+            onChange={() => clearErrors('email')}
           />
 
           <Button

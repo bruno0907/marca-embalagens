@@ -35,7 +35,7 @@ const SideMenu = () => {
       borderBottomRightRadius="3xl"                
     >
       <Logo /> 
-      <Stack as="nav" spacing="4" mt="24">        
+      <Stack as="nav" spacing={3} mt="24">        
         <ActiveLink 
           href="/dashboard"
           icon={FiHome}

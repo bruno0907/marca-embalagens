@@ -1,33 +1,35 @@
 import { ReactNode, useEffect, useState } from "react"
+import { useRouter } from "next/router"
+import { useAuth } from "../../hooks/useAuth"
+
+import { Session } from "@supabase/supabase-js"
 
 import { SideMenu } from "../SideMenu"
+
+import { Center, Flex, Spinner } from '@chakra-ui/react'
 
 type LayoutProps = {
   children: ReactNode;   
 }
 
-import { Center, Flex, Spinner } from '@chakra-ui/react'
-import { useRouter } from "next/dist/client/router"
-import { useAuth } from "../../hooks/useAuth"
-
 const Layout = ({ children }: LayoutProps) => {
   const router = useRouter() 
   const { session } = useAuth()
 
-  const [isAuthenticated, setIsAuthenticated] = useState(null)
+  const [hasSession, setHasSession] = useState<Session>(null)
   
   useEffect(() => {
     if(!session) router.push('/sign-in')
 
-    setIsAuthenticated(session)
+    setHasSession(session)
     
   }, [session, router])
 
-  if(!isAuthenticated) {
+  if(!hasSession) {
     return (
-    <Center minW="100%" minH="100vh">
-      <Spinner size="lg" color="blue.500" />
-    </Center>
+      <Center minW="100%" minH="100vh">
+        <Spinner size="lg" color="blue.500" />
+      </Center>
     )
   }
   

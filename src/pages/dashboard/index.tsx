@@ -7,11 +7,10 @@ import { Content } from '../../components/Content'
 import {   
   Heading, 
   Text,
-  Stack,  
-  Box
+  Stack,
 } from '@chakra-ui/react'
 
-export default function Dashboard () {      
+export default function Dashboard() {      
   return (
     <> 
       <Head>

@@ -2,22 +2,16 @@ import Head from "next/head";
 
 import { Content } from "../../components/Content";
 import { Layout } from "../../components/Layout";
-import { supabase } from "../../services/supabase";
+import { GoBack } from "../../components/GoBack";
+import { Divider } from "../../components/Divider";
 
 import { 
   Text,
-  Heading
+  Heading,
+  Flex
 } from "@chakra-ui/react";
 
-type ProfileProps = {
-  user: UserProps;
-}
-
-type UserProps = {
-  id: string;
-}
-
-export default function Profile({ user }: ProfileProps) {
+export default function Profile() {
   return (
     <>
       <Head>
@@ -25,9 +19,13 @@ export default function Profile({ user }: ProfileProps) {
         <meta name="description" content="Página do perfil do usuário" />
       </Head>
       <Layout>
-        <Content>
+        <Flex>
+          <GoBack />
           <Heading>Perfil</Heading>
-          <Text>{user.id}</Text>
+        </Flex>
+        <Divider />
+        <Content>
+          <Text>Informações da Empresa</Text>
         </Content>
       </Layout>
     </>

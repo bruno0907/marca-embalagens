@@ -45,17 +45,23 @@ export default function Users() {
   }
 
   useEffect(() => {
-    const user = supabase.auth.user()
-
     async function fetchUsers() {
-      const { data } = await supabase
-        .from('users')
-        .select('*')
-        .eq('user_id', user.id)
-        .eq('tipo_cliente', 'Cliente')
-      setUsers(data)
+      const user = supabase.auth.user()
+
+      if(user) {
+        const { data } = await supabase
+          .from('users')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('tipo_cliente', 'Cliente')
+        setUsers(data)
+      }
+
+      return
     }
     fetchUsers()
+
+    return () => setUsers(null)
 
   }, [])  
 
