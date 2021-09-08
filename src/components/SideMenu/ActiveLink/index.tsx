@@ -18,18 +18,22 @@ interface ActiveLinkProps extends LinkProps {
 const ActiveLink = ({ icon, label, href, ...rest }: ActiveLinkProps) => {
   const { asPath } = useRouter()
 
+  const itMatchesHref = (href: string) => {
+    return asPath.startsWith(href)
+  }
+
   return (
     <Link href={href} passHref>
       <ChakraLink
         display="flex"
-        alignItems="center"
+        // alignItems="flex-end"
         fontWeight="bold"
         p="2"
         _hover={{ color: "blue.500" }}
         {...rest}
       >
-        <Icon as={icon} fontSize="16" mr="4"/>        
-        <Text color={asPath.startsWith(href) && "blue.500"}>
+        <Icon as={icon} fontSize="xl" mr="4" color={itMatchesHref(href) && "blue.500"}/>        
+        <Text color={itMatchesHref(href) && "blue.500"}>
           {label}
         </Text>
       </ChakraLink>

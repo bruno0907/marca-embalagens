@@ -24,17 +24,17 @@ const SideMenu = () => {
 
   return (
     <Flex
+      as="aside"
       h="100vh"
-      flexDir="column"  
-      justify="flex-start"    
+      flexDir="column"
+      justify="flex-start"
       align="center"
       px="8"
       py="10"
-      bgColor="gray.50"  
-      borderTopRightRadius="3xl"
-      borderBottomRightRadius="3xl"                
+      bgColor="gray.50"
+      boxShadow="sm"
     >
-      <Logo /> 
+      <Logo />
       <Stack as="nav" spacing={3} mt="24">        
         <ActiveLink 
           href="/dashboard"

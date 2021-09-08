@@ -10,7 +10,7 @@ import { Divider } from '../../../components/Divider'
 import { GoBack } from '../../../components/GoBack'
 
 import { UserInformation } from '../../../components/UserInformation'
-// import { UserAddresses } from '../../../components/UserInformation'
+import { UserAddresses } from '../../../components/UserAddresses'
 import { UserOrders } from '../../../components/UserOrders'
 
 import {     
@@ -79,7 +79,7 @@ export default function User() {
         <meta name="description" content="Página de cadastro de novo cliente" />
       </Head>
       <Layout>
-        <Flex align="center">
+        <Flex align="center" flex="1">
           <GoBack fontSize="32" mr="4"/>
           <Heading>Dados do Cliente</Heading>
           <Spacer />
@@ -89,16 +89,14 @@ export default function User() {
             onClick={handlePrintUser}
           >Imprimir</Button>
         </Flex>
-          <Divider />
 
+        <Divider />
           
-            <VStack spacing={3} align="flex-start">
-              <HStack spacing={3}>
-                <UserInformation user={user} />
-                {/* <UserAddresses addresses={addresses}/> */}
-              </HStack>
-              <UserOrders />
-            </VStack>
+        <VStack spacing={3} align="flex-start" >
+          <UserInformation user={user} />
+          <UserAddresses addresses={addresses}/>
+          <UserOrders />
+        </VStack>
           
       </Layout>
     </>

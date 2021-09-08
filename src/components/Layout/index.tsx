@@ -6,7 +6,7 @@ import { Session } from "@supabase/supabase-js"
 
 import { SideMenu } from "../SideMenu"
 
-import { Center, Flex, Spinner } from '@chakra-ui/react'
+import { Center, Flex, Spinner, Box } from '@chakra-ui/react'
 
 type LayoutProps = {
   children: ReactNode;   
@@ -27,27 +27,26 @@ const Layout = ({ children }: LayoutProps) => {
 
   if(!hasSession) {
     return (
-      <Center minW="100%" minH="100vh">
+      <Center minW="100vw" minH="100vh">
         <Spinner size="lg" color="blue.500" />
       </Center>
     )
   }
   
   return (
-    <Flex align="flex-start" justify="flex-start">
+    <Flex maxW="100vw" maxH="100vh">
       <SideMenu />
-      <Flex
-        as="main"
-        flex="1"
+      <Box
+        as="main"        
         px="8"
-        py="10"    
-        maxW="100vw" 
-        maxH="100vh"    
+        py="10"
+        w="100vw"
+        h="100vh"    
         flexDir="column"
         overflowY="auto"
       >
         {children}
-      </Flex>
+      </Box>
     </Flex>
   )  
 }

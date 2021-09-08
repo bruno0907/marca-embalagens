@@ -7,7 +7,7 @@ interface ContentProps extends BoxProps {
 
 const Content = ({ children, ...rest }: ContentProps) => {
   return (
-    <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="md" {...rest}>
+    <Box p="8" bgColor="gray.50" borderRadius="8" boxShadow="sm" {...rest}>
       {children}
     </Box>
   )
