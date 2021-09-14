@@ -1,7 +1,13 @@
 import { ReactNode } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,      
+    }
+  }
+})
 
 type QueryProviderProps = {
   children: ReactNode;
@@ -15,4 +21,4 @@ const QueryProvider = ({ children }: QueryProviderProps) => {
   )
 }
 
-export { QueryProvider }
+export { QueryProvider, queryClient }

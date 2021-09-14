@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 
-import { useRouter } from "next/router";
+import axios from "axios";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { supabase } from "../../services/supabase";
-
-import axios from "axios";
+import { queryClient } from "../../services/queryClient";
+import { newUser } from "../../controllers/newUser";
+import { newAddress } from "../../controllers/newAddress";
+import { removeUser } from "../../controllers/removeUser";
 
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -26,36 +28,7 @@ import {
   RadioGroup,  
 } from "@chakra-ui/react"
 
-type NewUserDataProps = {
-  nome: string;
-  razao_social: string;
-  telefone: string;
-  celular: string;
-  email: string;
-  cpf_cnpj: string;
-  rg_ie: string;
-  contato: string;
-  endereco: string;
-  bairro: string;
-  estado: string;
-  cidade: string;
-  cep: string;
-  complemento: string;
-  outras_informacoes: string;
-};
-
-type StateProps = {
-  id: number;
-  sigla: string;
-  nome: string;
-};
-
-type CityProps = {
-  id: number;
-  nome: string;
-};
-
-const newUserFormSchema = yup.object().shape({
+const newUserSchema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório").trim(),
   razao_social: yup.string().trim(),
   telefone: yup.string().trim(),
@@ -84,17 +57,40 @@ const newUserFormSchema = yup.object().shape({
     })
     .trim(),
   cep: yup.string().trim(),
-  complemento: yup.string().trim(),
+  complemento: yup.string().trim(),  
 });
+
+import {   
+  NewUserProps,    
+  NewAddressProps,  
+} from "../../types";
+
+type StateProps = {
+  id: number;
+  sigla: string;
+  nome: string;
+};
+
+type CityProps = {
+  id: number;
+  nome: string;
+};
 
 type NewUserFormProps = {
   userType: 'Cliente' | 'Fornecedor';
-  onClose: ()   => void;
+  onClose: () => void;
+}
+
+type HandleNewUserProps = NewUserProps & NewAddressProps
+
+type NewUserMutationProps = {
+  userData: NewUserProps;
+  addressData: Omit<NewAddressProps, 'user_id'>;
 }
 
 const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
-  const user = supabase.auth.user()
-  const toast = useToast();
+  const user = supabase.auth.user()  
+  const toast = useToast()
 
   const [states, setStates] = useState<StateProps[]>([]);
   const [cities, setCities] = useState<CityProps[]>([]);
@@ -102,95 +98,107 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
   const [isCNPJ, setIsCNPJ] = useState('Jurídica');
 
   const { handleSubmit, formState, register, reset, clearErrors, setError } =
-    useForm<NewUserDataProps>({
-      resolver: yupResolver(newUserFormSchema),
+    useForm<HandleNewUserProps>({
+      resolver: yupResolver(newUserSchema),
     });
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const handleNewUser: SubmitHandler<NewUserDataProps> = async (values) => {
-    try {
-      const user_id = user.id  
+  const newUserMutation = useMutation( async({ userData, addressData }: NewUserMutationProps) => {
+    const { data: newUserData, error: newUserError } = await newUser(userData)
 
-      const {
-        nome,
-        razao_social,
-        telefone,
-        celular,
-        email,
-        cpf_cnpj,
-        rg_ie,
-        contato,
-        endereco,
-        bairro,
-        estado,
-        cidade,
-        cep,
-        complemento,
-        outras_informacoes,
-      } = values;
+    if(newUserError) throw Error('Não foi possível criar novo cadastro. Tente novamente.')
 
-      const newUserData = {
-        user_id,
-        tipo_cliente: userType,
-        natureza_cliente: isCNPJ,
-        nome,
-        razao_social,
-        telefone,
-        celular,
-        email,
-        cpf_cnpj,
-        rg_ie,
-        contato,
-        outras_informacoes,
-      };
+    const userAddress = {
+      user_id: newUserData[0].id,
+      ...addressData
+    }
 
-      const { error: newUserError, data: newUser } = await supabase
-        .from("users")
-        .insert(newUserData);
+    const { data: newUserAddress, error: newUserAddressError} = await newAddress(userAddress)
 
-      if(newUserError) {
-        throw new Error("Houve um erro ao cadastrar o cliente.");
-      }
+    if(newUserAddressError) {
+      await removeUser(newUserData[0].id)
 
-      const newAddressData = {
-        user_id: newUser[0].id,
-        endereco,
-        bairro,
-        estado,
-        cidade,
-        cep,
-        complemento,
-      };
+      throw Error('Erro ao cadastrar o endereço. Revertendo alterações.')
+    }
 
-      const { error: newAddressError } = await supabase
-        .from("addresses")
-        .insert(newAddressData);
+    return {
+      ...newUserData[0],
+      ...newUserAddress[0]
+    }
+  }, {
+    onSuccess: async () => {
+      await queryClient.invalidateQueries()
 
-      if(newAddressError) {
-        await supabase.from("users")
-          .delete()
-          .eq("id", newUser[0].id);
+    },
+  })
 
-        throw new Error("Houve um erro ao cadastrar o endereço do cliente.");
-      }
+  const handleNewUser: SubmitHandler<HandleNewUserProps> = async values => {
+    const user_id = user.id
 
+    const {
+      nome,
+      razao_social,
+      telefone,
+      celular,
+      email,
+      cpf_cnpj,
+      rg_ie,
+      contato,
+      endereco,
+      bairro,
+      cidade,
+      estado,
+      cep,
+      complemento,
+      outras_informacoes,
+    } = values;
+
+    const userData: NewUserProps = {
+      user_id,
+      tipo_cliente: userType,
+      natureza_cliente: isCNPJ,
+      nome,
+      razao_social,
+      telefone,
+      celular,
+      email,
+      cpf_cnpj,
+      rg_ie,
+      contato,
+      outras_informacoes,
+    };
+
+    const addressData: Omit<NewAddressProps, 'user_id'> = {
+      endereco,
+      bairro,
+      cidade,
+      estado,
+      cep,
+      complemento,      
+    }
+
+    
+    try {      
+      await newUserMutation.mutateAsync({ userData, addressData })
       toast({
-        title: "Usuário cadastrado com sucesso",
-        description: "Aguarde, redirecionando...",
-        status: "success",
+        title: 'Sucesso...',
+        description: 'Cliente cadastrado com sucesso',
+        status: 'success',
         duration: 3000,
-      });
-      
+        isClosable: true,        
+      })
       onClose()
 
     } catch (error) {
       toast({
-        title: "Ocorreu um erro",
+        title: 'Ocorreu um erro...',
         description: error.message,
-        status: "error",
+        status: 'error',
         duration: 5000,
-      });
+        isClosable: true,
+      })
+      onClose()       
     }
   };
 
@@ -198,7 +206,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
     onClose()
     reset();    
   };
-
+  
   useEffect(() => {
     async function fetchStates() {
       const { data } = await axios.get(
@@ -294,16 +302,14 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
             bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
-          />
-          { isCNPJ === 'Jurídica' &&
-            <Input
-              name="contato"
-              label="Contato"
-              bgColor="gray.50"
-              error={errors?.contato}
-              {...register("contato")}
-            />
-          }
+          />          
+          <Input
+            name="contato"
+            label="Contato"
+            bgColor="gray.50"
+            error={errors?.contato}
+            {...register("contato")}
+          />          
         </HStack>
         <HStack
           spacing={3}

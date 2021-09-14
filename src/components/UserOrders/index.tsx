@@ -16,11 +16,11 @@ import {
 const UserOrders = () => {
   return (
     <Content w="100%">
-      <Flex align="center" justify="space-between">
+      <Flex align="center" justify="space-between" mb="8">
         <Heading fontSize="2xl">Ultimos pedidos</Heading>
-        <Button variant="link" colorScheme="blue">Ver todos os pedidos do cliente</Button>
+        <Button variant="link" colorScheme="blue" p="2">Ver todos os pedidos do cliente</Button>
       </Flex>
-      <Table variant="striped" colorScheme="gray" my="8">
+      <Table variant="striped" colorScheme="gray">
         <Thead>
           <Tr>
             <Th>Data</Th>

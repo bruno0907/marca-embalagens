@@ -32,12 +32,12 @@ import {
   Input
 } from '@chakra-ui/react'
 
-import { SupplierProps } from '../../types'
+import { UserProps } from '../../types'
 
 export default function Suppliers() {
   const router = useRouter()
   const { onOpen, isOpen, onClose } = useDisclosure()  
-  const [suppliers, setSuppliers] = useState<SupplierProps[]>([])  
+  const [suppliers, setSuppliers] = useState<UserProps[]>([])  
 
   function handleModalOpen() {
     onOpen()
@@ -127,6 +127,7 @@ export default function Suppliers() {
         </Content>       
       </Layout>
       <Modal
+        title="Novo fornecedor"
         isOpen={isOpen}
         onClose={onClose}        
       >

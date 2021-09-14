@@ -27,12 +27,22 @@ import {
 
 import {FiPlus} from 'react-icons/fi'
 import { OrderProps } from '../../types'
+import { queryClient } from '../../services/queryClient'
+import { useUsers } from '../../hooks/useUsers'
 
 export default function Orders() {
   const user = supabase.auth.user()
 
   const toast = useToast()
   const router = useRouter()
+
+  const users = useUsers('Cliente')
+
+  const a = queryClient.getQueryData('users', {
+    active: false
+  })
+
+  console.log(a)
 
   const [orders, setOrders] = useState<OrderProps[]>([])  
 
