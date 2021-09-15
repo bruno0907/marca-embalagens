@@ -1,6 +1,4 @@
-import { supabase } from '../../services/supabase'
-
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -80,7 +78,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
 
     return data
   }, {
-    onSuccess: () => queryClient.invalidateQueries('user')
+    onSuccess: () => queryClient.invalidateQueries(['user', user.id])
   })
 
   const handleUpdateUser: SubmitHandler<UserProps> = async values => {
@@ -92,36 +90,35 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     try {
       await updateUserMutation.mutateAsync(updatedUser)
       
-      toast({
-        title: 'Sucesso...',
-        description: 'Cadastro atualizado com sucesso',
+      toast({        
+        title: 'Cadastro atualizado com sucesso',
         status: 'success',
         duration: 3000,
-        isClosable: true
+        isClosable: true,
+        position: 'top-right'
       })
 
       onClose()
       
     } catch (error) {
-      toast({
-        title: 'Ocorreu um erro...',
-        description: error.message,
+      toast({        
+        title: error.message,
         status: 'error',
         duration: 5000,
-        isClosable: true
+        isClosable: true,
+        position: 'top-right'
       })
       onClose()
     }
+  }
 
+  const handleUpdateUserErrors: SubmitErrorHandler<UserProps> = (errors) => {
+    console.log(errors)
   }
 
   const handleCancel = () => {
     reset()
     onClose()
-  }
-
-  const handleSubmitErrors = (errors) => {
-    console.log(errors)
   }
 
   if(!user) {
@@ -136,7 +133,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     <Flex
       as="form"
       flexDir="column"
-      onSubmit={handleSubmit(handleUpdateUser, handleSubmitErrors)}      
+      onSubmit={handleSubmit(handleUpdateUser, handleUpdateUserErrors)}      
     >
       <Stack spacing={3}>        
         

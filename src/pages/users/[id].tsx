@@ -30,7 +30,7 @@ export default function User() {
   const { id } = router.query
   
   const user = useUser(id)  
-  const addresses = useAddresses(id)
+  const addresses = useAddresses(String(id))
 
   function handlePrintUser() {
     console.log('Print User')
@@ -55,7 +55,7 @@ export default function User() {
   return (
     <>
       <Head>
-        <title>MARCA | {user.data.nome}</title>
+        <title>MARCA | {user.data.data.nome}</title>
       </Head>
       <Layout>
 
@@ -73,8 +73,8 @@ export default function User() {
         <Divider />
           
         <VStack spacing={3} align="flex-start" >
-          <UserInformation user={user.data} isFetching={user.isFetching}/>
-          <UserAddresses addresses={addresses.data} isFetching={addresses.isFetching}/>
+          <UserInformation user={user.data.data} isFetching={user.isFetching}/>
+          <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>
           <UserOrders />
         </VStack>
           

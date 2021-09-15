@@ -15,7 +15,6 @@ export default function Dashboard() {
     <> 
       <Head>
         <title>Marca | Home</title>
-        <meta name="description" content="Dashboard da plataforma da Marka" />
       </Head>
       <Layout>
         <Heading>Página Inicial</Heading>

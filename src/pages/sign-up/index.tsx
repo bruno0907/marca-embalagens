@@ -59,20 +59,23 @@ export default function SignUp () {
       await signUp(values)      
 
       toast({
-        title: 'Cadastro efetuado com sucesso',
-        description: 'Redirecionando...',
+        title: 'Cadastro efetuado com sucesso',        
         duration: 3000,
         isClosable: true,
-        onCloseComplete: () => router.push('/profile')
+        position: 'top-right'
       })
+
+      router.push('/profile')
 
       return
     } catch (error) {
       toast({
+        title: 'Erro ao fazer o cadastro...',
         description: error.message,
         status: 'error',
         isClosable: true,
-        duration: 5000
+        duration: 5000,
+        position: 'top-right'
       })
 
       return

@@ -1,5 +1,9 @@
 import { useRouter } from "next/router"
 
+import { useUsers } from "../../hooks/useUsers"
+import { getUser } from "../../hooks/useUser"
+import { queryClient } from "../../services/queryClient"
+
 import { 
   Table,
   Thead,
@@ -9,20 +13,25 @@ import {
   Td,
   Spinner,  
   Flex,
-  Text
+  Text,  
 } from "@chakra-ui/react"
 
-import { UserProps } from "../../types"
-
 type UsersListProps = {
-  users: UserProps[];
-  isLoading: boolean;
-  isFetching: boolean;
-  error: unknown;
+  filterValue: string;
 }
 
-const UsersList = ({ users, isLoading, isFetching, error }: UsersListProps) => {
-  const router = useRouter()
+const UsersList = ({ filterValue }: UsersListProps) => {
+  const router = useRouter()  
+
+  const { data: users, error, isLoading, isFetching } = useUsers(filterValue)
+
+  const handlePrefetchUser = async (id: string) => {
+    await queryClient.prefetchQuery(['user', id], async () => {
+      return await getUser(id)
+    }, {
+      staleTime: 1000 * 60 * 10 //10minutes
+    })
+  }
 
   if(isLoading || isFetching) {
     return (
@@ -81,7 +90,13 @@ const UsersList = ({ users, isLoading, isFetching, error }: UsersListProps) => {
       <Tbody>
         { users.map(user => {
             return (
-              <Tr key={user.id} fontWeight="medium" onClick={() => router.push(`/users/${user.id}`)} _hover={{ cursor: 'pointer', color: 'blue.500' }}>
+              <Tr
+                key={user.id}
+                fontWeight="medium"
+                onClick={() => router.push(`/users/${user.id}`)}
+                onMouseEnter={() => handlePrefetchUser(user.id)}
+                _hover={{ cursor: 'pointer', color: 'blue.500'}}
+              >
                 <Td>{user.nome}</Td>                        
                 <Td>{user.telefone}</Td>
                 <Td>{user.celular}</Td>

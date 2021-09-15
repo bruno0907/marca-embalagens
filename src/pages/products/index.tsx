@@ -29,12 +29,13 @@ import {
 import { FiPlus } from 'react-icons/fi'
 
 import { ProductProps } from '../../types'
+import { queryClient } from '../../services/queryClient'
 
 export default function Products() { 
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const router = useRouter()
+  const user = supabase.auth.user()
 
-  const user = supabase.auth.user() 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const router = useRouter()  
 
   const [products, setProducts] = useState<ProductProps[]>([]) 
   
@@ -102,6 +103,7 @@ export default function Products() {
       <Modal
         isOpen={isOpen}
         onClose={onClose}
+        title="Novo produto"
       >
         <NewProductForm onClose={onClose}/>
       </Modal>

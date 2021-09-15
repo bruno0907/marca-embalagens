@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import * as yup from 'yup'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useAuth } from '../../hooks/useAuth'
@@ -51,19 +50,20 @@ export default function SignIn () {
     errors,
     isSubmitting,
     isDirty,
-  } = formState  
+  } = formState    
 
   const handleSignIn: SubmitHandler<SignInProps> = async (values) => {
     try {
       await signIn(values)
 
       toast({
-        title: 'Login efetuado com sucesso',
-        description: 'Redirecionando...',
+        title: 'Login Efetuado com sucesso',
         duration: 3000,
         status: 'success',
-        onCloseComplete: () => router.push('/dashboard')
+        position: 'top-right'
       })
+
+      router.push('/dashboard')
 
       return
       
@@ -73,7 +73,8 @@ export default function SignIn () {
         description: error.message,
         duration: 5000,
         status: 'error',
-        isClosable: true
+        isClosable: true,
+        position: 'top-right'
       })
   
       reset({
@@ -89,7 +90,6 @@ export default function SignIn () {
 
       return
     }
-    
   }
 
   return (

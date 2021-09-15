@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 
 import Head from 'next/head'
 
@@ -7,6 +7,7 @@ import { Divider } from '../../components/Divider'
 import { Content } from '../../components/Content'
 import { Modal } from '../../components/Modal'
 import { NewUserForm } from '../../components/NewUserForm'
+import { UsersList } from '../../components/UsersList'
 
 import {  
   Flex,   
@@ -16,22 +17,20 @@ import {
   Input,  
   InputGroup,
   InputLeftElement,  
+  InputRightElement,
   useDisclosure,  
   Spacer
 } from '@chakra-ui/react'
 
-import { FiPlus, FiSearch } from 'react-icons/fi'
-
-import { useUsers } from '../../hooks/useUsers'
-import { UsersList } from '../../components/UsersList'
+import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 import { queryClient } from '../../services/queryClient'
 
 export default function Users() {   
   const { isOpen, onClose, onOpen } = useDisclosure()
+
   const [filterValue, setFilterValue] = useState('')
+
   const searchInputRef = useRef<HTMLInputElement>(null)
-  
-  const { data: users, error, isLoading, isFetching } = useUsers('Cliente', filterValue)
 
   const handleFilter = () => {
     setTimeout(() => {
@@ -39,17 +38,23 @@ export default function Users() {
     }, 500)
   }
 
+  const handleClearFilter = () => {
+    searchInputRef.current.value = ''
+    setFilterValue('')
+  }
+
   const handleModalOpen = () => {
+    console.log(queryClient.getQueryData('user[]'))
     onOpen()
   }
-  
+
   return (
     <>
       <Head>
         <title>MARCA | Clientes</title>        
       </Head>
       <Layout>
-
+        
         <Flex align="center">
           <Heading>Clientes</Heading>
           <Spacer />          
@@ -75,17 +80,25 @@ export default function Users() {
               placeholder="Digite sua pesquisa aqui..."
               ref={searchInputRef}
               onChange={handleFilter}
-            />            
+            />
+            { !!searchInputRef.current?.value.length &&
+              <InputRightElement 
+                cursor="pointer" 
+                onClick={handleClearFilter}
+                _hover={{
+                svg: {
+                  color: 'gray.700'
+                }
+              }}>
+                <Icon as={FiX} color="gray.500" fontSize="18px" />
+              </InputRightElement>         
+            }   
           </InputGroup>            
           
-          <UsersList 
-            users={users}
-            isFetching={isFetching}
-            isLoading={isLoading}
-            error={error}
-          />
+          <UsersList filterValue={filterValue}/>
 
         </Content>
+        
       </Layout>
       <Modal
         isOpen={isOpen}

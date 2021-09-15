@@ -128,7 +128,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
     }
   }, {
     onSuccess: async () => {
-      await queryClient.invalidateQueries()
+      await queryClient.invalidateQueries(['user[]'])
 
     },
   })
@@ -182,21 +182,21 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
     try {      
       await newUserMutation.mutateAsync({ userData, addressData })
       toast({
-        title: 'Sucesso...',
-        description: 'Cliente cadastrado com sucesso',
+        title: 'Cliente cadastrado com sucesso',
         status: 'success',
         duration: 3000,
-        isClosable: true,        
+        isClosable: true,
+        position: 'top-right'
       })
       onClose()
 
     } catch (error) {
-      toast({
-        title: 'Ocorreu um erro...',
-        description: error.message,
+      toast({        
+        title: error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
+        position: 'top-right'
       })
       onClose()       
     }

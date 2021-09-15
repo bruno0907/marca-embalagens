@@ -4,19 +4,20 @@ import { supabase } from "../services/supabase"
 import { UserProps } from "../types"
 
 const getUser = async (id: string | string[]) => {
-  const { data } = await supabase
+  return await supabase
     .from<UserProps>('users')
     .select()
     .eq('id', String(id))
     .single()
-
-  return data
 }
 
 const useUser = (id: string | string[]) => {
-  return useQuery('user', async () => await getUser(id))
+  return useQuery(['user', id], async () => await getUser(id), {
+    staleTime: 1000 * 60 * 10 //10minutes
+  })
 }
 
 export { 
-  useUser 
+  useUser,
+  getUser 
 }
