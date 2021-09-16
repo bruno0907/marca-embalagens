@@ -1,3 +1,5 @@
+import { prefetchAddress } from "../../../controllers/prefetchAddress"
+
 import { 
   Box,  
   Flex,
@@ -5,9 +7,8 @@ import {
   Text,
   Button,   
 } from "@chakra-ui/react"
+
 import { FiEdit, FiHome } from "react-icons/fi"
-import { getAddress } from "../../../controllers/getAddress"
-import { queryClient } from "../../../contexts/queryContext"
 
 import { AddressProps } from "../../../types"
 
@@ -17,14 +18,7 @@ type AddressFieldProps = {
 
 const AddressField = ({ address }: AddressFieldProps) => {
 
-  const handlePrefetchAddress = async (id: string) => {
-    await queryClient.prefetchQuery(['address', id], async () => {
-      const { data } = await getAddress(id)      
-      return data
-    }, {
-      staleTime: 1000 * 60 * 10 // 10minutes
-    })
-  }
+  const handlePrefetchAddress = async (id: string) => await prefetchAddress(id)
 
   return (
     <Box py="2" px="4" bgColor="gray.100" borderRadius="8" border="1" borderColor="gray.600">

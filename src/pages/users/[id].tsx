@@ -30,7 +30,7 @@ export default function User() {
   const id = router.query.id
   
   const user = useUser(id)  
-  const addresses = useAddresses(String(id), 1)  
+  const addresses = useAddresses(String(id), 1)
 
   function handlePrintUser() {
     console.log('Print User')

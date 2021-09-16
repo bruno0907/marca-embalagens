@@ -2,6 +2,8 @@ import { useRouter } from "next/router"
 
 import { useUsers } from "../../hooks/useUsers"
 
+import { prefetchUser } from "../../controllers/prefetchUser"
+
 import { 
   Table,
   Thead,
@@ -13,17 +15,13 @@ import {
   Flex,
   Text,  
 } from "@chakra-ui/react"
-import { prefetchUser } from "../../controllers/prefetchUser"
-import { supabase } from "../../services/supabase"
-import { UserProps } from "../../types"
-import { queryClient } from "../../contexts/queryContext"
 
 type UsersListProps = {
   filterValue: string;
 }
 
 function UsersList ({ filterValue }: UsersListProps) {
-  const router = useRouter()  
+  const router = useRouter()
 
   const users = useUsers(filterValue)
 

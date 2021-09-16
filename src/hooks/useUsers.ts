@@ -10,8 +10,7 @@ const getUsers = async (pattern?: string): Promise<UserProps[]> => {
     const { data } = await supabase
       .from<UserProps>('users')
       .select()
-      .eq('user_id', user.id)
-      .eq('tipo_cliente', 'Cliente')
+      .eq('user_id', user.id)      
       .ilike('nome', `${pattern}%`)
       .order('nome')
 
@@ -21,8 +20,7 @@ const getUsers = async (pattern?: string): Promise<UserProps[]> => {
   const { data } = await supabase    
     .from<UserProps>('users')
     .select()
-    .eq('user_id', user.id)
-    .eq('tipo_cliente', 'Cliente')    
+    .eq('user_id', user.id)      
     .order('nome')
 
   return data

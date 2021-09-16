@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
 import * as yup from 'yup'
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useAuth } from '../../hooks/useAuth'
@@ -52,7 +52,7 @@ export default function SignIn () {
     isDirty,
   } = formState    
 
-  const handleSignIn: SubmitHandler<SignInProps> = async (values) => {
+  const handleSignIn: SubmitHandler<SignInProps> = async values => {
     try {
       await signIn(values)
 
@@ -105,16 +105,16 @@ export default function SignIn () {
             type="email"
             label="E-mail"
             isDisabled={isSubmitting}
-            error={errors?.email}
+            error={errors.email}
             {...register('email')}
           />
           <Input 
             type="password"
             label="Senha"
             isDisabled={isSubmitting}
-            error={errors?.password}
+            error={errors.password}
             {...register('password')}
-            onChange={() => clearErrors('email')}
+            onKeyUp={() => clearErrors(['email', 'password'])}
           />
 
           <Button
