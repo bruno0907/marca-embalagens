@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 
-import { useUsers } from "../../hooks/useUsers"
+import { useUsersQuery } from "../../hooks/useUsersQuery"
 
 import { prefetchUser } from "../../controllers/prefetchUser"
 
@@ -23,7 +23,7 @@ type UsersListProps = {
 function UsersList ({ filterValue }: UsersListProps) {
   const router = useRouter()
 
-  const users = useUsers(filterValue)
+  const users = useUsersQuery(filterValue)
 
   const handlePrefetchUser = async (id: string) => await prefetchUser(id)
   
@@ -63,7 +63,7 @@ function UsersList ({ filterValue }: UsersListProps) {
     )
   }
 
-  if(users.data.length <= 0) {
+  if(users.data?.length <= 0) {
     return (
       <Flex>
         <Text>Nenhum registro encontrado...</Text>

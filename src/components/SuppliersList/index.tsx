@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 
-import { prefetchUser } from "../../controllers/prefetchUser"
-import { useSuppliers } from "../../hooks/useSuppliers"
+import { prefetchSupplier } from "../../controllers/prefetchSupplier"
+import { useSuppliersQuery } from "../../hooks/useSuppliersQuery"
 
 import { 
   Table,
@@ -20,15 +20,13 @@ type UsersListProps = {
 }
 
 const SuppliersList = ({ filterValue }: UsersListProps) => {
-  const router = useRouter()  
+  const router = useRouter()
 
-  const { data, error, isLoading, isFetching } = useSuppliers(filterValue)
+  const suppliers = useSuppliersQuery(filterValue)
 
-  console.log(data)
+  const handlePrefetchSupplier = async (id: string) => await prefetchSupplier(id)
 
-  const handlePrefetchUser = async (id: string) => await prefetchUser(id)  
-
-  if(isLoading || isFetching) {
+  if(suppliers.isLoading || suppliers.isFetching) {
     return (
       <Table colorScheme="gray" variant="striped" >
         <Thead>
@@ -39,36 +37,48 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
                 <Spinner size="sm" color="gray.50" ml="4"/>
               </Flex>
             </Th>
+            <Th color="gray.50">Produto</Th>
             <Th color="gray.50">Telefone</Th>
             <Th color="gray.50">Celular</Th>
-            <Th color="gray.50">E-mail</Th>
           </Tr>
-        </Thead>
-        <Tbody>
-          <Tr>
-            <Td />
-            <Td />
-            <Td />
-            <Td />
-          </Tr>
-        </Tbody>
+        </Thead>        
       </Table>
     )
   }
 
-  if(error) {
+  if(suppliers.error) {
     return (
-      <Flex>
-        <Text>Houve um erro ao carregar as informações...</Text>
-      </Flex>
+      <>
+        <Table colorScheme="gray" variant="striped" >
+          <Thead>
+            <Tr bgColor="blue.500">
+              <Th color="gray.50" align="center">Nome</Th>
+              <Th color="gray.50">Produto</Th>
+              <Th color="gray.50">Telefone</Th>
+              <Th color="gray.50">Celular</Th>
+            </Tr>
+          </Thead>
+        </Table>
+        <Text p="2" bgColor="gray.100">Ocorreu um erro ao carregar as informações...</Text>
+      </>
     )
   }
 
-  if(data.length <= 0) {
+  if(suppliers.data?.length <= 0) {
     return (
-      <Flex>
-        <Text>Nenhum registro encontrado...</Text>
-      </Flex>
+      <>
+        <Table colorScheme="gray" variant="striped" >
+          <Thead>
+            <Tr bgColor="blue.500">
+              <Th color="gray.50" align="center">Nome</Th>
+              <Th color="gray.50">Produto</Th>
+              <Th color="gray.50">Telefone</Th>
+              <Th color="gray.50">Celular</Th>
+            </Tr>
+          </Thead>
+        </Table>
+        <Text p="2" bgColor="gray.100">Nenhum registro encontrado...</Text>
+      </>
     )
   }
 
@@ -77,25 +87,25 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
       <Thead>
         <Tr bgColor="blue.500">
           <Th color="gray.50" align="center">Nome</Th>
+          <Th color="gray.50">Produto</Th>
           <Th color="gray.50">Telefone</Th>
           <Th color="gray.50">Celular</Th>
-          <Th color="gray.50">E-mail</Th>
         </Tr>
       </Thead>
       <Tbody>
-        { data.map(supplier => {
+        { suppliers.data.map(supplier => {
             return (
               <Tr
                 key={supplier.id}
                 fontWeight="medium"
                 onClick={() => router.push(`/suppliers/${supplier.id}`)}
-                onMouseEnter={() => handlePrefetchUser(supplier.id)}
+                onMouseEnter={() => handlePrefetchSupplier(supplier.id)}
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >
                 <Td>{supplier.nome}</Td>                        
+                <Td>{supplier.produto}</Td>
                 <Td>{supplier.telefone}</Td>
-                <Td>{supplier.celular}</Td>
-                <Td>{supplier.email}</Td>   
+                <Td>{supplier.celular}</Td>   
               </Tr>
             )
           }

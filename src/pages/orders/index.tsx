@@ -1,10 +1,6 @@
-import { useEffect, useState } from 'react'
-
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import NextLink from 'next/link'
-
-import { supabase } from '../../services/supabase'
+import { useRouter } from 'next/router'
 
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
@@ -20,36 +16,13 @@ import {
   Td,  
   Button,
   Icon,
-  Heading,
-  useToast,  
-  Box
+  Heading,    
 } from '@chakra-ui/react'
 
 import {FiPlus} from 'react-icons/fi'
-import { OrderProps } from '../../types'
-import { queryClient } from '../../contexts/queryContext'
-import { useUsers } from '../../hooks/useUsers'
 
-export default function Orders() {
-  const user = supabase.auth.user()
-
-  const toast = useToast()
+export default function Orders() {  
   const router = useRouter()
-
-  const users = useUsers('Cliente')
-
-  const a = queryClient.getQueryData('users', {
-    active: false
-  })
-
-  console.log(a)
-
-  const [orders, setOrders] = useState<OrderProps[]>([])  
-
-  useEffect(() => {
-    //TODO: setOrders com a listagem dos pedidos
-
-  }, [])
   
   return (
     <>

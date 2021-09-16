@@ -6,7 +6,6 @@ import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Content } from '../../components/Content'
 import { Modal } from '../../components/Modal'
-import { NewUserForm } from '../../components/NewUserForm'
 import { SuppliersList } from '../../components/SuppliersList'
 
 import {  
@@ -23,9 +22,9 @@ import {
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
-import { queryClient } from '../../services/queryClient'
 
 import useDebounce from '../../hooks/useDebounce'
+import { NewSupplierForm } from '../../components/NewSupplierForm'
 
 export default function Suppliers() {   
   const { isOpen, onClose, onOpen } = useDisclosure()
@@ -42,8 +41,7 @@ export default function Suppliers() {
   const handleClearFilter = () => setSearchValue('')
 
   const handleModalOpen = () => {
-    console.log(queryClient.getQueryData('suppliers[]', { exact: true }))
-    // onOpen()
+    onOpen()
   }
 
   return (
@@ -103,7 +101,7 @@ export default function Suppliers() {
         onClose={onClose}
         title="Cadastrar novo fornecedor"
       >
-        <NewUserForm userType="Fornecedor" onClose={onClose}/>
+        <NewSupplierForm onClose={onClose}/>
       </Modal>
     </>
   )

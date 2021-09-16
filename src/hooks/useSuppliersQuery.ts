@@ -26,7 +26,7 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
   return data
 }
 
-const useSuppliers = (pattern?: string) => {
+const useSuppliersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['suppliers[]', pattern] : 'suppliers[]'
   
   return useQuery(queryKey, () => {
@@ -45,6 +45,6 @@ const useSuppliers = (pattern?: string) => {
 }
 
 export {
-  useSuppliers,
+  useSuppliersQuery,
   getSuppliers
 }

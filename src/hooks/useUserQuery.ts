@@ -1,6 +1,5 @@
 import { useQuery } from "react-query"
 import { supabase } from "../services/supabase"
-
 import { UserProps } from "../types"
 
 const getUser = async (id: string | string[]) => {
@@ -11,7 +10,7 @@ const getUser = async (id: string | string[]) => {
     .single()
 }
 
-const useUser = (id: string | string[]) => {
+const useUserQuery = (id: string | string[]) => {
   return useQuery(['user', id], async () => await getUser(id), {
     staleTime: 1000 * 60 * 10, //10minutes
     useErrorBoundary: true
@@ -19,6 +18,6 @@ const useUser = (id: string | string[]) => {
 }
 
 export { 
-  useUser,
+  useUserQuery,
   getUser 
 }

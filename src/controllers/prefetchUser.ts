@@ -1,14 +1,5 @@
 import { queryClient } from "../contexts/queryContext"
-import { supabase } from "../services/supabase"
-import { UserProps } from "../types"
-
-const getUser = async (id: string) => {
-  return await supabase
-    .from<UserProps>('users')
-    .select()
-    .eq('id', id)
-    .single()
-}
+import { getUser } from "../hooks/useUserQuery"
 
 const prefetchUser = async (id: string) => {
   return await queryClient.prefetchQuery(
@@ -17,5 +8,5 @@ const prefetchUser = async (id: string) => {
 }
 
 export {
-  prefetchUser
+  prefetchUser  
 }

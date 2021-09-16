@@ -1,4 +1,4 @@
-import { useQuery } from "react-query"
+import { useQuery, UseQueryResult } from "react-query"
 
 import { supabase } from "../services/supabase"
 import { UserProps } from "../types"
@@ -26,18 +26,13 @@ const getUsers = async (pattern?: string): Promise<UserProps[]> => {
   return data
 }
 
-const useUsers = (pattern?: string) => {
+const useUsersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['users[]', pattern] : 'users[]'
   
-  return useQuery(queryKey, () => {
-    if(pattern) {
-      const response = getUsers(pattern)
-      return response
-    }
-
-    const response = getUsers()
-    return response
+  return useQuery(queryKey, async () => {
+    if(pattern) return await getUsers(pattern) 
     
+    return await getUsers()
   }, {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true
@@ -45,6 +40,6 @@ const useUsers = (pattern?: string) => {
 }
 
 export {
-  useUsers,
+  useUsersQuery,
   getUsers
 }
