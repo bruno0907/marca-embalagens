@@ -29,6 +29,7 @@ import {
 } from 'react-icons/fi'
 
 import { SupplierProps } from '../../types'
+import { UpdateSupplierForm } from '../UpdateSupplierForm'
 
 type SupplierInformationProps = {
   supplier: SupplierProps;
@@ -37,7 +38,7 @@ type SupplierInformationProps = {
 
 const SupplierInformation = ({ supplier, isFetching }: SupplierInformationProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [SupplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)  
+  const [supplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)  
 
   function handleEditSupplier(supplier: SupplierProps) {
     setSupplierToEdit(supplier)
@@ -133,7 +134,7 @@ const SupplierInformation = ({ supplier, isFetching }: SupplierInformationProps)
 
       </Stack>
       <Modal isOpen={isOpen} onClose={onClose} title="Editar Cadastro">
-        {/* <UpdateUserForm supplier={handleEditSupplier} onClose={onClose}/> */}
+        <UpdateSupplierForm supplier={supplierToEdit} onClose={onClose}/>
       </Modal>
     </Content>
   )  

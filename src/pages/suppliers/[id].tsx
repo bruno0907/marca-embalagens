@@ -10,7 +10,6 @@ import { GoBack } from '../../components/GoBack'
 
 import { SupplierInformation } from '../../components/SupplierInformation'
 import { UserAddresses } from '../../components/UserAddresses'
-import { UserOrders } from '../../components/UserOrders'
 
 import {     
   Center,
@@ -74,8 +73,7 @@ export default function Supplier() {
           
         <VStack spacing={3} align="flex-start" >
           <SupplierInformation supplier={supplier.data.data} isFetching={supplier.isFetching}/>
-          <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>
-          <UserOrders />
+          <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>          
         </VStack>
           
       </Layout>
