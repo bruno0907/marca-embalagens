@@ -101,7 +101,7 @@ export default function Users() {
         onClose={onClose}
         title="Cadastrar novo cliente"
       >
-        <NewUserForm userType="Cliente" onClose={onClose}/>
+        <NewUserForm onClose={onClose}/>
       </Modal>
     </>
   )

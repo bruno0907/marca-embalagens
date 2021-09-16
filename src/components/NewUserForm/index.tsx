@@ -9,8 +9,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { supabase } from "../../services/supabase";
 import { queryClient } from "../../contexts/queryContext";
-import { newUser } from "../../controllers/newUser";
-import { newAddress } from "../../controllers/newAddress";
+import { createUser } from "../../controllers/createUser";
+import { createAddress } from "../../controllers/createAddress";
 import { removeUser } from "../../controllers/removeUser";
 
 import { Input } from "../../components/Input";
@@ -76,8 +76,7 @@ type CityProps = {
   nome: string;
 };
 
-type NewUserFormProps = {
-  userType: 'Cliente' | 'Fornecedor';
+type NewUserFormProps = {  
   onClose: () => void;
 }
 
@@ -88,7 +87,7 @@ type NewUserMutationProps = {
   addressData: Omit<NewAddressProps, 'user_id'>;
 }
 
-const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
+const NewUserForm = ({ onClose }: NewUserFormProps) => {
   const user = supabase.auth.user()  
   const toast = useToast()
 
@@ -105,7 +104,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
   const { errors, isDirty, isSubmitting } = formState;
 
   const newUserMutation = useMutation( async ({ userData, addressData }: NewUserMutationProps) => {
-    const newUserData = await newUser(userData)
+    const newUserData = await createUser(userData)
 
     if(newUserData.error) throw Error('Não foi possível criar novo cadastro. Tente novamente.')
 
@@ -114,7 +113,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
       ...addressData
     }
 
-    const newUserAddress = await newAddress(userAddress)
+    const newUserAddress = await createAddress(userAddress)
 
     if(newUserAddress.error) {
       await removeUser(newUserData.data[0].id)
@@ -156,8 +155,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
     } = values
 
     const userData: NewUserProps = {
-      user_id,
-      tipo_cliente: userType,
+      user_id,      
       natureza_cliente: isCNPJ,
       nome,
       razao_social,
