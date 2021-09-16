@@ -8,7 +8,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { supabase } from "../../services/supabase";
-import { queryClient } from "../../services/queryClient";
+import { queryClient } from "../../contexts/queryContext";
 import { newUser } from "../../controllers/newUser";
 import { newAddress } from "../../controllers/newAddress";
 import { removeUser } from "../../controllers/removeUser";
@@ -104,33 +104,34 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newUserMutation = useMutation( async({ userData, addressData }: NewUserMutationProps) => {
-    const { data: newUserData, error: newUserError } = await newUser(userData)
+  const newUserMutation = useMutation( async ({ userData, addressData }: NewUserMutationProps) => {
+    const newUserData = await newUser(userData)
 
-    if(newUserError) throw Error('Não foi possível criar novo cadastro. Tente novamente.')
+    if(newUserData.error) throw Error('Não foi possível criar novo cadastro. Tente novamente.')
 
     const userAddress = {
-      user_id: newUserData[0].id,
+      user_id: newUserData.data[0].id,
       ...addressData
     }
 
-    const { data: newUserAddress, error: newUserAddressError} = await newAddress(userAddress)
+    const newUserAddress = await newAddress(userAddress)
 
-    if(newUserAddressError) {
-      await removeUser(newUserData[0].id)
+    if(newUserAddress.error) {
+      await removeUser(newUserData.data[0].id)
 
       throw Error('Erro ao cadastrar o endereço. Revertendo alterações.')
     }
 
-    return {
-      ...newUserData[0],
-      ...newUserAddress[0]
+    const mutationResult = {
+      ...newUserData.data[0],
+      ...newUserAddress.data[0]
     }
-  }, {
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(['user[]'])
 
-    },
+    return mutationResult
+
+  }, {    
+    onSuccess: () => queryClient.invalidateQueries(['users[]']),
+    onError: error => console.log('New User Mutation Error: ', error)
   })
 
   const handleNewUser: SubmitHandler<HandleNewUserProps> = async values => {
@@ -152,7 +153,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
       cep,
       complemento,
       outras_informacoes,
-    } = values;
+    } = values
 
     const userData: NewUserProps = {
       user_id,
@@ -167,7 +168,7 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
       rg_ie,
       contato,
       outras_informacoes,
-    };
+    }
 
     const addressData: Omit<NewAddressProps, 'user_id'> = {
       endereco,
@@ -175,12 +176,13 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
       cidade,
       estado,
       cep,
-      complemento,      
+      complemento,
+      principal: true      
     }
-
     
     try {      
       await newUserMutation.mutateAsync({ userData, addressData })
+
       toast({
         title: 'Cliente cadastrado com sucesso',
         status: 'success',
@@ -188,7 +190,8 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
         isClosable: true,
         position: 'top-right'
       })
-      onClose()
+
+      onClose();
 
     } catch (error) {
       toast({        
@@ -198,7 +201,9 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
         isClosable: true,
         position: 'top-right'
       })
-      onClose()       
+
+      onClose()  
+
     }
   };
 
@@ -211,24 +216,24 @@ const NewUserForm = ({ userType, onClose }: NewUserFormProps) => {
     async function fetchStates() {
       const { data } = await axios.get(
         "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-      );
-      setStates(data);
+      )
+      setStates(data)
     }
-    fetchStates();
+    fetchStates()
 
-  }, []);
+  }, [])
 
   async function fetchCity(uf: string) {
     const { data } = await axios.get(
       `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`
-    );
-    setCities(data);
-    setHasCities(false);
+    )
+    setCities(data)
+    setHasCities(false)
 
-    clearErrors("estado");
+    clearErrors("estado")
     setError("cidade", {
       message: "Você deve selecionar uma cidade",
-    });
+    })
   }
 
   return (

@@ -27,10 +27,10 @@ import { FiPrinter } from 'react-icons/fi'
 
 export default function User() {  
   const router = useRouter()
-  const { id } = router.query
+  const id = router.query.id
   
   const user = useUser(id)  
-  const addresses = useAddresses(String(id))
+  const addresses = useAddresses(String(id), 1)  
 
   function handlePrintUser() {
     console.log('Print User')
@@ -61,7 +61,7 @@ export default function User() {
 
         <Flex align="center" flex="1">
           <GoBack fontSize="32" mr="4"/>
-          <Heading>Dados do Cliente</Heading>
+          <Heading>{user.data.data.nome}</Heading>
           <Spacer />
           <Button
             colorScheme="blue"

@@ -18,11 +18,11 @@ import { AddressProps } from '../../types'
 import { AddressField } from './components/addressField'
 
 type UserAddressesProps = {
-  addresses: AddressProps[];
+  addresses: AddressProps[];  
   isFetching: boolean;
 }
 
-const UserAddresses = ({ addresses, isFetching }: UserAddressesProps) => {
+const UserAddresses = ({ addresses, isFetching }: UserAddressesProps) => {   
   if(isFetching){
     return (
       <Content w="100%">

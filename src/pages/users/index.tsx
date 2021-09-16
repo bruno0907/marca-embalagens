@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, ChangeEvent } from 'react'
 
 import Head from 'next/head'
 
@@ -23,28 +23,24 @@ import {
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
-import { queryClient } from '../../services/queryClient'
+
+import useDebounce from '../../hooks/useDebounce'
 
 export default function Users() {   
   const { isOpen, onClose, onOpen } = useDisclosure()
+  
+  const [searchValue, setSearchValue] = useState('')  
+  
+  const debouncedSearch = useDebounce(searchValue, 500)
 
-  const [filterValue, setFilterValue] = useState('')
-
-  const searchInputRef = useRef<HTMLInputElement>(null)
-
-  const handleFilter = () => {
-    setTimeout(() => {
-      setFilterValue(searchInputRef.current.value)
-    }, 500)
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    setSearchValue(value)
   }
 
-  const handleClearFilter = () => {
-    searchInputRef.current.value = ''
-    setFilterValue('')
-  }
+  const handleClearFilter = () => setSearchValue('')
 
-  const handleModalOpen = () => {
-    console.log(queryClient.getQueryData('user[]'))
+  const handleModalOpen = () => {    
     onOpen()
   }
 
@@ -78,10 +74,10 @@ export default function Users() {
             </InputLeftElement>
             <Input 
               placeholder="Digite sua pesquisa aqui..."
-              ref={searchInputRef}
-              onChange={handleFilter}
+              value={searchValue}              
+              onChange={handleChange}
             />
-            { !!searchInputRef.current?.value.length &&
+            { !!searchValue &&
               <InputRightElement 
                 cursor="pointer" 
                 onClick={handleClearFilter}
@@ -95,7 +91,7 @@ export default function Users() {
             }   
           </InputGroup>            
           
-          <UsersList filterValue={filterValue}/>
+          <UsersList filterValue={debouncedSearch}/>
 
         </Content>
         

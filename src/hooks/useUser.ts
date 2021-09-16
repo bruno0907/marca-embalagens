@@ -13,8 +13,9 @@ const getUser = async (id: string | string[]) => {
 
 const useUser = (id: string | string[]) => {
   return useQuery(['user', id], async () => await getUser(id), {
-    staleTime: 1000 * 60 * 10 //10minutes
-  })
+    staleTime: 1000 * 60 * 10, //10minutes
+    useErrorBoundary: true
+  })  
 }
 
 export { 

@@ -27,7 +27,7 @@ import {
 
 import {FiPlus} from 'react-icons/fi'
 import { OrderProps } from '../../types'
-import { queryClient } from '../../services/queryClient'
+import { queryClient } from '../../contexts/queryContext'
 import { useUsers } from '../../hooks/useUsers'
 
 export default function Orders() {

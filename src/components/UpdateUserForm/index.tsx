@@ -25,11 +25,6 @@ type UpdateUserFormProps = {
   onClose: () => void;
 }
 
-type UserToUpdateProps = {
-  id: string | string[];
-  updatedUser: UserProps;
-}
-
 const updateUserSchema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório").trim(),
   razao_social: yup.string().trim(),
@@ -78,7 +73,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
 
     return data
   }, {
-    onSuccess: () => queryClient.invalidateQueries(['user', user.id])
+    onSuccess: async () => await queryClient.invalidateQueries(['user', user.id])
   })
 
   const handleUpdateUser: SubmitHandler<UserProps> = async values => {
@@ -108,11 +103,13 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
         isClosable: true,
         position: 'top-right'
       })
+
       onClose()
+
     }
   }
 
-  const handleUpdateUserErrors: SubmitErrorHandler<UserProps> = (errors) => {
+  const handleUpdateUserErrors: SubmitErrorHandler<UserProps> = errors => {
     console.log(errors)
   }
 
@@ -206,17 +203,15 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
             isDisabled={isSubmitting}
             error={errors?.rg_ie}
             {...register("rg_ie")}
-          />
-          { user.natureza_cliente === 'Jurídica' &&
-            <Input
-              name="contato"
-              label="Contato"
-              bgColor="gray.50"
-              isDisabled={isSubmitting}
-              error={errors?.contato}
-              {...register("contato")}
-            />
-          }
+          />          
+          <Input
+            name="contato"
+            label="Contato"
+            bgColor="gray.50"
+            isDisabled={isSubmitting}
+            error={errors?.contato}
+            {...register("contato")}
+          />          
         </HStack>        
         <Input
           as="textarea"

@@ -29,7 +29,6 @@ import {
 import { FiPlus } from 'react-icons/fi'
 
 import { ProductProps } from '../../types'
-import { queryClient } from '../../services/queryClient'
 
 export default function Products() { 
   const user = supabase.auth.user()

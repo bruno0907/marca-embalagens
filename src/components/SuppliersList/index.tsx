@@ -1,6 +1,7 @@
 import { useRouter } from "next/router"
 
-import { useUsers } from "../../hooks/useUsers"
+import { prefetchUser } from "../../controllers/prefetchUser"
+import { useSuppliers } from "../../hooks/useSuppliers"
 
 import { 
   Table,
@@ -13,23 +14,21 @@ import {
   Flex,
   Text,  
 } from "@chakra-ui/react"
-import { prefetchUser } from "../../controllers/prefetchUser"
-import { supabase } from "../../services/supabase"
-import { UserProps } from "../../types"
-import { queryClient } from "../../contexts/queryContext"
 
 type UsersListProps = {
   filterValue: string;
 }
 
-function UsersList ({ filterValue }: UsersListProps) {
+const SuppliersList = ({ filterValue }: UsersListProps) => {
   const router = useRouter()  
 
-  const users = useUsers(filterValue)
+  const { data, error, isLoading, isFetching } = useSuppliers(filterValue)
 
-  const handlePrefetchUser = async (id: string) => await prefetchUser(id)
-  
-  if(users.isLoading || users.isFetching) {
+  console.log(data)
+
+  const handlePrefetchUser = async (id: string) => await prefetchUser(id)  
+
+  if(isLoading || isFetching) {
     return (
       <Table colorScheme="gray" variant="striped" >
         <Thead>
@@ -57,7 +56,7 @@ function UsersList ({ filterValue }: UsersListProps) {
     )
   }
 
-  if(users.error) {
+  if(error) {
     return (
       <Flex>
         <Text>Houve um erro ao carregar as informações...</Text>
@@ -65,7 +64,7 @@ function UsersList ({ filterValue }: UsersListProps) {
     )
   }
 
-  if(users.data.length <= 0) {
+  if(data.length <= 0) {
     return (
       <Flex>
         <Text>Nenhum registro encontrado...</Text>
@@ -84,19 +83,19 @@ function UsersList ({ filterValue }: UsersListProps) {
         </Tr>
       </Thead>
       <Tbody>
-        { users.data.map(user => {
+        { data.map(supplier => {
             return (
               <Tr
-                key={user.id}
+                key={supplier.id}
                 fontWeight="medium"
-                onClick={() => router.push(`/users/${user.id}`)}
-                onMouseEnter={() => handlePrefetchUser(user.id)}
+                onClick={() => router.push(`/suppliers/${supplier.id}`)}
+                onMouseEnter={() => handlePrefetchUser(supplier.id)}
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >
-                <Td>{user.nome}</Td>                        
-                <Td>{user.telefone}</Td>
-                <Td>{user.celular}</Td>
-                <Td>{user.email}</Td>   
+                <Td>{supplier.nome}</Td>                        
+                <Td>{supplier.telefone}</Td>
+                <Td>{supplier.celular}</Td>
+                <Td>{supplier.email}</Td>   
               </Tr>
             )
           }
@@ -106,4 +105,4 @@ function UsersList ({ filterValue }: UsersListProps) {
   )
 }
 
-export { UsersList }
+export { SuppliersList }

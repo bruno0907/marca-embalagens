@@ -38,7 +38,8 @@ export type AddressProps = {
   cidade: string;
   estado: string;
   cep: string;
-  complemento: string;  
+  complemento: string; 
+  principal: boolean; 
 }
 
 export type NewAddressProps = {  
@@ -49,6 +50,7 @@ export type NewAddressProps = {
   estado: string;
   cep: string;
   complemento: string;  
+  principal: boolean;
 }
 
 export type ProductProps = {

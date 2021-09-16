@@ -11,7 +11,6 @@ import {
   Spinner,  
   Flex,
   Heading,
-  Center,
   HStack,
   Spacer,
   Skeleton,
@@ -37,7 +36,7 @@ type UserInformationProps = {
 
 const UserInformation = ({ user, isFetching }: UserInformationProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [userToEdit, setUserToEdit] = useState<UserProps>(null)
+  const [userToEdit, setUserToEdit] = useState<UserProps>(null)  
 
   function handleEditUser(user: UserProps) {
     setUserToEdit(user)
@@ -72,7 +71,7 @@ const UserInformation = ({ user, isFetching }: UserInformationProps) => {
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiUser}
-            label={`Nome ${user.natureza_cliente === 'Jurídica' ? 'fantasia' : ''}`}
+            label={`Nome ${user.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
             value={user.nome}
           />
           { user.natureza_cliente === 'Jurídica' && 
@@ -93,6 +92,11 @@ const UserInformation = ({ user, isFetching }: UserInformationProps) => {
             icon={FiCreditCard}
             label={user.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
             value={user.rg_ie}
+          />
+          <InformationField 
+            icon={FiUser}
+            label="Contato"
+            value={user.contato}
           />
         </HStack>
           

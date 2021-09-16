@@ -15,4 +15,7 @@ const QueryProvider = ({ children }: QueryProviderProps) => {
   )
 }
 
-export { QueryProvider, queryClient }
+export { 
+  QueryProvider, 
+  queryClient 
+}

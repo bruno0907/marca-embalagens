@@ -1,6 +1,5 @@
 import { 
-  Box,
-  Stack,
+  Box,  
   Flex,
   Icon,
   Text,
@@ -8,8 +7,7 @@ import {
 } from "@chakra-ui/react"
 import { FiEdit, FiHome } from "react-icons/fi"
 import { getAddress } from "../../../controllers/getAddress"
-import { getUser } from "../../../hooks/useUser"
-import { queryClient } from "../../../services/queryClient"
+import { queryClient } from "../../../contexts/queryContext"
 
 import { AddressProps } from "../../../types"
 
