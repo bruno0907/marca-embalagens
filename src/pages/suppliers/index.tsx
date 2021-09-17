@@ -4,27 +4,25 @@ import Head from 'next/head'
 
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
+import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
-import { Modal } from '../../components/Modal'
 import { SuppliersList } from '../../components/SuppliersList'
+import { Modal } from '../../components/Modal'
+import { NewSupplierForm } from '../../components/NewSupplierForm'
 
-import {  
-  Flex,   
+import useDebounce from '../../hooks/useDebounce'
+
+import {    
   Button,
-  Icon,
-  Heading,  
+  Icon,  
   Input,  
   InputGroup,
   InputLeftElement,  
   InputRightElement,
-  useDisclosure,  
-  Spacer
+  useDisclosure,    
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
-
-import useDebounce from '../../hooks/useDebounce'
-import { NewSupplierForm } from '../../components/NewSupplierForm'
 
 export default function Suppliers() {   
   const { isOpen, onClose, onOpen } = useDisclosure()
@@ -40,34 +38,30 @@ export default function Suppliers() {
 
   const handleClearFilter = () => setSearchValue('')
 
-  const handleModalOpen = () => {
-    onOpen()
-  }
+  const handleModalOpen = () => onOpen()
 
   return (
     <>
       <Head>
         <title>MARCA | Fornecedores</title>        
       </Head>
-      <Layout>
-        
-        <Flex align="center">
-          <Heading>Fornecedores</Heading>
-          <Spacer />          
+
+      <Layout>      
+
+        <Header title="Fornecedores">
           <Button
-            colorScheme="blue"
-            lineHeight="base"
+            colorScheme="blue"            
             leftIcon={<Icon as={FiPlus}/>}
             onClick={handleModalOpen}
           >
             Cadastrar novo fornecedor
           </Button>
-        </Flex> 
+        </Header>
 
         <Divider />
 
-        <Content>
-          
+        <Content>    
+
           <InputGroup mb="8">
             <InputLeftElement pointerEvents="none">
               <Icon as={FiSearch} color="gray.500" />
@@ -89,13 +83,14 @@ export default function Suppliers() {
                 <Icon as={FiX} color="gray.500" fontSize="18px" />
               </InputRightElement>         
             }   
-          </InputGroup>            
-          
+          </InputGroup>   
+
           <SuppliersList filterValue={debouncedSearch}/>
 
-        </Content>
-        
+        </Content> 
+
       </Layout>
+      
       <Modal
         isOpen={isOpen}
         onClose={onClose}

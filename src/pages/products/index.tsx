@@ -4,14 +4,14 @@ import Head from 'next/head'
 import { Layout } from '../../components/Layout'
 import { Content } from '../../components/Content'
 import { Divider } from '../../components/Divider'
+import { Header } from '../../components/Header'
 import { Modal } from '../../components/Modal'
 import { ProductsList } from '../../components/ProductsList'
 import { NewProductForm } from '../../components/NewProductForm'
 
 import useDebounce from '../../hooks/useDebounce'
 
-import {   
- 
+import {
   Heading,
   Flex,  
   Button,
@@ -20,7 +20,8 @@ import {
   InputGroup,
   Input,
   InputLeftElement,
-  InputRightElement
+  InputRightElement,
+  Spacer
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
@@ -48,20 +49,24 @@ export default function Products() {
       <Head>
         <title>Marca | Produtos</title>        
       </Head>
+
       <Layout>
-        <Flex justify="space-between">
-          <Heading>Produtos</Heading>          
-            <Button              
-              colorScheme="blue"
-              lineHeight="base"
-              leftIcon={<Icon as={FiPlus} />}
-              onClick={handleModalOpen}
-            >
-              Cadastrar novo produto
-            </Button>          
-        </Flex>  
+
+        <Header title="Produtos">          
+          <Button              
+            colorScheme="blue"            
+            leftIcon={<Icon as={FiPlus} />}
+            onClick={handleModalOpen}
+          >
+            Cadastrar novo produto
+          </Button> 
+
+        </Header>  
+
         <Divider />
+
         <Content>
+
           <InputGroup mb="8">
             <InputLeftElement pointerEvents="none">
               <Icon as={FiSearch} color="gray.500" />
@@ -84,9 +89,12 @@ export default function Products() {
               </InputRightElement>         
             }   
           </InputGroup>
+
           <ProductsList filterValue={debouncedSearch}/>
+
         </Content>
       </Layout>
+
       <Modal
         isOpen={isOpen}
         onClose={onClose}

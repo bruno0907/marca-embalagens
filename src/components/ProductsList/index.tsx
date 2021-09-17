@@ -94,7 +94,7 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
               <Tr
                 key={product.id}
                 fontWeight="medium"
-                onClick={() => router.push(`/proucts/${product.id}`)}
+                onClick={() => router.push(`/products/${product.id}`)}
                 onMouseEnter={() => handlePrefetchProduct(product.id)}
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >

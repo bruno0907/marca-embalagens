@@ -6,7 +6,7 @@ import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
-import { GoBack } from '../../components/GoBack'
+import { Header } from '../../components/Header'
 
 import { SupplierInformation } from '../../components/SupplierInformation'
 import { UserAddresses } from '../../components/UserAddresses'
@@ -15,10 +15,8 @@ import {
   Center,
   Spinner,
   Heading,
-  VStack,
-  Flex,
-  Button,
-  Spacer,
+  VStack,  
+  Button,  
   Text
 } from '@chakra-ui/react'
 
@@ -31,9 +29,7 @@ export default function Supplier() {
   const supplier = useSupplierQuery(id)  
   const addresses = useAddressesQuery(String(id), 1)
 
-  function handlePrintUser() {
-    console.log('Print supplier')
-  }  
+  const handlePrintUser = () => console.log('Print supplier')
 
   if(supplier.isLoading || addresses.isLoading) {
     return (
@@ -58,24 +54,22 @@ export default function Supplier() {
       </Head>
       <Layout>
 
-        <Flex align="center" flex="1">
-          <GoBack fontSize="32" mr="4"/>
-          <Heading>{supplier.data.data.nome}</Heading>
-          <Spacer />
+        <Header withGoBack title={supplier.data.data.nome}>
           <Button
             colorScheme="blue"
-            leftIcon={<FiPrinter />}
+            leftIcon={<FiPrinter />}            
             onClick={handlePrintUser}
           >Imprimir</Button>
-        </Flex>
 
-        <Divider />
-          
+        </Header>
+
+        <Divider /> 
+
         <VStack spacing={3} align="flex-start" >
           <SupplierInformation supplier={supplier.data.data} isFetching={supplier.isFetching}/>
           <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>          
-        </VStack>
-          
+        </VStack> 
+
       </Layout>
     </>
   )

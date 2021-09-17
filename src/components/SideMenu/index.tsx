@@ -35,7 +35,7 @@ const SideMenu = () => {
       boxShadow="sm"
     >
       <Logo />
-      <Stack as="nav" spacing={3} mt="24">        
+      <Stack as="nav" spacing={3} mt="16">        
         <ActiveLink 
           href="/dashboard"
           icon={FiHome}
@@ -67,7 +67,7 @@ const SideMenu = () => {
         rightIcon={<FiLogOut />}        
         onClick={signOut}
         colorScheme="blue"
-        flexShrink={0}
+        flexShrink={0}        
         w="100%"                             
       >Sair</Button>
     </Flex>

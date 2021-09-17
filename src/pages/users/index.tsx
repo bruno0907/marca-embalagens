@@ -2,8 +2,11 @@ import { useState, ChangeEvent } from 'react'
 
 import Head from 'next/head'
 
+import useDebounce from '../../hooks/useDebounce'
+
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
+import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
 import { Modal } from '../../components/Modal'
 import { NewUserForm } from '../../components/NewUserForm'
@@ -23,8 +26,6 @@ import {
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
-
-import useDebounce from '../../hooks/useDebounce'
 
 export default function Users() {   
   const { isOpen, onClose, onOpen } = useDisclosure()
@@ -51,18 +52,15 @@ export default function Users() {
       </Head>
       <Layout>
         
-        <Flex align="center">
-          <Heading>Clientes</Heading>
-          <Spacer />          
+        <Header title="Clientes">
           <Button
             colorScheme="blue"
-            lineHeight="base"
             leftIcon={<Icon as={FiPlus}/>}
             onClick={handleModalOpen}
           >
             Cadastrar novo cliente
           </Button>
-        </Flex> 
+        </Header>
 
         <Divider />
 

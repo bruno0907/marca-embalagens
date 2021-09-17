@@ -6,8 +6,7 @@ import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
-import { GoBack } from '../../components/GoBack'
-
+import { Header } from '../../components/Header'
 import { UserInformation } from '../../components/UserInformation'
 import { UserAddresses } from '../../components/UserAddresses'
 import { UserOrders } from '../../components/UserOrders'
@@ -15,9 +14,7 @@ import { UserOrders } from '../../components/UserOrders'
 import {     
   Center,
   Spinner,
-  Heading,
   VStack,
-  Flex,
   Button,
   Spacer,
   Text
@@ -32,9 +29,7 @@ export default function User() {
   const user = useUserQuery(id)  
   const addresses = useAddressesQuery(String(id), 1)
 
-  function handlePrintUser() {
-    console.log('Print User')
-  }  
+  const handlePrintUser = () => console.log('Print User')
 
   if(user.isLoading || addresses.isLoading) {
     return (
@@ -57,27 +52,25 @@ export default function User() {
       <Head>
         <title>MARCA | {user.data.data.nome}</title>
       </Head>
+
       <Layout>
 
-        <Flex align="center" flex="1">
-          <GoBack fontSize="32" mr="4"/>
-          <Heading>{user.data.data.nome}</Heading>
-          <Spacer />
+        <Header withGoBack title={user.data.data.nome}>
           <Button
             colorScheme="blue"
             leftIcon={<FiPrinter />}
             onClick={handlePrintUser}
           >Imprimir</Button>
-        </Flex>
+          </Header>
 
         <Divider />
-          
+
         <VStack spacing={3} align="flex-start" >
           <UserInformation user={user.data.data} isFetching={user.isFetching}/>
           <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>
           <UserOrders />
         </VStack>
-          
+        
       </Layout>
     </>
   )
