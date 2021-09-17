@@ -87,6 +87,15 @@ export type ProductProps = {
   id: string;
   user_id: string;
   nome: string;
+  descricao: string;
+  situacao: boolean;
+  preco_unitario: number;
+}
+
+export type NewProductProps = {  
+  user_id: string;
+  nome: string;
+  descricao: string;  
   preco_unitario: number;
 }
 
