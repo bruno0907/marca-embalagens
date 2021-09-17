@@ -12,7 +12,8 @@ import {
   Text,  
 } from "@chakra-ui/react"
 
-import { ProductProps } from "../../types"
+import { useProductsQuery } from "../../hooks/useProductsQuery"
+import { prefetchProduct } from "../../controllers/prefetchProduct"
 
 type ProductsListProps = {
   filterValue: string;
@@ -21,33 +22,9 @@ type ProductsListProps = {
 const ProductsList = ({ filterValue }: ProductsListProps) => {
   const router = useRouter()
 
-  const products = { // TODO: useProductsQuery
-    isLoading: false,
-    isFetching: false,
-    error: false,
-    data: [
-      {
-        id: '0',
-        nome: 'Produto de teste 1',
-        preco_unitario: 10.50,
-        estoque: 50
-      },
-      {
-        id: '1',
-        nome: 'Produto de teste 2',
-        preco_unitario: 15.00,
-        estoque: 20
-      },
-      {
-        id: '2',
-        nome: 'Produto de teste 3',
-        preco_unitario: 5.70,
-        estoque: 100
-      },
-    ]
-  }
+  const products = useProductsQuery(filterValue)  
 
-  const handlePrefetchProduct = async (id: string) => console.log(id) // TODO prefetching
+  const handlePrefetchProduct = async (id: string) => prefetchProduct(id)
 
   if(products.isLoading || products.isFetching) {
     return (
@@ -122,7 +99,7 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >
                 <Td>{product.nome}</Td>                                        
-                <Td>{product.estoque}</Td>   
+                <Td></Td>   
                 <Td>{product.preco_unitario.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency' })}</Td>
               </Tr>
             )

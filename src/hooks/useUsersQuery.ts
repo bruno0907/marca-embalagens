@@ -1,4 +1,4 @@
-import { useQuery, UseQueryResult } from "react-query"
+import { useQuery } from "react-query"
 
 import { supabase } from "../services/supabase"
 import { UserProps } from "../types"
@@ -22,7 +22,7 @@ const getUsers = async (pattern?: string): Promise<UserProps[]> => {
     .select()
     .eq('user_id', user.id)      
     .order('nome')
-
+  
   return data
 }
 

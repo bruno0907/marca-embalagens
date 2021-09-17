@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { useUserQuery } from '../../hooks/useUserQuery'
-import { useAddresses } from '../../hooks/useAddresses'
+import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
@@ -30,7 +30,7 @@ export default function User() {
   const id = router.query.id
   
   const user = useUserQuery(id)  
-  const addresses = useAddresses(String(id), 1)
+  const addresses = useAddressesQuery(String(id), 1)
 
   function handlePrintUser() {
     console.log('Print User')

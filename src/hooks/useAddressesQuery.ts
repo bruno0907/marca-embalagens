@@ -10,7 +10,7 @@ const getAddresses = async (id: string, limit?: number) => {
     .limit(limit)
 }
 
-const useAddresses = (id: string, limit?: number) => {
+const useAddressesQuery = (id: string, limit?: number) => {
   return useQuery(['address[]', id], async () => await getAddresses(id, limit), {
     staleTime: 1000 * 60 * 10, //10minutes
     useErrorBoundary: true
@@ -18,6 +18,6 @@ const useAddresses = (id: string, limit?: number) => {
 }
 
 export {
-  useAddresses,
+  useAddressesQuery,
   getAddresses
 }
