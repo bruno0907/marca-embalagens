@@ -10,14 +10,14 @@ const getProduct = async (id: string | string[]) => {
     .single()
 }
 
-const useUserQuery = (id: string | string[]) => {
-  return useQuery(['user', id], async () => await getProduct(id), {
+const useProductQuery = (id: string | string[]) => {
+  return useQuery(['product', id], async () => await getProduct(id), {
     staleTime: 1000 * 60 * 10, //10minutes
     useErrorBoundary: true
   })  
 }
 
 export { 
-  useUserQuery,
+  useProductQuery,
   getProduct 
 }

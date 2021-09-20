@@ -95,8 +95,7 @@ export default function SignIn () {
   return (
     <>
       <Head>
-        <title>Marca | Faça seu login</title>
-        <meta name="description" content="Página de Login da Marka" />
+        <title>MARCA | Faça seu login</title>
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
         <Heading mb="8">MARCA | Login</Heading>

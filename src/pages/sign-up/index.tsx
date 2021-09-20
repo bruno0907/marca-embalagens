@@ -85,8 +85,7 @@ export default function SignUp () {
   return (
     <>
       <Head>
-        <title>Marca | Cadastre-se</title>
-        <meta name="description" content="Página de Cadastro da Marka" />
+        <title>MARCA | Cadastre-se</title>
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
         <Heading mb="8">MARCA | Cadastre-se</Heading>

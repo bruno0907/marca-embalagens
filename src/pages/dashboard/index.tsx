@@ -14,12 +14,12 @@ export default function Dashboard() {
   return (
     <> 
       <Head>
-        <title>Marca | Home</title>
+        <title>MARCA | Página inicial</title>
       </Head>
 
       <Layout>
 
-        <Header title="Página Inicial" />
+        <Header title="Página inicial" />
 
         <Divider />
 

@@ -47,7 +47,7 @@ export default function Products() {
   return (
     <>
       <Head>
-        <title>Marca | Produtos</title>        
+        <title>MARCA | Produtos</title>        
       </Head>
 
       <Layout>

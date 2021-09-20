@@ -24,7 +24,7 @@ export default function Orders() {
   return (
     <>
       <Head>
-        <title>Marca | Pedidos</title>        
+        <title>MARCA | Pedidos</title>        
       </Head>
 
       <Layout>
