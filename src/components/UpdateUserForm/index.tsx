@@ -16,9 +16,8 @@ import {
 } from "@chakra-ui/react";
 
 import { UserProps } from "../../types";
-import { useMutation } from 'react-query';
-import { queryClient } from '../../contexts/queryContext';
-import { updateUser } from '../../services/updateUser';
+
+import { useUserMutation } from '../../hooks/useUserMutation'
 
 type UpdateUserFormProps = {
   user: UserProps ;
@@ -66,15 +65,8 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     isSubmitting,    
   } = formState
 
-  const updateUserMutation = useMutation(async (user: UserProps) => {
-    const { data, error } = await updateUser(user)
+  const updateUserMutation = useUserMutation()
 
-    if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
-
-    return data
-  }, {
-    onSuccess: async () => await queryClient.invalidateQueries(['user', user.id])
-  })
 
   const handleUpdateUser: SubmitHandler<UserProps> = async values => {
     const updatedUser = {
