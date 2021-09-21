@@ -17,7 +17,7 @@ import {
 
 import { UserProps } from "../../types";
 
-import { useUserMutation } from '../../hooks/useUserMutation'
+import { useUpdateUserMutation } from '../../hooks/useUpdateUserMutation'
 
 type UpdateUserFormProps = {
   user: UserProps ;
@@ -65,7 +65,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     isSubmitting,    
   } = formState
 
-  const updateUserMutation = useUserMutation()
+  const updateUserMutation = useUpdateUserMutation()
 
 
   const handleUpdateUser: SubmitHandler<UserProps> = async values => {

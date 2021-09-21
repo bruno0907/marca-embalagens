@@ -3,7 +3,7 @@ import { queryClient } from "../contexts/queryContext"
 import { updateUser } from "../services/updateUser"
 import { UserProps } from "../types"
 
-const useUserMutation = () => {
+const useUpdateUserMutation = () => {
   return useMutation(async (user: UserProps) => {
     const { data, error } = await updateUser(user)
 
@@ -19,5 +19,5 @@ const useUserMutation = () => {
 }
 
 export {
-  useUserMutation
+  useUpdateUserMutation
 }

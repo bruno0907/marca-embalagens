@@ -1,6 +1,7 @@
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useUpdateSupplierMutation } from "../../hooks/useUpdateSupplierMutation";
 
 import { Input } from "../Input";
 
@@ -16,10 +17,6 @@ import {
 } from "@chakra-ui/react";
 
 import { SupplierProps } from "../../types";
-import { useMutation } from 'react-query';
-import { queryClient } from '../../contexts/queryContext';
-import { updateSupplier } from "../../services/updateSupplier";
-
 
 type UpdateSupplierFormProps = {
   supplier: SupplierProps ;
@@ -69,15 +66,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
     isSubmitting,    
   } = formState
 
-  const updateUserMutation = useMutation(async (supplier: SupplierProps) => {
-    const { data, error } = await updateSupplier(supplier)
-
-    if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
-
-    return data
-  }, {
-    onSuccess: async () => await queryClient.invalidateQueries(['supplier', supplier.id])
-  })
+  const updateUserMutation = useUpdateSupplierMutation()
 
   const handleUpdateUser: SubmitHandler<SupplierProps> = async values => {
     const updatedSupplier = {
