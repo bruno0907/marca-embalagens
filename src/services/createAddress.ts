@@ -1,4 +1,4 @@
-import { supabase } from "../services/supabase";
+import { supabase } from "../database/supabase";
 import { AddressProps, NewAddressProps } from "../types"
 
 const createAddress = async (address: NewAddressProps) => { 

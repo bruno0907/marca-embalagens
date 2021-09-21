@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 
-import { supabase } from "../services/supabase";
+import { supabase } from "../database/supabase";
 
 import { Session, User } from "@supabase/supabase-js";
 

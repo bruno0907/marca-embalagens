@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react"
 
 import { useProductsQuery } from "../../hooks/useProductsQuery"
-import { prefetchProduct } from "../../controllers/prefetchProduct"
+import { prefetchProduct } from "../../services/prefetchProduct"
 
 type ProductsListProps = {
   filterValue: string;

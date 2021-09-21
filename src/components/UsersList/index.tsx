@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 
 import { useUsersQuery } from "../../hooks/useUsersQuery"
 
-import { prefetchUser } from "../../controllers/prefetchUser"
+import { prefetchUser } from "../../services/prefetchUser"
 
 import { 
   Table,

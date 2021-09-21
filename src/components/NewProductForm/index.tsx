@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { supabase } from "../../services/supabase";
+import { supabase } from "../../database/supabase";
 import { queryClient } from "../../contexts/queryContext";
 
 import { createProduct } from "../../controllers/createProduct";

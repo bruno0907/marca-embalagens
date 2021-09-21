@@ -1,4 +1,4 @@
-import { prefetchAddress } from "../../../controllers/prefetchAddress"
+import { prefetchAddress } from "../../../services/prefetchAddress"
 
 import { 
   Box,  

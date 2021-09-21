@@ -7,14 +7,12 @@ import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
-
 import { SupplierInformation } from '../../components/SupplierInformation'
 import { UserAddresses } from '../../components/UserAddresses'
 
 import {     
   Center,
-  Spinner,
-  Heading,
+  Spinner,  
   VStack,  
   Button,  
   Text

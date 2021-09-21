@@ -18,7 +18,7 @@ import {
 import { UserProps } from "../../types";
 import { useMutation } from 'react-query';
 import { queryClient } from '../../contexts/queryContext';
-import { updateUser } from '../../controllers/updateUser';
+import { updateUser } from '../../services/updateUser';
 
 type UpdateUserFormProps = {
   user: UserProps ;

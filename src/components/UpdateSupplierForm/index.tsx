@@ -18,7 +18,7 @@ import {
 import { SupplierProps } from "../../types";
 import { useMutation } from 'react-query';
 import { queryClient } from '../../contexts/queryContext';
-import { updateSupplier } from "../../controllers/updateSupplier";
+import { updateSupplier } from "../../services/updateSupplier";
 
 
 type UpdateSupplierFormProps = {

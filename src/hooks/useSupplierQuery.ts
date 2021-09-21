@@ -1,5 +1,5 @@
 import { useQuery } from "react-query"
-import { supabase } from "../services/supabase"
+import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
 const getSupplier = async (id: string | string[]) => {

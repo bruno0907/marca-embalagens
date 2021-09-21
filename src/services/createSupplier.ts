@@ -1,4 +1,4 @@
-import { supabase } from "../services/supabase"
+import { supabase } from "../database/supabase"
 import { NewSupplierProps } from "../types"
 
 const createSupplier = async (supplier: NewSupplierProps) => {

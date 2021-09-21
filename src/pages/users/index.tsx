@@ -12,8 +12,7 @@ import { Modal } from '../../components/Modal'
 import { NewUserForm } from '../../components/NewUserForm'
 import { UsersList } from '../../components/UsersList'
 
-import {  
-  Flex,   
+import {    
   Button,
   Icon,
   Heading,  
@@ -21,8 +20,7 @@ import {
   InputGroup,
   InputLeftElement,  
   InputRightElement,
-  useDisclosure,  
-  Spacer
+  useDisclosure,
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'

@@ -1,4 +1,4 @@
-import { supabase } from "../services/supabase"
+import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
 const removeSupplier = async (id: string) => {

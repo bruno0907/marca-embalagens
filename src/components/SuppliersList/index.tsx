@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 
-import { prefetchSupplier } from "../../controllers/prefetchSupplier"
+import { prefetchSupplier } from "../../services/prefetchSupplier"
 import { useSuppliersQuery } from "../../hooks/useSuppliersQuery"
 
 import { 

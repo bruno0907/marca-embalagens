@@ -9,7 +9,7 @@ import { SubmitHandler, useForm, SubmitErrorHandler } from 'react-hook-form'
 import { useMutation } from 'react-query'
 
 import { queryClient } from '../../contexts/queryContext'
-import { updateProduct } from '../../controllers/updateProduct'
+import { updateProduct } from '../../services/updateProduct'
 
 import { Input } from "../Input"
 

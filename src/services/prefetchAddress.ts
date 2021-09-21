@@ -1,5 +1,5 @@
 import { queryClient } from "../contexts/queryContext"
-import { supabase } from "../services/supabase"
+import { supabase } from "../database/supabase"
 
 const getAddress = async (id: string) => {
     return await supabase

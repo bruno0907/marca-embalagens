@@ -7,11 +7,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { supabase } from "../../services/supabase";
+import { supabase } from "../../database/supabase";
 import { queryClient } from "../../contexts/queryContext";
-import { createUser } from "../../controllers/createUser";
-import { createAddress } from "../../controllers/createAddress";
-import { removeUser } from "../../controllers/removeUser";
+import { createUser } from "../../services/createUser";
+import { createAddress } from "../../services/createAddress";
+import { removeUser } from "../../services/removeUser";
 
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";

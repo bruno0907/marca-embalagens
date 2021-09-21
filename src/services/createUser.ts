@@ -1,4 +1,4 @@
-import { supabase } from "../services/supabase";
+import { supabase } from "../database/supabase";
 import { NewUserProps, UserProps } from "../types";
 
 const createUser = async (user: NewUserProps) => {

@@ -7,10 +7,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { supabase } from "../../services/supabase";
+import { supabase } from "../../database/supabase";
 import { queryClient } from "../../contexts/queryContext";
-import { createAddress } from "../../controllers/createAddress";
-import { removeUser } from "../../controllers/removeUser";
+import { createAddress } from "../../services/createAddress";
+import { removeUser } from "../../services/removeUser";
 
 import { Input } from "../Input";
 import { Select } from "../Select";
@@ -64,7 +64,7 @@ import {
   NewSupplierProps,    
   NewAddressProps,  
 } from "../../types";
-import { createSupplier } from "../../controllers/createSupplier";
+import { createSupplier } from "../../services/createSupplier";
 
 type StateProps = {
   id: number;
