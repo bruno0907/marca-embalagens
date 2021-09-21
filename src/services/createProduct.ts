@@ -1,9 +1,9 @@
 import { supabase } from "../database/supabase"
-import { NewProductProps } from "../types"
+import { NewProductProps, ProductProps } from "../types"
 
 const createProduct = async(product: NewProductProps) => {  
   return await supabase
-    .from('products')
+    .from<ProductProps>('products')
     .insert(product)
 }
 

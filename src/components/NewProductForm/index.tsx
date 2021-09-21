@@ -1,13 +1,8 @@
-import { useMutation } from "react-query";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { supabase } from "../../database/supabase";
-import { queryClient } from "../../contexts/queryContext";
-
-import { createProduct } from "../../services/createProduct";
 
 import { Input } from "../../components/Input";
 
@@ -27,6 +22,7 @@ const newProductSchema = yup.object().shape({
 });
 
 import { NewProductProps } from "../../types";
+import { useCreateProductMutation } from "../../hooks/useCreateProductMutation";
 
 type NewProductFormProps = {  
   onClose: () => void;
@@ -43,21 +39,7 @@ const NewProductForm = ({ onClose }: NewProductFormProps) => {
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newProductMutation = useMutation( async (newProduct: NewProductProps) => {
-    const newProductData = await createProduct(newProduct)
-
-    if(newProductData.error) throw Error('Não foi possível criar novo cadastro. Tente novamente.')    
-
-    const mutationResult = {
-      ...newProductData.data[0],
-    }
-
-    return mutationResult
-
-  }, {    
-    onSuccess: () => queryClient.invalidateQueries(['products[]']),
-    onError: error => console.log('New Product Mutation Error: ', error)
-  })
+  const newProductMutation = useCreateProductMutation()
 
   const handleNewUser: SubmitHandler<NewProductProps> = async values => {
     const user_id = user.id
@@ -74,8 +56,6 @@ const NewProductForm = ({ onClose }: NewProductFormProps) => {
       descricao,
       preco_unitario
     }
-
-    
     
     try {      
       await newProductMutation.mutateAsync(productData)  
