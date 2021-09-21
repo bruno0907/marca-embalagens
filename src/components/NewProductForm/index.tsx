@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "../../database/supabase";
 import { queryClient } from "../../contexts/queryContext";
 
-import { createProduct } from "../../controllers/createProduct";
+import { createProduct } from "../../services/createProduct";
 
 import { Input } from "../../components/Input";
 

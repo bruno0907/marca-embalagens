@@ -6,10 +6,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { SubmitHandler, useForm, SubmitErrorHandler } from 'react-hook-form'
 
-import { useMutation } from 'react-query'
-
 import { queryClient } from '../../contexts/queryContext'
-import { updateProduct } from '../../services/updateProduct'
+import { useUpdateProductMutation } from '../../hooks/useUpdateProductMutation'
+
 
 import { Input } from "../Input"
 
@@ -59,13 +58,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
 
   const handleCancelEdit = () => setIsEditing(!isEditing)
 
-  const updateProductMutation = useMutation( async (productToUpdate: ProductProps) => {
-    await updateProduct(productToUpdate)
-
-  }, {    
-    onError: (error, context) => console.log({ error, context }),
-    onSuccess: async () => await queryClient.invalidateQueries(['products[]'])
-  })
+  const updateProductMutation = useUpdateProductMutation()
 
   const handleUpdateProduct: SubmitHandler<ProductProps> = async values => {
     try {
@@ -84,8 +77,6 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
         position: 'top-right'
       })
 
-      await queryClient.invalidateQueries(['product', product.id])
-
       router.push('/products')
       
     } catch (error) {
@@ -96,9 +87,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
         isClosable: true,
         position: 'top-right'
       })
-
     }
-
   }
 
   const handleSubmitErrors: SubmitErrorHandler<ProductProps> = errors => console.log(errors)
