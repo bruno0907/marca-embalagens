@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
 
 import axios from "axios";
 
@@ -8,10 +7,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { supabase } from "../../database/supabase";
-import { queryClient } from "../../contexts/queryContext";
-import { createUser } from "../../services/createUser";
-import { createAddress } from "../../services/createAddress";
-import { removeUser } from "../../services/removeUser";
 
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -64,6 +59,7 @@ import {
   NewUserProps,    
   NewAddressProps,  
 } from "../../types";
+import { useCreateUserMutation } from "../../hooks/useCreateUserMutation";
 
 type StateProps = {
   id: number;
@@ -82,10 +78,6 @@ type NewUserFormProps = {
 
 type HandleNewUserProps = NewUserProps & NewAddressProps
 
-type NewUserMutationProps = {
-  userData: NewUserProps;
-  addressData: Omit<NewAddressProps, 'user_id'>;
-}
 
 const NewUserForm = ({ onClose }: NewUserFormProps) => {
   const user = supabase.auth.user()  
@@ -103,35 +95,7 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newUserMutation = useMutation( async ({ userData, addressData }: NewUserMutationProps) => {
-    const newUserData = await createUser(userData)
-
-    if(newUserData.error) throw Error('Não foi possível criar novo cadastro. Tente novamente.')
-
-    const userAddress = {
-      user_id: newUserData.data[0].id,
-      ...addressData
-    }
-
-    const newUserAddress = await createAddress(userAddress)
-
-    if(newUserAddress.error) {
-      await removeUser(newUserData.data[0].id)
-
-      throw Error('Erro ao cadastrar o endereço. Revertendo alterações.')
-    }
-
-    const mutationResult = {
-      ...newUserData.data[0],
-      ...newUserAddress.data[0]
-    }
-
-    return mutationResult
-
-  }, {    
-    onSuccess: () => queryClient.invalidateQueries(['users[]']),
-    onError: error => console.log('New User Mutation Error: ', error)
-  })
+  const newUserMutation = useCreateUserMutation()
 
   const handleNewUser: SubmitHandler<HandleNewUserProps> = async values => {
     const user_id = user.id

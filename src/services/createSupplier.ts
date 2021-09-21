@@ -1,9 +1,9 @@
 import { supabase } from "../database/supabase"
-import { NewSupplierProps } from "../types"
+import { NewSupplierProps, SupplierProps } from "../types"
 
 const createSupplier = async (supplier: NewSupplierProps) => {
   return await supabase
-    .from('suppliers')
+    .from<SupplierProps>('suppliers')
     .insert(supplier)
 }
 
