@@ -8,8 +8,12 @@ import { Session, User } from "@supabase/supabase-js";
 import axios from "axios";
 
 type AuthContextProps = {
-  signIn: (values: AuthProps) => Promise<Session | Error>;
-  signUp: (values: AuthProps) => Promise<Session | User | Error>;
+  signIn: (values: AuthProps) => Promise<Session>;
+  signUp: (values: AuthProps) => Promise<{
+    user: User,
+    session: Session,
+    error: Error
+  }>;
   signOut: () => Promise<unknown>;
   session: Session;
 }
@@ -40,16 +44,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const signUp = async (values: AuthProps) => {
     const { email, password } = values
 
-    const { error, data } = await supabase.auth.signUp({
+    return await supabase.auth.signUp({
       email,
       password
     })
-
-    if(error) {
-      throw new Error('O e-mail informado já está cadastrado')
-    }
-
-    return data
   }
   
   const signIn = async (values: AuthProps) => {   

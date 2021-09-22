@@ -18,6 +18,7 @@ import {
   Link as ChakraLink,
   Heading
 } from '@chakra-ui/react'
+import { useCreateProfileMutation } from '../../hooks/useCreateProfileMutation'
 
 type SignInProps = {
   email: string;
@@ -40,6 +41,8 @@ export default function SignUp () {
   
   const { signUp } = useAuth()
 
+  const newProfileMutation = useCreateProfileMutation()
+
   const { 
     register, 
     handleSubmit, 
@@ -54,12 +57,13 @@ export default function SignUp () {
     isDirty,
   } = formState
 
-  const handleSignUp: SubmitHandler<SignInProps> = async (values) => {
-    try {
-      await signUp(values)      
+  const handleSignUp: SubmitHandler<SignInProps> = async values => {    
+    try {      
+      await newProfileMutation.mutateAsync(values)
 
       toast({
-        title: 'Cadastro efetuado com sucesso',        
+        title: 'Cadastro efetuado com sucesso!', 
+        status: 'success',
         duration: 3000,
         isClosable: true,
         position: 'top-right'
