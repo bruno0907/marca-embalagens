@@ -28,6 +28,30 @@ export type NewUserProps = {
   outras_informacoes: string;
 }  
 
+export type ProfileProps = {
+  id: string;
+  user_id: string;    
+  nome: string;
+  razao_social: string;  
+  cpf_cnpj: string;
+  rg_ie: string;  
+  email: string;
+  telefone: string;
+  celular: string;
+  situacao_cadastral: boolean;  
+}
+
+export type NewProfileProps = {  
+  user_id: string;  
+  nome: string;
+  razao_social: string;  
+  cpf_cnpj: string;
+  rg_ie: string;  
+  email: string;
+  telefone: string;
+  celular: string;    
+}  
+
 export type SupplierProps = {
   id: string;
   user_id: string;

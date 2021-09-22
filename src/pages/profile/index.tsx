@@ -4,13 +4,17 @@ import { Layout } from "../../components/Layout";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
+import { NewProfileForm } from "../../components/NewProfileForm";
 
-import { 
-  Text,  
-  Flex
+import { useProfileQuery } from "../../hooks/useProfileQuery";
+
+import {   
+  Flex,  
 } from "@chakra-ui/react";
 
 export default function Profile() {
+  const { data: profile, isFetching } = useProfileQuery()
+
   return (
     <>
       <Head>
@@ -18,11 +22,11 @@ export default function Profile() {
       </Head>
       <Layout>
         <Flex>
-          <Header title="Perfil" />
+          <Header title="Perfil" withGoBack/>
         </Flex>
         <Divider />
         <Content>
-          <Text>Informações da Empresa</Text>
+          <NewProfileForm profile={profile} isFetching={isFetching}/>
         </Content>
       </Layout>
     </>
