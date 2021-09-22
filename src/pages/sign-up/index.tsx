@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { useAuth } from '../../hooks/useAuth'
+import { useSignUpMutation } from '../../hooks/useSignUpMutation'
 
 import { Input } from '../../components/Input'
 
@@ -18,7 +18,6 @@ import {
   Link as ChakraLink,
   Heading
 } from '@chakra-ui/react'
-import { useCreateProfileMutation } from '../../hooks/useCreateProfileMutation'
 
 type SignInProps = {
   email: string;
@@ -38,10 +37,8 @@ const signInFormSchema = yup.object().shape({
 export default function SignUp () {  
   const router = useRouter()
   const toast = useToast()
-  
-  const { signUp } = useAuth()
 
-  const newProfileMutation = useCreateProfileMutation()
+  const signUpMutation = useSignUpMutation()
 
   const { 
     register, 
@@ -59,7 +56,7 @@ export default function SignUp () {
 
   const handleSignUp: SubmitHandler<SignInProps> = async values => {    
     try {      
-      await newProfileMutation.mutateAsync(values)
+      await signUpMutation.mutateAsync(values)
 
       toast({
         title: 'Cadastro efetuado com sucesso!', 

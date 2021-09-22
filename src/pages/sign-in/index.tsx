@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { useAuth } from '../../hooks/useAuth'
+import { useSignInMutation } from '../../hooks/useSignInMutation'
 
 import { Input } from '../../components/Input'
 
@@ -29,10 +29,11 @@ const signInFormSchema = yup.object().shape({
   password: yup.string().required('Senha obrigatória').trim()
 })
 
-export default function SignIn () {  
-  const { signIn } = useAuth()
+export default function SignIn () {
   const router = useRouter()
-  const toast = useToast()
+  const toast = useToast()  
+
+  const signInMutation = useSignInMutation()
 
   const { 
     register, 
@@ -54,7 +55,7 @@ export default function SignIn () {
 
   const handleSignIn: SubmitHandler<SignInProps> = async values => {
     try {
-      await signIn(values)
+      await signInMutation.mutateAsync(values)
 
       toast({
         title: 'Login Efetuado com sucesso',

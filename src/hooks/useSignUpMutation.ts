@@ -10,7 +10,7 @@ type AuthProps = {
   password: string;
 }
 
-const useCreateProfileMutation = () => {
+const useSignUpMutation = () => {
   const { signUp } = useAuth()  
 
   return useMutation(    
@@ -60,5 +60,5 @@ const useCreateProfileMutation = () => {
 }
 
 export {
-  useCreateProfileMutation
+  useSignUpMutation
 }

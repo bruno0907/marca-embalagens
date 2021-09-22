@@ -8,7 +8,11 @@ import { Session, User } from "@supabase/supabase-js";
 import axios from "axios";
 
 type AuthContextProps = {
-  signIn: (values: AuthProps) => Promise<Session>;
+  signIn: (values: AuthProps) => Promise<{
+    user: User,
+    session: Session,
+    error: Error
+  }>;
   signUp: (values: AuthProps) => Promise<{
     user: User,
     session: Session,
@@ -53,16 +57,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const signIn = async (values: AuthProps) => {   
     const { email, password } = values
 
-    const { error, data } = await supabase.auth.signIn({
+    return await supabase.auth.signIn({
       email,
       password
     })
-
-    if(error) {
-      throw new Error('E-mail ou senha inválidos')
-    }
-
-    return data
   }
 
   const signOut = async () => await supabase.auth.signOut()
