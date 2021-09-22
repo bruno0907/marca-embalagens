@@ -1,4 +1,5 @@
 import { useMutation } from "react-query"
+import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase"
 import { AddressProps, NewProfileProps, ProfileProps } from "../types"
 
@@ -53,6 +54,8 @@ const useUpdateProfileMutation = () => {
         ...updatedProfile.data[0],
         ...updatedAddress.data[0]
       }      
+    }, {
+      onSuccess: async () => await queryClient.invalidateQueries('profile')
     }
   )
 }

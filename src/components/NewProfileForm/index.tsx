@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from 'next/router'
 
 import axios from "axios";
 
@@ -75,6 +76,7 @@ type NewProfileFormProps = {
 
 const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
   const toast = useToast()
+  const router = useRouter()
 
   const [states, setStates] = useState<StateProps[]>([]);
   const [cities, setCities] = useState<CityProps[]>([]);  
@@ -152,12 +154,14 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
       await newProfileMutation.mutateAsync({ profileData, profileAddress })
 
       toast({
-        title: 'Cliente cadastrado com sucesso',
+        title: 'Perfil atualizado com sucesso!',
         status: 'success',
         duration: 3000,
         isClosable: true,
         position: 'top-right'
       })
+
+      router.push('/dashboard')
 
     } catch (error) {
       toast({        
@@ -187,7 +191,7 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
     }
     fetchStates()
 
-    if(profile.address.estado) {
+    if(profile?.address.estado) {
       fetchCity(profile.address.estado)
     }
 

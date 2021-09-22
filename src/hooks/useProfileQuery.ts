@@ -22,6 +22,9 @@ const useProfileQuery = () => {
       data: profileData,
       address: profileAddress,
     }
+  }, {
+    staleTime: 1000 * 10 * 60,
+    useErrorBoundary: true,
   })
 }
 
