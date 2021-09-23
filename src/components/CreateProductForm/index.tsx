@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateProductMutation } from "../../hooks/useCreateProductMutation";
 import { useAuth } from "../../hooks/useAuth";
 
-import { Input } from "../../components/Input";
+import { Input } from "../Input";
 
 import {  
   Button,
@@ -24,11 +24,11 @@ const newProductSchema = yup.object().shape({
 
 import { NewProductProps } from "../../types";
 
-type NewProductFormProps = {  
+type CreateProductFormProps = {  
   onClose: () => void;
 }
 
-const NewProductForm = ({ onClose }: NewProductFormProps) => {
+const CreateProductForm = ({ onClose }: CreateProductFormProps) => {
   const { session } = useAuth()
   const user_id = session.user.id 
 
@@ -159,4 +159,4 @@ const NewProductForm = ({ onClose }: NewProductFormProps) => {
   );
 }
 
-export { NewProductForm }
+export { CreateProductForm }

@@ -9,7 +9,7 @@ import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
 import { Modal } from '../../components/Modal'
-import { NewUserForm } from '../../components/NewUserForm'
+import { CreateUserForm } from '../../components/CreateUserForm'
 import { UsersList } from '../../components/UsersList'
 
 import {    
@@ -97,7 +97,7 @@ export default function Users() {
         onClose={onClose}
         title="Cadastrar novo cliente"
       >
-        <NewUserForm onClose={onClose}/>
+        <CreateUserForm onClose={onClose}/>
       </Modal>
     </>
   )

@@ -7,21 +7,18 @@ import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Modal } from '../../components/Modal'
 import { ProductsList } from '../../components/ProductsList'
-import { NewProductForm } from '../../components/NewProductForm'
+import { CreateProductForm } from '../../components/CreateProductForm'
 
 import useDebounce from '../../hooks/useDebounce'
 
-import {
-  Heading,
-  Flex,  
+import { 
   Button,
   Icon,  
   useDisclosure,    
   InputGroup,
   Input,
   InputLeftElement,
-  InputRightElement,
-  Spacer
+  InputRightElement,  
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
@@ -100,7 +97,7 @@ export default function Products() {
         onClose={onClose}
         title="Novo produto"
       >
-        <NewProductForm onClose={onClose}/>
+        <CreateProductForm onClose={onClose}/>
       </Modal>
     </>
   )

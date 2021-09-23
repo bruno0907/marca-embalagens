@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import axios from "axios";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useAuth } from "../../hooks/useAuth";
-import { useCreateSupplierMutation } from "../../hooks/useCreateSupplierMutation";
+import { useCreateUserMutation } from "../../hooks/useCreateUserMutation";
+import { useStatesQuery } from "../../hooks/useStatesQuery";
+import { getCities } from "../../services/getCities";
+import { useAuth } from '../../hooks/useAuth'
 
 import { Input } from "../Input";
 import { Select } from "../Select";
@@ -24,10 +24,9 @@ import {
   RadioGroup,  
 } from "@chakra-ui/react"
 
-const newSupplierSchema = yup.object().shape({
+const newUserSchema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório").trim(),
   razao_social: yup.string().trim(),
-  produto: yup.string().trim(),
   telefone: yup.string().trim(),
   celular: yup.string().trim(),
   email: yup.string().email().trim(),
@@ -58,53 +57,45 @@ const newSupplierSchema = yup.object().shape({
 });
 
 import {   
-  NewSupplierProps,    
+  NewUserProps,    
   NewAddressProps,  
 } from "../../types";
-import { useStatesQuery } from "../../hooks/useStatesQuery";
-import { getCities } from "../../services/getCities";
-
-type StateProps = {
-  id: number;
-  sigla: string;
-  nome: string;
-};
 
 type CityProps = {
   id: number;
   nome: string;
 };
 
-type NewSupplierFormProps = {  
+type CreateUserFormProps = {  
   onClose: () => void;
 }
 
-type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
+type HandleNewUserProps = NewUserProps & NewAddressProps
 
-const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
+
+const CreateUserForm = ({ onClose }: CreateUserFormProps) => {  
   const { session } = useAuth()
-  const user_id = session.user.id
+  const user_id = session.user.id  
 
   const [cities, setCities] = useState<CityProps[]>([]);  
   const [isCNPJ, setIsCNPJ] = useState('Jurídica');
 
   const toast = useToast()
-  const states = useStatesQuery()  
+  const states = useStatesQuery()
 
   const { handleSubmit, formState, register, reset, clearErrors, setError } =
-    useForm<HandleNewSupplierProps>({
-      resolver: yupResolver(newSupplierSchema),
+    useForm<HandleNewUserProps>({
+      resolver: yupResolver(newUserSchema),
     });
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newSupplierMutation = useCreateSupplierMutation()
+  const createUserMutation = useCreateUserMutation()
 
-  const handleNewUser: SubmitHandler<HandleNewSupplierProps> = async values => {
+  const handleNewUser: SubmitHandler<HandleNewUserProps> = async values => {
     const {
       nome,
       razao_social,
-      produto,
       telefone,
       celular,
       email,
@@ -120,10 +111,9 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
       outras_informacoes,
     } = values
 
-    const supplierData: NewSupplierProps = {
+    const userData: NewUserProps = {
       user_id,      
       natureza_cliente: isCNPJ,
-      produto,
       nome,
       razao_social,
       telefone,
@@ -146,7 +136,7 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
     }
     
     try {      
-      await newSupplierMutation.mutateAsync({ supplierData, addressData })
+      await createUserMutation.mutateAsync({ userData, addressData })
 
       toast({
         title: 'Cliente cadastrado com sucesso',
@@ -156,7 +146,7 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
         position: 'top-right'
       })
 
-      onClose();
+      onClose()
 
     } catch (error) {
       toast({        
@@ -167,8 +157,7 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
         position: 'top-right'
       })
 
-      onClose()  
-
+      onClose()
     }
   };
 
@@ -225,13 +214,6 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
 
           }
         </HStack>
-        <Input
-          name="Produto"
-          label="Produto"
-          bgColor="gray.50"
-          error={errors?.produto}
-          {...register("produto")}
-        />
         <HStack spacing={3}>
           <Input
             name="telefone"
@@ -328,7 +310,7 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
                   {state.nome}
                 </option>
               );
-            })}
+            }) }
           </Select>
           <Select
             name="cidade"
@@ -406,4 +388,4 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
   );
 }
 
-export { NewSupplierForm }
+export { CreateUserForm }

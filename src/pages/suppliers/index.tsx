@@ -8,7 +8,7 @@ import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
 import { SuppliersList } from '../../components/SuppliersList'
 import { Modal } from '../../components/Modal'
-import { NewSupplierForm } from '../../components/NewSupplierForm'
+import { CreateSupplierForm } from '../../components/CreateSupplierForm'
 
 import useDebounce from '../../hooks/useDebounce'
 
@@ -96,7 +96,7 @@ export default function Suppliers() {
         onClose={onClose}
         title="Cadastrar novo fornecedor"
       >
-        <NewSupplierForm onClose={onClose}/>
+        <CreateSupplierForm onClose={onClose}/>
       </Modal>
     </>
   )
