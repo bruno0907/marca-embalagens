@@ -4,7 +4,7 @@ import { Layout } from "../../components/Layout";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
-import { NewProfileForm } from "../../components/NewProfileForm";
+import { ProfileForm } from "../../components/ProfileForm";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 
@@ -22,11 +22,11 @@ export default function Profile() {
       </Head>
       <Layout>
         <Flex>
-          <Header title="Perfil" withGoBack/>
+          <Header title="Perfil" />
         </Flex>
         <Divider />
         <Content>
-          <NewProfileForm profile={profile} isFetching={isFetching}/>
+          <ProfileForm profile={profile} isFetching={isFetching}/>
         </Content>
       </Layout>
     </>

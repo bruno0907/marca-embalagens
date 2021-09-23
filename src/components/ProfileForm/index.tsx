@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 
-import axios from "axios";
-
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useUpdateProfileMutation } from "../../hooks/useUpdateProfileMutation";
+import { useStatesQuery } from "../../hooks/useStatesQuery";
+import { getCities } from "../../services/getCities";
 
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -23,7 +23,7 @@ import {
   Skeleton
 } from "@chakra-ui/react"
 
-const newUserSchema = yup.object().shape({
+const profileFormSchema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório").trim(),
   razao_social: yup.string().trim(),
   telefone: yup.string().trim(),
@@ -47,71 +47,53 @@ const newUserSchema = yup.object().shape({
   complemento: yup.string().trim(),  
 });
 
-import {       
+import {         
   AddressProps,
   NewAddressProps,
   NewProfileProps,
   ProfileProps,  
 } from "../../types";
 
-type StateProps = {
-  id: number;
-  sigla: string;
-  nome: string;
-};
-
 type CityProps = {
   id: number;
   nome: string;
 };
 
-type HandleNewProfileProps = NewProfileProps & NewAddressProps
+type HandleUpdateProfileProps = NewProfileProps & NewAddressProps
 
-type NewProfileFormProps = {
+type ProfileFormProps = {
   profile: {
     data: ProfileProps;
-    address: AddressProps};
-  isFetching: boolean
+    address: AddressProps
+  };
+  isFetching: boolean;
 }
 
-const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
+const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
   const toast = useToast()
-  const router = useRouter()
+  const router = useRouter()    
+  
+  const [cities, setCities] = useState<CityProps[]>([])
 
-  const [states, setStates] = useState<StateProps[]>([]);
-  const [cities, setCities] = useState<CityProps[]>([]);  
+  const states = useStatesQuery()      
 
   const { 
     handleSubmit, 
     formState, 
     register, 
-    clearErrors,     
-  } = useForm<HandleNewProfileProps>({
-      resolver: yupResolver(newUserSchema),
-      defaultValues: {
-        nome: profile?.data.nome,
-        razao_social: profile?.data.razao_social,
-        telefone: profile?.data.telefone,
-        celular: profile?.data.celular,
-        email: profile?.data.email,
-        cpf_cnpj: profile?.data.cpf_cnpj,
-        rg_ie: profile?.data.rg_ie,
-        endereco: profile?.address.endereco,
-        bairro: profile?.address.bairro,
-        estado: profile?.address.estado,        
-        cidade: profile?.address.cidade,
-        cep: profile?.address.cep,
-        complemento: profile?.address.complemento,
-      }
+    
+    reset
+  } = useForm<HandleUpdateProfileProps>({
+      resolver: yupResolver(profileFormSchema)      
     });
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newProfileMutation = useUpdateProfileMutation()
+  const updateProfileMutation = useUpdateProfileMutation()
 
-  const handleNewProfileErrors: SubmitErrorHandler<HandleNewProfileProps> = errors => console.log(errors)
+  const handleUpdateProfileErrors: SubmitErrorHandler<HandleUpdateProfileProps> = errors => console.log(errors)
 
-  const handleNewProfile: SubmitHandler<HandleNewProfileProps> = async (values) => {
+  const handleUpdateProfile: SubmitHandler<HandleUpdateProfileProps> = async (values) => {
     const {      
       nome,
       razao_social,
@@ -151,7 +133,7 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
     }
     
     try {      
-      await newProfileMutation.mutateAsync({ profileData, profileAddress })
+      await updateProfileMutation.mutateAsync({ profileData, profileAddress })
 
       toast({
         title: 'Perfil atualizado com sucesso!',
@@ -174,31 +156,39 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
     }
   };    
 
-  const fetchCity = useCallback( async (uf: string) => {
-    const { data } = await axios.get(
-      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`
-    )
+  const fetchCities = useCallback( async (uf: string) => {
+    const { data } = await getCities(uf)
+
     setCities(data)
-    
-  }, [])
+  }, [])  
 
   useEffect(() => {
-    const fetchStates = async () => {
-      const { data } = await axios.get(
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-      )
-      setStates(data)
+    if(profile) {
+      fetchCities(profile.address.estado || 'AC')
+        .then(() => reset({
+          nome: profile.data.nome,
+          razao_social: profile.data.razao_social,
+          telefone: profile.data.telefone,
+          celular: profile.data.celular,
+          email: profile.data.email,
+          cpf_cnpj: profile.data.cpf_cnpj,
+          rg_ie: profile.data.rg_ie,
+          endereco: profile.address.endereco,
+          bairro: profile.address.bairro,
+          estado: profile.address.estado || 'AC',
+          cidade: profile.address.cidade,
+          cep: profile.address.cep,
+          complemento: profile.address.complemento,
+          })
+        )
+        .catch(err => console.log(err))
     }
-    fetchStates()
 
-    if(profile?.address.estado) {
-      fetchCity(profile.address.estado)
-    }
+    return () => setCities([])
 
+  }, [profile, reset, fetchCities])
 
-  }, [fetchCity, profile?.address.estado])  
-
-  if(isFetching || !profile) {
+  if(isFetching && !profile) {
     return (      
       <Stack spacing={3}>
         <HStack spacing={3}>
@@ -233,7 +223,7 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
     <Flex
       as="form"
       flexDir="column"
-      onSubmit={handleSubmit(handleNewProfile, handleNewProfileErrors)}
+      onSubmit={handleSubmit(handleUpdateProfile, handleUpdateProfileErrors)}
     >
       <Stack spacing={3}>
         <HStack spacing={3}>
@@ -314,32 +304,29 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
           <Select
             name="estado"
             label="Estado*"
-            bgColor="gray.50"
+            bgColor="gray.50"            
             error={errors?.estado}
-            defaultValue={profile?.address.estado}
             {...register("estado")}
-            onChange={(event) => fetchCity(event.target.value)}
-          > 
-            {states.map((state) => {
+            onChange={(event) => fetchCities(event.target.value)}
+          >{ states.isFetching && <option>Carregando...</option> }            
+            { states.data?.map((state) => {
               return (
                 <option key={state.id} value={state.sigla}>
                   {state.nome}
                 </option>
               );
-            })}
+            }) }
           </Select>
           <Select
             name="cidade"
             label="Cidade*"
             bgColor="gray.50"
-            error={errors?.cidade}            
-            defaultValue={profile?.address.cidade}
+            error={errors?.cidade}
             {...register("cidade")}
-            onChange={() => clearErrors('cidade')}
-          > 
-            {cities.map((city) => {
+          >{!cities && <option>Carregando...</option>}
+            { cities.map((city) => {
               return <option key={city.id} value={city.nome}>{city.nome}</option>;
-            })}
+            }) }
           </Select>
           
           <Input
@@ -375,4 +362,4 @@ const NewProfileForm = ({ profile, isFetching }: NewProfileFormProps) => {
   );
 }
 
-export { NewProfileForm }
+export { ProfileForm }

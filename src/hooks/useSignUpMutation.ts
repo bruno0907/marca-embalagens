@@ -22,24 +22,24 @@ const useSignUpMutation = () => {
       if(newSignUp.user) {
         const profile: NewProfileProps = {
           user_id: newSignUp.user.id,
-          celular: '',
-          cpf_cnpj: '',
+          celular: undefined,
+          cpf_cnpj: undefined,
           email: newSignUp.user.email,
-          nome: '',
-          razao_social: '',
-          rg_ie: '',
-          telefone: ''
+          nome: undefined,
+          razao_social: undefined,
+          rg_ie: undefined,
+          telefone: undefined
         }
         const { data: newProfile } = await createProfile(profile)
 
         const address: NewAddressProps = {
           user_id: newProfile[0].id,
-          bairro: '',
-          cep: '',
-          cidade: '',
-          complemento: '',
-          endereco: '',
-          estado: '',
+          bairro: undefined,
+          cep: undefined,
+          cidade: undefined,
+          complemento: undefined,
+          endereco: undefined,
+          estado: undefined,
           principal: true,
         }
 

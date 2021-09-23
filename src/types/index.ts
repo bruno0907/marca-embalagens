@@ -43,13 +43,13 @@ export type ProfileProps = {
 
 export type NewProfileProps = {  
   user_id: string;  
-  nome: string;
-  razao_social: string;  
-  cpf_cnpj: string;
-  rg_ie: string;  
+  nome: string | undefined;
+  razao_social: string | undefined;  
+  cpf_cnpj: string | undefined; 
+  rg_ie: string | undefined;  
   email: string;
-  telefone: string;
-  celular: string;    
+  telefone: string | undefined;
+  celular: string | undefined;    
 }  
 
 export type SupplierProps = {
@@ -98,13 +98,13 @@ export type AddressProps = {
 
 export type NewAddressProps = {  
   user_id: string;
-  endereco: string;
-  bairro: string;
-  cidade: string;
-  estado: string;
-  cep: string;
-  complemento: string;  
-  principal: boolean;
+  endereco: string | undefined;
+  bairro: string | undefined;
+  cidade: string | undefined;
+  estado: string | undefined;
+  cep: string | undefined;
+  complemento: string | undefined;  
+  principal: boolean | undefined;
 }
 
 export type ProductProps = {

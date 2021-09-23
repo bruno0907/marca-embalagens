@@ -63,7 +63,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     })
   }
 
-  const signOut = async () => await supabase.auth.signOut()
+  const signOut = async () => {    
+    await supabase.auth.signOut()
+  }
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {

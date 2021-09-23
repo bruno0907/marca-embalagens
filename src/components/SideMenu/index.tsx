@@ -18,9 +18,14 @@ import {
   FiHome,
   FiLogOut
 } from "react-icons/fi"
+import { queryClient } from "../../contexts/queryContext"
 
 const SideMenu = () => {
   const { signOut } = useAuth()
+
+  const handleSignOut = async () => {
+    await signOut().then(() => queryClient.clear())
+  }
 
   return (
     <Flex
@@ -65,7 +70,7 @@ const SideMenu = () => {
       <Spacer />
       <Button
         rightIcon={<FiLogOut />}        
-        onClick={signOut}
+        onClick={handleSignOut}
         colorScheme="blue"
         flexShrink={0}        
         w="100%"                             
