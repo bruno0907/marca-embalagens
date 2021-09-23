@@ -6,8 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { supabase } from "../../database/supabase";
-
+import { useAuth } from "../../hooks/useAuth";
 import { useCreateSupplierMutation } from "../../hooks/useCreateSupplierMutation";
 
 import { Input } from "../Input";
@@ -62,6 +61,8 @@ import {
   NewSupplierProps,    
   NewAddressProps,  
 } from "../../types";
+import { useStatesQuery } from "../../hooks/useStatesQuery";
+import { getCities } from "../../services/getCities";
 
 type StateProps = {
   id: number;
@@ -81,13 +82,14 @@ type NewSupplierFormProps = {
 type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
 
 const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
-  const user = supabase.auth.user()  
-  const toast = useToast()
+  const { session } = useAuth()
+  const user_id = session.user.id
 
-  const [states, setStates] = useState<StateProps[]>([]);
-  const [cities, setCities] = useState<CityProps[]>([]);
-  const [hasCities, setHasCities] = useState(true);
+  const [cities, setCities] = useState<CityProps[]>([]);  
   const [isCNPJ, setIsCNPJ] = useState('Jurídica');
+
+  const toast = useToast()
+  const states = useStatesQuery()  
 
   const { handleSubmit, formState, register, reset, clearErrors, setError } =
     useForm<HandleNewSupplierProps>({
@@ -99,8 +101,6 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
   const newSupplierMutation = useCreateSupplierMutation()
 
   const handleNewUser: SubmitHandler<HandleNewSupplierProps> = async values => {
-    const user_id = user.id
-
     const {
       nome,
       razao_social,
@@ -176,30 +176,21 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
     onClose()
     reset();    
   };
-  
-  useEffect(() => {
-    async function fetchStates() {
-      const { data } = await axios.get(
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-      )
-      setStates(data)
-    }
-    fetchStates()
 
-  }, [])
+  const fetchCities = async (uf: string) => {
+    const { data } = await getCities(uf)    
 
-  async function fetchCity(uf: string) {
-    const { data } = await axios.get(
-      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`
-    )
     setCities(data)
-    setHasCities(false)
-
+    
     clearErrors("estado")
     setError("cidade", {
       message: "Você deve selecionar uma cidade",
     })
   }
+
+  useEffect(() => {
+    return () => setCities([])
+  }, [])
 
   return (
     <Flex
@@ -325,12 +316,13 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
             error={errors?.estado}
             defaultValue="default"
             {...register("estado")}
-            onChange={(event) => fetchCity(event.target.value)}
+            onChange={(event) => fetchCities(event.target.value)}
           >
             <option value="default" hidden aria-readonly>
               Selecione um estado...
             </option>
-            {states.map((state) => {
+            { states.isFetching && <option>Carregando...</option> }
+            { states.data?.map((state) => {
               return (
                 <option key={state.id} value={state.sigla}>
                   {state.nome}
@@ -343,7 +335,7 @@ const NewSupplierForm = ({ onClose }: NewSupplierFormProps) => {
             label="Cidade*"
             bgColor="gray.50"
             error={errors?.cidade}
-            isDisabled={hasCities}
+            isDisabled={!Boolean(cities.length)}
             defaultValue="default"
             {...register("cidade")}
             onChange={() => clearErrors('cidade')}

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
-import axios from "axios";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { supabase } from "../../database/supabase";
+import { useCreateUserMutation } from "../../hooks/useCreateUserMutation";
+import { useStatesQuery } from "../../hooks/useStatesQuery";
+import { getCities } from "../../services/getCities";
+import { useAuth } from '../../hooks/useAuth'
 
 import { Input } from "../../components/Input";
 import { Select } from "../../components/Select";
@@ -59,13 +60,6 @@ import {
   NewUserProps,    
   NewAddressProps,  
 } from "../../types";
-import { useCreateUserMutation } from "../../hooks/useCreateUserMutation";
-
-type StateProps = {
-  id: number;
-  sigla: string;
-  nome: string;
-};
 
 type CityProps = {
   id: number;
@@ -79,14 +73,15 @@ type NewUserFormProps = {
 type HandleNewUserProps = NewUserProps & NewAddressProps
 
 
-const NewUserForm = ({ onClose }: NewUserFormProps) => {
-  const user = supabase.auth.user()  
-  const toast = useToast()
+const NewUserForm = ({ onClose }: NewUserFormProps) => {  
+  const { session } = useAuth()
+  const user_id = session.user.id  
 
-  const [states, setStates] = useState<StateProps[]>([]);
-  const [cities, setCities] = useState<CityProps[]>([]);
-  const [hasCities, setHasCities] = useState(true);
+  const [cities, setCities] = useState<CityProps[]>([]);  
   const [isCNPJ, setIsCNPJ] = useState('Jurídica');
+
+  const toast = useToast()
+  const states = useStatesQuery()
 
   const { handleSubmit, formState, register, reset, clearErrors, setError } =
     useForm<HandleNewUserProps>({
@@ -95,11 +90,9 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newUserMutation = useCreateUserMutation()
+  const createUserMutation = useCreateUserMutation()
 
   const handleNewUser: SubmitHandler<HandleNewUserProps> = async values => {
-    const user_id = user.id
-
     const {
       nome,
       razao_social,
@@ -143,7 +136,7 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
     }
     
     try {      
-      await newUserMutation.mutateAsync({ userData, addressData })
+      await createUserMutation.mutateAsync({ userData, addressData })
 
       toast({
         title: 'Cliente cadastrado com sucesso',
@@ -153,7 +146,7 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
         position: 'top-right'
       })
 
-      onClose();
+      onClose()
 
     } catch (error) {
       toast({        
@@ -164,8 +157,7 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
         position: 'top-right'
       })
 
-      onClose()  
-
+      onClose()
     }
   };
 
@@ -173,30 +165,21 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
     onClose()
     reset();    
   };
-  
-  useEffect(() => {
-    async function fetchStates() {
-      const { data } = await axios.get(
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-      )
-      setStates(data)
-    }
-    fetchStates()
 
-  }, [])
+  const fetchCities = async (uf: string) => {
+    const { data } = await getCities(uf)    
 
-  async function fetchCity(uf: string) {
-    const { data } = await axios.get(
-      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios?orderBy=nome`
-    )
     setCities(data)
-    setHasCities(false)
-
+    
     clearErrors("estado")
     setError("cidade", {
       message: "Você deve selecionar uma cidade",
     })
   }
+
+  useEffect(() => {
+    return () => setCities([])
+  }, [])
 
   return (
     <Flex
@@ -315,25 +298,26 @@ const NewUserForm = ({ onClose }: NewUserFormProps) => {
             error={errors?.estado}
             defaultValue="default"
             {...register("estado")}
-            onChange={(event) => fetchCity(event.target.value)}
+            onChange={(event) => fetchCities(event.target.value)}
           >
             <option value="default" hidden aria-readonly>
               Selecione um estado...
             </option>
-            {states.map((state) => {
+            { states.isFetching && <option>Carregando...</option> }
+            { states.data?.map((state) => {
               return (
                 <option key={state.id} value={state.sigla}>
                   {state.nome}
                 </option>
               );
-            })}
+            }) }
           </Select>
           <Select
             name="cidade"
             label="Cidade*"
             bgColor="gray.50"
             error={errors?.cidade}
-            isDisabled={hasCities}
+            isDisabled={!Boolean(cities.length)}
             defaultValue="default"
             {...register("cidade")}
             onChange={() => clearErrors('cidade')}

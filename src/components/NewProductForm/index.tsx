@@ -2,7 +2,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { supabase } from "../../database/supabase";
+import { useCreateProductMutation } from "../../hooks/useCreateProductMutation";
+import { useAuth } from "../../hooks/useAuth";
 
 import { Input } from "../../components/Input";
 
@@ -22,14 +23,15 @@ const newProductSchema = yup.object().shape({
 });
 
 import { NewProductProps } from "../../types";
-import { useCreateProductMutation } from "../../hooks/useCreateProductMutation";
 
 type NewProductFormProps = {  
   onClose: () => void;
 }
 
 const NewProductForm = ({ onClose }: NewProductFormProps) => {
-  const user = supabase.auth.user()  
+  const { session } = useAuth()
+  const user_id = session.user.id 
+
   const toast = useToast()
 
   const { handleSubmit, formState, register, reset } =
@@ -39,11 +41,9 @@ const NewProductForm = ({ onClose }: NewProductFormProps) => {
 
   const { errors, isDirty, isSubmitting } = formState;
 
-  const newProductMutation = useCreateProductMutation()
+  const createProductMutation = useCreateProductMutation()
 
   const handleNewUser: SubmitHandler<NewProductProps> = async values => {
-    const user_id = user.id
-
     const {
       nome,
       descricao,
@@ -58,7 +58,7 @@ const NewProductForm = ({ onClose }: NewProductFormProps) => {
     }
     
     try {      
-      await newProductMutation.mutateAsync(productData)  
+      await createProductMutation.mutateAsync(productData)  
 
       toast({
         title: 'Produto cadastrado com sucesso',

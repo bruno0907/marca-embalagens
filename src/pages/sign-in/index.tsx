@@ -65,8 +65,6 @@ export default function SignIn () {
       })
 
       router.push('/dashboard')
-
-      return
       
     } catch (error) {
       toast({
@@ -88,8 +86,6 @@ export default function SignIn () {
       })
 
       setFocus('password')
-
-      return
     }
   }
 
