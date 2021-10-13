@@ -10,9 +10,10 @@ import {
   Th,
   Tbody,
   Td,
-  Spinner,  
+  Spinner,    
   Flex,
   Text,  
+  Center
 } from "@chakra-ui/react"
 
 type UsersListProps = {
@@ -26,23 +27,23 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
 
   const handlePrefetchSupplier = async (id: string) => await prefetchSupplier(id)
 
-  if(suppliers.isLoading || suppliers.isFetching) {
+  if(suppliers.isLoading) {
     return (
-      <Table colorScheme="gray" variant="striped" >
-        <Thead>
-          <Tr bgColor="blue.500">
-            <Th color="gray.50">
-              <Flex align="center">
-                Nome
-                <Spinner size="sm" color="gray.50" ml="4"/>
-              </Flex>
-            </Th>
-            <Th color="gray.50">Produto</Th>
-            <Th color="gray.50">Telefone</Th>
-            <Th color="gray.50">Celular</Th>
-          </Tr>
-        </Thead>        
-      </Table>
+      <>
+        <Table colorScheme="gray" variant="striped" >
+          <Thead>
+            <Tr bgColor="blue.500">
+              <Th color="gray.50"></Th>
+              <Th color="gray.50">Telefone</Th>
+              <Th color="gray.50">Celular</Th>
+              <Th color="gray.50">E-mail</Th>
+            </Tr>
+          </Thead>        
+        </Table>
+        <Center p="8">
+          <Spinner size="md" color="blue.500"/>
+        </Center>
+      </>
     )
   }
 
@@ -86,7 +87,14 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
     <Table colorScheme="gray" variant="striped" >
       <Thead>
         <Tr bgColor="blue.500">
-          <Th color="gray.50" align="center">Nome</Th>
+        <Th color="gray.50">
+            <Flex align="center">
+              Nome
+              { suppliers.isFetching && 
+                <Spinner size="sm" color="gray.50" ml="4"/>
+              }
+            </Flex>
+          </Th>
           <Th color="gray.50">Produto</Th>
           <Th color="gray.50">Telefone</Th>
           <Th color="gray.50">Celular</Th>

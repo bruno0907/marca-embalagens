@@ -10,6 +10,7 @@ import {
   Spinner,  
   Flex,
   Text,  
+  Center
 } from "@chakra-ui/react"
 
 import { useProductsQuery } from "../../hooks/useProductsQuery"
@@ -26,22 +27,23 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
 
   const handlePrefetchProduct = async (id: string) => prefetchProduct(id)
 
-  if(products.isLoading || products.isFetching) {
+  if(products.isLoading) {
     return (
-      <Table colorScheme="gray" variant="striped" >
-        <Thead>
-          <Tr bgColor="blue.500">
-            <Th color="gray.50">
-              <Flex align="center">
-                Produto
-                <Spinner size="sm" color="gray.50" ml="4"/>
-              </Flex>
-            </Th>            
-            <Th color="gray.50">Quantidade</Th>
-            <Th color="gray.50">Valor</Th>
-          </Tr>
-        </Thead>        
-      </Table>
+      <>
+        <Table colorScheme="gray" variant="striped" >
+          <Thead>
+            <Tr bgColor="blue.500">
+              <Th color="gray.50"></Th>
+              <Th color="gray.50">Telefone</Th>
+              <Th color="gray.50">Celular</Th>
+              <Th color="gray.50">E-mail</Th>
+            </Tr>
+          </Thead>        
+        </Table>
+        <Center p="8">
+          <Spinner size="md" color="blue.500"/>
+        </Center>
+      </>
     )
   }
 
@@ -83,7 +85,14 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
     <Table colorScheme="gray" variant="striped" >
       <Thead>
         <Tr bgColor="blue.500">
-            <Th color="gray.50">Produto</Th>
+            <Th color="gray.50">
+            <Flex align="center">
+              Produto
+              { products.isFetching && 
+                <Spinner size="sm" color="gray.50" ml="4"/>
+              }
+            </Flex>
+            </Th>
             <Th color="gray.50">Quantidade</Th>
             <Th color="gray.50">Valor</Th>
         </Tr>
