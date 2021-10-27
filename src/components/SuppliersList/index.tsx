@@ -87,7 +87,7 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
     <Table colorScheme="gray" variant="striped" >
       <Thead>
         <Tr bgColor="blue.500">
-        <Th color="gray.50">
+          <Th color="gray.50">
             <Flex align="center">
               Nome
               { suppliers.isFetching && 

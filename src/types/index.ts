@@ -123,17 +123,33 @@ export type NewProductProps = {
   preco_unitario: number;
 }
 
-export type OrderProps = {
-  id: number; // numero pedido
+export type NewOrderProps = {  
   user_id: string; // dono do pedido (usuario autenticado)
+  numero_pedido: number;
   cliente: string; // id do cliente do pedido  
+  endereco_entrega: string;
   condicao_pagamento: string; // condicao do pagamento do pedido
   pedido: OrderItemProps[]; // pedido será um array de produtos
   total: number; // valor total do pedido
+  data_entrega: string;  
+}
+
+export type OrderProps = {
+  id: string; // numero pedido
+  user_id: string; // dono do pedido (usuario autenticado)
+  numero_pedido: number;
+  cliente: string; // id do cliente do pedido  
+  endereco_entrega: string;
+  condicao_pagamento: string; // condicao do pagamento do pedido
+  pedido: OrderItemProps[]; // pedido será um array de produtos
+  total: number; // valor total do pedido
+  data_entrega: string;
+  created_at: Date;
 }
 
 export type OrderItemProps = {
   quantidade: number;
-  produto: ProductProps;
-  total: number;  
+  produto: string;
+  valor_unitario: number;
+  valor_total: number;  
 }
