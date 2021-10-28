@@ -24,7 +24,7 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> =
         <ChakraInput
           id={name}
           name={name}
-          size="lg"
+          variant="flushed"
           ref={ref}
           error={error}
           {...rest}

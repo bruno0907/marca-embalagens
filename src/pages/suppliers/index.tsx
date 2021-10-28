@@ -1,4 +1,5 @@
 import { useState, ChangeEvent } from 'react'
+import { useRouter } from 'next/router'
 
 import Head from 'next/head'
 
@@ -25,7 +26,7 @@ import {
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 
 export default function Suppliers() {   
-  const { isOpen, onClose, onOpen } = useDisclosure()
+  const router = useRouter()
   
   const [searchValue, setSearchValue] = useState('')  
   
@@ -37,8 +38,6 @@ export default function Suppliers() {
   }
 
   const handleClearFilter = () => setSearchValue('')
-
-  const handleModalOpen = () => onOpen()
 
   return (
     <>
@@ -52,7 +51,7 @@ export default function Suppliers() {
           <Button
             colorScheme="blue"            
             leftIcon={<Icon as={FiPlus}/>}
-            onClick={handleModalOpen}
+            onClick={() => router.push('/suppliers/new-supplier')}
           >
             Cadastrar novo fornecedor
           </Button>
@@ -90,14 +89,6 @@ export default function Suppliers() {
         </Content> 
 
       </Layout>
-      
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        title="Cadastrar novo fornecedor"
-      >
-        <CreateSupplierForm onClose={onClose}/>
-      </Modal>
     </>
   )
 }

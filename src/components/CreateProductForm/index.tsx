@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -24,13 +26,11 @@ const newProductSchema = yup.object().shape({
 
 import { NewProductProps } from "../../types";
 
-type CreateProductFormProps = {  
-  onClose: () => void;
-}
-
-const CreateProductForm = ({ onClose }: CreateProductFormProps) => {
+const CreateProductForm = () => {
   const { session } = useAuth()
   const user_id = session.user.id 
+
+  const router = useRouter()
 
   const toast = useToast()
 
@@ -68,7 +68,7 @@ const CreateProductForm = ({ onClose }: CreateProductFormProps) => {
         position: 'top-right'
       })
 
-      onClose();
+      router.push('/products')
 
     } catch (error) {
       toast({        
@@ -78,16 +78,15 @@ const CreateProductForm = ({ onClose }: CreateProductFormProps) => {
         isClosable: true,
         position: 'top-right'
       })
-
-      onClose()  
-
     }
   };
 
   const handleCancel = () => {
-    onClose()
+    router.push('/products')
     reset();    
   };
+  
+  if(!user_id) return null
 
   return (
     <Flex

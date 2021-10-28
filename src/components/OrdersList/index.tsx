@@ -3,6 +3,9 @@ import { useRouter } from "next/router"
 import { useOrdersQuery } from "../../hooks/useOrdersQuery"
 import { prefetchOrder } from "../../services/prefetchOrder"
 
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+
 import { 
   Table,
   Thead,
@@ -17,13 +20,15 @@ import {
 } from "@chakra-ui/react"
 
 type OrdersListProps = {
-  filterValue: string;
+  filterValue: number;
 }
 
 const OrdersList = ({ filterValue }: OrdersListProps) => {
   const router = useRouter()
 
   const orders = useOrdersQuery(filterValue)
+
+  console.log(orders)
 
   const handlePrefetchOrder = async (id: string) => await prefetchOrder(id)
 
@@ -89,15 +94,15 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
         <Tr bgColor="blue.500">
         <Th color="gray.50">
             <Flex align="center">
-              Pedido
+              N.Pedido
               { orders.isFetching && 
                 <Spinner size="sm" color="gray.50" ml="4"/>
               }
             </Flex>
           </Th>            
             <Th color="gray.50">Cliente</Th>
-            <Th color="gray.50">Data</Th>
-            <Th color="gray.50">Valor</Th>
+            <Th color="gray.50">Data pedido</Th>
+            <Th color="gray.50">Valor total</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -111,8 +116,8 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >
                 <Td>{order.numero_pedido}</Td>                        
-                <Td>{order.cliente}</Td>
-                <Td>{order.created_at}</Td>
+                <Td>{order.users.nome}</Td>
+                <Td>{format(new Date(order.created_at), 'dd/MM/yyyy', { locale: ptBR })}</Td>
                 <Td>{order.total.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency'})}</Td>   
               </Tr>
             )

@@ -4,25 +4,21 @@ import { Header } from '../../components/Header'
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Content } from '../../components/Content'
+import { CreateSupplierForm } from '../../components/CreateSupplierForm'
 
-import { CreateOrderForm } from '../../components/CreateOrderForm'
-
-export default function NewOrder() {
+export default function NewSupplier() {
   return (
     <>
       <Head>
-        <title>MARCA | Novo pedido</title>        
+        <title>MARCA | Novo Fornecedor</title>        
       </Head>
       <Layout>
-        
-        <Header title="Novo pedido" withGoBack/>
-
+        <Header title="Novo Fornecedor" withGoBack/>
         <Divider />
-
         <Content>
-          <CreateOrderForm />
+          <CreateSupplierForm />
         </Content>
-      </Layout> 
-    </>   
+      </Layout>
+    </>
   )
 }

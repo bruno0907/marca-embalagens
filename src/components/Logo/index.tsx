@@ -1,21 +1,10 @@
-import Link from 'next/link'
-
 import { 
-  Heading,
-  Flex,
-  Link as ChakraLink,
+  Heading
 } from "@chakra-ui/react"
 
 const Logo = ({ ...rest }) => {
   return (
-    <Flex flexDir="column" align="center">
-      <Heading color="blue.500" {...rest}>MARCA</Heading>
-      <Link href="/profile" passHref>
-        <ChakraLink fontWeight="md" _hover={{ textDecor: 'none', color: 'blue.500' }}>
-          Ver perfil
-        </ChakraLink>
-      </Link>
-    </Flex>
+    <Heading color="blue.500" {...rest}>MARCA</Heading>   
   )
 }
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useRouter } from "next/router";
+
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -66,16 +68,13 @@ type CityProps = {
   nome: string;
 };
 
-type CreateUserFormProps = {  
-  onClose: () => void;
-}
-
 type HandleNewUserProps = NewUserProps & NewAddressProps
 
-
-const CreateUserForm = ({ onClose }: CreateUserFormProps) => {  
+const CreateUserForm = () => {  
   const { session } = useAuth()
   const user_id = session.user.id  
+
+  const router = useRouter()
 
   const [cities, setCities] = useState<CityProps[]>([]);  
   const [isCNPJ, setIsCNPJ] = useState('Jurídica');
@@ -83,7 +82,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
   const toast = useToast()
   const states = useStatesQuery()
 
-  const { handleSubmit, formState, register, reset, clearErrors, setError } =
+  const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
     useForm<HandleNewUserProps>({
       resolver: yupResolver(newUserSchema),
     });
@@ -146,7 +145,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         position: 'top-right'
       })
 
-      onClose()
+      router.push('/users')
 
     } catch (error) {
       toast({        
@@ -157,13 +156,13 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         position: 'top-right'
       })
 
-      onClose()
     }
   };
 
   const handleCancel = () => {
-    onClose()
-    reset();    
+    reset();
+     
+    router.push('/users')
   };
 
   const fetchCities = async (uf: string) => {
@@ -178,8 +177,12 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
   }
 
   useEffect(() => {
+    setFocus('nome')
+
     return () => setCities([])
-  }, [])
+  }, [setFocus])
+
+  if (!user_id) return null
 
   return (
     <Flex
@@ -198,7 +201,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         <HStack spacing={3}>
           <Input
             name="nome"
-            label="Nome*"
+            label="Nome:"
             bgColor="gray.50"
             error={errors?.nome}
             {...register("nome")}
@@ -206,7 +209,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           { isCNPJ === 'Jurídica' &&
             <Input
               name="razao_social"
-              label="Razão Social"
+              label="Razão Social:"
               bgColor="gray.50"
               error={errors?.razao_social}
               {...register("razao_social")}
@@ -217,14 +220,14 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         <HStack spacing={3}>
           <Input
             name="telefone"
-            label="Telefone"
+            label="Telefone:"
             bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
           />
           <Input
             name="celular"
-            label="Celular"
+            label="Celular:"
             bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
@@ -232,7 +235,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           <Input
             name="email"
             type="email"
-            label="E-mail"
+            label="E-mail:"
             bgColor="gray.50"
             error={errors?.email}
             {...register("email")}
@@ -241,21 +244,21 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         <HStack spacing={3}>
           <Input
             name="cpf_cnpj"
-            label={isCNPJ === 'Jurídica' ? 'CNPJ' : 'CPF' }
+            label={isCNPJ === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
             bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
           />
           <Input
             name="rg_ie"
-            label={ isCNPJ === 'Jurídica' ? 'Inscrição Estadual' : 'RG' }
+            label={ isCNPJ === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
             bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
           />          
           <Input
             name="contato"
-            label="Contato"
+            label="Contato:"
             bgColor="gray.50"
             error={errors?.contato}
             {...register("contato")}
@@ -270,7 +273,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         >
           <Input
             name="endereco"
-            label="Endereço*"
+            label="Endereço:"
             bgColor="gray.50"
             error={errors?.endereco}
             {...register("endereco")}
@@ -278,7 +281,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           <Box w="40%">
             <Input
               name="bairro"
-              label="Bairro*"
+              label="Bairro:"
               bgColor="gray.50"
               error={errors?.bairro}
               {...register("bairro")}
@@ -293,7 +296,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         >
           <Select
             name="estado"
-            label="Estado*"
+            label="Estado:"
             bgColor="gray.50"
             error={errors?.estado}
             defaultValue="default"
@@ -314,7 +317,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           </Select>
           <Select
             name="cidade"
-            label="Cidade*"
+            label="Cidade:"
             bgColor="gray.50"
             error={errors?.cidade}
             isDisabled={!Boolean(cities.length)}
@@ -332,7 +335,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           
           <Input
             name="cep"
-            label="CEP"
+            label="CEP:"
             bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
@@ -340,7 +343,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
         </HStack>
         <Input
           name="complemento"
-          label="Complemento"
+          label="Complemento:"
           bgColor="gray.50"
           error={errors?.complemento}
           {...register("complemento")}
@@ -350,7 +353,7 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           h="120px"
           p="3"
           name="outras_informacoes"
-          label="Outras Informações"
+          label="Outras Informações:"
           bgColor="gray.50"
           error={errors?.outras_informacoes}
           {...register("outras_informacoes")}
@@ -381,9 +384,6 @@ const CreateUserForm = ({ onClose }: CreateUserFormProps) => {
           Cadastrar
         </Button>
       </HStack>
-      <Text fontSize="sm" fontWeight="bold">
-        *Campos obrigatórios
-      </Text>
     </Flex>
   );
 }

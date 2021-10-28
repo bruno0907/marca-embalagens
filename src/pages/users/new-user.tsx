@@ -4,25 +4,26 @@ import { Header } from '../../components/Header'
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Content } from '../../components/Content'
+import { CreateUserForm } from '../../components/CreateUserForm'
 
-import { CreateOrderForm } from '../../components/CreateOrderForm'
-
-export default function NewOrder() {
+export default function NewUser() {
   return (
     <>
+
       <Head>
-        <title>MARCA | Novo pedido</title>        
+        <title>MARCA | Novo Cliente</title>        
       </Head>
       <Layout>
         
-        <Header title="Novo pedido" withGoBack/>
+        <Header title="Novo Cliente" withGoBack/>
 
         <Divider />
 
         <Content>
-          <CreateOrderForm />
+          <CreateUserForm />
         </Content>
-      </Layout> 
-    </>   
+      </Layout>
+
+    </>
   )
 }

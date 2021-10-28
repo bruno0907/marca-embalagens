@@ -107,14 +107,14 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
         <HStack spacing={3} w="100%">
           <Input
             name="nome"
-            label="Nome"
+            label="Nome:"
             bgColor="gray.50"
             isDisabled={isSubmitting || isEditing}
             error={errors.nome}
             {...register('nome')}
           />
           <Box w="200px">
-            <Text fontWeight="medium" mb="2" display="block" >Estoque</Text>
+            <Text fontWeight="medium" mb="2" display="block" >Valor unitário:</Text>
             <InputGroup size="lg">
               <InputLeftAddon>R$</InputLeftAddon>
               <ChakraInput
@@ -132,7 +132,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
         </HStack>
         <Input                 
           name="descricao"
-          label="Descrição"
+          label="Descrição:"
           bgColor="gray.50"
           isDisabled={isEditing || isEditing}
           error={errors.descricao}

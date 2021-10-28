@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from 'react'
 
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
 import useDebounce from '../../hooks/useDebounce'
 
@@ -27,6 +28,7 @@ import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 
 export default function Users() {   
   const { isOpen, onClose, onOpen } = useDisclosure()
+  const router = useRouter()
   
   const [searchValue, setSearchValue] = useState('')  
   
@@ -39,10 +41,6 @@ export default function Users() {
 
   const handleClearFilter = () => setSearchValue('')
 
-  const handleModalOpen = () => {    
-    onOpen()
-  }
-
   return (
     <>
       <Head>
@@ -54,7 +52,7 @@ export default function Users() {
           <Button
             colorScheme="blue"
             leftIcon={<Icon as={FiPlus}/>}
-            onClick={handleModalOpen}
+            onClick={() => router.push('/users/new-user')}
           >
             Cadastrar novo cliente
           </Button>
@@ -92,13 +90,6 @@ export default function Users() {
         </Content>
         
       </Layout>
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        title="Cadastrar novo cliente"
-      >
-        <CreateUserForm onClose={onClose}/>
-      </Modal>
     </>
   )
 }

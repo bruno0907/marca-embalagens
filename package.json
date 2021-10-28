@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^2.6.1",
     "@supabase/supabase-js": "^1.21.0",
     "axios": "^0.21.1",
+    "date-fns": "^2.25.0",
     "framer-motion": "^4",
     "next": "11.0.1",
     "nookies": "^2.5.2",

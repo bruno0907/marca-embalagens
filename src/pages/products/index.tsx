@@ -1,6 +1,8 @@
 import { useState, ChangeEvent } from 'react'
 import Head from 'next/head'
 
+import { useRouter } from 'next/router'
+
 import { Layout } from '../../components/Layout'
 import { Content } from '../../components/Content'
 import { Divider } from '../../components/Divider'
@@ -24,7 +26,7 @@ import {
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 
 export default function Products() {
-  const { isOpen, onOpen, onClose } = useDisclosure()  
+  const router = useRouter() 
   
   const [searchValue, setSearchValue] = useState('')  
   
@@ -36,10 +38,6 @@ export default function Products() {
   }
 
   const handleClearFilter = () => setSearchValue('')
-  
-  function handleModalOpen() {
-    onOpen()
-  } 
 
   return (
     <>
@@ -53,7 +51,7 @@ export default function Products() {
           <Button              
             colorScheme="blue"            
             leftIcon={<Icon as={FiPlus} />}
-            onClick={handleModalOpen}
+            onClick={() => router.push('/products/new-product')}
           >
             Cadastrar novo produto
           </Button> 
@@ -91,14 +89,6 @@ export default function Products() {
 
         </Content>
       </Layout>
-
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        title="Novo produto"
-      >
-        <CreateProductForm onClose={onClose}/>
-      </Modal>
     </>
   )
 }

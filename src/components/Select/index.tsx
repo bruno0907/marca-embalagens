@@ -27,8 +27,8 @@ const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> =
         <ChakraSelect
           icon={<MdArrowDropDown fontSize="24" />}          
           id={name}
-          name={name}          
-          size="lg"
+          name={name}
+          variant="flushed"
           ref={ref}
           error={error}
           {...rest}

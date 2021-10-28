@@ -1,13 +1,16 @@
-import { Logo } from "../Logo"
+import Link from 'next/link'
+
 import { ActiveLink } from "./ActiveLink"
 
+import { Logo } from "../Logo"
 import { useAuth } from "../../hooks/useAuth"
 
 import { 
   Flex,
   Stack,  
   Button,
-  Spacer
+  Spacer,
+  Link as ChakraLink
 } from "@chakra-ui/react"
 
 import { 
@@ -39,7 +42,14 @@ const SideMenu = () => {
       bgColor="gray.50"
       boxShadow="sm"
     >
-      <Logo />
+      <Flex flexDir="column" align="center">
+        <Logo />
+        <Link href="profile" passHref>
+          <ChakraLink fontWeight="md" _hover={{ textDecor: 'none', color: 'blue.500' }}>
+            Ver perfil
+          </ChakraLink>
+        </Link>
+      </Flex>
       <Stack as="nav" spacing={3} mt="16">        
         <ActiveLink 
           href="/dashboard"

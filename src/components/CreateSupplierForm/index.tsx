@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import axios from "axios";
+import { useRouter } from "next/router";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
@@ -69,15 +69,13 @@ type CityProps = {
   nome: string;
 };
 
-type CreateSupplierFormProps = {  
-  onClose: () => void;
-}
-
 type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
 
-const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
+const CreateSupplierForm = () => {
   const { session } = useAuth()
   const user_id = session.user.id
+  
+  const router = useRouter()
 
   const [cities, setCities] = useState<CityProps[]>([]);  
   const [isCNPJ, setIsCNPJ] = useState('Jurídica');
@@ -85,7 +83,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
   const toast = useToast()
   const states = useStatesQuery()  
 
-  const { handleSubmit, formState, register, reset, clearErrors, setError } =
+  const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
     useForm<HandleNewSupplierProps>({
       resolver: yupResolver(newSupplierSchema),
     });
@@ -150,7 +148,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         position: 'top-right'
       })
 
-      onClose();
+      router.push('/suppliers')
 
     } catch (error) {
       toast({        
@@ -161,14 +159,12 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         position: 'top-right'
       })
 
-      onClose()  
-
     }
   };
 
   const handleCancel = () => {
-    onClose()
-    reset();    
+    reset();   
+    router.push('/suppliers') 
   };
 
   const fetchCities = async (uf: string) => {
@@ -183,8 +179,12 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
   }
 
   useEffect(() => {
+    setFocus('nome')
+
     return () => setCities([])
-  }, [])
+  }, [setFocus])
+
+  if(!user_id) return null
 
   return (
     <Flex
@@ -203,7 +203,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         <HStack spacing={3}>
           <Input
             name="nome"
-            label="Nome*"
+            label="Nome:"
             bgColor="gray.50"
             error={errors?.nome}
             {...register("nome")}
@@ -211,7 +211,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           { isCNPJ === 'Jurídica' &&
             <Input
               name="razao_social"
-              label="Razão Social"
+              label="Razão Social:"
               bgColor="gray.50"
               error={errors?.razao_social}
               {...register("razao_social")}
@@ -221,7 +221,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         </HStack>
         <Input
           name="Produto"
-          label="Produto"
+          label="Produto:"
           bgColor="gray.50"
           error={errors?.produto}
           {...register("produto")}
@@ -229,14 +229,14 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         <HStack spacing={3}>
           <Input
             name="telefone"
-            label="Telefone"
+            label="Telefone:"
             bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
           />
           <Input
             name="celular"
-            label="Celular"
+            label="Celular:"
             bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
@@ -244,7 +244,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           <Input
             name="email"
             type="email"
-            label="E-mail"
+            label="E-mail:"
             bgColor="gray.50"
             error={errors?.email}
             {...register("email")}
@@ -253,21 +253,21 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         <HStack spacing={3}>
           <Input
             name="cpf_cnpj"
-            label={isCNPJ === 'Jurídica' ? 'CNPJ' : 'CPF' }
+            label={isCNPJ === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
             bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
           />
           <Input
             name="rg_ie"
-            label={ isCNPJ === 'Jurídica' ? 'Inscrição Estadual' : 'RG' }
+            label={ isCNPJ === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
             bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
           />          
           <Input
             name="contato"
-            label="Contato"
+            label="Contato:"
             bgColor="gray.50"
             error={errors?.contato}
             {...register("contato")}
@@ -282,7 +282,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         >
           <Input
             name="endereco"
-            label="Endereço*"
+            label="Endereço:"
             bgColor="gray.50"
             error={errors?.endereco}
             {...register("endereco")}
@@ -290,7 +290,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           <Box w="40%">
             <Input
               name="bairro"
-              label="Bairro*"
+              label="Bairro:"
               bgColor="gray.50"
               error={errors?.bairro}
               {...register("bairro")}
@@ -305,7 +305,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         >
           <Select
             name="estado"
-            label="Estado*"
+            label="Estado:"
             bgColor="gray.50"
             error={errors?.estado}
             defaultValue="default"
@@ -326,7 +326,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           </Select>
           <Select
             name="cidade"
-            label="Cidade*"
+            label="Cidade:"
             bgColor="gray.50"
             error={errors?.cidade}
             isDisabled={!Boolean(cities.length)}
@@ -344,7 +344,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           
           <Input
             name="cep"
-            label="CEP"
+            label="CEP:"
             bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
@@ -352,7 +352,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
         </HStack>
         <Input
           name="complemento"
-          label="Complemento"
+          label="Complemento:"
           bgColor="gray.50"
           error={errors?.complemento}
           {...register("complemento")}
@@ -362,7 +362,7 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           h="120px"
           p="3"
           name="outras_informacoes"
-          label="Outras Informações"
+          label="Outras Informações:"
           bgColor="gray.50"
           error={errors?.outras_informacoes}
           {...register("outras_informacoes")}
@@ -393,9 +393,6 @@ const CreateSupplierForm = ({ onClose }: CreateSupplierFormProps) => {
           Cadastrar
         </Button>
       </HStack>
-      <Text fontSize="sm" fontWeight="bold">
-        *Campos obrigatórios
-      </Text>
     </Flex>
   );
 }
