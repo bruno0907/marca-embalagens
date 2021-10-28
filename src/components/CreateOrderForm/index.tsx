@@ -40,7 +40,6 @@ import { OrderItemProps, NewOrderProps } from '../../types'
 
 const CreateOrderForm = () => {
   const { session } = useAuth()
-  const user_id = session.user.id
   
   const toast = useToast()
   
@@ -110,16 +109,17 @@ const CreateOrderForm = () => {
     setTotal(sumTotal)
   }
 
-  const canAddProduct = !Boolean(product.data?.data && productAmount > 0)  
+  const canAddProduct = !Boolean(product.data?.data && productAmount > 0)
+  const canSubmitOrder = user.data?.data && Boolean(order.length <= 0)  
 
-  const orderNumber = orders.data?.length
+  const ordersAmount = orders.data?.length
 
   const handleCreateNewOrderMutation = async (event: FormEvent) => {
     event.preventDefault()
 
     const newOrder: NewOrderProps = {
-      user_id,
-      numero_pedido: orderNumber + 1,
+      user_id: session.user.id,
+      numero_pedido: ordersAmount + 1,
       cliente: user.data.data.id,
       endereco_entrega: address.data.data.id,
       pedido: [...order],
@@ -159,7 +159,7 @@ const CreateOrderForm = () => {
 
   const handleCancelOrder = () => console.log('Cancelar pedido')
 
-  if(users.isLoading || products.isLoading || orders.isLoading || !user_id) {
+  if(users.isLoading || products.isLoading || orders.isLoading) {
     return (
       <Center h="100vh">
         <Spinner size="md" color="blue.500" />
@@ -414,9 +414,7 @@ const CreateOrderForm = () => {
           <Button 
             colorScheme="blue" 
             onClick={handleCreateNewOrderMutation} 
-            isDisabled={
-              user.data?.data && Boolean(order.length <= 0)
-            }
+            isDisabled={canSubmitOrder}
           >Gerar pedido</Button>
         </HStack>
         

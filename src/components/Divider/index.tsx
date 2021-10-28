@@ -5,6 +5,10 @@ import {
 
 interface DividerProps extends ChakraDividerProps {}
 
-const Divider = ({ ...rest }: DividerProps) => <ChakraDivider  my="8" borderColor="gray.600" {...rest} />
+const Divider = ({ ...rest }: DividerProps) => {
+  return (
+    <ChakraDivider my="8" borderColor="gray.600" {...rest} />
+  )
+}
 
 export { Divider }

@@ -3,8 +3,8 @@ import { useRouter } from "next/router"
 import { useOrdersQuery } from "../../hooks/useOrdersQuery"
 import { prefetchOrder } from "../../services/prefetchOrder"
 
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { handleFormatDate } from "../../utils/handleFormatDate"
+import { handleFormatPrice } from "../../utils/handleFormatPrice"
 
 import { 
   Table,
@@ -29,6 +29,7 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
   const orders = useOrdersQuery(filterValue)
 
   console.log(orders)
+
 
   const handlePrefetchOrder = async (id: string) => await prefetchOrder(id)
 
@@ -117,8 +118,8 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
               >
                 <Td>{order.numero_pedido}</Td>                        
                 <Td>{order.users.nome}</Td>
-                <Td>{format(new Date(order.created_at), 'dd/MM/yyyy', { locale: ptBR })}</Td>
-                <Td>{order.total.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency'})}</Td>   
+                <Td>{handleFormatDate(order.created_at)}</Td>
+                <Td>{handleFormatPrice(order.total)}</Td>   
               </Tr>
             )
           }

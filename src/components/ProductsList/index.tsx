@@ -15,6 +15,7 @@ import {
 
 import { useProductsQuery } from "../../hooks/useProductsQuery"
 import { prefetchProduct } from "../../services/prefetchProduct"
+import { handleFormatPrice } from "../../utils/handleFormatPrice"
 
 type ProductsListProps = {
   filterValue: string;
@@ -109,7 +110,7 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
               >
                 <Td>{product.nome}</Td>                                        
                 <Td></Td>   
-                <Td>{product.preco_unitario.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency' })}</Td>
+                <Td>{handleFormatPrice(product.preco_unitario)}</Td>
               </Tr>
             )
           }

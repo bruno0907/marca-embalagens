@@ -6,9 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { SubmitHandler, useForm, SubmitErrorHandler } from 'react-hook-form'
 
-import { queryClient } from '../../contexts/queryContext'
 import { useUpdateProductMutation } from '../../hooks/useUpdateProductMutation'
-
 
 import { Input } from "../Input"
 

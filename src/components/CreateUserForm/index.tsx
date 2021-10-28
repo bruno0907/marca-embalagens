@@ -72,7 +72,6 @@ type HandleNewUserProps = NewUserProps & NewAddressProps
 
 const CreateUserForm = () => {  
   const { session } = useAuth()
-  const user_id = session.user.id  
 
   const router = useRouter()
 
@@ -111,7 +110,7 @@ const CreateUserForm = () => {
     } = values
 
     const userData: NewUserProps = {
-      user_id,      
+      user_id: session.user.id,      
       natureza_cliente: isCNPJ,
       nome,
       razao_social,
@@ -181,8 +180,6 @@ const CreateUserForm = () => {
 
     return () => setCities([])
   }, [setFocus])
-
-  if (!user_id) return null
 
   return (
     <Flex

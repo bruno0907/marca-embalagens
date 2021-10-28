@@ -73,7 +73,6 @@ type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
 
 const CreateSupplierForm = () => {
   const { session } = useAuth()
-  const user_id = session.user.id
   
   const router = useRouter()
 
@@ -113,7 +112,7 @@ const CreateSupplierForm = () => {
     } = values
 
     const supplierData: NewSupplierProps = {
-      user_id,      
+      user_id: session.user.id,      
       natureza_cliente: isCNPJ,
       produto,
       nome,
@@ -183,8 +182,6 @@ const CreateSupplierForm = () => {
 
     return () => setCities([])
   }, [setFocus])
-
-  if(!user_id) return null
 
   return (
     <Flex

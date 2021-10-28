@@ -6,7 +6,7 @@ import { FiArrowLeft } from "react-icons/fi"
 
 type HeaderProps = FlexProps & {
   withGoBack?: boolean;
-  children?: ReactNode
+  children?: ReactNode;
   title: string;
 }
 
