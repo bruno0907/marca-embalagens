@@ -11,11 +11,11 @@ export default function NewProduct() {
     <>
 
       <Head>
-        <title>MARCA | Novo Produto</title>        
+        <title>MARCA | Cadastrar novo produto</title>        
       </Head>
       <Layout>
         
-        <Header title="Novo Produto" withGoBack/>
+        <Header title="Cadastrar novo produto" withGoBack/>
 
         <Divider />
 

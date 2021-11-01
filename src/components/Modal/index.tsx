@@ -28,7 +28,7 @@ const Modal = ({ isOpen, onClose, children, title }: ModalProps) => {
       scrollBehavior="inside"
     >
       <ModalOverlay />
-      <ModalContent bgColor="gray.100" p="4">
+      <ModalContent bgColor="gray.50" p="4">
         <ModalHeader fontSize="3xl">{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

@@ -10,7 +10,8 @@ import { useSignInMutation } from '../../hooks/useSignInMutation'
 import { Input } from '../../components/Input'
 
 import { 
-  Container, 
+  Container,
+  Flex, 
   Stack,
   Button,  
   useToast,
@@ -18,6 +19,7 @@ import {
   Heading,
   Link as ChakraLink
 } from '@chakra-ui/react'
+import { Content } from '../../components/Content'
 
 type SignInProps = {
   email: string;
@@ -95,32 +97,38 @@ export default function SignIn () {
         <title>MARCA | Faça seu login</title>
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-        <Heading mb="8">MARCA | Login</Heading>
-        <Stack as="form" spacing={3} mb="8" w="100%" onSubmit={handleSubmit(handleSignIn)}>          
-          <Input 
-            type="email"
-            label="E-mail"
-            isDisabled={isSubmitting}
-            error={errors.email}
-            {...register('email')}
-          />
-          <Input 
-            type="password"
-            label="Senha"
-            isDisabled={isSubmitting}
-            error={errors.password}
-            {...register('password')}
-            onKeyUp={() => clearErrors(['email', 'password'])}
-          />
+        <Heading mb="12">MARCA | Login</Heading>
+        <Content
+          as="form"
+          mb="12"
+          onSubmit={handleSubmit(handleSignIn)}
+        >
+          <Stack spacing={3} mb="12">
+            <Input 
+              type="email"
+              label="E-mail"                        
+              isDisabled={isSubmitting}
+              error={errors.email}
+              {...register('email')}
+            />
+            <Input 
+              type="password"
+              label="Senha"
+              isDisabled={isSubmitting}
+              error={errors.password}
+              {...register('password')}
+              onKeyUp={() => clearErrors(['email', 'password'])}
+            />
+          </Stack>
 
-          <Button
+          <Button            
             type="submit"
             colorScheme="blue"
             size="lg"
             isLoading={isSubmitting}
-            isDisabled={!isDirty}                                   
+            isDisabled={!isDirty}                 
           >Entrar</Button>    
-        </Stack>
+        </Content>
         <Text>Não é cadastrado?
           <Link href="/sign-up" passHref>
             <ChakraLink fontWeight="bold" color="blue.500" _hover={{ color: 'blue.600' }}> Faça seu cadastro aqui!</ChakraLink>

@@ -11,6 +11,7 @@ import { Input } from '../../components/Input'
 
 import { 
   Container, 
+  Flex,
   Stack,
   Button,  
   useToast,
@@ -18,6 +19,7 @@ import {
   Link as ChakraLink,
   Heading
 } from '@chakra-ui/react'
+import { Content } from '../../components/Content'
 
 type SignInProps = {
   email: string;
@@ -89,29 +91,35 @@ export default function SignUp () {
         <title>MARCA | Cadastre-se</title>
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-        <Heading mb="8">MARCA | Cadastre-se</Heading>
-        <Stack as="form" spacing={3} mb="8" w="100%" onSubmit={handleSubmit(handleSignUp)}>
-          <Input 
-            type="email"
-            label="E-mail"
-            isDisabled={isSubmitting}
-            error={errors?.email}
-            {...register('email')}
-          />
-          <Input 
-            type="password"
-            label="Senha"
-            isDisabled={isSubmitting}
-            error={errors?.password}
-            {...register('password')}
-          />
-          <Input 
-            type="password"
-            label="Cofirme sua Senha"
-            isDisabled={isSubmitting}
-            error={errors?.password_verify}
-            {...register('password_verify')}
-          />
+        <Heading mb="12">MARCA | Cadastre-se</Heading>
+        <Content
+          as="form"
+          mb="12"
+          onSubmit={handleSubmit(handleSignUp)}
+        >
+          <Stack spacing={3} mb="12">
+            <Input 
+              type="email"
+              label="E-mail"
+              isDisabled={isSubmitting}
+              error={errors?.email}
+              {...register('email')}
+            />
+            <Input 
+              type="password"
+              label="Senha"
+              isDisabled={isSubmitting}
+              error={errors?.password}
+              {...register('password')}
+            />
+            <Input 
+              type="password"
+              label="Cofirme sua Senha"
+              isDisabled={isSubmitting}
+              error={errors?.password_verify}
+              {...register('password_verify')}
+            />
+          </Stack>
 
           <Button
             type="submit"
@@ -120,7 +128,7 @@ export default function SignUp () {
             isLoading={isSubmitting}
             isDisabled={!isDirty}
           >Cadastrar</Button>
-        </Stack>
+        </Content>
         <Text>Já é cadastrado?
           <Link href="/sign-in" passHref>
             <ChakraLink fontWeight="bold" color="blue.500" _hover={{ color: 'blue.600' }}> Faça seu login aqui!</ChakraLink>

@@ -124,8 +124,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
       flexDir="column"
       onSubmit={handleSubmit(handleUpdateUser, handleUpdateUserErrors)}      
     >
-      <Stack spacing={3}>        
-        
+      <Stack spacing={3}>
         <HStack spacing={3}>
           <Text color="gray.600" fontWeight="medium">Tipo de pessoa:</Text>
           <Text color="blue.500" fontWeight="bold">{supplier.natureza_cliente}</Text>
@@ -134,8 +133,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
         <HStack spacing={3}>
           <Input
             name="nome"
-            label="Nome*"
-            bgColor="gray.50"
+            label="Nome:"
             isDisabled={isSubmitting}
             error={errors?.nome}
             {...register("nome")}
@@ -143,8 +141,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
           { supplier.natureza_cliente === 'Jurídica' &&
             <Input
               name="razao_social"
-              label="Razão Social"
-              bgColor="gray.50"
+              label="Razão Social:"
               isDisabled={isSubmitting}
               error={errors?.razao_social}
               {...register("razao_social")}
@@ -153,8 +150,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
         </HStack>
         <Input
           name="produto"
-          label="Produto"
-          bgColor="gray.50"
+          label="Produto:"
           isDisabled={isSubmitting}
           error={errors?.produto}
           {...register("produto")}
@@ -162,16 +158,14 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
         <HStack spacing={3}>
           <Input
             name="telefone"
-            label="Telefone"
-            bgColor="gray.50"
+            label="Telefone:"
             isDisabled={isSubmitting}
             error={errors?.telefone}
             {...register("telefone")}
           />
           <Input
             name="celular"
-            label="Celular"
-            bgColor="gray.50"
+            label="Celular:"
             isDisabled={isSubmitting}
             error={errors?.celular}
             {...register("celular")}
@@ -179,8 +173,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
           <Input
             name="email"
             type="email"
-            label="E-mail"
-            bgColor="gray.50"
+            label="E-mail:"
             isDisabled={isSubmitting}
             error={errors?.email}
             {...register("email")}
@@ -189,7 +182,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
         <HStack spacing={3}>
           <Input
             name="cpf_cnpj"
-            label={ supplier.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF' }
+            label={ supplier.natureza_cliente === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
             bgColor="gray.50"
             isDisabled={isSubmitting}
             error={errors?.cpf_cnpj}
@@ -197,16 +190,14 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
           />
           <Input
             name="rg_ie"
-            label={ supplier.natureza_cliente === 'Jurídica' ? 'Inscrição Estadual' : 'RG' }
-            bgColor="gray.50"
+            label={ supplier.natureza_cliente === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
             isDisabled={isSubmitting}
             error={errors?.rg_ie}
             {...register("rg_ie")}
           />          
           <Input
             name="contato"
-            label="Contato"
-            bgColor="gray.50"
+            label="Contato:"
             isDisabled={isSubmitting}
             error={errors?.contato}
             {...register("contato")}
@@ -217,8 +208,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
           h="120px"
           p="3"
           name="outras_informacoes"
-          label="Outras Informações"
-          bgColor="gray.50"
+          label="Outras Informações:"
           isDisabled={isSubmitting}
           error={errors?.outras_informacoes}
           {...register("outras_informacoes")}
@@ -249,9 +239,6 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
           Salvar alterações
         </Button>
       </HStack>
-      <Text fontSize="sm" fontWeight="bold">
-        *Campos obrigatórios
-      </Text>
     </Flex>          
   );
 }

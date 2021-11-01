@@ -28,7 +28,7 @@ const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> =
           icon={<MdArrowDropDown fontSize="24" />}          
           id={name}
           name={name}
-          variant="flushed"
+          borderColor="gray.300"
           ref={ref}
           error={error}
           {...rest}

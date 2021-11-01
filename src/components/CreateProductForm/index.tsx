@@ -11,10 +11,14 @@ import { Input } from "../Input";
 
 import {  
   Button,
-  Flex,  
+  Flex,
+  FormControl,
+  InputGroup,
+  InputLeftAddon, 
+  Input as ChakraInput,  
   Stack,
   HStack,
-  Text,
+  FormLabel,
   useToast,  
 } from "@chakra-ui/react"
 
@@ -94,26 +98,28 @@ const CreateProductForm = () => {
       flexDir="column"
       onSubmit={handleSubmit(handleNewUser)}
     >
-      <Stack spacing={3}>
+      <Stack spacing={3} mb="12">
         <HStack spacing={3}>
           <Input
             name="nome"
-            label="Nome do produto*"
-            bgColor="gray.50"
+            label="Nome do produto"
             error={errors.nome}
             {...register("nome")}
           />
-          <Input
-            type="number"
-            name="valor"
-            label="Valor unitário*"
-            bgColor="gray.50"
-            step="0.01"
-            pattern="^\d+(?:\.\d{1,2})?$"
-            placeholder="Apenas números"
-            error={errors.preco_unitario}
-            {...register("preco_unitario")}
-          />          
+          <FormControl w="sm">
+            <FormLabel>Valor unitário</FormLabel>
+            <InputGroup borderColor="gray.300">
+              <InputLeftAddon>R$</InputLeftAddon>
+              <ChakraInput
+                type="number"
+                name="preco_unitario"                
+                step="0.01"
+                pattern="^\d+(?:\.\d{1,2})?$"                
+                error={errors.preco_unitario}
+                {...register("preco_unitario")}
+              />
+            </InputGroup>
+          </FormControl>
         </HStack>        
         <Input
           as="textarea"
@@ -121,39 +127,34 @@ const CreateProductForm = () => {
           p="3"
           name="descricao"
           label="Descrição do produto"
-          bgColor="gray.50"
           error={errors.descricao}
           {...register("descricao")}
         />          
-        <HStack
-          spacing={3}              
-          justifyContent="flex-end"
-          display="flex"
-          alignItems="flex-start"
-          w="100%"
-          mt={4}
-        >
-          <Button
-            colorScheme="blue"
-            variant="ghost"
-            _hover={{ backgroundColor: "blue.500", color: "gray.100" }}
-            onClick={handleCancel}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type="submit"
-            colorScheme="blue"
-            isLoading={isSubmitting}
-            isDisabled={!isDirty}
-          >
-            Cadastrar
-          </Button>
-        </HStack>
       </Stack>
-      <Text fontSize="sm" fontWeight="bold">
-        *Campos obrigatórios
-      </Text>
+      <HStack
+        spacing={3}              
+        justifyContent="flex-end"
+        display="flex"
+        alignItems="flex-start"
+        w="100%"          
+      >
+        <Button
+          colorScheme="blue"
+          variant="ghost"
+          _hover={{ backgroundColor: "blue.500", color: "gray.100" }}
+          onClick={handleCancel}
+        >
+          Cancelar
+        </Button>
+        <Button
+          type="submit"
+          colorScheme="blue"
+          isLoading={isSubmitting}
+          isDisabled={!isDirty}
+        >
+          Cadastrar
+        </Button>
+      </HStack>
     </Flex>
   );
 }

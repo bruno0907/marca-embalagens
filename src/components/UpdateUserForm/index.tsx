@@ -134,8 +134,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
         <HStack spacing={3}>
           <Input
             name="nome"
-            label="Nome*"
-            bgColor="gray.50"
+            label="Nome:"
             isDisabled={isSubmitting}
             error={errors?.nome}
             {...register("nome")}
@@ -143,8 +142,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
           { user.natureza_cliente === 'Jurídica' &&
             <Input
               name="razao_social"
-              label="Razão Social"
-              bgColor="gray.50"
+              label="Razão Social:"
               isDisabled={isSubmitting}
               error={errors?.razao_social}
               {...register("razao_social")}
@@ -155,16 +153,14 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
         <HStack spacing={3}>
           <Input
             name="telefone"
-            label="Telefone"
-            bgColor="gray.50"
+            label="Telefone:"
             isDisabled={isSubmitting}
             error={errors?.telefone}
             {...register("telefone")}
           />
           <Input
             name="celular"
-            label="Celular"
-            bgColor="gray.50"
+            label="Celular:"
             isDisabled={isSubmitting}
             error={errors?.celular}
             {...register("celular")}
@@ -172,8 +168,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
           <Input
             name="email"
             type="email"
-            label="E-mail"
-            bgColor="gray.50"
+            label="E-mail:"
             isDisabled={isSubmitting}
             error={errors?.email}
             {...register("email")}
@@ -182,24 +177,21 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
         <HStack spacing={3}>
           <Input
             name="cpf_cnpj"
-            label={ user.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF' }
-            bgColor="gray.50"
+            label={ user.natureza_cliente === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
             isDisabled={isSubmitting}
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
           />
           <Input
             name="rg_ie"
-            label={ user.natureza_cliente === 'Jurídica' ? 'Inscrição Estadual' : 'RG' }
-            bgColor="gray.50"
+            label={ user.natureza_cliente === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
             isDisabled={isSubmitting}
             error={errors?.rg_ie}
             {...register("rg_ie")}
           />          
           <Input
             name="contato"
-            label="Contato"
-            bgColor="gray.50"
+            label="Contato:"
             isDisabled={isSubmitting}
             error={errors?.contato}
             {...register("contato")}
@@ -210,8 +202,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
           h="120px"
           p="3"
           name="outras_informacoes"
-          label="Outras Informações"
-          bgColor="gray.50"
+          label="Outras Informações:"
           isDisabled={isSubmitting}
           error={errors?.outras_informacoes}
           {...register("outras_informacoes")}
@@ -242,9 +233,6 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
           Salvar alterações
         </Button>
       </HStack>
-      <Text fontSize="sm" fontWeight="bold">
-        *Campos obrigatórios
-      </Text>
     </Flex>          
   );
 }

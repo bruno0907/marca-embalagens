@@ -10,13 +10,15 @@ import { useUpdateProductMutation } from '../../hooks/useUpdateProductMutation'
 
 import { Input } from "../Input"
 
+import { handleFormatPrice } from '../../utils/handleFormatPrice'
+
 import {    
   Skeleton,
   VStack,
   HStack,
   Input as ChakraInput,
   Box,
-  Text,
+  FormLabel,
   InputGroup,
   InputLeftAddon,
   Button,
@@ -42,11 +44,11 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
   const [isEditing, setIsEditing] = useState(true)
 
   const { formState, register, handleSubmit } = useForm<ProductProps>({
-    defaultValues: {
-      nome: product.nome,
-      descricao: product.descricao,
-      preco_unitario: product.preco_unitario,
-    },
+    // defaultValues: {
+    //   nome: product.nome,
+    //   descricao: product.descricao,
+    //   preco_unitario: product.preco_unitario,
+    // },
     resolver: yupResolver(updateProductSchema)    
   })
 
@@ -106,45 +108,40 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
           <Input
             name="nome"
             label="Nome:"
-            bgColor="gray.50"
-            isDisabled={isSubmitting || isEditing}
+            defaultValue={product.nome}
             error={errors.nome}
             {...register('nome')}
           />
           <Box w="200px">
-            <Text fontWeight="medium" mb="2" display="block" >Valor unitário:</Text>
-            <InputGroup size="lg">
+            <FormLabel>Valor unitário:</FormLabel>
+            <InputGroup borderColor="gray.300">
               <InputLeftAddon>R$</InputLeftAddon>
               <ChakraInput
                 name="preco_unitario"
                 type="number"
                 step="0.01"
-                pattern="^\d+(?:\.\d{1,2})?$"
-                bgColor="gray.50"
-                isDisabled={isSubmitting || isEditing}
+                defaultValue={product.preco_unitario.toFixed(2)}
+                pattern="^\d+(?:\.\d{1,2})?$"                                
                 error={errors.preco_unitario}
                 {...register('preco_unitario')}
               />
             </InputGroup>
           </Box>
         </HStack>
-        <Input                 
+        <Input     
+          as="textarea"
+          h="80px"
+          p="3"
           name="descricao"
           label="Descrição:"
-          bgColor="gray.50"
-          isDisabled={isEditing || isEditing}
+          defaultValue={product.descricao}
           error={errors.descricao}
           {...register('descricao')}
         />
       </VStack>
       <HStack spacing={3} justify="flex-end" mt="8">
-        { isEditing 
-          ? <Button colorScheme="blue" onClick={handleEdit}>Editar produto</Button>  
-          : <>
-              <Button colorScheme="blue" variant="ghost" onClick={handleCancelEdit}>Cancelar</Button>
-              <Button colorScheme="blue" type="submit" isDisabled={isSubmitting}>Salvar Alterações</Button>
-            </>
-        }
+        <Button colorScheme="blue" variant="ghost" onClick={handleCancelEdit}>Cancelar</Button>
+        <Button colorScheme="blue" type="submit" isDisabled={isSubmitting}>Salvar Alterações</Button>
       </HStack>
     </Box>
   )

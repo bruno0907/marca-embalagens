@@ -3,7 +3,7 @@ export const handleFormatPrice = (price: number) => {
     'pt-BR', 
     { 
       currency: 'BRL', 
-      style: 'currency'
+      style: 'currency',      
     }
   )
 }
