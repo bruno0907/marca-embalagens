@@ -44,7 +44,7 @@ const SideMenu = () => {
     >
       <Flex flexDir="column" align="center">
         <Logo />
-        <Link href="profile" passHref>
+        <Link href="/profile" passHref>
           <ChakraLink fontWeight="md" _hover={{ textDecor: 'none', color: 'blue.500' }}>
             Ver perfil
           </ChakraLink>

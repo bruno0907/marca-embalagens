@@ -28,9 +28,6 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
 
   const orders = useOrdersQuery(filterValue)
 
-  console.log(orders)
-
-
   const handlePrefetchOrder = async (id: string) => await prefetchOrder(id)
 
   if(orders.isLoading) {
@@ -93,17 +90,17 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
     <Table colorScheme="gray" variant="striped" >
       <Thead>
         <Tr bgColor="blue.500">
-        <Th color="gray.50">
+        <Th color="gray.50" w="150px" textAlign="end">
             <Flex align="center">
-              N.Pedido
+              Pedido
               { orders.isFetching && 
                 <Spinner size="sm" color="gray.50" ml="4"/>
               }
             </Flex>
           </Th>            
             <Th color="gray.50">Cliente</Th>
-            <Th color="gray.50">Data pedido</Th>
-            <Th color="gray.50">Valor total</Th>
+            <Th color="gray.50" w="150px">Data pedido</Th>
+            <Th color="gray.50" w="150px">Valor total</Th>
         </Tr>
       </Thead>
       <Tbody>

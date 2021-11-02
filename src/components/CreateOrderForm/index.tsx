@@ -1,9 +1,10 @@
-import { FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Divider } from '../Divider'
 import { Input } from '../Input'
 import { Select } from '../Select'
+import { OrderToPrint } from '../OrderToPrint'
 
 import { useAuth } from '../../hooks/useAuth'
 import { useUsersQuery } from '../../hooks/useUsersQuery'
@@ -39,22 +40,24 @@ import { FiTrash2 } from 'react-icons/fi'
 import { OrderItemProps, NewOrderProps } from '../../types'
 
 const CreateOrderForm = () => {
-  const { session } = useAuth()
-  
-  const toast = useToast()
-  
+  const { session } = useAuth()  
+  const toast = useToast()  
   const router = useRouter()
+
+  const orderToPrintRef = useRef<HTMLDivElement>(null)
 
   const [selectedUser, setSelectedUser] = useState('')
   const [selectedAddress, setSelectedAddress] = useState('')  
   const [selectedProduct, setSelectedProduct] = useState('')
   const [condicaoPagamento, setCondicaoPagamento] = useState('')
-  const [dataEntrega, setDataEntrega] = useState('')
+  const [dataEntrega, setDataEntrega] = useState('')  
 
   const [productAmount, setProductAmount] = useState(0)
   
   const [order, setOrder] = useState<OrderItemProps[]>([])  
   const [total, setTotal] = useState(0)
+
+  const [orderToPrint, setOrderToPrint] = useState<NewOrderProps>(null)
   
   const users = useUsersQuery()
   const user = useUserQuery(selectedUser)
@@ -73,6 +76,22 @@ const CreateOrderForm = () => {
     return order.reduce((acc, value) => {      
       return acc + value.valor_total
     }, 0)
+  }
+
+  const handleSelectUser = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target
+    setSelectedAddress('')
+    setSelectedUser(value)
+  }
+
+  const handleSelectAddress = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target
+    setSelectedAddress(value)
+  }
+
+  const handleSelectProduct = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target
+    setSelectedProduct(value)
   }
 
   const handleAddItemToOrder = () => {
@@ -129,7 +148,7 @@ const CreateOrderForm = () => {
     }
 
     try {
-      const response = await createOrderMutation.mutateAsync(newOrder)
+      // const response = await createOrderMutation.mutateAsync(newOrder)
 
       toast({
         description: 'Pedido criado com sucesso!',
@@ -139,10 +158,9 @@ const CreateOrderForm = () => {
       })
 
       // To Do: Add print order here
+      setOrderToPrint(newOrder)
   
-      router.push('/orders')
-
-      console.log(response)
+      // router.push('/orders')
 
     } catch (error) {
 
@@ -166,13 +184,14 @@ const CreateOrderForm = () => {
       </Center>
     )
   }
+
   return (
     <>
       <Stack spacing={3} as="form" onSubmit={handleCreateNewOrderMutation}>
         <Select 
           name="cliente"
           label="Cliente:"                       
-          onChange={event => setSelectedUser(event.target.value)}
+          onChange={handleSelectUser}
           defaultValue="defaultValue"
         >
           <option value="defaultValue" disabled>Selecione o cliente...</option>   
@@ -244,7 +263,7 @@ const CreateOrderForm = () => {
                 label="Endereço:"
                 name="enderecos"
                 defaultValue="defaultValue"
-                onChange={event => setSelectedAddress(event.target.value)}
+                onChange={handleSelectAddress}
               >
                 <option value="defaultValue">Selecione o endereço de entrega...</option>
                 { addresses.data?.data.map(address => {
@@ -329,7 +348,7 @@ const CreateOrderForm = () => {
             label="Produto"
             name="produto"
             defaultValue="defaultValue"
-            onChange={event => setSelectedProduct(event.target.value)}
+            onChange={handleSelectProduct}
           >
             <option value="defaultValue" disabled>Selecione um produto...</option>
             { products.data.map(product => {
@@ -393,7 +412,7 @@ const CreateOrderForm = () => {
                   </Td>
                 </Tr>                    
               )
-            })}
+            })}            
             <Tr>
               <Td colSpan={5}>
                 <Flex justify="space-between">
@@ -417,6 +436,11 @@ const CreateOrderForm = () => {
             isDisabled={canSubmitOrder}
           >Gerar pedido</Button>
         </HStack>
+
+        {
+          orderToPrint &&
+          <OrderToPrint ref={orderToPrintRef} order={orderToPrint} />
+        }
         
       </Stack> 
     </>

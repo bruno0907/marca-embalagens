@@ -25,7 +25,7 @@ import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 export default function Orders() {  
   const router = useRouter()
 
-  const [searchValue, setSearchValue] = useState(null)  
+  const [searchValue, setSearchValue] = useState(null)
   
   const debouncedSearch = useDebounce(searchValue, 500)
 
@@ -66,6 +66,7 @@ export default function Orders() {
             <Input
               type="number" 
               placeholder="Pesquisar pelo número do pedido..."
+              borderColor="gray.300"
               value={searchValue}              
               onChange={handleChange}
             />
