@@ -3,6 +3,8 @@ import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
 const getSupplier = async (id: string | string[]) => {
+  if(!id) return null
+  
   return await supabase
     .from<SupplierProps>('suppliers')
     .select()

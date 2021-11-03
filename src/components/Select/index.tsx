@@ -7,7 +7,8 @@ import {
   FormLabel,
   Select as ChakraSelect,  
   SelectProps as ChakraSelectProps,
-  FormErrorMessage
+  FormErrorMessage,
+  Spinner
 } from "@chakra-ui/react"
 
 import { MdArrowDropDown } from 'react-icons/md'
@@ -15,15 +16,21 @@ import { MdArrowDropDown } from 'react-icons/md'
 interface SelectProps extends ChakraSelectProps {
   name: string;  
   label?: string;
-  error?: FieldError;  
+  error?: FieldError;
+  isLoading?: boolean;  
   children: ReactNode;  
 }
 
 const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> = 
-  ({ label, name, error = null, children, ...rest }, ref) => {    
+  ({ label, name, error = null, isLoading, children, ...rest }, ref) => {    
     return (
       <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
-        { label && <FormLabel htmlFor={name}>{label}</FormLabel> }
+        { label && 
+          <FormLabel htmlFor={name} display="flex" alignItems="center">
+            {label}
+            { isLoading && <Spinner ml="2" size="sm" color="blue.500"/>}
+          </FormLabel> 
+        }
         <ChakraSelect
           icon={<MdArrowDropDown fontSize="24" />}          
           id={name}

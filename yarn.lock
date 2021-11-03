@@ -3650,6 +3650,13 @@ react-style-singleton@^2.1.0:
     invariant "^2.2.4"
     tslib "^1.0.0"
 
+react-to-print@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.14.0.tgz#376d83391928221e45f4fdf1f7fd02891fc3042d"
+  integrity sha512-R5EbtQY6tqch+Vwoo7hlZ5cZ5Ew81SYessW1Nyb9Uq5njWolwYWyJUh5X7AtGNhVWD6y4ZfyTN+1iW1tR5a84w==
+  dependencies:
+    prop-types "^15.7.2"
+
 react@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"

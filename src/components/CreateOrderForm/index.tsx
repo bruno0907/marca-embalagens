@@ -1,10 +1,9 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react'
+import { ChangeEvent, FormEvent,  useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 
 import { Divider } from '../Divider'
 import { Input } from '../Input'
 import { Select } from '../Select'
-import { OrderToPrint } from '../OrderToPrint'
 
 import { useAuth } from '../../hooks/useAuth'
 import { useUsersQuery } from '../../hooks/useUsersQuery'
@@ -19,6 +18,7 @@ import { useOrdersQuery } from '../../hooks/useOrdersQuery'
 import { useCreateOrderMutation } from '../../hooks/useCreateOrderMutation'
 
 import { 
+  Text,
   Button,
   Stack,
   HStack,
@@ -32,19 +32,18 @@ import {
   Tr,
   Td,
   Flex,
-  useToast
+  useToast,
 } from '@chakra-ui/react'
 
 import { FiTrash2 } from 'react-icons/fi'
  
 import { OrderItemProps, NewOrderProps } from '../../types'
+import { handleFormatPrice } from '../../utils/handleFormatPrice'
 
 const CreateOrderForm = () => {
   const { session } = useAuth()  
   const toast = useToast()  
-  const router = useRouter()
-
-  const orderToPrintRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()  
 
   const [selectedUser, setSelectedUser] = useState('')
   const [selectedAddress, setSelectedAddress] = useState('')  
@@ -54,16 +53,14 @@ const CreateOrderForm = () => {
 
   const [productAmount, setProductAmount] = useState(0)
   
-  const [order, setOrder] = useState<OrderItemProps[]>([])  
-  const [total, setTotal] = useState(0)
-
-  const [orderToPrint, setOrderToPrint] = useState<NewOrderProps>(null)
+  const [orderProducts, setOrderProducts] = useState<OrderItemProps[]>([])  
+  const [orderTotal, setOrderTotal] = useState(0)  
   
   const users = useUsersQuery()
   const user = useUserQuery(selectedUser)
 
   const addresses = useAddressesQuery(selectedUser)
-  const address = useAddressQuery(selectedAddress)  
+  const address = useAddressQuery(selectedAddress)
 
   const products = useProductsQuery()
   const product = useProductQuery(selectedProduct)
@@ -95,41 +92,42 @@ const CreateOrderForm = () => {
   }
 
   const handleAddItemToOrder = () => {
-    const currentOrder = [...order]
+    const currentOrderProducts = [...orderProducts]
     
-    const newOrder = {
+    const newOrderProducts = {
       produto: product.data.data.nome,
       quantidade: productAmount,
       valor_unitario: product.data.data.preco_unitario,
       valor_total: product.data.data.preco_unitario * productAmount
     }    
 
-    const updatedOrder = [
-      ...currentOrder,
-      newOrder
+    const updatedOrderProducts = [
+      ...currentOrderProducts,
+      newOrderProducts
     ]
 
-    setOrder(updatedOrder)
+    setOrderProducts(updatedOrderProducts)
+    setProductAmount(0)
 
-    const sumTotal = getSumTotal(updatedOrder)
+    const sumTotal = getSumTotal(updatedOrderProducts)
   
-    setTotal(sumTotal)
+    setOrderTotal(sumTotal)
   }  
 
   const handleRemoveItemFromOrder = (itemIndex: number) => {
-    const currentOrder = [...order]
+    const currentOrderProducts = [...orderProducts]
 
-    const updatedOrder = currentOrder.filter((_, index) => index !== itemIndex)
+    const updatedOrderProducts = currentOrderProducts.filter((_, index) => index !== itemIndex)
 
-    setOrder(updatedOrder)
+    setOrderProducts(updatedOrderProducts)
     
-    const sumTotal = getSumTotal(updatedOrder)
+    const sumTotal = getSumTotal(updatedOrderProducts)
   
-    setTotal(sumTotal)
+    setOrderTotal(sumTotal)
   }
 
   const canAddProduct = !Boolean(product.data?.data && productAmount > 0)
-  const canSubmitOrder = user.data?.data && Boolean(order.length <= 0)  
+  const canSubmitOrder = user.data?.data && Boolean(orderProducts.length <= 0)  
 
   const ordersAmount = orders.data?.length
 
@@ -141,14 +139,14 @@ const CreateOrderForm = () => {
       numero_pedido: ordersAmount + 1,
       cliente: user.data.data.id,
       endereco_entrega: address.data.data.id,
-      pedido: [...order],
-      total,
+      pedido: [...orderProducts],
+      total: orderTotal,
       condicao_pagamento: condicaoPagamento,
       data_entrega: dataEntrega
     }
 
     try {
-      // const response = await createOrderMutation.mutateAsync(newOrder)
+      const response = await createOrderMutation.mutateAsync(newOrder)
 
       toast({
         description: 'Pedido criado com sucesso!',
@@ -157,10 +155,7 @@ const CreateOrderForm = () => {
         duration: 3000,
       })
 
-      // To Do: Add print order here
-      setOrderToPrint(newOrder)
-  
-      // router.push('/orders')
+      router.push(`/orders/${response[0].id}`)
 
     } catch (error) {
 
@@ -175,11 +170,11 @@ const CreateOrderForm = () => {
     }
   }
 
-  const handleCancelOrder = () => console.log('Cancelar pedido')
+  const handleCancelOrder = () => router.push('/orders')
 
   if(users.isLoading || products.isLoading || orders.isLoading) {
     return (
-      <Center h="100vh">
+      <Center>
         <Spinner size="md" color="blue.500" />
       </Center>
     )
@@ -190,7 +185,8 @@ const CreateOrderForm = () => {
       <Stack spacing={3} as="form" onSubmit={handleCreateNewOrderMutation}>
         <Select 
           name="cliente"
-          label="Cliente:"                       
+          label="Cliente:"    
+          isLoading={user.isLoading}                   
           onChange={handleSelectUser}
           defaultValue="defaultValue"
         >
@@ -205,7 +201,9 @@ const CreateOrderForm = () => {
 
         </Select>
 
-        { user.isLoading || !user.data.data ? null : (
+        { !user.data?.data ? null : user.isError ? (
+          <Text my="8">Erro ao carregar os dados do usuário...</Text>
+        ) : (
           <Stack spacing={3}>      
             { user.data.data.natureza_cliente === 'Jurídica' &&
               <Input 
@@ -258,10 +256,11 @@ const CreateOrderForm = () => {
               />
             </HStack>
 
-            { addresses.isLoading || !addresses.data.data ? null : (
+            { !addresses.data?.data ? null : (
               <Select
                 label="Endereço:"
                 name="enderecos"
+                isLoading={address.isLoading}
                 defaultValue="defaultValue"
                 onChange={handleSelectAddress}
               >
@@ -273,7 +272,7 @@ const CreateOrderForm = () => {
                 })}
               </Select>
             )}
-            { address.isLoading || !address.data.data ? null : (
+            { !address.data?.data ? null : (
               <Stack spacing={3}>
                 <HStack spacing={3}>
                   <Input 
@@ -342,107 +341,104 @@ const CreateOrderForm = () => {
 
       <Divider />
 
-      <Stack spacing={6}>
-        <HStack spacing={3} align="flex-end">            
-          <Select
-            label="Produto"
-            name="produto"
-            defaultValue="defaultValue"
-            onChange={handleSelectProduct}
-          >
-            <option value="defaultValue" disabled>Selecione um produto...</option>
-            { products.data.map(product => {
-              return (
-                <option 
-                  key={product.id}
-                  value={product.id}
-                >
-                  {product.nome}
-                </option>
-              )
-            }) }
-          </Select>
-          <Box w="80px">
-            <Input 
-              label="Qtd"
-              name="quantidade"
-              type="number"
-              value={productAmount}
-              onChange={event => setProductAmount(Number(event.target.value))}
-            />
-          </Box>
-          <Button 
-            colorScheme="blue" 
-            // size="lg" 
-            onClick={handleAddItemToOrder}
-            isDisabled={canAddProduct}
-          >Adicionar</Button>
-        </HStack>            
+      { address.data?.data && 
+        <Stack spacing={6}>
+          <HStack spacing={3} align="flex-end">            
+            <Select
+              label="Produto"
+              name="produto"
+              defaultValue="defaultValue"
+              onChange={handleSelectProduct}
+            >
+              <option value="defaultValue" disabled>Selecione um produto...</option>
+              { products.data.map(product => {
+                return (
+                  <option 
+                    key={product.id}
+                    value={product.id}
+                  >
+                    {product.nome}
+                  </option>
+                )
+              }) }
+            </Select>
+            <Box w="80px">
+              <Input 
+                label="Qtd"
+                name="quantidade"
+                type="number"
+                value={productAmount}
+                onChange={event => setProductAmount(Number(event.target.value))}
+              />
+            </Box>
+            <Button 
+              colorScheme="blue"
+              onClick={handleAddItemToOrder}
+              isDisabled={canAddProduct}
+            >Adicionar</Button>
+          </HStack>            
 
-        <Table colorScheme="gray" variant="striped">
-          <Thead>
-            <Tr bgColor="blue.500">
-              <Th color="gray.50" w="10" textAlign="center">Qtd</Th>
-              <Th color="gray.50">Produto</Th>
-              <Th color="gray.50" w="30" textAlign="end">Valor Unitário</Th>
-              <Th color="gray.50" w="30" textAlign="end">Valor Total</Th>
-              <Th color="gray.50" textAlign="center">Remover</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            { order.map((o, index) => {
-              return (
-                <Tr key={index}>
-                  <Td textAlign="center">{o.quantidade}</Td>
-                  <Td>{o.produto}</Td>
-                  <Td textAlign="end">{o.valor_unitario.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency' })}</Td>
-                  <Td textAlign="end">{o.valor_total.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency' })}</Td>
-                  <Td textAlign="center" p="0">
-                    <Button 
-                      w="100%"
-                      variant="unstyled"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center" 
-                      onClick={() => handleRemoveItemFromOrder(index)}
-                      _hover={{ svg: { color: 'blue.500' }}}
-                    >
-                      <FiTrash2 />
-                    </Button>
-                  </Td>
-                </Tr>                    
-              )
-            })}            
-            <Tr>
-              <Td colSpan={5}>
-                <Flex justify="space-between">
-                  <strong>Total do pedido: </strong> 
-                  <strong>{total.toLocaleString('pt-BR', { currency: 'BRL', style: 'currency' })}</strong> 
-                </Flex>                    
-              </Td>                  
-            </Tr>
-          </Tbody>
-        </Table>
+          <Table colorScheme="gray" variant="striped">
+            <Thead>
+              <Tr bgColor="blue.500">
+                <Th color="gray.50" w="10" textAlign="center">Qtd</Th>
+                <Th color="gray.50">Produto</Th>
+                <Th color="gray.50" w="30" textAlign="end">Valor Unitário</Th>
+                <Th color="gray.50" w="30" textAlign="end">Valor Total</Th>
+                <Th color="gray.50" textAlign="center">Remover</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              { orderProducts.map((orderProduct, index) => {
+                return (
+                  <Tr key={index}>
+                    <Td textAlign="center">{orderProduct.quantidade}</Td>
+                    <Td>{orderProduct.produto}</Td>
+                    <Td textAlign="end">{handleFormatPrice(orderProduct.valor_unitario)}</Td>
+                    <Td textAlign="end">{handleFormatPrice(orderProduct.valor_total)}</Td>
+                    <Td textAlign="center" p="0">
+                      <Button 
+                        w="100%"
+                        variant="unstyled"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center" 
+                        onClick={() => handleRemoveItemFromOrder(index)}
+                        _hover={{ svg: { color: 'blue.500' }}}
+                      >
+                        <FiTrash2 />
+                      </Button>
+                    </Td>
+                  </Tr>                    
+                )
+              })}            
+              <Tr>
+                <Td colSpan={5}>
+                  <Flex justify="space-between">
+                    <strong>Total do pedido: </strong> 
+                    <strong>{handleFormatPrice(orderTotal)}</strong> 
+                  </Flex>                    
+                </Td>                  
+              </Tr>
+            </Tbody>
+          </Table>
 
-        <HStack spacing={3} justify="flex-end">
-          <Button 
-            variant="ghost" 
-            onClick={handleCancelOrder} 
-            isDisabled={Boolean(order.length <= 0)}
-          >Cancelar</Button>
-          <Button 
-            colorScheme="blue" 
-            onClick={handleCreateNewOrderMutation} 
-            isDisabled={canSubmitOrder}
-          >Gerar pedido</Button>
-        </HStack>
-
-        {
-          orderToPrint &&
-          <OrderToPrint ref={orderToPrintRef} order={orderToPrint} />
-        }
-        
-      </Stack> 
+          <HStack spacing={3} justify="flex-end">
+            <Button 
+              variant="ghost" 
+              onClick={handleCancelOrder} 
+              isDisabled={Boolean(orderProducts.length <= 0)}
+            >Cancelar</Button>
+            <Button 
+              colorScheme="blue" 
+              onClick={handleCreateNewOrderMutation} 
+              isDisabled={canSubmitOrder}
+            >Gerar pedido</Button>
+          </HStack>
+          
+          
+        </Stack> 
+      }
     </>
   )
 }

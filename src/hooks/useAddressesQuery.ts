@@ -3,6 +3,8 @@ import { supabase } from "../database/supabase";
 import { AddressProps } from "../types";
 
 const getAddresses = async (id: string) => {
+  if(!id) return null
+  
   return await supabase
     .from<AddressProps>('addresses')
     .select('*')
