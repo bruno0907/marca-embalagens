@@ -65,10 +65,9 @@ export default function User() {
 
         <Divider />
 
-        <VStack spacing={3} align="flex-start" >
+        <VStack spacing={3} align="flex-start">
           <UserInformation user={user.data.data} isFetching={user.isFetching}/>
-          <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>
-          <UserOrders />
+          <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>          
         </VStack>
         
       </Layout>

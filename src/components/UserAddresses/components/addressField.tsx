@@ -23,8 +23,11 @@ const AddressField = ({ address }: AddressFieldProps) => {
   return (
     <Box py="2" px="4" bgColor="gray.100" borderRadius="8" border="1" borderColor="gray.600">
       <Flex align="center">
-        <Icon as={FiHome} fontSize="24" color="gray.500"/>
+        <Icon as={FiHome} fontSize="24" color="gray.500"/>        
         <Box ml="4">
+          <Text fontSize="sm" color="gray.500" fontWeight="medium">
+            { address.principal ? 'Endereço principal:' : null}
+          </Text>        
           <Text fontSize="sm" color="gray.700" fontWeight="medium">
             {address.endereco} - {address.bairro}
           </Text>

@@ -68,6 +68,7 @@ export default function Users() {
             </InputLeftElement>
             <Input 
               placeholder="Digite sua pesquisa aqui..."
+              borderColor="gray.300"
               value={searchValue}              
               onChange={handleChange}
             />

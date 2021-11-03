@@ -9,8 +9,19 @@ import {
   Text,
   Stack,
 } from '@chakra-ui/react'
+import { useOrdersQuery } from '../../hooks/useOrdersQuery'
+import { useUsersQuery } from '../../hooks/useUsersQuery'
+import { useProductsQuery } from '../../hooks/useProductsQuery'
 
 export default function Dashboard() {      
+  const orders = useOrdersQuery()
+  const users = useUsersQuery()
+  const products = useProductsQuery()
+
+  if(!orders.data) return null
+  if(!users.data) return null
+  if(!products.data) return null
+
   return (
     <> 
       <Head>
@@ -26,9 +37,9 @@ export default function Dashboard() {
         <Content>
 
           <Stack spacing={3}>
-            <Text>Total Pedidos: 0</Text>
-            <Text>Total Clientes: 0</Text>
-            <Text>Total Produtos: 0</Text>
+            <Text>Total Pedidos: {orders.data.length}</Text>
+            <Text>Total Clientes: {users.data.length}</Text>
+            <Text>Total Produtos: {products.data.length}</Text>
           </Stack>
 
         </Content>

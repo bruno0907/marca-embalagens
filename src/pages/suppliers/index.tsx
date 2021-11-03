@@ -67,6 +67,7 @@ export default function Suppliers() {
             </InputLeftElement>
             <Input 
               placeholder="Digite sua pesquisa aqui..."
+              borderColor="gray.300"
               value={searchValue}              
               onChange={handleChange}
             />

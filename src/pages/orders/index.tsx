@@ -25,7 +25,7 @@ import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 export default function Orders() {  
   const router = useRouter()
 
-  const [searchValue, setSearchValue] = useState(null)
+  const [searchValue, setSearchValue] = useState('')
   
   const debouncedSearch = useDebounce(searchValue, 500)
 

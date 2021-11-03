@@ -57,7 +57,6 @@ const UserAddresses = ({ addresses, isFetching }: UserAddressesProps) => {
           )}
         </Stack>
       </Box>
-      {addresses && <Button colorScheme="blue" variant="link" p="2">Outros endereços</Button>}
     </Content>
   )
 }

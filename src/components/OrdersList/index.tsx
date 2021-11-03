@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react"
 
 type OrdersListProps = {
-  filterValue: number;
+  filterValue: string;
 }
 
 const OrdersList = ({ filterValue }: OrdersListProps) => {
