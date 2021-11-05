@@ -17,7 +17,6 @@ type AddressFieldProps = {
 }
 
 const AddressField = ({ address }: AddressFieldProps) => {
-
   const handlePrefetchAddress = async (id: string) => await prefetchAddress(id)
 
   return (

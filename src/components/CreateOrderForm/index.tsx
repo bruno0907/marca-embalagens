@@ -58,8 +58,7 @@ const CreateOrderForm = () => {
   
   const users = useUsersQuery()
   const user = useUserQuery(selectedUser)
-
-  const addresses = useAddressesQuery(selectedUser)
+  
   const address = useAddressQuery(selectedAddress)
 
   const products = useProductsQuery()
@@ -127,7 +126,7 @@ const CreateOrderForm = () => {
   }
 
   const canAddProduct = !Boolean(product.data?.data && productAmount > 0)
-  const canSubmitOrder = user.data?.data && Boolean(orderProducts.length <= 0)  
+  const canSubmitOrder = user.data?.user && Boolean(orderProducts.length <= 0)  
 
   const ordersAmount = orders.data?.length
 
@@ -137,7 +136,7 @@ const CreateOrderForm = () => {
     const newOrder: NewOrderProps = {
       user_id: session.user.id,
       numero_pedido: ordersAmount + 1,
-      cliente: user.data.data.id,
+      cliente: user.data.user.id,
       endereco_entrega: address.data.data.id,
       pedido: [...orderProducts],
       total: orderTotal,
@@ -201,37 +200,37 @@ const CreateOrderForm = () => {
 
         </Select>
 
-        { !user.data?.data ? null : user.isError ? (
+        { !user.data?.user ? null : user.isError ? (
           <Text my="8">Erro ao carregar os dados do usuário...</Text>
         ) : (
           <Stack spacing={3}>      
-            { user.data.data.natureza_cliente === 'Jurídica' &&
+            { user.data.user.natureza_cliente === 'Jurídica' &&
               <Input 
                 label="Razão Social:"
                 name="razao_social"
                 isDisabled
-                defaultValue={user.data.data.razao_social}
+                defaultValue={user.data.user.razao_social}
               />
             }
 
             <HStack spacing={3}>
               <Input 
                 name="cpf_cnpj"
-                label={user.data.data.natureza_cliente === 'Física' ? 'CPF' : 'CNPJ:'}
-                defaultValue={user.data.data.cpf_cnpj}
+                label={user.data.user.natureza_cliente === 'Física' ? 'CPF' : 'CNPJ:'}
+                defaultValue={user.data.user.cpf_cnpj}
                 isDisabled
               />
               <Input 
                 name="rg_ie"
-                label={user.data.data.natureza_cliente === 'Física' ? 'RG' : 'IE:'}
+                label={user.data.user.natureza_cliente === 'Física' ? 'RG' : 'IE:'}
                 isDisabled
-                defaultValue={user.data.data.cpf_cnpj}
+                defaultValue={user.data.user.cpf_cnpj}
               />
               <Input
                 name="contato"
                 label="Contato:"
                 isDisabled
-                defaultValue={user.data.data.contato}
+                defaultValue={user.data.user.contato}
               />
             </HStack>
 
@@ -240,38 +239,37 @@ const CreateOrderForm = () => {
                 name="telefone"
                 label="Telefone:"
                 isDisabled
-                defaultValue={user.data.data.telefone}
+                defaultValue={user.data.user.telefone}
               />
               <Input
                 name="celular"
                 label="Celular:"
                 isDisabled
-                defaultValue={user.data.data.celular}
+                defaultValue={user.data.user.celular}
               />
               <Input
                 name="email"
                 label="E-mail:"
                 isDisabled
-                defaultValue={user.data.data.email}
+                defaultValue={user.data.user.email}
               />
             </HStack>
 
-            { !addresses.data?.data ? null : (
-              <Select
-                label="Endereço:"
-                name="enderecos"
-                isLoading={address.isLoading}
-                defaultValue="defaultValue"
-                onChange={handleSelectAddress}
-              >
-                <option value="defaultValue">Selecione o endereço de entrega...</option>
-                { addresses.data?.data.map(address => {
-                  return (
-                    <option key={address.id} value={address.id}>{address.endereco}</option>
-                  )
-                })}
-              </Select>
-            )}
+            <Select
+              label="Endereço:"
+              name="endereco"
+              defaultValue="defaultValue"
+              isLoading={address.isLoading}
+              onChange={handleSelectAddress}
+            >
+              <option value="defaultValue">Selecione o endereço de entrega...</option>
+              { user.data?.addresses.map(address => {
+                return (
+                  <option key={address.id} value={address.id}>{address.endereco}</option>
+                )
+              })}
+            </Select>
+
             { !address.data?.data ? null : (
               <Stack spacing={3}>
                 <HStack spacing={3}>

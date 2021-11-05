@@ -2,11 +2,12 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { AddressProps, ProfileProps } from "../types"
 
-const useProfileQuery = () => {
+const getProfile = async () => {
   const user = supabase.auth.user()
 
-  return useQuery(['profile'], async () => {
-    const { data: profileData } = await supabase
+  if(!user) return null
+
+  const { data: profileData } = await supabase
       .from<ProfileProps>('profiles')
       .select()
       .eq('user_id', user.id)
@@ -22,6 +23,13 @@ const useProfileQuery = () => {
       data: profileData,
       address: profileAddress,
     }
+
+}
+
+const useProfileQuery = () => {
+  return useQuery(['profile'], async () => {
+    return await getProfile()
+
   }, {
     staleTime: 1000 * 10 * 60,
     useErrorBoundary: true,

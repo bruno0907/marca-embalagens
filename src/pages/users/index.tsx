@@ -9,8 +9,6 @@ import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
-import { Modal } from '../../components/Modal'
-import { CreateUserForm } from '../../components/CreateUserForm'
 import { UsersList } from '../../components/UsersList'
 
 import {    
@@ -20,14 +18,12 @@ import {
   Input,  
   InputGroup,
   InputLeftElement,  
-  InputRightElement,
-  useDisclosure,
+  InputRightElement,  
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
 
-export default function Users() {   
-  const { isOpen, onClose, onOpen } = useDisclosure()
+export default function Users() {     
   const router = useRouter()
   
   const [searchValue, setSearchValue] = useState('')  

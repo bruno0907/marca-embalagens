@@ -15,7 +15,7 @@ import {
 import { FiEdit } from 'react-icons/fi'
 
 import { AddressProps } from '../../types'
-import { AddressField } from './components/addressField'
+import { AddressField } from './components/AddressField'
 
 type UserAddressesProps = {
   addresses: AddressProps[];  

@@ -6,6 +6,8 @@ import { UserProps } from "../types"
 const getUsers = async (pattern?: string): Promise<UserProps[]> => {
   const user = supabase.auth.user()
 
+  if(!user) return null
+
   if(pattern) {
     const { data } = await supabase
       .from<UserProps>('users')

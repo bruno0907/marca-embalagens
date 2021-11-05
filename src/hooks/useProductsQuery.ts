@@ -5,6 +5,8 @@ import { ProductProps } from "../types"
 const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
   const user = supabase.auth.user()
 
+  if(!user) return null
+
   if(pattern) {
     const { data } = await supabase
       .from<ProductProps>('products')

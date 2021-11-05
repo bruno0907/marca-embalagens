@@ -25,26 +25,24 @@ import {
 
 const profileFormSchema = yup.object().shape({
   nome: yup.string().required("O nome é obrigatório").trim(),
-  razao_social: yup.string().trim(),
-  telefone: yup.string().trim(),
-  celular: yup.string().required('O celular é obrigatório').trim(),
-  email: yup.string().email().trim(),
-  cpf_cnpj: yup.string().required('O CNPJ é obrigatório').trim(),
-  rg_ie: yup.string().trim(),
-  endereco: yup.string().required("O endereço é obrigatório").trim(),
-  bairro: yup.string().required("O bairo/distrito é obrigatório"),
-  estado: yup.string().required("Você deve selecionar um estado")
-    .test({
-      message: "Selecione um estado",
+  razao_social: yup.string().trim().nullable(),
+  telefone: yup.string().trim().nullable(),
+  celular: yup.string().required('O celular é obrigatório').trim().nullable(),
+  email: yup.string().email().trim().nullable(),
+  cpf_cnpj: yup.string().trim().nullable(),
+  rg_ie: yup.string().trim().nullable(),
+  endereco: yup.string().required("O endereço é obrigatório").trim().nullable(),
+  bairro: yup.string().required("O bairo é obrigatório").trim().nullable(),
+  estado: yup.string().test({
+      message: "O estado é obrigatório",
       test: value => value !== "default",
-    }).trim(),
-  cidade: yup.string().required("Você deve selecionar um estado")
-    .test({
-      message: "Você deve selecionar uma cidade",
+    }).required().trim().nullable(),
+  cidade: yup.string().test({
+      message: "A cidade é obrigatória",
       test: value => value !== "default",
-    }).trim(),
-  cep: yup.string().trim(),
-  complemento: yup.string().trim(),  
+    }).required("Você precisa selecionar um estado").trim().nullable(),
+  cep: yup.string().trim().nullable(),
+  complemento: yup.string().trim().nullable(),  
 });
 
 import {         
@@ -90,9 +88,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
   const { errors, isDirty, isSubmitting } = formState;
 
   const updateProfileMutation = useUpdateProfileMutation()
-
-  const handleUpdateProfileErrors: SubmitErrorHandler<HandleUpdateProfileProps> = errors => console.log(errors)
-
+  
   const handleUpdateProfile: SubmitHandler<HandleUpdateProfileProps> = async (values) => {
     const {      
       nome,
@@ -164,7 +160,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
 
   useEffect(() => {
     if(profile) {
-      fetchCities(profile.address.estado || 'AC')
+      fetchCities(profile.address.estado || 'default')
         .then(() => reset({
           nome: profile.data.nome,
           razao_social: profile.data.razao_social,
@@ -175,7 +171,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           rg_ie: profile.data.rg_ie,
           endereco: profile.address.endereco,
           bairro: profile.address.bairro,
-          estado: profile.address.estado || 'AC',
+          estado: profile.address.estado || 'default',
           cidade: profile.address.cidade,
           cep: profile.address.cep,
           complemento: profile.address.complemento,
@@ -184,7 +180,9 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         .catch(err => console.log(err))
     }
 
-    return () => setCities([])
+    return () => {
+      setCities([])
+    }
 
   }, [profile, reset, fetchCities])
 
@@ -223,20 +221,20 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
     <Flex
       as="form"
       flexDir="column"
-      onSubmit={handleSubmit(handleUpdateProfile, handleUpdateProfileErrors)}
+      onSubmit={handleSubmit(handleUpdateProfile)}
     >
       <Stack spacing={3}>
         <HStack spacing={3}>
           <Input
             name="nome"
-            label="Nome*"
+            label="Nome:"
             bgColor="gray.50"
             error={errors?.nome}
             {...register("nome")}
           />          
           <Input
             name="razao_social"
-            label="Razão Social"
+            label="Razão Social:"
             bgColor="gray.50"
             error={errors?.razao_social}
             {...register("razao_social")}
@@ -245,14 +243,14 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         <HStack spacing={3}>
           <Input
             name="telefone"
-            label="Telefone"
+            label="Telefone:"
             bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
           />
           <Input
             name="celular"
-            label="Celular*"
+            label="Celular:"
             bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
@@ -260,7 +258,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           <Input
             name="email"
             type="email"
-            label="E-mail"
+            label="E-mail:"
             bgColor="gray.50"
             error={errors?.email}
             {...register("email")}
@@ -269,14 +267,14 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         <HStack spacing={3}>
           <Input
             name="cpf_cnpj"
-            label="CNPJ*"
+            label="CNPJ:"
             bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
           />
           <Input
             name="rg_ie"
-            label="Inscrição Estadual"
+            label="Inscrição Estadual:"
             bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
@@ -285,7 +283,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         <HStack spacing={3}>
           <Input
             name="endereco"
-            label="Endereço*"
+            label="Endereço:"
             bgColor="gray.50"
             error={errors?.endereco}
             {...register("endereco")}
@@ -293,7 +291,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           <Box w="40%">
             <Input
               name="bairro"
-              label="Bairro*"
+              label="Bairro:"
               bgColor="gray.50"
               error={errors?.bairro}
               {...register("bairro")}
@@ -303,12 +301,14 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         <HStack spacing={3}>
           <Select
             name="estado"
-            label="Estado*"
-            bgColor="gray.50"            
+            label="Estado:"
+            bgColor="gray.50"
+            defaultValue="default"            
             error={errors?.estado}
             {...register("estado")}
             onChange={(event) => fetchCities(event.target.value)}
-          >{ states.isFetching && <option>Carregando...</option> }            
+          >{ states.isFetching && <option>Carregando...</option> }
+            <option value="default" hidden aria-readonly>Selecione um estado...</option>
             { states.data?.map((state) => {
               return (
                 <option key={state.id} value={state.sigla}>
@@ -319,11 +319,13 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           </Select>
           <Select
             name="cidade"
-            label="Cidade*"
+            label="Cidade:"
             bgColor="gray.50"
+            defaultValue="default"
             error={errors?.cidade}
             {...register("cidade")}
           >{!cities && <option>Carregando...</option>}
+            <option value="default" hidden aria-readonly>Selecione uma cidade...</option>
             { cities.map((city) => {
               return <option key={city.id} value={city.nome}>{city.nome}</option>;
             }) }
@@ -331,7 +333,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           
           <Input
             name="cep"
-            label="CEP"
+            label="CEP:"
             bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
@@ -339,7 +341,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         </HStack>
         <Input
           name="complemento"
-          label="Complemento"
+          label="Complemento:"
           bgColor="gray.50"
           error={errors?.complemento}
           {...register("complemento")}
@@ -354,10 +356,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         >
           Salvar alterações
         </Button>
-      </HStack>
-      <Text fontSize="sm" fontWeight="bold" alignSelf="end">
-        *Campos obrigatórios
-      </Text>
+      </HStack>      
     </Flex>
   );
 }

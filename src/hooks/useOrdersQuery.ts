@@ -16,6 +16,8 @@ type OrderQueryProps = {
 const getOrders = async (pattern?: string): Promise<OrderQueryProps[]> => {
   const user = supabase.auth.user()
 
+  if(!user) return null
+
   if(pattern) {
     const { data } = await supabase
       .from<OrderQueryProps>('orders')

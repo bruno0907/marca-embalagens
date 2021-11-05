@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { useSupplierQuery } from '../../hooks/useSupplierQuery'
-import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
 import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
@@ -24,35 +23,18 @@ export default function Supplier() {
   const router = useRouter()
   const id = router.query.id
   
-  const supplier = useSupplierQuery(id)  
-  const addresses = useAddressesQuery(String(id), 1)
+  const supplier = useSupplierQuery(id)
 
   const handlePrintUser = () => console.log('Print supplier')
-
-  if(supplier.isLoading || addresses.isLoading) {
-    return (
-      <Center my="8" h="100vh">
-        <Spinner size="lg" color="blue.500"/>
-      </Center>
-    )
-  }
-
-  if(supplier.error || addresses.error) {
-    return (
-      <Center my="8" h="100vh">
-        <Text>Erro ao carregar as informações...</Text>
-      </Center>
-    )
-  }
 
   return (
     <>
       <Head>
-        <title>MARCA | {supplier.data.data.nome}</title>
+        <title>MARCA | {supplier.data?.supplier.nome}</title>
       </Head>
       <Layout>
 
-        <Header withGoBack title={supplier.data.data.nome}>
+        <Header withGoBack title={supplier.data?.supplier.nome}>
           <Button
             colorScheme="blue"
             leftIcon={<FiPrinter />}            
@@ -61,12 +43,22 @@ export default function Supplier() {
 
         </Header>
 
-        <Divider /> 
+        <Divider />
 
-        <VStack spacing={3} align="flex-start" >
-          <SupplierInformation supplier={supplier.data.data} isFetching={supplier.isFetching}/>
-          <UserAddresses addresses={addresses.data.data} isFetching={addresses.isFetching}/>          
-        </VStack> 
+        { !supplier.data || supplier.isLoading ? (
+          <Center py="16">
+            <Spinner size="lg" color="blue.500"/>
+          </Center>
+        ) : supplier.isError ? (
+          <Center py="16">
+            <Text>Erro ao carregar as informações...</Text>
+          </Center>          
+        ) : (
+          <VStack spacing={3} align="flex-start" >
+            <SupplierInformation supplier={supplier.data.supplier} isFetching={supplier.isFetching}/>
+            <UserAddresses addresses={supplier.data.addresses} isFetching={supplier.isFetching}/>          
+          </VStack>
+        )}
 
       </Layout>
     </>

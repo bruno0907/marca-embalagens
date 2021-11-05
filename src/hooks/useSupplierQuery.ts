@@ -1,15 +1,30 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { SupplierProps } from "../types"
+import { AddressProps, SupplierProps } from "../types"
 
 const getSupplier = async (id: string | string[]) => {
   if(!id) return null
   
-  return await supabase
+  const { data: supplier, error: supplierError } = await supabase
     .from<SupplierProps>('suppliers')
     .select()
     .eq('id', String(id))
     .single()
+
+    if(supplierError) {
+      throw new Error('Fornecedor não encontrado.')
+
+    }
+
+    const { data: addresses, error: addressesError } = await supabase
+      .from<AddressProps>('addresses')
+      .select()
+      .eq('user_id', supplier.id)
+
+    return {
+      supplier,
+      addresses
+    }
 }
 
 const useSupplierQuery = (id: string | string[]) => {

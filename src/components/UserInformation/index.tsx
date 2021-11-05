@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Content } from "../Content"
-import { InformationField } from './components/informationField'
+import { InformationField } from './components/InformationField'
 
 import { Modal } from '../Modal'
 import { UpdateUserForm } from '../UpdateUserForm'

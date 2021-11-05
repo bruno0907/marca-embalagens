@@ -38,7 +38,7 @@ export type ProfileProps = {
   email: string;
   telefone: string;
   celular: string;
-  situacao_cadastral: boolean;  
+  situacao_cadastral: boolean;
 }
 
 export type NewProfileProps = {  

@@ -178,7 +178,10 @@ const CreateUserForm = () => {
   useEffect(() => {
     setFocus('nome')
 
-    return () => setCities([])
+    return () => {
+      setCities([])
+    }
+    
   }, [setFocus])
 
   return (

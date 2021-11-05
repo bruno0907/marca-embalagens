@@ -24,7 +24,7 @@ type UsersListProps = {
 function UsersList ({ filterValue }: UsersListProps) {
   const router = useRouter()
 
-  const users = useUsersQuery(filterValue)
+  const users = useUsersQuery(filterValue)  
 
   const handlePrefetchUser = async (id: string) => await prefetchUser(id)
   

@@ -101,10 +101,6 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     }
   }
 
-  const handleUpdateUserErrors: SubmitErrorHandler<UserProps> = errors => {
-    console.log(errors)
-  }
-
   const handleCancel = () => {
     reset()
     onClose()
@@ -122,7 +118,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     <Flex
       as="form"
       flexDir="column"
-      onSubmit={handleSubmit(handleUpdateUser, handleUpdateUserErrors)}      
+      onSubmit={handleSubmit(handleUpdateUser)}      
     >
       <Stack spacing={3}>        
         

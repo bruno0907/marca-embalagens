@@ -35,6 +35,7 @@ const AuthContext = createContext({} as AuthContextProps)
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter()
+  
   const [session, setSession] = useState<Session>(() => {
     const data = supabase.auth.session()
 
@@ -64,12 +65,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   const signOut = async () => {    
-    await supabase.auth.signOut()
+    return await supabase.auth.signOut()
   }
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      async function handleAuthChange() {
+      const handleAuthChange = async () => {
         await axios.post('/api/auth', {
           event,
           session
@@ -79,15 +80,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (event === 'SIGNED_IN') {
         setSession(session)
+        return
       }
       
       if (event === 'SIGNED_OUT') {
         setSession(null)
         router.push('/')
+        return
       }      
     })
 
-    return () => authListener.unsubscribe()
+    return () => {
+      authListener.unsubscribe()
+    }
+
   }, [router])
 
   return (
@@ -102,7 +108,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   )
 }
 
-const useAuth = () => useContext(AuthContext)
+const useAuth = () => {
+  return useContext(AuthContext)
+}
 
 export {
   useAuth,

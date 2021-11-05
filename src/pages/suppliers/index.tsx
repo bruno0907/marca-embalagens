@@ -8,8 +8,6 @@ import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
 import { SuppliersList } from '../../components/SuppliersList'
-import { Modal } from '../../components/Modal'
-import { CreateSupplierForm } from '../../components/CreateSupplierForm'
 
 import useDebounce from '../../hooks/useDebounce'
 
@@ -19,8 +17,7 @@ import {
   Input,  
   InputGroup,
   InputLeftElement,  
-  InputRightElement,
-  useDisclosure,    
+  InputRightElement,     
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
