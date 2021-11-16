@@ -16,12 +16,12 @@ import {
   VStack,
   Button,  
   Text,
-  Box
 } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 import { useReactToPrint } from 'react-to-print'
 import { UserToPrint } from './components/UserToPrint'
+import { UserOrders } from '../../components/UserOrders'
 
 export default function User() {  
   const router = useRouter()
@@ -64,13 +64,14 @@ export default function User() {
         ) : (
           <VStack spacing={3} align="flex-start">
             <UserInformation user={user.data.user} isFetching={user.isFetching}/>
-            <AddressesInformation addresses={user.data.addresses} isFetching={user.isFetching}/>          
+            <AddressesInformation addresses={user.data.addresses} isFetching={user.isFetching}/>
+            <UserOrders userId={user.data.user.id}/>          
           </VStack>
         )}
         
       </Layout>
 
-      { user.data && <UserToPrint ref={userToPrintRef} user={user.data?.user} addresses={user.data?.addresses}/> }
+      { user.data && <UserToPrint ref={userToPrintRef} user={user.data?.user} addresses={user.data?.addresses} /> }
 
     </>
   )
