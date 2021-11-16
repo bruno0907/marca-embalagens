@@ -3,7 +3,9 @@ import { supabase } from "../database/supabase"
 import { AddressProps, UserProps } from "../types"
 
 const getUser = async (id: string | string[]) => {
-  if(!id) return null
+  if(!id) {
+    return null
+  }
 
   const { data: user, error: userError } = await supabase
     .from<UserProps>('users')
@@ -13,7 +15,6 @@ const getUser = async (id: string | string[]) => {
 
   if(userError) {
     throw new Error('Usuário não encontrado.')
-
   }
 
   const { data: addresses, error: addressesError } = await supabase
@@ -22,8 +23,7 @@ const getUser = async (id: string | string[]) => {
     .eq('user_id', user.id)
 
   if(addressesError) {
-    throw new Error('Endereços não encontraos.')
-    
+    throw new Error('Endereços do usuário não encontrados.')    
   }
 
   return {

@@ -7,7 +7,7 @@ import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { SupplierInformation } from '../../components/SupplierInformation'
-import { UserAddresses } from '../../components/UserAddresses'
+import { AddressesInformation } from '../../components/AddressInformation'
 
 import {     
   Center,
@@ -56,7 +56,7 @@ export default function Supplier() {
         ) : (
           <VStack spacing={3} align="flex-start" >
             <SupplierInformation supplier={supplier.data.supplier} isFetching={supplier.isFetching}/>
-            <UserAddresses addresses={supplier.data.addresses} isFetching={supplier.isFetching}/>          
+            <AddressesInformation addresses={supplier.data.addresses} isFetching={supplier.isFetching}/>          
           </VStack>
         )}
 

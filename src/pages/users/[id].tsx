@@ -8,7 +8,7 @@ import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { UserInformation } from '../../components/UserInformation'
-import { UserAddresses } from '../../components/UserAddresses'
+import { AddressesInformation } from '../../components/AddressInformation'
 
 import {     
   Center,
@@ -64,7 +64,7 @@ export default function User() {
         ) : (
           <VStack spacing={3} align="flex-start">
             <UserInformation user={user.data.user} isFetching={user.isFetching}/>
-            <UserAddresses addresses={user.data.addresses} isFetching={user.isFetching}/>          
+            <AddressesInformation addresses={user.data.addresses} isFetching={user.isFetching}/>          
           </VStack>
         )}
         

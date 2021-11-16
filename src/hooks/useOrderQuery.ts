@@ -3,7 +3,9 @@ import { supabase } from "../database/supabase"
 import { OrderProps } from "../types"
 
 const getOrder = async (id: string | string[]) => {
-  if(!id) return null
+  if(!id) {
+    return null
+  }
 
   return await supabase
     .from<OrderProps>('orders')

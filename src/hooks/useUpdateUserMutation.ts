@@ -7,7 +7,9 @@ const useUpdateUserMutation = () => {
   return useMutation(async (user: UserProps) => {
     const { data, error } = await updateUser(user)
 
-    if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
+    if(error) {
+      throw Error('Erro ao atualizar o cadastro. Tente novamente.')      
+    }
 
     return data
   }, {

@@ -3,7 +3,9 @@ import { supabase } from "../database/supabase"
 import { AddressProps, SupplierProps } from "../types"
 
 const getSupplier = async (id: string | string[]) => {
-  if(!id) return null
+  if(!id) {
+    return null
+  }    
   
   const { data: supplier, error: supplierError } = await supabase
     .from<SupplierProps>('suppliers')
@@ -13,13 +15,16 @@ const getSupplier = async (id: string | string[]) => {
 
     if(supplierError) {
       throw new Error('Fornecedor não encontrado.')
-
     }
 
     const { data: addresses, error: addressesError } = await supabase
       .from<AddressProps>('addresses')
       .select()
       .eq('user_id', supplier.id)
+
+    if(addressesError) {
+      throw new Error('Endereços do fornecedor não encontrados.')
+    }
 
     return {
       supplier,

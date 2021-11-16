@@ -17,12 +17,12 @@ import { FiEdit } from 'react-icons/fi'
 import { AddressProps } from '../../types'
 import { AddressField } from './components/AddressField'
 
-type UserAddressesProps = {
+type AddressesInformationProps = {
   addresses: AddressProps[];  
   isFetching: boolean;
 }
 
-const UserAddresses = ({ addresses, isFetching }: UserAddressesProps) => {   
+const AddressesInformation = ({ addresses, isFetching }: AddressesInformationProps) => {   
   if(isFetching){
     return (
       <Content w="100%">
@@ -61,4 +61,4 @@ const UserAddresses = ({ addresses, isFetching }: UserAddressesProps) => {
   )
 }
 
-export { UserAddresses }
+export { AddressesInformation }

@@ -7,7 +7,9 @@ const useUpdateSupplierMutation = () => {
   return useMutation(async (supplier: SupplierProps) => {
     const { data, error } = await updateSupplier(supplier)
 
-    if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
+    if(error) {
+      throw Error('Erro ao atualizar o cadastro. Tente novamente.')
+    }
 
     return data
   }, {

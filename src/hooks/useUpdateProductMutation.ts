@@ -8,7 +8,9 @@ const useUpdateProductMutation = () => {
     async (productToUpdate: ProductProps) => {
       const { data, error } = await updateProduct(productToUpdate)
 
-      if(error) throw new Error('Erro ao atualizar o produto. Tente novamente...')
+      if(error) {
+        throw new Error('Erro ao atualizar o produto. Tente novamente...')
+      }
 
       return data
 

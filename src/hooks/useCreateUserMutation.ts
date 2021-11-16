@@ -15,7 +15,9 @@ const useCreateUserMutation = () => {
     async ({ userData, addressData }: NewUserMutationProps) => {
       const newUserData = await createUser(userData)
   
-      if(newUserData.error) throw Error('Erro ao cadastrar novo cliente.')
+      if(newUserData.error) {
+        throw Error('Erro ao cadastrar novo cliente.')
+      }
   
       const userAddress = {
         user_id: newUserData.data[0].id,

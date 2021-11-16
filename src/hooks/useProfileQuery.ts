@@ -5,7 +5,9 @@ import { AddressProps, ProfileProps } from "../types"
 const getProfile = async () => {
   const user = supabase.auth.user()
 
-  if(!user) return null
+  if(!user) {
+    return null
+  }
 
   const { data: profileData } = await supabase
       .from<ProfileProps>('profiles')

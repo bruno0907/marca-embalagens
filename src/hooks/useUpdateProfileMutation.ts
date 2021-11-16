@@ -34,7 +34,9 @@ const updateAddress = async (address: AddressProps) => {
     .eq('id', address.id)
     .single()
 
-  if(addressExists.error) throw new Error('Endereço não encontrado!')
+  if(addressExists.error) {
+    throw new Error('Endereço não encontrado!')
+  }
   
   return await supabase
     .from<AddressProps>('addresses')

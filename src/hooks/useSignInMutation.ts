@@ -17,6 +17,7 @@ const useSignInMutation = () => {
       if(error) {
         throw new Error('E-mail ou senha inválidos')
       }
+      
       return user
     }
   )

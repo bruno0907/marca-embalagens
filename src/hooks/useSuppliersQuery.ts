@@ -6,6 +6,10 @@ import { SupplierProps } from "../types"
 const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
   const user = supabase.auth.user()
 
+  if(!user) {
+    return null
+  }
+
   if(pattern) {
     const { data } = await supabase
       .from<SupplierProps>('suppliers')
@@ -29,15 +33,12 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
 const useSuppliersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['suppliers[]', pattern] : 'suppliers[]'
   
-  return useQuery(queryKey, () => {
+  return useQuery(queryKey, async () => {
     if(pattern) {
-      const response = getSuppliers(pattern)
-      return response
+      return await getSuppliers(pattern)
     }
 
-    const response = getSuppliers()
-    return response
-    
+    return await getSuppliers()    
   }, {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true

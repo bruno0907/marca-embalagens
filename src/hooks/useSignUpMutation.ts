@@ -17,7 +17,9 @@ const useSignUpMutation = () => {
     async (auth: AuthProps) => {
       const newSignUp = await signUp(auth)
 
-      if(newSignUp.error) throw new Error('O e-email informado já está em uso. Tente outro e-mail')
+      if(newSignUp.error) {
+        throw new Error('O e-email informado já está em uso. Tente outro e-mail')
+      }
 
       if(newSignUp.user) {
         const profile: NewProfileProps = {
@@ -53,6 +55,7 @@ const useSignUpMutation = () => {
       }
 
       throw new Error('Ocorreu um erro ao efetuar o cadastro. Tente novamente.')
+
     }, {
       onSuccess: async profile => queryClient.setQueryData('profile', profile)
     }
