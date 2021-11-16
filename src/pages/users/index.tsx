@@ -13,8 +13,7 @@ import { UsersList } from '../../components/UsersList'
 
 import {    
   Button,
-  Icon,
-  Heading,  
+  Icon,  
   Input,  
   InputGroup,
   InputLeftElement,  

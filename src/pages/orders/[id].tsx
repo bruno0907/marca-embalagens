@@ -60,7 +60,7 @@ export default function Order() {
         <title>MARCA | Pedido: {order.data?.data.numero_pedido}</title>
       </Head>
 
-      <Box maxW="1090px" m="auto">
+      <Box maxW="1090px" m="auto" px="8">
         <Flex py="16" px="8" w="100%" align="center" justify="space-between">
           <Icon 
             mr="4"

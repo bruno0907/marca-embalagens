@@ -1,5 +1,12 @@
-import { ChangeEvent, FormEvent,  useRef, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { useRouter } from 'next/router'
+
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { useForm, SubmitHandler } from 'react-hook-form'
+
+import { handleFormatPrice } from '../../utils/handleFormatPrice'
 
 import { Divider } from '../Divider'
 import { Input } from '../Input'
@@ -8,7 +15,6 @@ import { Select } from '../Select'
 import { useAuth } from '../../hooks/useAuth'
 import { useUsersQuery } from '../../hooks/useUsersQuery'
 import { useProductsQuery } from '../../hooks/useProductsQuery'
-import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 import { useUserQuery } from '../../hooks/useUserQuery'
 import { useAddressQuery } from '../../hooks/useAddressQuery'
 import { useProductQuery } from '../../hooks/useProductQuery'
@@ -33,12 +39,22 @@ import {
   Td,
   Flex,
   useToast,
+  FormControl,
+  FormLabel,  
+  Input as ChakraInput,
+  InputGroup,
+  InputLeftAddon,
+  InputRightAddon,  
 } from '@chakra-ui/react'
 
-import { FiTrash2 } from 'react-icons/fi'
+import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi'
  
 import { OrderItemProps, NewOrderProps } from '../../types'
-import { handleFormatPrice } from '../../utils/handleFormatPrice'
+
+const newOrderSchema = yup.object().shape({
+  condicao_pagamento: yup.string().trim(),     
+  data_entrega: yup.string().required('A data da entrega é obrigatória').trim(),
+})
 
 const CreateOrderForm = () => {
   const { session } = useAuth()  
@@ -48,13 +64,17 @@ const CreateOrderForm = () => {
   const [selectedUser, setSelectedUser] = useState('')
   const [selectedAddress, setSelectedAddress] = useState('')  
   const [selectedProduct, setSelectedProduct] = useState('')
-  const [condicaoPagamento, setCondicaoPagamento] = useState('')
-  const [dataEntrega, setDataEntrega] = useState('')  
-
+  
   const [productAmount, setProductAmount] = useState(0)
   
-  const [orderProducts, setOrderProducts] = useState<OrderItemProps[]>([])  
-  const [orderTotal, setOrderTotal] = useState(0)  
+  const [orderProducts, setOrderProducts] = useState<OrderItemProps[]>([])
+  const [orderTotal, setOrderTotal] = useState(0)
+
+  const { handleSubmit, register, formState } = useForm<NewOrderProps>({
+    resolver: yupResolver(newOrderSchema)
+  })
+
+  const { errors, isSubmitting } = formState
   
   const users = useUsersQuery()
   const user = useUserQuery(selectedUser)
@@ -125,13 +145,25 @@ const CreateOrderForm = () => {
     setOrderTotal(sumTotal)
   }
 
+  const handleAddProductAmount = () => {
+    setProductAmount(prev => prev + 1)
+  }
+
+  const handleSubProductAmount = () => {
+    if(productAmount <= 0) {
+      return
+    }
+
+    setProductAmount(prev => prev - 1)
+  }  
+
   const canAddProduct = !Boolean(product.data?.data && productAmount > 0)
   const canSubmitOrder = user.data?.user && Boolean(orderProducts.length <= 0)  
 
   const ordersAmount = orders.data?.length
 
-  const handleCreateNewOrderMutation = async (event: FormEvent) => {
-    event.preventDefault()
+  const handleCreateNewOrderMutation: SubmitHandler<NewOrderProps> = async values => {
+    const { data_entrega, condicao_pagamento } = values
 
     const newOrder: NewOrderProps = {
       user_id: session.user.id,
@@ -140,8 +172,8 @@ const CreateOrderForm = () => {
       endereco_entrega: address.data.data.id,
       pedido: [...orderProducts],
       total: orderTotal,
-      condicao_pagamento: condicaoPagamento,
-      data_entrega: dataEntrega
+      condicao_pagamento,
+      data_entrega
     }
 
     try {
@@ -157,13 +189,12 @@ const CreateOrderForm = () => {
       router.push(`/orders/${response[0].id}`)
 
     } catch (error) {
-
       toast({        
         title: error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',
       })
 
     }
@@ -180,8 +211,8 @@ const CreateOrderForm = () => {
   }
 
   return (
-    <>
-      <Stack spacing={3} as="form" onSubmit={handleCreateNewOrderMutation}>
+    <Box as="form" onSubmit={handleSubmit(handleCreateNewOrderMutation)}>
+      <Stack spacing={3}>
         <Select 
           name="cliente"
           label="Cliente:"    
@@ -316,16 +347,15 @@ const CreateOrderForm = () => {
                   <Input 
                     name="condicao_pagamento"
                     label="Condição de pagamento:"
-                    value={condicaoPagamento}
-                    onChange={event => setCondicaoPagamento(event.target.value)}
+                    {...register('condicao_pagamento')}
                   />
                   <Box w="380px">
                     <Input 
                       type="date"
                       name="data_entrega"
                       label="Data de entrega:"
-                      value={dataEntrega}
-                      onChange={event => setDataEntrega(event.target.value)}
+                      error={errors.data_entrega}
+                      {...register('data_entrega')}
                     />
                   </Box>
                 </HStack>
@@ -360,15 +390,37 @@ const CreateOrderForm = () => {
                 )
               }) }
             </Select>
-            <Box w="80px">
-              <Input 
-                label="Qtd"
-                name="quantidade"
-                type="number"
-                value={productAmount}
-                onChange={event => setProductAmount(Number(event.target.value))}
-              />
-            </Box>
+            <FormControl w="250px">
+              <FormLabel>Quantidade</FormLabel>
+              <InputGroup>              
+                <InputLeftAddon 
+                  as="button"
+                  type="button"
+                  disabled={!selectedProduct}
+                  cursor={!selectedProduct ? 'not-allowed' : 'pointer'}
+                  onClick={handleSubProductAmount}
+                >
+                  <FiMinus color="#080808"/>
+                </InputLeftAddon>
+                <ChakraInput
+                  textAlign="center"
+                  name="quantidade"
+                  type="number"                  
+                  value={productAmount}
+                  disabled={!selectedProduct}
+                  onChange={event => setProductAmount(Number(event.target.value))}
+                />
+                <InputRightAddon 
+                  as="button"
+                  type="button"
+                  disabled={!selectedProduct}
+                  cursor={!selectedProduct ? 'not-allowed' : 'pointer'}
+                  onClick={handleAddProductAmount}
+                > 
+                  <FiPlus  color="#080808"/>
+                </InputRightAddon>
+              </InputGroup>
+            </FormControl>
             <Button 
               colorScheme="blue"
               onClick={handleAddItemToOrder}
@@ -409,7 +461,7 @@ const CreateOrderForm = () => {
                     </Td>
                   </Tr>                    
                 )
-              })}            
+              })}
               <Tr>
                 <Td colSpan={5}>
                   <Flex justify="space-between">
@@ -428,16 +480,17 @@ const CreateOrderForm = () => {
               isDisabled={Boolean(orderProducts.length <= 0)}
             >Cancelar</Button>
             <Button 
+              type="submit"
               colorScheme="blue" 
-              onClick={handleCreateNewOrderMutation} 
               isDisabled={canSubmitOrder}
+              isLoading={isSubmitting}
             >Gerar pedido</Button>
           </HStack>
           
           
         </Stack> 
       }
-    </>
+    </Box>
   )
 }
 
