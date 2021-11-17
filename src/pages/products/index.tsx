@@ -7,9 +7,8 @@ import { Layout } from '../../components/Layout'
 import { Content } from '../../components/Content'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
-import { Modal } from '../../components/Modal'
-import { ProductsList } from '../../components/ProductsList'
-import { CreateProductForm } from '../../components/CreateProductForm'
+import { ProductsList } from './components/ProductsList'
+
 
 import useDebounce from '../../hooks/useDebounce'
 

@@ -13,9 +13,9 @@ import {
   Center
 } from "@chakra-ui/react"
 
-import { useProductsQuery } from "../../hooks/useProductsQuery"
-import { prefetchProduct } from "../../services/prefetchProduct"
-import { handleFormatPrice } from "../../utils/handleFormatPrice"
+import { useProductsQuery } from "../../../../hooks/useProductsQuery"
+import { prefetchProduct } from "../../../../services/prefetchProduct"
+import { handleFormatPrice } from "../../../../utils/handleFormatPrice"
 
 type ProductsListProps = {
   filterValue: string;

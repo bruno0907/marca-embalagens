@@ -4,10 +4,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useCreateProductMutation } from "../../hooks/useCreateProductMutation";
-import { useAuth } from "../../hooks/useAuth";
+import { useCreateProductMutation } from "../../../../../hooks/useCreateProductMutation";
+import { useAuth } from "../../../../../hooks/useAuth";
 
-import { Input } from "../Input";
+import { Input } from "../../../../../components/Input";
 
 import {  
   Button,
@@ -28,7 +28,7 @@ const newProductSchema = yup.object().shape({
   preco_unitario: yup.number().required('O valor do produto é obrigatório'),    
 });
 
-import { NewProductProps } from "../../types";
+import { NewProductProps } from "../../../../../types";
 
 const CreateProductForm = () => {
   const { session } = useAuth()

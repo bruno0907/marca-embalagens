@@ -6,11 +6,10 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { SubmitHandler, useForm, SubmitErrorHandler } from 'react-hook-form'
 
-import { useUpdateProductMutation } from '../../hooks/useUpdateProductMutation'
+import { useUpdateProductMutation } from '../../../../../hooks/useUpdateProductMutation'
 
-import { Input } from "../Input"
+import { Input } from "../../../../../components/Input"
 
-import { handleFormatPrice } from '../../utils/handleFormatPrice'
 
 import {    
   Skeleton,
@@ -25,7 +24,7 @@ import {
   useToast
 } from '@chakra-ui/react'
 
-import { ProductProps } from "../../types"
+import { ProductProps } from "../../../../../types"
 
 type UpdateProductFormProps = {
   product: ProductProps;
@@ -44,11 +43,6 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
   const [isEditing, setIsEditing] = useState(true)
 
   const { formState, register, handleSubmit } = useForm<ProductProps>({
-    // defaultValues: {
-    //   nome: product.nome,
-    //   descricao: product.descricao,
-    //   preco_unitario: product.preco_unitario,
-    // },
     resolver: yupResolver(updateProductSchema)    
   })
 

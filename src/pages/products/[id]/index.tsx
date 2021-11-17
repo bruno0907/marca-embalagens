@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Layout } from '../../components/Layout'
-import { Divider } from '../../components/Divider'
-import { Header } from '../../components/Header'
-import { Content } from '../../components/Content'
-import { UpdateProductForm } from '../../components/UpdateProductForm'
+import { Layout } from '../../../components/Layout'
+import { Divider } from '../../../components/Divider'
+import { Header } from '../../../components/Header'
+import { Content } from '../../../components/Content'
+import { UpdateProductForm } from './components/UpdateProductForm'
 
-import { useProductQuery } from '../../hooks/useProductQuery'
+import { useProductQuery } from '../../../hooks/useProductQuery'
 
 import {   
   Center,
