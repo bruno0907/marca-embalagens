@@ -19,7 +19,7 @@ import {
   Link as ChakraLink,
   Heading
 } from '@chakra-ui/react'
-import { Content } from '../../components/Content'
+import { Content } from '../../components/Layout/Content'
 
 type SignInProps = {
   email: string;

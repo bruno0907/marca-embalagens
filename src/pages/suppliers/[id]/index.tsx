@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
 import { Authenticated } from '../../../components/Layout/Authenticated'
-import { Divider } from '../../../components/Divider'
+import { Divider } from '../../../components/Layout/Divider'
 import { Header } from '../../../components/Header'
 import { SupplierInformation } from './components/SupplierInformation'
 import { AddressesInformation } from '../../../components/AddressInformation'

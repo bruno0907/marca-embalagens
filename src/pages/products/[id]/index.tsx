@@ -2,9 +2,9 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { Authenticated } from '../../../components/Layout/Authenticated'
-import { Divider } from '../../../components/Divider'
+import { Divider } from '../../../components/Layout/Divider'
 import { Header } from '../../../components/Header'
-import { Content } from '../../../components/Content'
+import { Content } from '../../../components/Layout/Content'
 import { UpdateProductForm } from './components/UpdateProductForm'
 
 import { useProductQuery } from '../../../hooks/useProductQuery'

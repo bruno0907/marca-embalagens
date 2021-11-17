@@ -1,4 +1,4 @@
-import { Content } from '../Content'
+import { Content } from '../Layout/Content'
 
 import { 
   Stack,  

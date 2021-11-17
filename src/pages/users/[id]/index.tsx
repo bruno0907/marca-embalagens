@@ -7,7 +7,7 @@ import { useReactToPrint } from 'react-to-print'
 import { useUserQuery } from '../../../hooks/useUserQuery'
 
 import { Authenticated } from '../../../components/Layout/Authenticated'
-import { Divider } from '../../../components/Divider'
+import { Divider } from '../../../components/Layout/Divider'
 import { Header } from '../../../components/Header'
 import { UserInformation } from './components/UserInformation'
 import { AddressesInformation } from '../../../components/AddressInformation'

@@ -6,7 +6,7 @@ import { useReactToPrint } from 'react-to-print'
 
 import { useOrderQuery } from "../../../hooks/useOrderQuery"
 
-import { Divider } from '../../../components/Divider'
+import { Divider } from '../../../components/Layout/Divider'
 
 import { OrderHeader } from './components/OrderHeader'
 import { OrderUser } from './components/OrderUser'
@@ -23,7 +23,7 @@ import {
 } from "@chakra-ui/react"
 
 import { FiArrowLeft, FiPrinter } from 'react-icons/fi'
-import { Content } from '../../../components/Content'
+import { Content } from '../../../components/Layout/Content'
 import { OrderPaymentConditions } from './components/OrderPaymentConditions'
 import { OrderTotal } from './components/OrderTotal'
 import { Header } from '../../../components/Header'

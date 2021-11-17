@@ -1,4 +1,4 @@
-import { Content } from "../../../../components/Content"
+import { Content } from "../../../../components/Layout/Content"
 import { useOrdersQuery } from "../../../../hooks/useOrdersQuery"
 
 import { 

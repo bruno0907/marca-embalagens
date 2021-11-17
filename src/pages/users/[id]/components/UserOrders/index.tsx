@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 
 import { prefetchOrder } from '../../../../../services/prefetchOrder'
 
-import { Content } from "../../../../../components/Content"
+import { Content } from "../../../../../components/Layout/Content"
 
 import { useUserOrdersQuery } from "../../../../../hooks/useUserOrdersQuery"
 

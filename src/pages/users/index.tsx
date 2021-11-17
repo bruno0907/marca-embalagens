@@ -6,9 +6,9 @@ import { useRouter } from 'next/router'
 import useDebounce from '../../hooks/useDebounce'
 
 import { Authenticated } from '../../components/Layout/Authenticated'
-import { Divider } from '../../components/Divider'
+import { Divider } from '../../components/Layout/Divider'
 import { Header } from '../../components/Header'
-import { Content } from '../../components/Content'
+import { Content } from '../../components/Layout/Content'
 import { UsersList } from './components/UsersList'
 
 import {    

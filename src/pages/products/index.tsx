@@ -4,8 +4,8 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { Authenticated } from '../../components/Layout/Authenticated'
-import { Content } from '../../components/Content'
-import { Divider } from '../../components/Divider'
+import { Content } from '../../components/Layout/Content'
+import { Divider } from '../../components/Layout/Divider'
 import { Header } from '../../components/Header'
 import { ProductsList } from './components/ProductsList'
 

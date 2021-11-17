@@ -8,7 +8,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 
 import { handleFormatPrice } from '../../../../../utils/handleFormatPrice'
 
-import { Divider } from '../../../../../components/Divider'
+import { Divider } from '../../../../../components/Layout/Divider'
 import { Input } from '../../../../../components/Input'
 import { Select } from '../../../../../components/Select'
 
