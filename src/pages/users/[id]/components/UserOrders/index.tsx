@@ -25,13 +25,13 @@ import {
 } from "@chakra-ui/react"
 
 type UserOrdersProps = {
-  userId: string;
+  userId: string | string[];  
 }
 
-const UserOrders = ({ userId }: UserOrdersProps) => {
+const UserOrders = ({ userId }: UserOrdersProps) => { 
   const router = useRouter()
 
-  const orders = useUserOrdersQuery(userId, 3)
+  const orders = useUserOrdersQuery(String(userId), 3)
 
   const handlePrefetchOrder = async (id: string) => await prefetchOrder(id) 
 
@@ -55,7 +55,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
     )
   }
 
-  if(orders.error) {
+  if(orders.isError) {
     return (
       <Content>        
         <Heading fontSize="2xl" mb="8">Pedidos</Heading>

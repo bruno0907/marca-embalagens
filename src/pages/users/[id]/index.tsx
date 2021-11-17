@@ -19,10 +19,11 @@ import {
   Spinner,
   VStack,
   Button,  
-  Text,
 } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
+import { Content } from '../../../components/Layout/Content'
+
 
 export default function User() {  
   const router = useRouter()
@@ -39,40 +40,39 @@ export default function User() {
   return (
     <>
       <Head>
-        <title>MARCA | {user.data?.user.nome}</title>
+        <title>MARCA | {user.data?.data.nome}</title>
       </Head>
 
       <Authenticated>
 
-        <Header withGoBack title={user.data?.user.nome}>
-          <Button
-            colorScheme="blue"
-            leftIcon={<FiPrinter />}
+        <Header withGoBack title={user.data?.data.nome}
+        >
+          <Button 
+            colorScheme="blue" 
+            leftIcon={<FiPrinter />} 
             onClick={handlePrintUser}
           >Imprimir</Button>
-          </Header>
+        </Header>
 
         <Divider />
 
-        { !user.data || user.isLoading ? (
-          <Center py="16">
-            <Spinner size="lg" color="blue.500"/>
-          </Center>
-        ) : user.isError ? (          
-          <Center py="16">
-            <Text>Erro ao carregar as informações...</Text>
-          </Center>
+        { !user.data?.data ? (
+          <Content>
+            <Center>
+              <Spinner size="lg" color="blue.500"/>
+            </Center>
+          </Content>
         ) : (
           <VStack spacing={3} align="flex-start">
-            <UserInformation user={user.data.user} isFetching={user.isFetching}/>
-            <AddressesInformation addresses={user.data.addresses} isFetching={user.isFetching}/>
-            <UserOrders userId={user.data.user.id}/>          
+            <UserInformation userId={id}/>
+            <AddressesInformation userId={id}/>
+            <UserOrders userId={id}/>          
           </VStack>
         )}
         
       </Authenticated>
 
-      { user.data && <UserToPrint ref={userToPrintRef} user={user.data?.user} addresses={user.data?.addresses} /> }
+      {/* { user.data && <UserToPrint ref={userToPrintRef} user={user.data?.user} addresses={user.data?.addresses} /> } */}
 
     </>
   )

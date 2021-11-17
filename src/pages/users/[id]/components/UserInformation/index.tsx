@@ -28,22 +28,25 @@ import {
 } from 'react-icons/fi'
 
 import { UserProps } from '../../../../../types'
+import { useUserQuery } from '../../../../../hooks/useUserQuery'
 
-type UserInformationProps = {
-  user: UserProps;
-  isFetching: boolean;
+type Props = {
+  userId: string | string[];  
 }
 
-const UserInformation = ({ user, isFetching }: UserInformationProps) => {
+const UserInformation = ({ userId }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
+  
   const [userToEdit, setUserToEdit] = useState<UserProps>(null)  
+
+  const user = useUserQuery(userId)
 
   function handleEditUser(user: UserProps) {
     setUserToEdit(user)
     onOpen()
   }
 
-  if(isFetching){
+  if(user.isLoading || user.isFetching){ 
     return (
       <Content w="100%">
         <Flex align="center" mb="8">
@@ -60,43 +63,45 @@ const UserInformation = ({ user, isFetching }: UserInformationProps) => {
     )
   }
 
+  if(user.isError || !user.data?.data) return null
+
   return (
     <Content w="100%">
       <Flex align="center" mb="8">
         <Heading fontSize="2xl">Dados Principais</Heading>        
         <Spacer/>
-        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditUser(user)}>Editar</Button>
+        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditUser(user.data.data)}>Editar</Button>
       </Flex>
       <Stack spacing={3}>
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiUser}
-            label={`Nome ${user.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-            value={user.nome}
+            label={`Nome ${user.data.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+            value={user.data.data.nome}
           />
-          { user.natureza_cliente === 'Jurídica' && 
+          { user.data.data.natureza_cliente === 'Jurídica' && 
             <InformationField 
               icon={FiUser}
               label="Razão Social"
-              value={user.razao_social}
+              value={user.data.data.razao_social}
             /> }
         </HStack>
 
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiCreditCard}
-            label={user.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
-            value={user.cpf_cnpj}
+            label={user.data.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
+            value={user.data.data.cpf_cnpj}
           />
           <InformationField 
             icon={FiCreditCard}
-            label={user.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-            value={user.rg_ie}
+            label={user.data.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+            value={user.data.data.rg_ie}
           />
           <InformationField 
             icon={FiUser}
             label="Contato"
-            value={user.contato}
+            value={user.data.data.contato}
           />
         </HStack>
           
@@ -104,24 +109,24 @@ const UserInformation = ({ user, isFetching }: UserInformationProps) => {
           <InformationField 
             icon={FiPhone}
             label="Telefone"
-            value={user.telefone}
+            value={user.data.data.telefone}
           />
           <InformationField 
             icon={FiSmartphone}
             label="Celular"
-            value={user.celular}
+            value={user.data.data.celular}
           />
           <InformationField 
             icon={FiMail}
             label="E-mail"
-            value={user.email}
+            value={user.data.data.email}
           />
         </HStack>
 
         <InformationField 
           icon={FiList}
           label="Outras informacoes"
-          value={user.outras_informacoes}
+          value={user.data.data.outras_informacoes}
         />
 
       </Stack>

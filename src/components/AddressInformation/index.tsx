@@ -1,4 +1,7 @@
 import { Content } from '../Layout/Content'
+import { AddressField } from './components/AddressField'
+
+import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
 import { 
   Stack,  
@@ -14,16 +17,14 @@ import {
 
 import { FiEdit } from 'react-icons/fi'
 
-import { AddressProps } from '../../types'
-import { AddressField } from './components/AddressField'
-
-type AddressesInformationProps = {
-  addresses: AddressProps[];  
-  isFetching: boolean;
+type Props = {
+  userId: string | string[];
 }
 
-const AddressesInformation = ({ addresses, isFetching }: AddressesInformationProps) => {   
-  if(isFetching){
+const AddressesInformation = ({ userId }: Props) => {   
+  const addresses = useAddressesQuery(userId)
+
+  if(addresses.isLoading || addresses.isFetching){
     return (
       <Content w="100%">
         <Flex align="center" mb="8">
@@ -35,7 +36,9 @@ const AddressesInformation = ({ addresses, isFetching }: AddressesInformationPro
         </Stack>
       </Content>    
     )
-  }
+  } 
+
+  if(addresses.isError || !addresses.data?.data) return null
 
   return (
     <Content w="100%">
@@ -51,7 +54,7 @@ const AddressesInformation = ({ addresses, isFetching }: AddressesInformationPro
                 <Spinner size="md" color="blue.500" />
               </Center>
             ) : (
-              addresses.map(address => (
+              addresses.data.data.map(address => (
                 <AddressField key={address.id} address={address} />
               ))
           )}

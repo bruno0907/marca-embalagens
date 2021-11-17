@@ -13,7 +13,7 @@ type UserOrderQueryProps = {
 const getUserOrders = async (userId: string, limit: number = 0): Promise<UserOrderQueryProps[]> => {
   const user = supabase.auth.user()
 
-  if(!user) {
+  if(!user || !userId) {
     return null
   }
   

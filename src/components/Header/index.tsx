@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactElement, ReactNode } from "react"
 import { useRouter } from "next/router"
 
 import { Flex, Heading, FlexProps, Icon } from "@chakra-ui/react"
@@ -28,7 +28,7 @@ const Header = ({ withGoBack, children, title, ...rest }: HeaderProps) => {
             _hover={{ color: "blue.500" }}
           />
         }
-        <Heading>{title}</Heading>
+        <Heading fontSize="xx-large">{title}</Heading>
       </Flex>
       { children }
     </Flex>
