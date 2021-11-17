@@ -1,13 +1,13 @@
 import { useRouter } from "next/router"
 
-import { prefetchOrder } from '../../services/prefetchOrder'
+import { prefetchOrder } from '../../../../../services/prefetchOrder'
 
-import { Content } from "../Content"
+import { Content } from "../../../../../components/Content"
 
-import { useUserOrdersQuery } from "../../hooks/useUserOrdersQuery"
+import { useUserOrdersQuery } from "../../../../../hooks/useUserOrdersQuery"
 
-import { handleFormatDate } from "../../utils/handleFormatDate"
-import { handleFormatPrice } from "../../utils/handleFormatPrice"
+import { handleFormatDate } from "../../../../../utils/handleFormatDate"
+import { handleFormatPrice } from "../../../../../utils/handleFormatPrice"
 
 import { 
   Button, 

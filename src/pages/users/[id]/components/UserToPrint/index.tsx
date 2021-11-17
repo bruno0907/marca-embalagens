@@ -13,8 +13,8 @@ import {
   Td,
 } from "@chakra-ui/react"
 
-import { AddressProps, UserProps } from "../../../types"
-import { Divider } from "../../../components/Divider"
+import { AddressProps, UserProps } from "../../../../../types"
+import { Divider } from "../../../../../components/Divider"
 
 type UserToPrintRefProps = {
   user: UserProps;

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Content } from "../Content"
-import { InformationField } from './components/InformationField'
+import { Content } from "../../../../../components/Content"
+import { InformationField } from '../../../../../components/InformationField'
 
-import { Modal } from '../Modal'
-import { UpdateUserForm } from '../UpdateUserForm'
+import { Modal } from '../../../../../components/Modal'
+import { UpdateUserForm } from '../../../../../components/UpdateUserForm'
 
 import { 
   Button,
@@ -27,7 +27,7 @@ import {
   FiCreditCard,   
 } from 'react-icons/fi'
 
-import { UserProps } from '../../types'
+import { UserProps } from '../../../../../types'
 
 type UserInformationProps = {
   user: UserProps;

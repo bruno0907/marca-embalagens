@@ -2,13 +2,17 @@ import { useRef } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { useUserQuery } from '../../hooks/useUserQuery'
+import { useReactToPrint } from 'react-to-print'
 
-import { Layout } from '../../components/Layout'
-import { Divider } from '../../components/Divider'
-import { Header } from '../../components/Header'
-import { UserInformation } from '../../components/UserInformation'
-import { AddressesInformation } from '../../components/AddressInformation'
+import { useUserQuery } from '../../../hooks/useUserQuery'
+
+import { Layout } from '../../../components/Layout'
+import { Divider } from '../../../components/Divider'
+import { Header } from '../../../components/Header'
+import { UserInformation } from './components/UserInformation'
+import { AddressesInformation } from '../../../components/AddressInformation'
+import { UserOrders } from './components/UserOrders'
+import { UserToPrint } from './components/UserToPrint'
 
 import {     
   Center,
@@ -19,9 +23,6 @@ import {
 } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
-import { useReactToPrint } from 'react-to-print'
-import { UserToPrint } from './components/UserToPrint'
-import { UserOrders } from '../../components/UserOrders'
 
 export default function User() {  
   const router = useRouter()

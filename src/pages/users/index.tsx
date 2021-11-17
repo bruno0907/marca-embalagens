@@ -9,7 +9,7 @@ import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
-import { UsersList } from '../../components/UsersList'
+import { UsersList } from './components/UsersList'
 
 import {    
   Button,
