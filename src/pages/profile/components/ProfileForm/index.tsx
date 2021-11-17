@@ -5,12 +5,12 @@ import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useUpdateProfileMutation } from "../../hooks/useUpdateProfileMutation";
-import { useStatesQuery } from "../../hooks/useStatesQuery";
-import { getCities } from "../../services/getCities";
+import { useUpdateProfileMutation } from "../../../../hooks/useUpdateProfileMutation";
+import { useStatesQuery } from "../../../../hooks/useStatesQuery";
+import { getCities } from "../../../../services/getCities";
 
-import { Input } from "../../components/Input";
-import { Select } from "../../components/Select";
+import { Input } from "../../../../components/Input";
+import { Select } from "../../../../components/Select";
 
 import {
   Box,
@@ -50,7 +50,7 @@ import {
   NewAddressProps,
   NewProfileProps,
   ProfileProps,  
-} from "../../types";
+} from "../../../../types";
 
 type CityProps = {
   id: number;

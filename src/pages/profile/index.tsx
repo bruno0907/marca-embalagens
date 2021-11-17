@@ -4,7 +4,7 @@ import { Layout } from "../../components/Layout";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
-import { ProfileForm } from "../../components/ProfileForm";
+import { ProfileForm } from "./components/ProfileForm";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 
