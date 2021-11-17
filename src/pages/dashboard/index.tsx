@@ -3,42 +3,32 @@ import Head from 'next/head'
 import { Layout } from '../../components/Layout'
 import { Header } from '../../components/Header'
 import { Divider } from '../../components/Divider'
-import { Content } from '../../components/Content'
+import { OrdersCard } from './components/OrdersCard'
+import { UsersCard } from './components/UsersCard'
+import { ProductsCard } from './components/ProductsCard'
 
-import {     
-  Text,
-  Stack,
+import {
+  HStack,
 } from '@chakra-ui/react'
-import { useOrdersQuery } from '../../hooks/useOrdersQuery'
-import { useUsersQuery } from '../../hooks/useUsersQuery'
-import { useProductsQuery } from '../../hooks/useProductsQuery'
 
-export default function Dashboard() {   
-  const orders = useOrdersQuery()
-  const users = useUsersQuery()
-  const products = useProductsQuery()
-
+export default function Dashboard() {       
   return (
     <> 
       <Head>
-        <title>MARCA | Página inicial</title>
+        <title>Dashboard | MARCA</title>
       </Head>
 
       <Layout>
 
-        <Header title="Página inicial" />
+        <Header title="Dashboard" />
 
         <Divider />
 
-        <Content>
-
-          <Stack spacing={3}>
-            <Text>Total Pedidos: {orders.data?.length}</Text>
-            <Text>Total Clientes: {users.data?.length}</Text>
-            <Text>Total Produtos: {products.data?.length}</Text>
-          </Stack>
-
-        </Content>
+        <HStack spacing={3}>
+          <OrdersCard />
+          <UsersCard />
+          <ProductsCard />
+        </HStack>
         
       </Layout>
     </>

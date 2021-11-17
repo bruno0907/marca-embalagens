@@ -88,10 +88,10 @@ export default function SignUp () {
   return (
     <>
       <Head>
-        <title>MARCA | Cadastre-se</title>
+        <title>Cadastre-se | MARCA</title>
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-        <Heading mb="12">MARCA | Cadastre-se</Heading>
+        <Heading mb="12">Cadastre-se | MARCA</Heading>
         <Content
           as="form"
           mb="12"
@@ -100,21 +100,21 @@ export default function SignUp () {
           <Stack spacing={3} mb="12">
             <Input 
               type="email"
-              label="E-mail"
+              label="E-mail:"
               isDisabled={isSubmitting}
               error={errors?.email}
               {...register('email')}
             />
             <Input 
               type="password"
-              label="Senha"
+              label="Senha:"
               isDisabled={isSubmitting}
               error={errors?.password}
               {...register('password')}
             />
             <Input 
               type="password"
-              label="Cofirme sua Senha"
+              label="Cofirme sua senha:"
               isDisabled={isSubmitting}
               error={errors?.password_verify}
               {...register('password_verify')}

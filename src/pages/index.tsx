@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Container, Button, Heading } from "@chakra-ui/react";
+import { Center, Button, Heading } from "@chakra-ui/react";
+import { Logo } from '../components/Logo';
 
 export default function Home () {
   const router = useRouter()
@@ -9,12 +10,12 @@ export default function Home () {
   return (
     <>
       <Head>
-        <title>MARCA | Seja bem-vindo</title>
+        <title>Seja bem-vindo | MARCA</title>
       </Head>
-      <Container h="100vh" display="flex" flexDir="column" alignItems="center" justifyContent="center">
-        <Heading mb="8">MARCA | Bem-vindo</Heading>
-        <Button colorScheme="blue" onClick={() => router.push('/dashboard')}>Entrar</Button>
-      </Container>
+        <Center h="100vh" flexDir="column">
+          <Heading mb="12">Bem-vindo | MARCA</Heading>
+          <Button colorScheme="blue" onClick={() => router.push('/dashboard')}>Entrar</Button>
+      </Center>
     </>
   )
 }

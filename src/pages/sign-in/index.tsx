@@ -94,10 +94,10 @@ export default function SignIn () {
   return (
     <>
       <Head>
-        <title>MARCA | Faça seu login</title>
+        <title>Faça seu login | MARCA</title>
       </Head>
       <Container p={8} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-        <Heading mb="12">MARCA | Login</Heading>
+        <Heading mb="12">Login | MARCA</Heading>
         <Content
           as="form"
           mb="12"
@@ -106,14 +106,14 @@ export default function SignIn () {
           <Stack spacing={3} mb="12">
             <Input 
               type="email"
-              label="E-mail"                        
+              label="E-mail:"                        
               isDisabled={isSubmitting}
               error={errors.email}
               {...register('email')}
             />
             <Input 
               type="password"
-              label="Senha"
+              label="Senha:"
               isDisabled={isSubmitting}
               error={errors.password}
               {...register('password')}
