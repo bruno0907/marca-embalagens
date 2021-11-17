@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Header } from '../../../components/Header'
-import { Layout } from '../../../components/Layout'
+import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Divider'
 import { Content } from '../../../components/Content'
 import { CreateSupplierForm } from './CreateSupplierForm'
@@ -12,13 +12,13 @@ export default function NewSupplier() {
       <Head>
         <title>MARCA | Novo Fornecedor</title>        
       </Head>
-      <Layout>
+      <Authenticated>
         <Header title="Novo Fornecedor" withGoBack/>
         <Divider />
         <Content>
           <CreateSupplierForm />
         </Content>
-      </Layout>
+      </Authenticated>
     </>
   )
 }

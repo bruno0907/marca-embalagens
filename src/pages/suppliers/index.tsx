@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import Head from 'next/head'
 
-import { Layout } from '../../components/Layout'
+import { Authenticated } from '../../components/Layout/Authenticated'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -42,7 +42,7 @@ export default function Suppliers() {
         <title>MARCA | Fornecedores</title>        
       </Head>
 
-      <Layout>      
+      <Authenticated>      
 
         <Header title="Fornecedores">
           <Button
@@ -86,7 +86,7 @@ export default function Suppliers() {
 
         </Content> 
 
-      </Layout>
+      </Authenticated>
     </>
   )
 }

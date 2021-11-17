@@ -1,9 +1,9 @@
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useUpdateSupplierMutation } from "../../hooks/useUpdateSupplierMutation";
+import { useUpdateSupplierMutation } from "../../../../../hooks/useUpdateSupplierMutation";
 
-import { Input } from "../Input";
+import { Input } from "../../../../../components/Input";
 
 import {
   Flex,  
@@ -16,7 +16,7 @@ import {
   useToast,  
 } from "@chakra-ui/react";
 
-import { SupplierProps } from "../../types";
+import { SupplierProps } from "../../../../../types";
 
 type UpdateSupplierFormProps = {
   supplier: SupplierProps ;

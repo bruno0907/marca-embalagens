@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import { Layout } from '../../components/Layout'
+import { Authenticated } from '../../components/Layout/Authenticated'
 import { Header } from '../../components/Header'
 import { Divider } from '../../components/Divider'
 import { OrdersCard } from './components/OrdersCard'
@@ -18,7 +18,7 @@ export default function Dashboard() {
         <title>Dashboard | MARCA</title>
       </Head>
 
-      <Layout>
+      <Authenticated>
 
         <Header title="Dashboard" />
 
@@ -30,7 +30,7 @@ export default function Dashboard() {
           <ProductsCard />
         </HStack>
         
-      </Layout>
+      </Authenticated>
     </>
   )
 }

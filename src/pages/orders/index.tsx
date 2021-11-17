@@ -3,7 +3,7 @@ import { useState, ChangeEvent } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Layout } from '../../components/Layout'
+import { Authenticated } from '../../components/Layout/Authenticated'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -44,7 +44,7 @@ export default function Orders() {
         <title>Pedidos | MARCA</title>        
       </Head>
 
-      <Layout>
+      <Authenticated>
 
         <Header title="Pedidos">
           <Button 
@@ -86,7 +86,7 @@ export default function Orders() {
           <OrdersList filterValue={debouncedSearch}/>
         </Content>
 
-      </Layout>
+      </Authenticated>
     </>
   )
 }

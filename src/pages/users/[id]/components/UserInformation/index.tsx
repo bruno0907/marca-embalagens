@@ -3,7 +3,7 @@ import { Content } from "../../../../../components/Content"
 import { InformationField } from '../../../../../components/InformationField'
 
 import { Modal } from '../../../../../components/Modal'
-import { UpdateUserForm } from '../../../../../components/UpdateUserForm'
+import { UpdateUserForm } from '../UpdateUserForm'
 
 import { 
   Button,

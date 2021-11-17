@@ -1,18 +1,18 @@
 import { ReactNode, useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { useAuth } from "../../hooks/useAuth"
+import { useAuth } from "../../../hooks/useAuth"
 
 import { Session } from "@supabase/supabase-js"
 
-import { SideMenu } from "../SideMenu"
+import { SideMenu } from "../../SideMenu"
 
 import { Center, Flex, Spinner, Box } from '@chakra-ui/react'
 
-type LayoutProps = {
+type Props = {
   children: ReactNode;   
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Authenticated = ({ children }: Props) => {
   const router = useRouter() 
   const { session } = useAuth()
 
@@ -51,4 +51,4 @@ const Layout = ({ children }: LayoutProps) => {
   )  
 }
 
-export { Layout }
+export { Authenticated }

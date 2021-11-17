@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Header } from '../../../components/Header'
-import { Layout } from '../../../components/Layout'
+import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Divider'
 import { Content } from '../../../components/Content'
 import { CreateProductForm } from './components/CreateProductForm'
@@ -13,7 +13,7 @@ export default function NewProduct() {
       <Head>
         <title>MARCA | Cadastrar novo produto</title>        
       </Head>
-      <Layout>
+      <Authenticated>
         
         <Header title="Cadastrar novo produto" withGoBack/>
 
@@ -22,7 +22,7 @@ export default function NewProduct() {
         <Content>
           <CreateProductForm />
         </Content>
-      </Layout>
+      </Authenticated>
 
     </>
   )

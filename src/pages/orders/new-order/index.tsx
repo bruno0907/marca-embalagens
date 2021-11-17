@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Header } from '../../../components/Header'
-import { Layout } from '../../../components/Layout'
+import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Divider'
 import { Content } from '../../../components/Content'
 
@@ -13,7 +13,8 @@ export default function NewOrder() {
       <Head>
         <title>Novo pedido | Novo pedido</title>        
       </Head>
-      <Layout>
+
+      <Authenticated>
         
         <Header title="Novo pedido" withGoBack/>
 
@@ -22,7 +23,7 @@ export default function NewOrder() {
         <Content>
           <CreateOrderForm />
         </Content>
-      </Layout> 
+      </Authenticated> 
     </>   
   )
 }

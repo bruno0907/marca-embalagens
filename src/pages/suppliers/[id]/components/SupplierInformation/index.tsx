@@ -28,7 +28,7 @@ import {
 } from 'react-icons/fi'
 
 import { SupplierProps } from '../../../../../types'
-import { UpdateSupplierForm } from '../../../../../components/UpdateSupplierForm'
+import { UpdateSupplierForm } from '../UpdateSupplierForm'
 
 type SupplierInformationProps = {
   supplier: SupplierProps;

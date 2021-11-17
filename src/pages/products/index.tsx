@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import { useRouter } from 'next/router'
 
-import { Layout } from '../../components/Layout'
+import { Authenticated } from '../../components/Layout/Authenticated'
 import { Content } from '../../components/Content'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
@@ -44,7 +44,7 @@ export default function Products() {
         <title>MARCA | Produtos</title>        
       </Head>
 
-      <Layout>
+      <Authenticated>
 
         <Header title="Produtos">          
           <Button              
@@ -88,7 +88,7 @@ export default function Products() {
           <ProductsList filterValue={debouncedSearch}/>
 
         </Content>
-      </Layout>
+      </Authenticated>
     </>
   )
 }

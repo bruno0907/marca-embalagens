@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import useDebounce from '../../hooks/useDebounce'
 
-import { Layout } from '../../components/Layout'
+import { Authenticated } from '../../components/Layout/Authenticated'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -41,7 +41,8 @@ export default function Users() {
       <Head>
         <title>MARCA | Clientes</title>        
       </Head>
-      <Layout>
+
+      <Authenticated>
         
         <Header title="Clientes">
           <Button
@@ -85,7 +86,7 @@ export default function Users() {
 
         </Content>
         
-      </Layout>
+      </Authenticated>
     </>
   )
 }

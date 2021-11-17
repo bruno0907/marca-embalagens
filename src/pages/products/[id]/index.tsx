@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Layout } from '../../../components/Layout'
+import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { Content } from '../../../components/Content'
@@ -43,7 +43,7 @@ export default function Product() {
         <title>MARCA | {product.data.nome}</title>
       </Head>
 
-      <Layout>
+      <Authenticated>
 
         <Header withGoBack title={product.data.nome} />
 
@@ -53,7 +53,7 @@ export default function Product() {
           <UpdateProductForm product={product.data} isFetching={isFetching} />          
         </Content>
 
-      </Layout>
+      </Authenticated>
     </>
   )
 }

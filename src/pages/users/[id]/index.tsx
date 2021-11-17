@@ -6,7 +6,7 @@ import { useReactToPrint } from 'react-to-print'
 
 import { useUserQuery } from '../../../hooks/useUserQuery'
 
-import { Layout } from '../../../components/Layout'
+import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { UserInformation } from './components/UserInformation'
@@ -42,7 +42,7 @@ export default function User() {
         <title>MARCA | {user.data?.user.nome}</title>
       </Head>
 
-      <Layout>
+      <Authenticated>
 
         <Header withGoBack title={user.data?.user.nome}>
           <Button
@@ -70,7 +70,7 @@ export default function User() {
           </VStack>
         )}
         
-      </Layout>
+      </Authenticated>
 
       { user.data && <UserToPrint ref={userToPrintRef} user={user.data?.user} addresses={user.data?.addresses} /> }
 
