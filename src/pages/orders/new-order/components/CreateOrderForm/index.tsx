@@ -6,22 +6,22 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-import { handleFormatPrice } from '../../utils/handleFormatPrice'
+import { handleFormatPrice } from '../../../../../utils/handleFormatPrice'
 
-import { Divider } from '../Divider'
-import { Input } from '../Input'
-import { Select } from '../Select'
+import { Divider } from '../../../../../components/Divider'
+import { Input } from '../../../../../components/Input'
+import { Select } from '../../../../../components/Select'
 
-import { useAuth } from '../../hooks/useAuth'
-import { useUsersQuery } from '../../hooks/useUsersQuery'
-import { useProductsQuery } from '../../hooks/useProductsQuery'
-import { useUserQuery } from '../../hooks/useUserQuery'
-import { useAddressQuery } from '../../hooks/useAddressQuery'
-import { useProductQuery } from '../../hooks/useProductQuery'
+import { useAuth } from '../../../../../hooks/useAuth'
+import { useUsersQuery } from '../../../../../hooks/useUsersQuery'
+import { useProductsQuery } from '../../../../../hooks/useProductsQuery'
+import { useUserQuery } from '../../../../../hooks/useUserQuery'
+import { useAddressQuery } from '../../../../../hooks/useAddressQuery'
+import { useProductQuery } from '../../../../../hooks/useProductQuery'
 
-import { useOrdersQuery } from '../../hooks/useOrdersQuery'
+import { useOrdersQuery } from '../../../../../hooks/useOrdersQuery'
 
-import { useCreateOrderMutation } from '../../hooks/useCreateOrderMutation'
+import { useCreateOrderMutation } from '../../../../../hooks/useCreateOrderMutation'
 
 import { 
   Text,
@@ -49,7 +49,7 @@ import {
 
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi'
  
-import { OrderItemProps, NewOrderProps } from '../../types'
+import { OrderItemProps, NewOrderProps } from '../../../../../types'
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
