@@ -6,13 +6,13 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useAuth } from "../../hooks/useAuth";
-import { useCreateSupplierMutation } from "../../hooks/useCreateSupplierMutation";
-import { useStatesQuery } from "../../hooks/useStatesQuery";
-import { getCities } from "../../services/getCities";
+import { useAuth } from "../../../../hooks/useAuth";
+import { useCreateSupplierMutation } from "../../../../hooks/useCreateSupplierMutation";
+import { useStatesQuery } from "../../../../hooks/useStatesQuery";
+import { getCities } from "../../../../services/getCities";
 
-import { Input } from "../Input";
-import { Select } from "../Select";
+import { Input } from "../../../../components/Input";
+import { Select } from "../../../../components/Select";
 
 import {
   Box,
@@ -62,7 +62,7 @@ const newSupplierSchema = yup.object().shape({
 import {   
   NewSupplierProps,    
   NewAddressProps,  
-} from "../../types";
+} from "../../../../types";
 
 type CityProps = {
   id: number;

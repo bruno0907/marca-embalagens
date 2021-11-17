@@ -7,7 +7,7 @@ import { Layout } from '../../components/Layout'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
-import { SuppliersList } from '../../components/SuppliersList'
+import { SuppliersList } from './components/SuppliersList'
 
 import useDebounce from '../../hooks/useDebounce'
 

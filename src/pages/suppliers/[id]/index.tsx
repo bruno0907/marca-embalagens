@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { useSupplierQuery } from '../../hooks/useSupplierQuery'
+import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
-import { Layout } from '../../components/Layout'
-import { Divider } from '../../components/Divider'
-import { Header } from '../../components/Header'
-import { SupplierInformation } from '../../components/SupplierInformation'
-import { AddressesInformation } from '../../components/AddressInformation'
+import { Layout } from '../../../components/Layout'
+import { Divider } from '../../../components/Divider'
+import { Header } from '../../../components/Header'
+import { SupplierInformation } from './components/SupplierInformation'
+import { AddressesInformation } from '../../../components/AddressInformation'
 
 import {     
   Center,

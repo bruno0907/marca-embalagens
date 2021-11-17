@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 
-import { prefetchSupplier } from "../../services/prefetchSupplier"
-import { useSuppliersQuery } from "../../hooks/useSuppliersQuery"
+import { prefetchSupplier } from "../../../../services/prefetchSupplier"
+import { useSuppliersQuery } from "../../../../hooks/useSuppliersQuery"
 
 import { 
   Table,

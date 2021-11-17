@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Content } from "../Content"
-import { InformationField } from './components/informationField'
+import { Content } from "../../../../../components/Content"
+import { InformationField } from '../../../../../components/InformationField'
 
-import { Modal } from '../Modal'
+import { Modal } from '../../../../../components/Modal'
 
 import { 
   Button,
@@ -27,8 +27,8 @@ import {
   FiPackage,   
 } from 'react-icons/fi'
 
-import { SupplierProps } from '../../types'
-import { UpdateSupplierForm } from '../UpdateSupplierForm'
+import { SupplierProps } from '../../../../../types'
+import { UpdateSupplierForm } from '../../../../../components/UpdateSupplierForm'
 
 type SupplierInformationProps = {
   supplier: SupplierProps;

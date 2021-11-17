@@ -1,10 +1,10 @@
 import Head from 'next/head'
 
-import { Header } from '../../components/Header'
-import { Layout } from '../../components/Layout'
-import { Divider } from '../../components/Divider'
-import { Content } from '../../components/Content'
-import { CreateSupplierForm } from '../../components/CreateSupplierForm'
+import { Header } from '../../../components/Header'
+import { Layout } from '../../../components/Layout'
+import { Divider } from '../../../components/Divider'
+import { Content } from '../../../components/Content'
+import { CreateSupplierForm } from './CreateSupplierForm'
 
 export default function NewSupplier() {
   return (
