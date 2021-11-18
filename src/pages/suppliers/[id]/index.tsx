@@ -25,16 +25,18 @@ export default function Supplier() {
   
   const supplier = useSupplierQuery(id)
 
-  const handlePrintUser = () => console.log('Print supplier')
+  const handlePrintUser = () => router.push(`/suppliers/${id}/supplier-to-print`)
+
+  if(!supplier.data) return null
 
   return (
     <>
       <Head>
-        <title>MARCA | {supplier.data?.supplier.nome}</title>
+        <title>MARCA | {supplier.data.data.nome}</title>
       </Head>
       <Authenticated>
 
-        <Header withGoBack title={supplier.data?.supplier.nome}>
+        <Header withGoBack title={supplier.data.data?.nome}>
           <Button
             colorScheme="blue"
             leftIcon={<FiPrinter />}            
@@ -45,7 +47,7 @@ export default function Supplier() {
 
         <Divider />
 
-        { !supplier.data || supplier.isLoading ? (
+        { supplier.isLoading ? (
           <Center py="16">
             <Spinner size="lg" color="blue.500"/>
           </Center>
@@ -55,8 +57,8 @@ export default function Supplier() {
           </Center>          
         ) : (
           <VStack spacing={3} align="flex-start" >
-            <SupplierInformation supplier={supplier.data.supplier} isFetching={supplier.isFetching}/>
-            <AddressesInformation addresses={supplier.data.addresses} isFetching={supplier.isFetching}/>          
+            <SupplierInformation supplierId={id}/>
+            <AddressesInformation userId={id}/>          
           </VStack>
         )}
 

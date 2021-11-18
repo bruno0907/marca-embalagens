@@ -10,7 +10,7 @@ type UserOrderQueryProps = {
   total: number;  
 }
 
-const getUserOrders = async (userId: string, limit: number = 0): Promise<UserOrderQueryProps[]> => {
+const getUserOrders = async ( userId: string | string[] , limit: number | null = null): Promise<UserOrderQueryProps[]> => {
   const user = supabase.auth.user()
 
   if(!user || !userId) {
@@ -20,7 +20,7 @@ const getUserOrders = async (userId: string, limit: number = 0): Promise<UserOrd
   const { data } = await supabase
     .from<OrderProps>('orders')
     .select()
-    .eq('cliente', userId)
+    .eq('cliente', String(userId))
     .order('created_at', {
       ascending: false
     })
@@ -29,8 +29,8 @@ const getUserOrders = async (userId: string, limit: number = 0): Promise<UserOrd
   return data
 }
 
-const useUserOrdersQuery = (userId: string, limit?: number) => {
-  const queryKey = limit ? ['userOrders[]', userId] : ['orders[]']
+const useUserOrdersQuery = (userId: string | string[], limit?: number) => {
+  const queryKey = ['userOrders[]', userId]
 
   return useQuery(queryKey, async () => {
     if(limit) {

@@ -3,7 +3,8 @@ import { AddressField } from './components/AddressField'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
-import { 
+import {
+  Text, 
   Stack,  
   Button,
   Box,
@@ -38,7 +39,18 @@ const AddressesInformation = ({ userId }: Props) => {
     )
   } 
 
-  if(addresses.isError || !addresses.data?.data) return null
+  if(addresses.isError) {
+    return (
+      <Content w="100%">
+        <Stack spacing={3}>
+          <Heading fontSize="2xl">Endereços</Heading>
+          <Text>Ocorreu um erro ao carregar os endereços. Volte e tente novamente...</Text>
+        </Stack>
+      </Content>    
+    )
+  }
+
+  if(!addresses.data?.data) return null
 
   return (
     <Content w="100%">

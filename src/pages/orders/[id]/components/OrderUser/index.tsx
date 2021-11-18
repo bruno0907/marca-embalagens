@@ -42,21 +42,21 @@ const OrderUser = ({ userId, deliveryAddress }: OrderUserProps) => {
         <Flex justify="space-between">
           <Box>
             <Text fontSize="x-small" fontWeight="bold">Nome:</Text>
-            <Text fontSize="sm">{user.data.user.nome}</Text>            
+            <Text fontSize="sm">{user.data.data.nome}</Text>            
           </Box>
-          { user.data.user.razao_social &&
+          { user.data.data.razao_social &&
               <Box>
                 <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
-                <Text fontSize="sm">{user.data.user.razao_social}</Text>
+                <Text fontSize="sm">{user.data.data.razao_social}</Text>
               </Box>
           }
-          { user.data.user.cpf_cnpj &&
+          { user.data.data.cpf_cnpj &&
               <Box>
                 <Text fontSize="x-small" fontWeight="semibold">
-                  {user.data.user.razao_social ? 'CNPJ' : 'CPF'}
+                  {user.data.data.razao_social ? 'CNPJ' : 'CPF'}
                 </Text>
                 <Text fontSize="sm">
-                  {user.data.user.cpf_cnpj}
+                  {user.data.data.cpf_cnpj}
                 </Text>
               </Box>
           }
@@ -65,22 +65,22 @@ const OrderUser = ({ userId, deliveryAddress }: OrderUserProps) => {
           <Box>
             <Text fontSize="x-small" fontWeight="bold">Telefone:</Text>
             <Text fontSize="sm">
-              {user.data.user.telefone}
+              {user.data.data.telefone}
             </Text>            
           </Box>
-          { user.data.user.celular && 
+          { user.data.data.celular && 
             <Box>
               <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
               <Text fontSize="sm">
-                {user.data.user.celular}
+                {user.data.data.celular}
               </Text>            
             </Box>
           }
-          { user.data.user.contato && 
+          { user.data.data.contato && 
             <Box>
               <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
               <Text fontSize="sm">
-                {user.data.user.contato}
+                {user.data.data.contato}
               </Text>            
             </Box>
           }

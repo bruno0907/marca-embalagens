@@ -6,6 +6,7 @@ import { Modal } from '../../../../../components/Modal'
 import { UpdateUserForm } from '../UpdateUserForm'
 
 import { 
+  Text,
   Button,
   Stack,  
   Spinner,  
@@ -63,7 +64,18 @@ const UserInformation = ({ userId }: Props) => {
     )
   }
 
-  if(user.isError || !user.data?.data) return null
+  if(user.isError) {
+    return (
+      <Content w="100%">
+        <Stack spacing={3}>
+          <Heading fontSize="2xl">Dados Principais</Heading>
+          <Text>Ocorreu um erro ao carregar os dados do cliente. Volte e tente novamente...</Text>
+        </Stack>
+      </Content>    
+    )
+  }
+
+  if(!user.data?.data) return null
 
   return (
     <Content w="100%">

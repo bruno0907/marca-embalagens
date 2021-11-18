@@ -5,11 +5,12 @@ import { InformationField } from '../../../../../components/Layout/InformationFi
 import { Modal } from '../../../../../components/Modal'
 
 import { 
-  Button,
-  Stack,  
+  Text,
+  Button,  
   Spinner,  
-  Flex,
+  Flex,  
   Heading,
+  Stack,
   HStack,
   Spacer,
   Skeleton,
@@ -29,22 +30,24 @@ import {
 
 import { SupplierProps } from '../../../../../types'
 import { UpdateSupplierForm } from '../UpdateSupplierForm'
+import { useSupplierQuery } from '../../../../../hooks/useSupplierQuery'
 
 type SupplierInformationProps = {
-  supplier: SupplierProps;
-  isFetching: boolean;
+  supplierId: string | string[];  
 }
 
-const SupplierInformation = ({ supplier, isFetching }: SupplierInformationProps) => {
+const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [supplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)  
+  const [supplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)
+  
+  const supplier = useSupplierQuery(supplierId)
 
   function handleEditSupplier(supplier: SupplierProps) {
     setSupplierToEdit(supplier)
     onOpen()
-  }
+  }  
 
-  if(isFetching){
+  if(supplier.isLoading || supplier.isFetching){
     return (
       <Content w="100%">
         <Flex align="center" mb="8">
@@ -61,49 +64,62 @@ const SupplierInformation = ({ supplier, isFetching }: SupplierInformationProps)
     )
   }
 
+  if(supplier.isError) {
+    return (
+      <Content w="100%">
+        <Stack spacing={3}>
+          <Heading fontSize="2xl">Dados Principais</Heading>
+          <Text>Ocorreu um erro ao carregar os dados do fornecedor. Volte e tente novamente...</Text>
+        </Stack>
+      </Content>    
+    )
+  }
+
+  if(!supplier.data?.data) return null
+
   return (
     <Content w="100%">
       <Flex align="center" mb="8">
         <Heading fontSize="2xl">Dados Principais</Heading>        
         <Spacer/>
-        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditSupplier(supplier)}>Editar</Button>
+        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditSupplier(supplier.data.data)}>Editar</Button>
       </Flex>
       <Stack spacing={3}>
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiUser}
-            label={`Nome ${supplier.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-            value={supplier.nome}
+            label={`Nome ${supplier.data.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+            value={supplier.data.data.nome}
           />
-          { supplier.natureza_cliente === 'Jurídica' && 
+          { supplier.data.data.natureza_cliente === 'Jurídica' && 
             <InformationField 
               icon={FiUser}
               label="Razão Social"
-              value={supplier.razao_social}
+              value={supplier.data.data.razao_social}
             /> }
         </HStack>
 
         <InformationField 
           icon={FiPackage}
           label="Produto/Serviço"
-          value={supplier.produto}
+          value={supplier.data.data.produto}
         />
 
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiCreditCard}
-            label={supplier.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
-            value={supplier.cpf_cnpj}
+            label={supplier.data.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
+            value={supplier.data.data.cpf_cnpj}
           />
           <InformationField 
             icon={FiCreditCard}
-            label={supplier.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-            value={supplier.rg_ie}
+            label={supplier.data.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+            value={supplier.data.data.rg_ie}
           />
           <InformationField 
             icon={FiUser}
             label="Contato"
-            value={supplier.contato}
+            value={supplier.data.data.contato}
           />
         </HStack>
           
@@ -111,24 +127,24 @@ const SupplierInformation = ({ supplier, isFetching }: SupplierInformationProps)
           <InformationField 
             icon={FiPhone}
             label="Telefone"
-            value={supplier.telefone}
+            value={supplier.data.data.telefone}
           />
           <InformationField 
             icon={FiSmartphone}
             label="Celular"
-            value={supplier.celular}
+            value={supplier.data.data.celular}
           />
           <InformationField 
             icon={FiMail}
             label="E-mail"
-            value={supplier.email}
+            value={supplier.data.data.email}
           />
         </HStack>
 
         <InformationField 
           icon={FiList}
           label="Outras informacoes"
-          value={supplier.outras_informacoes}
+          value={supplier.data.data.outras_informacoes}
         />
 
       </Stack>

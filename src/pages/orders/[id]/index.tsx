@@ -16,6 +16,7 @@ import {
   Flex,
   Box,
   Text,
+  Heading,
   Icon,
   Button,
   Center,
@@ -51,15 +52,14 @@ export default function Order() {
       </Head>
 
       <Box maxW="1090px" m="auto" px="8">
-        <Flex py="16" w="100%" align="center" justify="space-between">
-          <Icon fontSize="4xl"as={FiArrowLeft} onClick={handleGoBack} cursor="pointer" _hover={{ color: "blue.500" }}/>
-          <Text fontSize="3xl" fontWeight="bold">
+        <Header withGoBack py="16">
+          <Heading fontSize="3xl" fontWeight="bold">
             Pedido: {order.data?.data.numero_pedido}
-          </Text>
+          </Heading>
           <Button colorScheme="blue" rightIcon={<FiPrinter />} onClick={handlePrintOrder}>
             Imprimir
           </Button>
-        </Flex>
+        </Header>
 
         <Content>
           { order.isLoading ? (
