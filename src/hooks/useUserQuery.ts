@@ -2,13 +2,13 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
-const getUser = async (id: string | string[]): Promise<UserProps> => {
+const getUser = async (id: string): Promise<UserProps> => {
   if(!id) return null
 
   const { data, error } = await supabase
     .from<UserProps>('users')
     .select()
-    .eq('id', String(id))
+    .eq('id', id)
     .single()
     
   if(error) throw new Error(error.message)
@@ -18,7 +18,7 @@ const getUser = async (id: string | string[]): Promise<UserProps> => {
   return data
 }
 
-const useUserQuery = (id: string | string[]) => {  
+const useUserQuery = (id: string) => {  
   return useQuery(['user', id], () => {
     return getUser(id)
 
@@ -30,5 +30,5 @@ const useUserQuery = (id: string | string[]) => {
 
 export { 
   useUserQuery,
-  getUser 
+  getUser,
 }

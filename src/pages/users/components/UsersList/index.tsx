@@ -104,7 +104,7 @@ function UsersList ({ filterValue }: UsersListProps) {
           </Tr>
         </Thead>
         <Tbody>
-          { users.data.map(user => {
+          { users.data?.map(user => {
               return (
                 <Tr
                   key={user.id}

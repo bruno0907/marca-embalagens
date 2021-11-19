@@ -37,11 +37,10 @@ type Props = {
 }
 
 const UserInformation = ({ userId }: Props) => {
-  const { isOpen, onClose, onOpen } = useDisclosure()
-  
+  const { isOpen, onClose, onOpen } = useDisclosure()  
   const [userToEdit, setUserToEdit] = useState<UserProps>(null)  
 
-  const user = useUserQuery(userId)
+  const user = useUserQuery(String(userId))
 
   function handleEditUser(user: UserProps) {
     setUserToEdit(user)

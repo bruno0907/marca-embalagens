@@ -23,7 +23,7 @@ type Props = {
 }
 
 const AddressesInformation = ({ userId }: Props) => {   
-  const addresses = useAddressesQuery(userId)
+  const addresses = useAddressesQuery(String(userId))
 
   if(addresses.isLoading || addresses.isFetching){
     return (
@@ -48,9 +48,7 @@ const AddressesInformation = ({ userId }: Props) => {
         </Stack>
       </Content>    
     )
-  }
-
-  if(!addresses.data) return null
+  }  
 
   return (
     <Content w="100%">
@@ -61,12 +59,12 @@ const AddressesInformation = ({ userId }: Props) => {
       </Flex>
       <Box mb="8">
         <Stack spacing={3}>
-          {!addresses.data?.data ? (
+          { !addresses.data ? (
               <Center my="8">
                 <Spinner size="md" color="blue.500" />
               </Center>
             ) : (
-              addresses.data?.data.map(address => (
+              addresses.data?.map(address => (
                 <AddressField key={address.id} address={address} />
               ))
           )}

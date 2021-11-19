@@ -3,38 +3,48 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
-const getSuppliers = async (pattern?: string) => {
+const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
   const user = supabase.auth.user()
 
-  if(!user) {
-    return null
-  }
+  if(!user) throw new Error('Not authenticated')
 
   if(pattern) {
-    return await supabase
+    const { data, error } = await supabase
       .from<SupplierProps>('suppliers')
       .select()
       .eq('user_id', user.id)
       .ilike('nome', `${pattern}%`)
       .order('nome')
+
+    if(error) throw new Error(error.message)
+
+    if(!data) throw new Error('No suppliers found')
+
+    return data
   }
   
-  return await supabase    
+  const { data, error } = await supabase    
     .from<SupplierProps>('suppliers')
     .select()
     .eq('user_id', user.id)    
     .order('nome')
+
+  if(error) throw new Error(error.message)
+
+  if(!data) throw new Error('No suppliers found')
+
+  return data
 }
 
 const useSuppliersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['suppliers[]', pattern] : 'suppliers[]'
   
-  return useQuery(queryKey, async () => {
+  return useQuery(queryKey, () => {
     if(pattern) {
-      return await getSuppliers(pattern)
+      return getSuppliers(pattern)
     }
 
-    return await getSuppliers()    
+    return getSuppliers()    
   }, {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true

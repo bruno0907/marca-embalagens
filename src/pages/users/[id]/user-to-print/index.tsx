@@ -41,8 +41,8 @@ export default function UserToPrint() {
 
   const ref = useRef<HTMLDivElement>(null)
 
-  const user = useUserQuery(userId)
-  const addresses = useAddressesQuery(userId)
+  const user = useUserQuery(String(userId))
+  const addresses = useAddressesQuery(String(userId))
   const orders = useUserOrdersQuery(String(userId))  
 
   const handlePrint = useReactToPrint({
@@ -152,18 +152,20 @@ export default function UserToPrint() {
                 )
               : (
                 <VStack spacing={3} align="start">
-                  { addresses.data?.data.map(address => {
+                  { addresses.data?.map(address => {
                     return (  
-                      <>
+                      <Box 
+                        key={address.id} 
+                        w="100%"
+                        borderWidth="1px" 
+                        borderRadius="md" 
+                        p="4"
+                      >
                         <HStack 
                           w="100%" 
-                          spacing={3} 
-                          key={address.id} 
+                          spacing={3}                          
                           align="flex-start" 
-                          justify="space-between" 
-                          borderWidth="1px" 
-                          borderRadius="md" 
-                          p="4"
+                          justify="space-between"
                         >
                           <Box>
                             <Text fontSize="x-small" fontWeight="bold">Endereço:</Text>
@@ -190,7 +192,7 @@ export default function UserToPrint() {
                             </Text>
                           </Box>
                         </HStack>
-                      </>
+                      </Box>
                     )
                   })}
                 </VStack>
