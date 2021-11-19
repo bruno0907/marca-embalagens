@@ -73,7 +73,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
     )
   }
 
-  if(orders.data.length <= 0) {
+  if(orders.data?.data.length <= 0) {
     return (
       <Content>        
         <Heading fontSize="2xl" mb="8">Pedidos</Heading>
@@ -107,7 +107,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
           </Tr>
         </Thead>
         <Tbody>
-          {orders.data?.map(order => {
+          {orders.data?.data.map(order => {
             return (
               <Tr
                 key={order.id}

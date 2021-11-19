@@ -61,12 +61,12 @@ const AddressesInformation = ({ userId }: Props) => {
       </Flex>
       <Box mb="8">
         <Stack spacing={3}>
-          {!addresses ? (
+          {!addresses.data?.data ? (
               <Center my="8">
                 <Spinner size="md" color="blue.500" />
               </Center>
             ) : (
-              addresses.data?.map(address => (
+              addresses.data?.data.map(address => (
                 <AddressField key={address.id} address={address} />
               ))
           )}

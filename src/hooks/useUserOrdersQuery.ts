@@ -2,22 +2,14 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { OrderProps } from "../types"
 
-type UserOrderQueryProps = {
-  id: string;
-  cliente: string;
-  numero_pedido: number;
-  created_at: Date;
-  total: number;  
-}
-
-const getUserOrders = async ( userId: string | string[] , limit: number | null = null): Promise<UserOrderQueryProps[]> => {
+const getUserOrders = async ( userId: string | string[] , limit: number | null = null) => {
   const user = supabase.auth.user()
 
   if(!user || !userId) {
     return null
   }
   
-  const { data } = await supabase
+  return await supabase
     .from<OrderProps>('orders')
     .select()
     .eq('cliente', String(userId))
@@ -25,8 +17,6 @@ const getUserOrders = async ( userId: string | string[] , limit: number | null =
       ascending: false
     })
     .limit(limit)
-    
-  return data
 }
 
 const useUserOrdersQuery = (userId: string | string[], limit?: number) => {

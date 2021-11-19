@@ -11,7 +11,7 @@ const getUser = async (id: string | string[]) => {
     .from<UserProps>('users')
     .select()
     .eq('id', String(id))
-    .single()
+    .single()  
 }
 
 const useUserQuery = (id: string | string[]) => {  

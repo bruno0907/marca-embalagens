@@ -172,7 +172,7 @@ const CreateOrderForm = () => {
       user_id: session.user.id,
       numero_pedido: ordersAmount + 1,
       cliente: user.data.data.id,
-      endereco_entrega: address.data.data.id,
+      endereco_entrega: address.data.id,
       pedido: [...orderProducts],
       total: orderTotal,
       condicao_pagamento,
@@ -296,7 +296,7 @@ const CreateOrderForm = () => {
               isLoading={address.isLoading}
               onChange={handleSelectAddress}
             >
-              <option value="defaultValue">Selecione o endereço de entrega...</option>
+              <option value="defaultValue" disabled>Selecione o endereço de entrega...</option>
               { addresses.data?.map(address => {
                 return (
                   <option key={address.id} value={address.id}>{address.endereco}</option>
@@ -304,21 +304,21 @@ const CreateOrderForm = () => {
               })}
             </Select>
 
-            { !address.data?.data ? null : (
+            { !address.data ? null : (
               <Stack spacing={3}>
                 <HStack spacing={3}>
                   <Input 
                     name="cidade"
                     label="Cidade:"
                     isDisabled
-                    defaultValue={address.data.data.cidade}
+                    defaultValue={address.data.cidade}
                   />
                   <Box w="100px">
                     <Input 
                       name="estado"
                       label="Estado:"
                       isDisabled
-                      defaultValue={address.data.data.estado}
+                      defaultValue={address.data.estado}
                     />
                   </Box>
                 </HStack>
@@ -327,22 +327,22 @@ const CreateOrderForm = () => {
                     name="bairro"
                     label="Bairro:"
                     isDisabled
-                    defaultValue={address.data.data.bairro}
+                    defaultValue={address.data.bairro}
                   />
                   <Input 
                     name="cep"
                     label="CEP:"
                     isDisabled
-                    defaultValue={address.data.data.cep}
+                    defaultValue={address.data.cep}
                   />
                 </HStack>
 
-                { address.data.data.complemento && 
+                { address.data.complemento && 
                   <Input 
                     name="complemento"
                     label="Complemento"
                     isDisabled
-                    defaultValue={address.data.data.complemento}
+                    defaultValue={address.data.complemento}
                   />
                 }
 
@@ -372,7 +372,7 @@ const CreateOrderForm = () => {
 
       <Divider />
 
-      { address.data?.data && 
+      { address.data && 
         <Stack spacing={6}>
           <HStack spacing={3} align="flex-end">            
             <Select

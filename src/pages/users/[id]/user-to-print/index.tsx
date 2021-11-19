@@ -47,7 +47,7 @@ export default function UserToPrint() {
     content: () => ref.current
   })
   
-  if(!user.data?.data || !addresses.data?.data || !orders?.data) return null
+  // if(!user.data?.data || !addresses.data?.data || !orders?.data) return null
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function UserToPrint() {
 
       <Box maxW="1090px" margin="auto" px="8">
         <Header withGoBack py="16">
-          <Heading fontSize="xx-large">{user.data.data.nome}</Heading>        
+          <Heading fontSize="xx-large">{user.data?.data.nome}</Heading>        
           <Button
             leftIcon={<FiPrinter />}
             onClick={handlePrint}
@@ -73,21 +73,21 @@ export default function UserToPrint() {
               <HStack w="100%" spacing={3} align="flex-start" justify="space-between">
                 <Box>
                   <Text fontSize="x-small" fontWeight="bold">Nome:</Text>
-                  <Text fontSize="sm">{user.data.data.nome}</Text>            
+                  <Text fontSize="sm">{user.data?.data.nome}</Text>            
                 </Box>
-                { user.data.data.razao_social && (
+                { user.data?.data.razao_social && (
                   <Box>
                     <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
-                    <Text fontSize="sm">{user.data.data.razao_social}</Text>
+                    <Text fontSize="sm">{user.data?.data.razao_social}</Text>
                   </Box>
                 )}
-                { user.data.data.cpf_cnpj && (
+                { user.data?.data.cpf_cnpj && (
                   <Box>
                     <Text fontSize="x-small" fontWeight="semibold">
-                      {user.data.data.razao_social ? 'CNPJ' : 'CPF'}
+                      {user.data?.data.razao_social ? 'CNPJ' : 'CPF'}
                     </Text>
                     <Text fontSize="sm">
-                      {user.data.data.cpf_cnpj}
+                      {user.data?.data.cpf_cnpj}
                     </Text>
                   </Box>
                 )}
@@ -96,28 +96,28 @@ export default function UserToPrint() {
                 <Box>
                   <Text fontSize="x-small" fontWeight="bold">Telefone:</Text>
                   <Text fontSize="sm">
-                    {user.data.data.telefone}
+                    {user.data?.data.telefone}
                   </Text>            
                 </Box>
-                { user.data.data.celular && (
+                { user.data?.data.celular && (
                     <Box>
                       <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
                       <Text fontSize="sm">
-                        {user.data.data.celular}
+                        {user.data?.data.celular}
                       </Text>            
                     </Box>
                 )}
                 <Box>
                   <Text fontSize="x-small" fontWeight="bold">E-mail:</Text>
                   <Text fontSize="sm">
-                    {user.data.data.email}
+                    {user.data?.data.email}
                   </Text>            
                 </Box>
-                { user.data.data.contato && (
+                { user.data?.data.contato && (
                     <Box>
                       <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
                       <Text fontSize="sm">
-                        {user.data.data.contato}
+                        {user.data?.data.contato}
                       </Text>            
                     </Box>
                 )}
@@ -174,7 +174,7 @@ export default function UserToPrint() {
                 </Tr>
               </Thead>
               <Tbody>
-                { orders.data.map(order => {
+                { orders.data?.data.map(order => {
                   return (
                     <Tr key={order.id}>
                       <Td>{order.numero_pedido}</Td>

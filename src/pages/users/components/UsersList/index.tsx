@@ -66,7 +66,7 @@ function UsersList ({ filterValue }: UsersListProps) {
     )
   }
 
-  if(users.data?.length <= 0) {
+  if(users.data?.data.length <= 0) {
     return (
       <>
         <Table colorScheme="gray" variant="striped" >
@@ -102,7 +102,7 @@ function UsersList ({ filterValue }: UsersListProps) {
         </Tr>
       </Thead>
       <Tbody>
-        { users.data.map(user => {
+        { users.data?.data.map(user => {
             return (
               <Tr
                 key={user.id}

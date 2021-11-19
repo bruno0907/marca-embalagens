@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { useReactToPrint } from 'react-to-print'
-
 import { useUserQuery } from '../../../hooks/useUserQuery'
 import { useUserOrdersQuery } from '../../../hooks/useUserOrdersQuery'
 
@@ -29,7 +27,7 @@ export default function User() {
   const id = router.query.id  
   
   const user = useUserQuery(id)  
-  const orders = useUserOrdersQuery(String(id))
+  const orders = useUserOrdersQuery(id)
 
   return (
     <>
@@ -49,7 +47,7 @@ export default function User() {
 
         <Divider />
 
-        { !user.data?.data && !orders.data ? (
+        { !user.data?.data && !orders.data?.data ? (
           <Content>
             <Center>
               <Spinner size="lg" color="blue.500"/>
