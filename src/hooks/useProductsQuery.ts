@@ -5,35 +5,44 @@ import { ProductProps } from "../types"
 const getProducts = async (pattern?: string) => {
   const user = supabase.auth.user()
 
-  if(!user) {
-    return null
-  }
+  if(!user) throw new Error('Not authenticated')
 
   if(pattern) {
-    return await supabase
+    const { data, error } = await supabase
       .from<ProductProps>('products')
       .select()
       .eq('user_id', user.id)
       .ilike('nome', `${pattern}%`)
       .order('nome')
+
+    if(error) throw new Error(error.message)
+
+    if(!data) throw new Error('No products found')
+
+    return data
   }
 
-  return await supabase
+  const { data, error } = await supabase
     .from<ProductProps>('products')
     .select()
     .eq('user_id', user.id)
     .order('nome')
+
+  if(error) throw new Error(error.message)
+
+  if(!data) throw new Error('No products found')
+
+  return data
 }
 
 const useProductsQuery = (pattern?: string) => {
   const queryKey = pattern ? ['products[]', pattern] : ['products[]']
 
-  return useQuery(queryKey, async () => {
+  return useQuery(queryKey, () => {
     if(pattern) {
-      return await getProducts(pattern)
+      return getProducts(pattern)
     }
-
-    return await getProducts()
+    return getProducts()
 
   }, {
     staleTime: 1000 * 10 * 60,

@@ -15,9 +15,7 @@ const useCreateSupplierMutation = () => {
     async ({ supplierData, addressData }: NewUserMutationProps) => {
       const newSupplier = await createSupplier(supplierData)
 
-      if(newSupplier.error) {
-        throw Error('Erro ao cadastrar novo fornecedor.')
-      }
+      if(newSupplier.error) throw Error('Erro ao cadastrar novo fornecedor.')
 
       const supplierAddress = {
         user_id: newSupplier.data[0].id,

@@ -14,9 +14,7 @@ const useSignInMutation = () => {
     async (values: SignInProps) => {
       const { error, user } = await signIn(values)
 
-      if(error) {
-        throw new Error('E-mail ou senha inválidos')
-      }
+      if(error) throw new Error('E-mail ou senha inválidos')
       
       return user
     }

@@ -9,9 +9,7 @@ const useCreateOrderMutation = () => {
     async (newOrder: NewOrderProps) => {
       const { data, error } = await createOrder(newOrder)
   
-      if(error) {
-        throw Error('Erro ao cadastrar novo pedido.')
-      }
+      if(error) throw Error('Erro ao cadastrar novo pedido.')
   
       return data
   

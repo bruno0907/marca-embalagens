@@ -39,9 +39,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [session, setSession] = useState<Session>(() => {
     const data = supabase.auth.session()
 
-    if(!data) {
-      return null
-    }
+    if(!data) return null
 
     return data
   })  
@@ -64,9 +62,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     })
   }
 
-  const signOut = async () => {    
-    return await supabase.auth.signOut()
-  }
+  const signOut = async () => await supabase.auth.signOut()
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -90,9 +86,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       }      
     })
 
-    return () => {
-      authListener.unsubscribe()
-    }
+    return () => authListener.unsubscribe()
 
   }, [router])
 
@@ -108,9 +102,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   )
 }
 
-const useAuth = () => {
-  return useContext(AuthContext)
-}
+const useAuth = () => useContext(AuthContext)
 
 export {
   useAuth,

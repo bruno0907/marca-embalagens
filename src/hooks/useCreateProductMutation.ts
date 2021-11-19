@@ -8,9 +8,7 @@ const useCreateProductMutation = () => {
     async (newProduct: NewProductProps) => {
       const { data, error } = await createProduct(newProduct)
   
-      if(error) {
-        throw Error('Erro ao cadastrar novo produto.')
-      }
+      if(error) throw Error('Erro ao cadastrar novo produto.')
   
       return data
   

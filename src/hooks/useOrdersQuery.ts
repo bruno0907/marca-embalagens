@@ -16,12 +16,10 @@ type OrderQueryProps = {
 const getOrders = async (pattern?: string): Promise<OrderQueryProps[]> => {
   const user = supabase.auth.user()
 
-  if(!user) {
-    return null
-  }
+  if(!user) throw new Error('Not authenticated')
 
   if(pattern) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from<OrderQueryProps>('orders')
       .select(`
         id, 
@@ -36,10 +34,14 @@ const getOrders = async (pattern?: string): Promise<OrderQueryProps[]> => {
         ascending: false
       })
       
+    if(error) throw new Error(error.message)
+
+    if(!data) throw new Error('No orders found')
+
     return data
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from<OrderQueryProps>('orders')
     .select(`
       id, 
@@ -53,18 +55,22 @@ const getOrders = async (pattern?: string): Promise<OrderQueryProps[]> => {
       ascending: false
     })
 
+  if(error) throw new Error(error.message)
+
+  if(!data) throw new Error('No orders found')
+
   return data
 }
 
 const useOrdersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['orders[]', pattern] : ['orders[]']
 
-  return useQuery(queryKey, async () => {
+  return useQuery(queryKey, () => {
     if(pattern) {
-      return await getOrders(pattern)
+      return getOrders(pattern)
     }
 
-    return await getOrders()
+    return getOrders()
 
   }, {
     staleTime: 1000 * 10 * 60,
