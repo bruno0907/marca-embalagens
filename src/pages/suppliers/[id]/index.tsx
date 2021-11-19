@@ -25,18 +25,16 @@ export default function Supplier() {
   
   const supplier = useSupplierQuery(id)
 
-  const handlePrintUser = () => router.push(`/suppliers/${id}/supplier-to-print`)
-
-  if(!supplier.data) return null
+  const handlePrintUser = () => router.push(`/suppliers/${id}/supplier-to-print`)  
 
   return (
     <>
       <Head>
-        <title>MARCA | {supplier.data.data.nome}</title>
+        <title>MARCA | {supplier.data?.data.nome}</title>
       </Head>
       <Authenticated>
 
-        <Header withGoBack title={supplier.data.data?.nome}>
+        <Header withGoBack title={supplier.data?.data.nome}>
           <Button
             colorScheme="blue"
             leftIcon={<FiPrinter />}            

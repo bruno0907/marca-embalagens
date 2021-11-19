@@ -47,7 +47,7 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
     )
   }
 
-  if(suppliers.error) {
+  if(suppliers.isError) {
     return (
       <>
         <Table colorScheme="gray" variant="striped" >
@@ -65,7 +65,7 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
     )
   }
 
-  if(suppliers.data?.length <= 0) {
+  if(suppliers.data?.data.length <= 0) {
     return (
       <>
         <Table colorScheme="gray" variant="striped" >
@@ -101,7 +101,7 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
         </Tr>
       </Thead>
       <Tbody>
-        { suppliers.data.map(supplier => {
+        { suppliers.data?.data.map(supplier => {
             return (
               <Tr
                 key={supplier.id}

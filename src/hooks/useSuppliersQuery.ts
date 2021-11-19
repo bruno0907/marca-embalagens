@@ -3,7 +3,7 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
-const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
+const getSuppliers = async (pattern?: string) => {
   const user = supabase.auth.user()
 
   if(!user) {
@@ -11,23 +11,19 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
   }
 
   if(pattern) {
-    const { data } = await supabase
+    return await supabase
       .from<SupplierProps>('suppliers')
       .select()
       .eq('user_id', user.id)
       .ilike('nome', `${pattern}%`)
       .order('nome')
-
-    return data
   }
   
-  const { data } = await supabase    
+  return await supabase    
     .from<SupplierProps>('suppliers')
     .select()
     .eq('user_id', user.id)    
     .order('nome')
-
-  return data
 }
 
 const useSuppliersQuery = (pattern?: string) => {

@@ -13,22 +13,12 @@ import { useSupplierQuery } from "../../../../hooks/useSupplierQuery"
 import { useAddressesQuery } from "../../../../hooks/useAddressesQuery"
 import { useUserOrdersQuery } from "../../../../hooks/useUserOrdersQuery"
 
-import { handleFormatDate } from "../../../../utils/handleFormatDate"
-import { handleFormatPrice } from "../../../../utils/handleFormatPrice"
-
 import { 
-  Box,
-  Flex,
+  Box,  
   Heading,
   Text,
   VStack,
-  HStack,
-  Table,
-  Thead,
-  Th,
-  Tbody,
-  Tr,
-  Td,
+  HStack,  
   Button,  
 } from "@chakra-ui/react"
 
@@ -47,8 +37,6 @@ export default function SupplierToPrint() {
   const handlePrint = useReactToPrint({
     content: () => ref.current
   })
-  
-  if(!supplier.data?.data || !addresses.data?.data || !orders?.data) return null
 
   return (
     <>
@@ -57,7 +45,7 @@ export default function SupplierToPrint() {
       </Head>
       <Box maxW="1090px" margin="auto" px="8">
         <Header withGoBack py="16">
-          <Heading fontSize="xx-large">{supplier.data.data.nome}</Heading>        
+          <Heading fontSize="xx-large">{supplier.data?.data.nome}</Heading>        
           <Button
             leftIcon={<FiPrinter />}
             onClick={handlePrint}
@@ -73,49 +61,49 @@ export default function SupplierToPrint() {
               <HStack w="100%" spacing={3} align="flex-start" justify="space-between">
                 <Box>
                   <Text fontSize="x-small" fontWeight="bold">Nome:</Text>
-                  <Text fontSize="sm">{supplier.data.data.nome}</Text>            
+                  <Text fontSize="sm">{supplier.data?.data.nome}</Text>            
                 </Box>
-                { supplier.data.data.razao_social && (
+                { supplier.data?.data.razao_social && (
                   <Box>
                     <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
-                    <Text fontSize="sm">{supplier.data.data.razao_social}</Text>
+                    <Text fontSize="sm">{supplier.data?.data.razao_social}</Text>
                   </Box>
                 )}              
-                { supplier.data.data.cpf_cnpj && (
+                { supplier.data?.data.cpf_cnpj && (
                   <Box>
                     <Text fontSize="x-small" fontWeight="semibold">
-                      {supplier.data.data.razao_social ? 'CNPJ' : 'CPF'}
+                      {supplier.data?.data.razao_social ? 'CNPJ' : 'CPF'}
                     </Text>
                     <Text fontSize="sm">
-                      {supplier.data.data.cpf_cnpj}
+                      {supplier.data?.data.cpf_cnpj}
                     </Text>
                   </Box>
                 )}
               </HStack>
               <Box>
                 <Text fontSize="x-small" fontWeight="bold">Produto/Serviço:</Text>
-                <Text fontSize="sm">{supplier.data.data.produto}</Text>            
+                <Text fontSize="sm">{supplier.data?.data.produto}</Text>            
               </Box>
               <HStack w="100%" spacing={3} align="flex-start" justify="space-between">
                 <Box>
                   <Text fontSize="x-small" fontWeight="bold">Telefone:</Text>
                   <Text fontSize="sm">
-                    {supplier.data.data.telefone}
+                    {supplier.data?.data.telefone}
                   </Text>            
                 </Box>
-                { supplier.data.data.celular && (
+                { supplier.data?.data.celular && (
                     <Box>
                       <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
                       <Text fontSize="sm">
-                        {supplier.data.data.celular}
+                        {supplier.data?.data.celular}
                       </Text>            
                     </Box>
                 )}
-                { supplier.data.data.contato && (
+                { supplier.data?.data.contato && (
                     <Box>
                       <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
                       <Text fontSize="sm">
-                        {supplier.data.data.contato}
+                        {supplier.data?.data.contato}
                       </Text>            
                     </Box>
                 )}

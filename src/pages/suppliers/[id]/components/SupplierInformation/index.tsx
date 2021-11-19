@@ -73,53 +73,51 @@ const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
         </Stack>
       </Content>    
     )
-  }
-
-  if(!supplier.data?.data) return null
+  }  
 
   return (
     <Content w="100%">
       <Flex align="center" mb="8">
         <Heading fontSize="2xl">Dados Principais</Heading>        
         <Spacer/>
-        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditSupplier(supplier.data.data)}>Editar</Button>
+        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditSupplier(supplier.data?.data)}>Editar</Button>
       </Flex>
       <Stack spacing={3}>
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiUser}
-            label={`Nome ${supplier.data.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-            value={supplier.data.data.nome}
+            label={`Nome ${supplier.data?.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+            value={supplier.data?.data.nome}
           />
-          { supplier.data.data.natureza_cliente === 'Jurídica' && 
+          { supplier.data?.data.natureza_cliente === 'Jurídica' && 
             <InformationField 
               icon={FiUser}
               label="Razão Social"
-              value={supplier.data.data.razao_social}
+              value={supplier.data?.data.razao_social}
             /> }
         </HStack>
 
         <InformationField 
           icon={FiPackage}
           label="Produto/Serviço"
-          value={supplier.data.data.produto}
+          value={supplier.data?.data.produto}
         />
 
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiCreditCard}
-            label={supplier.data.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
-            value={supplier.data.data.cpf_cnpj}
+            label={supplier.data?.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
+            value={supplier.data?.data.cpf_cnpj}
           />
           <InformationField 
             icon={FiCreditCard}
-            label={supplier.data.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-            value={supplier.data.data.rg_ie}
+            label={supplier.data?.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+            value={supplier.data?.data.rg_ie}
           />
           <InformationField 
             icon={FiUser}
             label="Contato"
-            value={supplier.data.data.contato}
+            value={supplier.data?.data.contato}
           />
         </HStack>
           
@@ -127,24 +125,24 @@ const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
           <InformationField 
             icon={FiPhone}
             label="Telefone"
-            value={supplier.data.data.telefone}
+            value={supplier.data?.data.telefone}
           />
           <InformationField 
             icon={FiSmartphone}
             label="Celular"
-            value={supplier.data.data.celular}
+            value={supplier.data?.data.celular}
           />
           <InformationField 
             icon={FiMail}
             label="E-mail"
-            value={supplier.data.data.email}
+            value={supplier.data?.data.email}
           />
         </HStack>
 
         <InformationField 
           icon={FiList}
           label="Outras informacoes"
-          value={supplier.data.data.outras_informacoes}
+          value={supplier.data?.data.outras_informacoes}
         />
 
       </Stack>
