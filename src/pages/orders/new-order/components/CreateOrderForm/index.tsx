@@ -17,6 +17,7 @@ import { useUsersQuery } from '../../../../../hooks/useUsersQuery'
 import { useProductsQuery } from '../../../../../hooks/useProductsQuery'
 import { useUserQuery } from '../../../../../hooks/useUserQuery'
 import { useAddressQuery } from '../../../../../hooks/useAddressQuery'
+import { useAddressesQuery } from '../../../../../hooks/useAddressesQuery'
 import { useProductQuery } from '../../../../../hooks/useProductQuery'
 
 import { useOrdersQuery } from '../../../../../hooks/useOrdersQuery'
@@ -57,9 +58,10 @@ const newOrderSchema = yup.object().shape({
 })
 
 const CreateOrderForm = () => {
-  const { session } = useAuth()  
-  const toast = useToast()  
+  const { session } = useAuth()
+
   const router = useRouter()  
+  const toast = useToast()  
 
   const [selectedUser, setSelectedUser] = useState('')
   const [selectedAddress, setSelectedAddress] = useState('')  
@@ -79,6 +81,7 @@ const CreateOrderForm = () => {
   const users = useUsersQuery()
   const user = useUserQuery(selectedUser)
   
+  const addresses = useAddressesQuery(selectedUser)
   const address = useAddressQuery(selectedAddress)
 
   const products = useProductsQuery()
@@ -158,7 +161,7 @@ const CreateOrderForm = () => {
   }  
 
   const canAddProduct = !Boolean(product.data?.data && productAmount > 0)
-  const canSubmitOrder = user.data?.user && Boolean(orderProducts.length <= 0)  
+  const canSubmitOrder = user.data?.data && Boolean(orderProducts.length <= 0)  
 
   const ordersAmount = orders.data?.length
 
@@ -168,7 +171,7 @@ const CreateOrderForm = () => {
     const newOrder: NewOrderProps = {
       user_id: session.user.id,
       numero_pedido: ordersAmount + 1,
-      cliente: user.data.user.id,
+      cliente: user.data.data.id,
       endereco_entrega: address.data.data.id,
       pedido: [...orderProducts],
       total: orderTotal,
@@ -231,37 +234,37 @@ const CreateOrderForm = () => {
 
         </Select>
 
-        { !user.data?.user ? null : user.isError ? (
+        { !user.data?.data ? null : user.isError ? (
           <Text my="8">Erro ao carregar os dados do usuário...</Text>
         ) : (
           <Stack spacing={3}>      
-            { user.data.user.natureza_cliente === 'Jurídica' &&
+            { user.data.data.natureza_cliente === 'Jurídica' &&
               <Input 
                 label="Razão Social:"
                 name="razao_social"
                 isDisabled
-                defaultValue={user.data.user.razao_social}
+                defaultValue={user.data.data.razao_social}
               />
             }
 
             <HStack spacing={3}>
               <Input 
                 name="cpf_cnpj"
-                label={user.data.user.natureza_cliente === 'Física' ? 'CPF' : 'CNPJ:'}
-                defaultValue={user.data.user.cpf_cnpj}
+                label={user.data.data.natureza_cliente === 'Física' ? 'CPF' : 'CNPJ:'}
+                defaultValue={user.data.data.cpf_cnpj}
                 isDisabled
               />
               <Input 
                 name="rg_ie"
-                label={user.data.user.natureza_cliente === 'Física' ? 'RG' : 'IE:'}
+                label={user.data.data.natureza_cliente === 'Física' ? 'RG' : 'IE:'}
                 isDisabled
-                defaultValue={user.data.user.cpf_cnpj}
+                defaultValue={user.data.data.cpf_cnpj}
               />
               <Input
                 name="contato"
                 label="Contato:"
                 isDisabled
-                defaultValue={user.data.user.contato}
+                defaultValue={user.data.data.contato}
               />
             </HStack>
 
@@ -270,19 +273,19 @@ const CreateOrderForm = () => {
                 name="telefone"
                 label="Telefone:"
                 isDisabled
-                defaultValue={user.data.user.telefone}
+                defaultValue={user.data.data.telefone}
               />
               <Input
                 name="celular"
                 label="Celular:"
                 isDisabled
-                defaultValue={user.data.user.celular}
+                defaultValue={user.data.data.celular}
               />
               <Input
                 name="email"
                 label="E-mail:"
                 isDisabled
-                defaultValue={user.data.user.email}
+                defaultValue={user.data.data.email}
               />
             </HStack>
 
@@ -294,7 +297,7 @@ const CreateOrderForm = () => {
               onChange={handleSelectAddress}
             >
               <option value="defaultValue">Selecione o endereço de entrega...</option>
-              { user.data?.addresses.map(address => {
+              { addresses.data?.map(address => {
                 return (
                   <option key={address.id} value={address.id}>{address.endereco}</option>
                 )

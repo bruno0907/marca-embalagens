@@ -50,7 +50,7 @@ const AddressesInformation = ({ userId }: Props) => {
     )
   }
 
-  if(!addresses.data?.data) return null
+  if(!addresses.data) return null
 
   return (
     <Content w="100%">
@@ -66,7 +66,7 @@ const AddressesInformation = ({ userId }: Props) => {
                 <Spinner size="md" color="blue.500" />
               </Center>
             ) : (
-              addresses.data.data.map(address => (
+              addresses.data?.map(address => (
                 <AddressField key={address.id} address={address} />
               ))
           )}
