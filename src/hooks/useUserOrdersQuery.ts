@@ -2,36 +2,56 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { OrderProps } from "../types"
 
-const getUserOrders = async ( userId: string | string[] , limit: number | null = null) => {
+const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps[]> => {
   const user = supabase.auth.user()
 
-  if(!user || !userId) {
-    return null
-  }
+  if(!user) throw new Error('Not authenticated')
+
+  if(limit) {
+    const { data, error } = await supabase
+      .from<OrderProps>('orders')
+      .select()
+      .eq('cliente', userId)
+      .order('created_at', {
+        ascending: false
+      })
+      .limit(limit)
   
-  return await supabase
+    if(error) throw new Error(error.message)
+  
+    if(!data) throw new Error('No orders for the user found')
+  
+    return data
+  }  
+
+  const { data, error } = await supabase
     .from<OrderProps>('orders')
     .select()
-    .eq('cliente', String(userId))
+    .eq('cliente', userId)
     .order('created_at', {
       ascending: false
-    })
-    .limit(limit)
+    })    
+
+  if(error) throw new Error(error.message)
+
+  if(!data) throw new Error('No orders for the user found')
+
+  return data
 }
 
-const useUserOrdersQuery = (userId: string | string[], limit?: number) => {
+const useUserOrdersQuery = (userId: string, limit?: number) => {
   const queryKey = ['userOrders[]', userId]
 
-  return useQuery(queryKey, async () => {
+  return useQuery(queryKey, () => {
     if(limit) {
-      return await getUserOrders(userId, limit)
-    }
+      return getUserOrders(userId, limit)
 
-    return await getUserOrders(userId)
+    }
+    return getUserOrders(userId)
 
   }, {
-    staleTime: 1000 * 10 * 60,
     useErrorBoundary: true,
+    refetchOnWindowFocus: true
   })
 }
 

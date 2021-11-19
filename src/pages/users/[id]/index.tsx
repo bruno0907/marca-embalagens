@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { useUserQuery } from '../../../hooks/useUserQuery'
-import { useUserOrdersQuery } from '../../../hooks/useUserOrdersQuery'
 
 import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Layout/Divider'
@@ -26,18 +25,17 @@ export default function User() {
   const router = useRouter()
   const id = router.query.id  
   
-  const user = useUserQuery(id)  
-  const orders = useUserOrdersQuery(id)
+  const user = useUserQuery(id)
 
   return (
     <>
       <Head>
-        <title>MARCA | {user.data?.data.nome}</title>
+        <title>MARCA | {user.data?.nome}</title>
       </Head>
 
       <Authenticated>
 
-        <Header withGoBack title={user.data?.data.nome}>
+        <Header withGoBack title={user.data?.nome}>
           <Button 
             colorScheme="blue" 
             leftIcon={<FiPrinter />} 
@@ -47,7 +45,7 @@ export default function User() {
 
         <Divider />
 
-        { !user.data?.data && !orders.data?.data ? (
+        { !user.data ? (
           <Content>
             <Center>
               <Spinner size="lg" color="blue.500"/>

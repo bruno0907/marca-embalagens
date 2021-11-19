@@ -48,7 +48,7 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
     )
   }
 
-  if(products.error) {
+  if(products.isError) {
     return (
       <>
         <Table colorScheme="gray" variant="striped" >
@@ -65,7 +65,7 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
     )
   }
 
-  if(products.data?.length <= 0) {
+  if(products.data?.data.length <= 0) {
     return (
       <>
         <Table colorScheme="gray" variant="striped" >
@@ -99,7 +99,7 @@ const ProductsList = ({ filterValue }: ProductsListProps) => {
         </Tr>
       </Thead>
       <Tbody>
-        { products.data.map(product => {
+        { products.data?.data.map(product => {
             return (
               <Tr
                 key={product.id}

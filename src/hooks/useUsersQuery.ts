@@ -3,38 +3,49 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
-const getUsers = async (pattern?: string) => {
+const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
   const user = supabase.auth.user()
 
-  if(!user) {
-    return null
-  }
+  if(!user) throw new Error('Not authenticated')
 
-  if(pattern) {
-    return await supabase
+  if(filterQuery) {
+    const { data, error } = await supabase
       .from<UserProps>('users')
       .select()
       .eq('user_id', user.id)      
-      .ilike('nome', `${pattern}%`)
+      .ilike('nome', `${filterQuery}%`)
       .order('nome')
+
+    if(error) throw new Error(error.message)
+
+    if(!data) throw new Error('No users found')
+
+    return data
   }
   
-  return await supabase    
+  const { data, error } = await supabase    
     .from<UserProps>('users')
     .select()
     .eq('user_id', user.id)      
     .order('nome')
+
+  if(error) throw new Error(error.message)
+
+  if(!data) throw new Error('No users found')
+
+  return data
 }
 
-const useUsersQuery = (pattern?: string) => {
-  const queryKey = pattern ? ['users[]', pattern] : 'users[]'
+const useUsersQuery = (filterQuery?: string) => {
+  const queryKey = filterQuery ? ['users[]', filterQuery] : 'users[]'
   
-  return useQuery(queryKey, async () => {
-    if(pattern) {
-      return await getUsers(pattern)
+  return useQuery(queryKey, () => {
+    if(filterQuery) {
+      return getUsers(filterQuery)
+
     }
+    return getUsers()
     
-    return await getUsers()
   }, {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true

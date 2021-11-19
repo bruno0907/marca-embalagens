@@ -5,6 +5,8 @@ import { InformationField } from '../../../../../components/Layout/InformationFi
 import { Modal } from '../../../../../components/Modal'
 import { UpdateUserForm } from '../UpdateUserForm'
 
+import { useUserQuery } from '../../../../../hooks/useUserQuery'
+
 import { 
   Text,
   Button,
@@ -29,7 +31,6 @@ import {
 } from 'react-icons/fi'
 
 import { UserProps } from '../../../../../types'
-import { useUserQuery } from '../../../../../hooks/useUserQuery'
 
 type Props = {
   userId: string | string[];  
@@ -75,45 +76,43 @@ const UserInformation = ({ userId }: Props) => {
     )
   }
 
-  // if(!user.data?.data) return null
-
   return (
     <Content w="100%">
       <Flex align="center" mb="8">
         <Heading fontSize="2xl">Dados Principais</Heading>        
         <Spacer/>
-        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditUser(user.data?.data)}>Editar</Button>
+        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditUser(user.data)}>Editar</Button>
       </Flex>
       <Stack spacing={3}>
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiUser}
-            label={`Nome ${user.data?.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-            value={user.data?.data.nome}
+            label={`Nome ${user.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+            value={user.data.nome}
           />
-          { user.data?.data.natureza_cliente === 'Jurídica' && 
+          { user.data.natureza_cliente === 'Jurídica' && 
             <InformationField 
               icon={FiUser}
               label="Razão Social"
-              value={user.data?.data.razao_social}
+              value={user.data.razao_social}
             /> }
         </HStack>
 
         <HStack spacing={3} align="flex-start">
           <InformationField 
             icon={FiCreditCard}
-            label={user.data?.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
-            value={user.data?.data.cpf_cnpj}
+            label={user.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
+            value={user.data.cpf_cnpj}
           />
           <InformationField 
             icon={FiCreditCard}
-            label={user.data?.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-            value={user.data?.data.rg_ie}
+            label={user.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+            value={user.data.rg_ie}
           />
           <InformationField 
             icon={FiUser}
             label="Contato"
-            value={user.data?.data.contato}
+            value={user.data.contato}
           />
         </HStack>
           
@@ -121,24 +120,24 @@ const UserInformation = ({ userId }: Props) => {
           <InformationField 
             icon={FiPhone}
             label="Telefone"
-            value={user.data?.data.telefone}
+            value={user.data.telefone}
           />
           <InformationField 
             icon={FiSmartphone}
             label="Celular"
-            value={user.data?.data.celular}
+            value={user.data.celular}
           />
           <InformationField 
             icon={FiMail}
             label="E-mail"
-            value={user.data?.data.email}
+            value={user.data.email}
           />
         </HStack>
 
         <InformationField 
           icon={FiList}
           label="Outras informacoes"
-          value={user.data?.data.outras_informacoes}
+          value={user.data.outras_informacoes}
         />
 
       </Stack>

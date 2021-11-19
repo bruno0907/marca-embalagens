@@ -2,21 +2,28 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
-const getUser = async (id: string | string[]) => {
-  if(!id) {
-    return null
-  }
+const getUser = async (id: string | string[]): Promise<UserProps> => {
+  if(!id) return null
 
-  return await supabase
+  const { data, error } = await supabase
     .from<UserProps>('users')
     .select()
     .eq('id', String(id))
-    .single()  
+    .single()
+    
+  if(error) throw new Error(error.message)
+
+  if(!data) throw new Error('No user found')
+
+  return data
 }
 
 const useUserQuery = (id: string | string[]) => {  
-  return useQuery(['user', id], async () => await getUser(id), {
-    staleTime: 1000 * 60 * 10, //10minutes
+  return useQuery(['user', id], () => {
+    return getUser(id)
+
+  }, {
+    staleTime: 1000 * 60 * 10,
     useErrorBoundary: true
   })  
 }
