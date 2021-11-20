@@ -45,7 +45,10 @@ export default function SignUp () {
   const { 
     register, 
     handleSubmit, 
-    formState
+    formState,
+    setFocus,
+    setError,
+    reset
   } = useForm({
     resolver: yupResolver(signInFormSchema)
   })  
@@ -58,20 +61,21 @@ export default function SignUp () {
 
   const handleSignUp: SubmitHandler<SignInProps> = async values => {    
     try {      
-      await signUpMutation.mutateAsync(values)
+      const { email, password } = values
+
+      await signUpMutation.mutateAsync({ email, password })
 
       toast({
-        title: 'Cadastro efetuado com sucesso!', 
+        title: 'Cadastro efetuado com sucesso! Redirecionando...', 
         status: 'success',
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',        
       })
 
-      router.push('/profile')
-
-      return
-    } catch (error) {
+      return router.push('/profile')
+      
+    } catch (error) {      
       toast({
         title: 'Erro ao fazer o cadastro...',
         description: error.message,
@@ -79,6 +83,18 @@ export default function SignUp () {
         isClosable: true,
         duration: 5000,
         position: 'top-right'
+      })
+
+      setFocus('email')
+
+      setError('email', {
+        message: 'O e-mail informado já está em uso.'
+      })
+
+      reset({
+        ...values,
+        password: '',
+        password_verify: ''
       })
 
       return

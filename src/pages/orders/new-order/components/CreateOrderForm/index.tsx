@@ -117,10 +117,10 @@ const CreateOrderForm = () => {
     const currentOrderProducts = [...orderProducts]
     
     const newOrderProducts = {
-      produto: product.data.data.nome,
+      produto: product.data.nome,
       quantidade: productAmount,
-      valor_unitario: product.data.data.preco_unitario,
-      valor_total: product.data.data.preco_unitario * productAmount
+      valor_unitario: product.data.preco_unitario,
+      valor_total: product.data.preco_unitario * productAmount
     }    
 
     const updatedOrderProducts = [
@@ -160,8 +160,8 @@ const CreateOrderForm = () => {
     setProductAmount(prev => prev - 1)
   }  
 
-  const canAddProduct = !Boolean(product.data?.data && productAmount > 0)
-  const canSubmitOrder = user.data?.data && Boolean(orderProducts.length <= 0)  
+  const canAddProduct = !Boolean(product.data && productAmount > 0)  
+  const canSubmitOrder = user.data && Boolean(orderProducts.length <= 0)  
 
   const ordersAmount = orders.data?.length
 
@@ -171,7 +171,7 @@ const CreateOrderForm = () => {
     const newOrder: NewOrderProps = {
       user_id: session.user.id,
       numero_pedido: ordersAmount + 1,
-      cliente: user.data.data.id,
+      cliente: user.data.id,
       endereco_entrega: address.data.id,
       pedido: [...orderProducts],
       total: orderTotal,
@@ -234,37 +234,37 @@ const CreateOrderForm = () => {
 
         </Select>
 
-        { !user.data?.data ? null : user.isError ? (
+        { !user.data ? null : user.isError ? (
           <Text my="8">Erro ao carregar os dados do usuário...</Text>
         ) : (
           <Stack spacing={3}>      
-            { user.data.data.natureza_cliente === 'Jurídica' &&
+            { user.data.natureza_cliente === 'Jurídica' &&
               <Input 
                 label="Razão Social:"
                 name="razao_social"
                 isDisabled
-                defaultValue={user.data.data.razao_social}
+                defaultValue={user.data.razao_social}
               />
             }
 
             <HStack spacing={3}>
               <Input 
                 name="cpf_cnpj"
-                label={user.data.data.natureza_cliente === 'Física' ? 'CPF' : 'CNPJ:'}
-                defaultValue={user.data.data.cpf_cnpj}
+                label={user.data.natureza_cliente === 'Física' ? 'CPF' : 'CNPJ:'}
+                defaultValue={user.data.cpf_cnpj}
                 isDisabled
               />
               <Input 
                 name="rg_ie"
-                label={user.data.data.natureza_cliente === 'Física' ? 'RG' : 'IE:'}
+                label={user.data.natureza_cliente === 'Física' ? 'RG' : 'IE:'}
                 isDisabled
-                defaultValue={user.data.data.cpf_cnpj}
+                defaultValue={user.data.cpf_cnpj}
               />
               <Input
                 name="contato"
                 label="Contato:"
                 isDisabled
-                defaultValue={user.data.data.contato}
+                defaultValue={user.data.contato}
               />
             </HStack>
 
@@ -273,19 +273,19 @@ const CreateOrderForm = () => {
                 name="telefone"
                 label="Telefone:"
                 isDisabled
-                defaultValue={user.data.data.telefone}
+                defaultValue={user.data.telefone}
               />
               <Input
                 name="celular"
                 label="Celular:"
                 isDisabled
-                defaultValue={user.data.data.celular}
+                defaultValue={user.data.celular}
               />
               <Input
                 name="email"
                 label="E-mail:"
                 isDisabled
-                defaultValue={user.data.data.email}
+                defaultValue={user.data.email}
               />
             </HStack>
 

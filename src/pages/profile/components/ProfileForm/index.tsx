@@ -349,13 +349,18 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
       </Stack>
       <HStack spacing={3} justifyContent="flex-end" my={4}>        
         <Button
+          type="reset"
+          colorScheme="blue"
+          variant="ghost"
+          onClick={() => router.push('/dashboard')}
+          _hover={{ backgroundColor: 'blue.500', color: 'gray.100' }}
+        >Cancelar</Button>
+        <Button
           type="submit"
           colorScheme="blue"
           isLoading={isSubmitting}
           isDisabled={!isDirty}
-        >
-          Salvar alterações
-        </Button>
+        >Salvar alterações</Button>
       </HStack>      
     </Flex>
   );

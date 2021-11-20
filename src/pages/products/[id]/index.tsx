@@ -19,9 +19,9 @@ export default function Product() {
   const router = useRouter()
   const { id } = router.query
 
-  const { data: product, isLoading, isFetching, error } = useProductQuery(id)
+  const product = useProductQuery(String(id))
 
-  if(isLoading) {
+  if(product.isLoading) {
     return (
       <Center my="8" h="100vh">
         <Spinner size="lg" color="blue.500"/>
@@ -29,7 +29,7 @@ export default function Product() {
     )
   }
 
-  if(error) {
+  if(product.isError) {
     return (
       <Center my="8" h="100vh">
         <Text>Erro ao carregar as informações...</Text>
@@ -50,7 +50,7 @@ export default function Product() {
         <Divider />
 
         <Content>
-          <UpdateProductForm product={product.data} isFetching={isFetching} />          
+          <UpdateProductForm product={product.data} isFetching={product.isFetching} />          
         </Content>
 
       </Authenticated>

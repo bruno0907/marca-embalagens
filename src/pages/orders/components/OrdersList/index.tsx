@@ -7,6 +7,7 @@ import { handleFormatDate } from "../../../../utils/handleFormatDate"
 import { handleFormatPrice } from "../../../../utils/handleFormatPrice"
 
 import { 
+  Box,
   Table,
   Thead,
   Tr,
@@ -32,7 +33,7 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
 
   if(orders.isLoading) {
     return (
-      <>
+      <Box borderRadius="md" overflow="hidden">
         <Table colorScheme="gray" variant="striped" >
           <Thead>
             <Tr bgColor="blue.500">
@@ -46,13 +47,13 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
         <Center p="8">
           <Spinner size="md" color="blue.500"/>
         </Center>
-      </>
+      </Box>
     )
   }
 
   if(orders.error) {
     return (
-      <>
+      <Box borderRadius="md" overflow="hidden">
         <Table colorScheme="gray" variant="striped" >
           <Thead>
             <Tr bgColor="blue.500">
@@ -64,13 +65,13 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
           </Thead>
         </Table>
         <Text p="2" bgColor="gray.100">Ocorreu um erro ao carregar as informações...</Text>
-      </>
+      </Box>
     )
   }
 
   if(orders.data?.length <= 0) {
     return (
-      <>
+      <Box borderRadius="md" overflow="hidden">
         <Table colorScheme="gray" variant="striped" >
           <Thead>
             <Tr bgColor="blue.500">
@@ -82,47 +83,49 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
           </Thead>
         </Table>
         <Text p="2" bgColor="gray.100">Nenhum registro encontrado...</Text>
-      </>
+      </Box>
     )
   }
 
   return (
-    <Table colorScheme="gray" variant="striped" >
-      <Thead>
-        <Tr bgColor="blue.500">
-        <Th color="gray.50" w="150px" textAlign="end">
-            <Flex align="center">
-              Pedido
-              { orders.isFetching && 
-                <Spinner size="sm" color="gray.50" ml="4"/>
-              }
-            </Flex>
-          </Th>            
-            <Th color="gray.50">Cliente</Th>
-            <Th color="gray.50" w="150px">Data pedido</Th>
-            <Th color="gray.50" w="150px">Valor total</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        { orders.data.map(order => {
-            return (
-              <Tr
-                key={order.id}
-                fontWeight="medium"
-                onClick={() => router.push(`/orders/${order.id}`)}
-                onMouseEnter={() => handlePrefetchOrder(order.id)}
-                _hover={{ cursor: 'pointer', color: 'blue.500'}}
-              >
-                <Td>{order.numero_pedido}</Td>                        
-                <Td>{order.users.nome}</Td>
-                <Td>{handleFormatDate(order.created_at)}</Td>
-                <Td>{handleFormatPrice(order.total)}</Td>   
-              </Tr>
-            )
-          }
-        )}
-      </Tbody>
-    </Table>
+    <Box borderRadius="md" overflow="hidden">
+      <Table colorScheme="gray" variant="striped" >
+        <Thead>
+          <Tr bgColor="blue.500">
+          <Th color="gray.50" w="150px" textAlign="end">
+              <Flex align="center">
+                Pedido
+                { orders.isFetching && 
+                  <Spinner size="sm" color="gray.50" ml="4"/>
+                }
+              </Flex>
+            </Th>            
+              <Th color="gray.50">Cliente</Th>
+              <Th color="gray.50" w="150px">Data pedido</Th>
+              <Th color="gray.50" w="150px">Valor total</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          { orders.data.map(order => {
+              return (
+                <Tr
+                  key={order.id}
+                  fontWeight="medium"
+                  onClick={() => router.push(`/orders/${order.id}`)}
+                  onMouseEnter={() => handlePrefetchOrder(order.id)}
+                  _hover={{ cursor: 'pointer', color: 'blue.500'}}
+                >
+                  <Td>{order.numero_pedido}</Td>                        
+                  <Td>{order.users.nome}</Td>
+                  <Td>{handleFormatDate(order.created_at)}</Td>
+                  <Td>{handleFormatPrice(order.total)}</Td>   
+                </Tr>
+              )
+            }
+          )}
+        </Tbody>
+      </Table>
+    </Box>
   )
 }
 

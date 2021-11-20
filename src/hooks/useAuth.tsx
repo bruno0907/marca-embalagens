@@ -3,32 +3,16 @@ import { useRouter } from 'next/router'
 
 import { supabase } from "../database/supabase";
 
-import { Session, User } from "@supabase/supabase-js";
+import { Session } from "@supabase/supabase-js";
 
 import axios from "axios";
 
-type AuthContextProps = {
-  signIn: (values: AuthProps) => Promise<{
-    user: User,
-    session: Session,
-    error: Error
-  }>;
-  signUp: (values: AuthProps) => Promise<{
-    user: User,
-    session: Session,
-    error: Error
-  }>;
-  signOut: () => Promise<unknown>;
+type AuthContextProps = {    
   session: Session;
 }
 
 type AuthProviderProps = {
   children: ReactNode;  
-}
-
-type AuthProps = {
-  email: string;
-  password: string;
 }
 
 const AuthContext = createContext({} as AuthContextProps)
@@ -43,26 +27,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     return data
   })  
-
-  const signUp = async (values: AuthProps) => {
-    const { email, password } = values
-
-    return await supabase.auth.signUp({
-      email,
-      password
-    })
-  }
-  
-  const signIn = async (values: AuthProps) => {   
-    const { email, password } = values
-
-    return await supabase.auth.signIn({
-      email,
-      password
-    })
-  }
-
-  const signOut = async () => await supabase.auth.signOut()
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -92,9 +56,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider value={{
-      signIn,
-      signUp,
-      signOut,
       session,      
     }}>
       {children}

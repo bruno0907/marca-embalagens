@@ -46,9 +46,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
     resolver: yupResolver(updateProductSchema)    
   })
 
-  const { isSubmitting, errors } = formState
-
-  const handleEdit = () => setIsEditing(!isEditing)
+  const { isSubmitting, errors } = formState  
 
   const handleCancelEdit = () => setIsEditing(!isEditing)
 

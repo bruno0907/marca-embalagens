@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { ProductProps } from "../types"
 
-const getProduct = async (id: string) => {
+const getProduct = async (id: string): Promise<ProductProps> => {
   if(!id) return null
   
   const { data, error } = await supabase
@@ -20,7 +20,7 @@ const getProduct = async (id: string) => {
 
 const useProductQuery = (id: string) => {
   return useQuery(['product', id], () => {
-    getProduct(id)
+    return getProduct(id)
     
   }, {
     staleTime: 1000 * 60 * 10, //10minutes

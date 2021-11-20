@@ -108,7 +108,7 @@ function UsersList ({ filterValue }: UsersListProps) {
               return (
                 <Tr
                   key={user.id}
-                  fontWeight="medium"
+                  fontWeight="medium"                  
                   onClick={() => router.push(`/users/${user.id}`)}
                   onMouseEnter={() => handlePrefetchUser(user.id)}
                   _hover={{ cursor: 'pointer', color: 'blue.500' }}

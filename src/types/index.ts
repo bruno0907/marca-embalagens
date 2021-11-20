@@ -31,6 +31,7 @@ export type NewUserProps = {
 export type ProfileProps = {
   id: string;
   user_id: string;    
+  username: string;
   nome: string;
   razao_social: string;  
   cpf_cnpj: string;
@@ -43,6 +44,7 @@ export type ProfileProps = {
 
 export type NewProfileProps = {  
   user_id: string;  
+  username: string;
   nome: string | undefined;
   razao_social: string | undefined;  
   cpf_cnpj: string | undefined; 

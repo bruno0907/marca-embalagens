@@ -57,8 +57,10 @@ export default function SignIn () {
 
   const handleSignIn: SubmitHandler<SignInProps> = async values => {
     try {
-      await signInMutation.mutateAsync(values)
-
+      const { email, password } = values
+    
+      await signInMutation.mutateAsync({ email, password })
+    
       toast({
         title: 'Login Efetuado com sucesso',
         duration: 3000,
@@ -66,12 +68,12 @@ export default function SignIn () {
         position: 'top-right'
       })
 
-      router.push('/dashboard')
+      return router.push('/dashboard')      
       
     } catch (error) {
       toast({
         title: 'Erro ao fazer o login',
-        description: error.message,
+        description: 'Nome de usuário ou senha inválidos',
         duration: 5000,
         status: 'error',
         isClosable: true,
@@ -86,8 +88,9 @@ export default function SignIn () {
       setError('email', {
         message: 'Usuário ou senha inválidos',        
       })
-
-      setFocus('password')
+  
+      setFocus('password')     
+      
     }
   }
 

@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ActiveLink } from "./ActiveLink"
 
 import { Logo } from "../Logo"
-import { useAuth } from "../../hooks/useAuth"
+import { useSignOutMutation } from '../../hooks/useSignOutMutation'
 
 import { 
   Flex,
@@ -21,14 +21,12 @@ import {
   FiHome,
   FiLogOut
 } from "react-icons/fi"
-import { queryClient } from "../../contexts/queryContext"
+
 
 const SideMenu = () => {
-  const { signOut } = useAuth()
+  const signOutMutation = useSignOutMutation()
 
-  const handleSignOut = async () => {
-    await signOut().then(() => queryClient.clear())
-  }
+  const handleSignOut = () => signOutMutation.mutate()
 
   return (
     <Flex

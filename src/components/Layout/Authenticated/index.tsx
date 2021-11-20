@@ -6,13 +6,14 @@ import { Session } from "@supabase/supabase-js"
 
 import { SideMenu } from "../../SideMenu"
 
-import { Center, Flex, Spinner, Box } from '@chakra-ui/react'
+import { Center, Flex, Spinner, Box, useToast } from '@chakra-ui/react'
 
 type Props = {
   children: ReactNode;   
 }
 
 const Authenticated = ({ children }: Props) => {
+  const toast = useToast()
   const router = useRouter() 
   const { session } = useAuth()
 
@@ -21,7 +22,7 @@ const Authenticated = ({ children }: Props) => {
   useEffect(() => {
     if(!session) router.push('/sign-in')
 
-    setHasSession(session)
+    setHasSession(session)    
     
   }, [session, router])
 
