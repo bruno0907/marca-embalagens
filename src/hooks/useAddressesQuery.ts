@@ -9,6 +9,9 @@ const getAddresses = async (id: string): Promise<AddressProps[]> => {
     .from<AddressProps>('addresses')
     .select()
     .eq('user_id', id)
+    .order('principal', {
+      ascending: false,      
+    })
 
   if(error) throw new Error(error.message)
 

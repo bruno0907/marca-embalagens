@@ -40,7 +40,7 @@ const AddressField = ({ address }: AddressFieldProps) => {
           <Icon as={FiHome} fontSize="24" color="gray.500"/>
           <Box ml="4">
             <Text fontSize="sm" color="gray.500" fontWeight="medium">
-              { address.principal ? 'Endereço principal:' : null}
+              { address.principal ? 'Endereço principal:' : 'Outro endereço:'}
             </Text>        
             <Text fontSize="sm" color="gray.700" fontWeight="medium">
               {address.endereco} - {address.bairro}
