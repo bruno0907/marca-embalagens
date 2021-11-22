@@ -14,16 +14,23 @@ import {
   Heading,
   Skeleton,
   Spacer,  
+  useDisclosure
 } from "@chakra-ui/react"
 
 import { FiEdit } from 'react-icons/fi'
+import { Modal } from '../Modal'
+import { CreateAddressForm } from './components/CreateAddressForm'
 
 type Props = {
   userId: string | string[];
 }
 
 const AddressesInformation = ({ userId }: Props) => {   
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const addresses = useAddressesQuery(String(userId))
+
+  const handleNewAddress = () => onOpen()
 
   if(addresses.isLoading || addresses.isFetching){
     return (
@@ -51,21 +58,30 @@ const AddressesInformation = ({ userId }: Props) => {
   }
 
   return (
-    <Content w="100%">
-      <Flex align='center' mb="8">
-        <Heading fontSize="2xl">Endereços</Heading>
-        <Spacer />
-        <Button colorScheme="blue" leftIcon={<FiEdit />}>Novo endereço</Button>
-      </Flex>
-      <Box mb="8">
-        <Stack spacing={3}>
-          { addresses.data?.map(address => (
-                <AddressField key={address.id} address={address} />
-              ))
-          }
-        </Stack>
-      </Box>
-    </Content>
+    <>
+      <Content w="100%">
+        <Flex align='center' mb="8">
+          <Heading fontSize="2xl">Endereços</Heading>
+          <Spacer />
+          <Button 
+            colorScheme="blue" 
+            leftIcon={<FiEdit />}
+            onClick={handleNewAddress}
+          >Novo endereço</Button>
+        </Flex>
+        <Box mb="8">
+          <Stack spacing={3}>
+            { addresses.data?.map(address => (
+                  <AddressField key={address.id} address={address} />
+                ))
+            }
+          </Stack>
+        </Box>
+      </Content>
+      <Modal isOpen={isOpen} onClose={onClose} title="Novo endereço">
+        <CreateAddressForm userId={String(userId)} onClose={onClose}/>
+      </Modal>
+    </>
   )
 }
 
