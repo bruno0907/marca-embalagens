@@ -17,8 +17,7 @@ import {
   HStack,
   Box,
   Button,
-  Flex,
-  Text,  
+  useToast,
 } from "@chakra-ui/react"
 
 const updateUserSchema = yup.object().shape({  
@@ -45,6 +44,7 @@ const updateUserSchema = yup.object().shape({
 });
 
 import { AddressProps } from "../../../../types"
+import { useUpdateAddressMutation } from "../../../../hooks/updateAddressMutation"
 
 type UpdateAddressFormProps = {
   address: AddressProps;
@@ -56,7 +56,9 @@ type CityProps = {
   nome: string;
 };
 
-const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
+const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {  
+  const toast = useToast()
+
   const [cities, setCities] = useState<CityProps[]>([]);
 
   const states = useStatesQuery()
@@ -74,12 +76,33 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
     setCities(data)
   }, [])  
 
-  const handleUpdateAddress: SubmitHandler<AddressProps> = values => {
-    const updateAddress = {
-      ...address,
-      ...values
+  const updateAddressMutation = useUpdateAddressMutation()
+
+  const handleUpdateAddress: SubmitHandler<AddressProps> = async values => {
+    try {
+      const updateAddress = {
+        ...address,
+        ...values
+      }
+  
+      await updateAddressMutation.mutateAsync(updateAddress)
+  
+      toast({
+        status: 'success',
+        description: 'Endereço do usuário atualizado com sucesso!',
+        position: 'top-right',
+      })
+
+      onClose()
+      
+    } catch (error) {
+      console.log(error)
+      toast({
+        status: 'error',
+        description: 'Ocorreu um erro ao atualizar o endereço...'
+      })
     }
-    console.log(updateAddress)
+
   }
 
   const handleCancelUpdate = () => onClose() 
@@ -93,6 +116,8 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
        cidade: address.cidade
      })
    })
+
+   return () => setCities([])
     
   }, [address.estado, fetchCities, address.cidade, reset])
 
