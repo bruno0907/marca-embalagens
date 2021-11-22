@@ -29,7 +29,7 @@ const AddressesInformation = ({ userId }: Props) => {
     return (
       <Content w="100%">
         <Flex align="center" mb="8">
-          <Heading fontSize="2xl">Dados Principais</Heading>   
+          <Heading fontSize="2xl">Endereços</Heading>   
           <Spinner size="sm" color="gray.600" ml="4"/>
         </Flex>
         <Stack spacing={3}>
@@ -48,7 +48,7 @@ const AddressesInformation = ({ userId }: Props) => {
         </Stack>
       </Content>    
     )
-  }  
+  }
 
   return (
     <Content w="100%">
@@ -59,15 +59,10 @@ const AddressesInformation = ({ userId }: Props) => {
       </Flex>
       <Box mb="8">
         <Stack spacing={3}>
-          { !addresses.data ? (
-              <Center my="8">
-                <Spinner size="md" color="blue.500" />
-              </Center>
-            ) : (
-              addresses.data?.map(address => (
+          { addresses.data?.map(address => (
                 <AddressField key={address.id} address={address} />
               ))
-          )}
+          }
         </Stack>
       </Box>
     </Content>
