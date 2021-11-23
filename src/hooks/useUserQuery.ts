@@ -3,7 +3,7 @@ import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
 const getUser = async (id: string): Promise<UserProps> => {
-  if(!id) return null
+  if(!id) return
 
   const { data, error } = await supabase
     .from<UserProps>('users')

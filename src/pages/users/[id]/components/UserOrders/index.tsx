@@ -102,7 +102,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
     <Content>
       <Flex align="center" justify="space-between" mb="8">
         <Heading fontSize="2xl">Últimos pedidos</Heading>
-        <Button variant="link" colorScheme="blue" p="2" onClick={() => router.push(`/users/orders/${userId}`)}>Ver todos os pedidos do cliente</Button>
+        <Button variant="link" colorScheme="blue" p="2" onClick={() => router.push(`/users/${userId}/orders`)}>Ver todos os pedidos do cliente</Button>
       </Flex>
       <Box borderRadius="md" overflow="hidden">
         <Table variant="striped" colorScheme="facebook">

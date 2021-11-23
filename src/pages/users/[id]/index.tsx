@@ -25,7 +25,7 @@ export default function User() {
   const router = useRouter()
   const id = router.query.id  
   
-  const user = useUserQuery(id)
+  const user = useUserQuery(String(id))
 
   return (
     <>
