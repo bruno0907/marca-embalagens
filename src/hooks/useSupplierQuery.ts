@@ -3,19 +3,23 @@ import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
 const getSupplier = async (id: string): Promise<SupplierProps> => {
-  if(!id) return null
-
-  const { data, error } = await supabase
-    .from<SupplierProps>('suppliers')
-    .select()
-    .eq('id', id)
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from<SupplierProps>('suppliers')
+      .select()
+      .eq('id', id)
+      .single()
+      
+    if(error) throw new Error(error.message)
+  
+    if(!data) throw new Error('No supplier found')
+  
+    return data
     
-  if(error) throw new Error(error.message)
+  } catch (error) {
+    return error
 
-  if(!data) throw new Error('No supplier found')
-
-  return data
+  }
 }
 
 const useSupplierQuery = (id: string) => {
