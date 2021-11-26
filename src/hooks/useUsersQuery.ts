@@ -4,11 +4,25 @@ import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
 const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
-  const user = supabase.auth.user()
-
-  if(!user) throw new Error('Not authenticated')
-
-  if(filterQuery) {
+  try {
+    const user = supabase.auth.user()
+  
+    if(!user) throw new Error('Not authenticated')
+  
+    if(!filterQuery) {
+      const { data, error } = await supabase    
+      .from<UserProps>('users')
+      .select()
+      .eq('user_id', user.id)      
+      .order('nome')
+      
+      if(error) throw new Error(error.message)
+      
+      if(!data) throw new Error('No users found')
+      
+      return data
+    }
+    
     const { data, error } = await supabase
       .from<UserProps>('users')
       .select()
@@ -21,19 +35,11 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
     if(!data) throw new Error('No users found')
 
     return data
+    
+  } catch (error) {
+    return error
+
   }
-  
-  const { data, error } = await supabase    
-    .from<UserProps>('users')
-    .select()
-    .eq('user_id', user.id)      
-    .order('nome')
-
-  if(error) throw new Error(error.message)
-
-  if(!data) throw new Error('No users found')
-
-  return data
 }
 
 const useUsersQuery = (filterQuery?: string) => {
