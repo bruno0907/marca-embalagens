@@ -7,6 +7,11 @@ import { useUserQuery } from '../../../../hooks/useUserQuery'
 
 import { Authenticated } from '../../../../components/Layout/Authenticated'
 import { Header } from '../../../../components/Header'
+import { Content } from '../../../../components/Layout/Content'
+import { handleFormatDate } from '../../../../utils/handleFormatDate'
+import { handleFormatPrice } from '../../../../utils/handleFormatPrice'
+import { useReactToPrint } from 'react-to-print'
+import { Divider } from '../../../../components/Layout/Divider'
 
 import { 
   Text,
@@ -22,11 +27,6 @@ import {
   Stack,
   HStack,
 } from "@chakra-ui/react"
-import { Content } from '../../../../components/Layout/Content'
-import { handleFormatDate } from '../../../../utils/handleFormatDate'
-import { handleFormatPrice } from '../../../../utils/handleFormatPrice'
-import { useReactToPrint } from 'react-to-print'
-import { Divider } from '../../../../components/Layout/Divider'
 import { FiPrinter } from 'react-icons/fi'
 
 export default function UserOrders() {
@@ -62,25 +62,22 @@ export default function UserOrders() {
 
       <Authenticated>
         <Header withGoBack title={`Pedidos de ${user.data?.nome}`}>
-          <Button 
-            leftIcon={<FiPrinter />}
-            colorScheme="blue" 
-            onClick={handlePrintOrders}
-          >Imprimir</Button>
+          <Button leftIcon={<FiPrinter />} colorScheme="blue"  onClick={handlePrintOrders}>
+            Imprimir
+          </Button>
         </Header>
+
         <Divider />
+
         <Content p="0">
           <Box ref={ref} m="8">
             <Heading 
               fontSize="2xl" 
               mb="8" 
               display="none"
-              sx={{
-                "@media print": {
-                  display: 'block'
-                }
-              }}
-            >Todos os pedidos de {user.data?.nome}</Heading>
+              sx={{ "@media print": { display: 'block' } }}
+            > Todos os pedidos de {user.data?.nome}            
+            </Heading>
             
 
             <Stack spacing={6}>
