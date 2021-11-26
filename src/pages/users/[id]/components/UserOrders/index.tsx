@@ -78,7 +78,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
     )
   }
 
-  if(orders.data?.length <= 0) {
+  if(!orders.data?.length) {
     return (
       <Content>        
         <Heading fontSize="2xl" mb="8">Pedidos</Heading>

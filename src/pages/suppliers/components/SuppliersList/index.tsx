@@ -66,7 +66,7 @@ const SuppliersList = ({ filterValue }: UsersListProps) => {
     )
   }
 
-  if(suppliers.data?.length <= 0) {
+  if(!suppliers.data?.length) {
     return (
       <Box borderRadius="md" overflow="hidden">
         <Table colorScheme="gray" variant="striped" >

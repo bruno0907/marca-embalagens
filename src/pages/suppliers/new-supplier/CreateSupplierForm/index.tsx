@@ -370,9 +370,9 @@ const CreateSupplierForm = () => {
         mt={4}
       >
         <Button
+          type="reset"
           colorScheme="blue"
-          variant="ghost"
-          _hover={{ backgroundColor: "blue.500", color: "gray.100" }}
+          variant="ghost"          
           onClick={handleCancel}
         >
           Cancelar

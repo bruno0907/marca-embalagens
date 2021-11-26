@@ -477,10 +477,12 @@ const CreateOrderForm = () => {
           </Table>
 
           <HStack spacing={3} justify="flex-end">
-            <Button 
+            <Button
+              type="reset" 
+              colorScheme="blue"
               variant="ghost" 
               onClick={handleCancelOrder} 
-              isDisabled={Boolean(orderProducts.length <= 0)}
+              isDisabled={!orderProducts.length}
             >Cancelar</Button>
             <Button 
               type="submit"
