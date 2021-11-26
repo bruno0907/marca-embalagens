@@ -8,13 +8,17 @@ type AuthProps = {
 }
 
 const signIn = async ({ email, password }: AuthProps): Promise<User> => {
-  const { user, error } = await supabase.auth.signIn({ email, password })
-
-  if(error) {
-    throw new Error(error.message)
+  try {
+    const { user, error } = await supabase.auth.signIn({ email, password })
+  
+    if(error) throw new Error(error.message)
+  
+    return user
+    
+  } catch (error) {
+    return error
+    
   }
-
-  return user
 }
 
 const useSignInMutation = () => {
