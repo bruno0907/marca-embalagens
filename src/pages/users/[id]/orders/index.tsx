@@ -26,6 +26,8 @@ import {
   Heading,
   Stack,
   HStack,
+  Center,
+  Spinner,
 } from "@chakra-ui/react"
 import { FiPrinter } from 'react-icons/fi'
 
@@ -40,19 +42,7 @@ export default function UserOrders() {
 
   const handlePrintOrders = useReactToPrint({
     content: () => ref.current,
-  })
-
-  if(orders.isLoading || user.isLoading) {
-    return (
-      <Text>Carregando...</Text>
-    )
-  }
-
-  if(orders.isError || user.isError) {
-    return (
-      <Text>Carregando...</Text>
-    )
-  }  
+  })  
 
   return (
     <>
@@ -79,53 +69,60 @@ export default function UserOrders() {
             > Todos os pedidos de {user.data?.nome}            
             </Heading>
             
-
-            <Stack spacing={6}>
-            {orders.data?.map(order => {
-              return (                
-                <Box key={order.id}>
-                  <Stack borderWidth="thin" p="4" borderRadius="md" spacing={6}>
-                    <HStack spacing={6} w="100%" justify="space-between">
-                      <Box>
-                        <Text>Pedido: <strong>{order.numero_pedido}</strong></Text>
-                      </Box>
-                      <Box>
-                        <Text>Data de emissão: <strong>{handleFormatDate(order.created_at)}</strong></Text>
-                      </Box>
-                      <Box>
-                        <Text>Data de entrega: <strong>{handleFormatDate(order.data_entrega)}</strong></Text>
-                      </Box>
-                    </HStack>
-                    
-                    <Heading fontSize="large" textAlign="center">Descrição do pedido:</Heading>
-                    
-                    <Table variant="striped" size="sm">
-                      <Thead>
-                        <Tr>
-                          <Th w="20" textAlign="center">Qtd</Th>
-                          <Th>Produtos</Th>
-                          <Th w="40" textAlign="end">Valor unitário</Th>
-                          <Th w="40" textAlign="end">Valor total</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {order.pedido?.map(item => {
-                          return (
-                            <Tr key={item.produto}>
-                              <Td textAlign="center">{item.quantidade}</Td>
-                              <Td>{item.produto}</Td>
-                              <Td textAlign="end">{handleFormatPrice(item.valor_unitario)}</Td>
-                              <Td textAlign="end">{handleFormatPrice(item.valor_total)}</Td>
+            { orders.isLoading || user.isLoading ? (
+              <Center>
+                <Spinner size="lg" color="blue.500"/>
+              </Center>
+            ) : orders.isError || user.isError ? (
+              <Text>Ocorreu um erro ao carregar as informações...</Text>
+            ) : (
+              <Stack spacing={6}>
+                {orders.data?.map(order => {
+                  return (                
+                    <Box key={order.id}>
+                      <Stack borderWidth="thin" p="4" borderRadius="md" spacing={6}>
+                        <HStack spacing={6} w="100%" justify="space-between">
+                          <Box>
+                            <Text>Pedido: <strong>{order.numero_pedido}</strong></Text>
+                          </Box>
+                          <Box>
+                            <Text>Data de emissão: <strong>{handleFormatDate(order.created_at)}</strong></Text>
+                          </Box>
+                          <Box>
+                            <Text>Data de entrega: <strong>{handleFormatDate(order.data_entrega)}</strong></Text>
+                          </Box>
+                        </HStack>
+                        
+                        <Heading fontSize="large" textAlign="center">Descrição do pedido:</Heading>
+                        
+                        <Table variant="striped" size="sm">
+                          <Thead>
+                            <Tr>
+                              <Th w="20" textAlign="center">Qtd</Th>
+                              <Th>Produtos</Th>
+                              <Th w="40" textAlign="end">Valor unitário</Th>
+                              <Th w="40" textAlign="end">Valor total</Th>
                             </Tr>
-                          )
-                        })}
-                      </Tbody>
-                    </Table>
-                  </Stack>
-                </Box>    
-              )
-            })}
-            </Stack>
+                          </Thead>
+                          <Tbody>                       
+                            { order.pedido?.map(item => {
+                              return (
+                                <Tr key={item.produto}>
+                                  <Td textAlign="center">{item.quantidade}</Td>
+                                  <Td>{item.produto}</Td>
+                                  <Td textAlign="end">{handleFormatPrice(item.valor_unitario)}</Td>
+                                  <Td textAlign="end">{handleFormatPrice(item.valor_total)}</Td>
+                                </Tr>
+                              )})
+                            }
+                          </Tbody>
+                        </Table>
+                      </Stack>
+                    </Box>    
+                  )
+                })}
+              </Stack>
+            )}
           </Box>
         </Content>
       </Authenticated>

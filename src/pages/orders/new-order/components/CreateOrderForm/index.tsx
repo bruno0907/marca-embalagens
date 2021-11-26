@@ -31,8 +31,7 @@ import {
   HStack,
   Box,
   Center,
-  Spinner,
-  Table,
+  Spinner,  
   Thead,
   Tbody,
   Th,
@@ -51,6 +50,7 @@ import {
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi'
  
 import { OrderItemProps, NewOrderProps } from '../../../../../types'
+import { Table } from '../../../../../components/Table'
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
@@ -431,7 +431,7 @@ const CreateOrderForm = () => {
             >Adicionar</Button>
           </HStack>            
 
-          <Table colorScheme="gray" variant="striped">
+          <Table>
             <Thead>
               <Tr bgColor="blue.500">
                 <Th color="gray.50" w="10" textAlign="center">Qtd</Th>
