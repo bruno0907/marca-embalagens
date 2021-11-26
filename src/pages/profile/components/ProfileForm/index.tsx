@@ -50,12 +50,8 @@ import {
   NewAddressProps,
   NewProfileProps,
   ProfileProps,  
+  CityProps
 } from "../../../../types";
-
-type CityProps = {
-  id: number;
-  nome: string;
-};
 
 type HandleUpdateProfileProps = NewProfileProps & NewAddressProps
 

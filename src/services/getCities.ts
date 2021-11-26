@@ -1,9 +1,6 @@
 import axios from "axios";
 
-type CityProps = {
-  id: number;
-  nome: string;
-};
+import { CityProps } from "../types";
 
 const URL = process.env.NEXT_PUBLIC_IBGE_CITIES_URL
 const OPTIONS = process.env.NEXT_PUBLIC_IBGE_CITIES_OPTIONS

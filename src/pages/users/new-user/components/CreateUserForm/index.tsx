@@ -60,13 +60,9 @@ const newUserSchema = yup.object().shape({
 
 import {   
   NewUserProps,    
-  NewAddressProps,  
+  NewAddressProps,
+  CityProps  
 } from "../../../../../types";
-
-type CityProps = {
-  id: number;
-  nome: string;
-};
 
 type HandleNewUserProps = NewUserProps & NewAddressProps
 

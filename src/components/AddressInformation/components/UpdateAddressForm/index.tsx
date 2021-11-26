@@ -44,17 +44,12 @@ const updateAddressSchema = yup.object().shape({
   complemento: yup.string().trim(),  
 });
 
-import { AddressProps } from "../../../../types"
+import { AddressProps, CityProps } from "../../../../types"
 
 type UpdateAddressFormProps = {
   address: AddressProps;
   onClose: () => void;
 }
-
-type CityProps = {
-  id: number;
-  nome: string;
-};
 
 const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {  
   const toast = useToast()

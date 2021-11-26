@@ -155,3 +155,8 @@ export type OrderItemProps = {
   valor_unitario: number;
   valor_total: number;  
 }
+
+export type CityProps = {
+  id: number;
+  nome: string;
+};
