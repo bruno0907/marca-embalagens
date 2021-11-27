@@ -2,10 +2,10 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import { Content } from "../../../../../components/Layout/Content"
-import { InformationFieldProps } from '../../../../../components/Layout/InformationField'
 
-import { Modal } from '../../../../../components/Modal'
-import { UpdateUserForm } from '../UpdateUserForm'
+import { InformationFieldProps } from '../../../../../components/Layout/InformationField'
+import { ModalProps } from '../../../../../components/Modal'
+import { UpdateUserFormProps } from '../UpdateUserForm'
 
 import { useUserQuery } from '../../../../../hooks/useUserQuery'
 
@@ -19,7 +19,8 @@ import {
   HStack,
   Spacer,
   Skeleton,
-  useDisclosure
+  useDisclosure,
+  Center
 } from "@chakra-ui/react"
 
 import { 
@@ -34,7 +35,7 @@ import {
 
 import { UserProps } from '../../../../../types'
 
-type Props = {
+export type UserInformationProps = {
   userId: string | string[];  
 }
 
@@ -46,7 +47,30 @@ const InformationField = dynamic<InformationFieldProps>(
   }
 )
 
-const UserInformation = ({ userId }: Props) => {
+const Modal = dynamic<ModalProps>(
+  async () => {
+    const { Modal } = await import('../../../../../components/Modal')
+
+    return Modal
+  }
+)
+
+const UpdateUserForm = dynamic<UpdateUserFormProps>(
+  async () => {
+    const { UpdateUserForm } = await import('../UpdateUserForm')
+
+    return UpdateUserForm
+  }, {
+    // eslint-disable-next-line react/display-name
+    loading: () => (
+      <Center mb="8">
+        <Spinner color="blue.500"/>
+      </Center>
+    )
+  }
+)
+
+const UserInformation = ({ userId }: UserInformationProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure()  
   const [userToEdit, setUserToEdit] = useState<UserProps>(null)
 
@@ -59,7 +83,7 @@ const UserInformation = ({ userId }: Props) => {
 
   if(user.isLoading || user.isFetching){ 
     return (
-      <Content w="100%">
+      <Content>
         <Flex align="center" mb="8">
           <Heading fontSize="2xl">Dados Principais</Heading>
           <Spinner size="sm" color="gray.600" ml="4"/>
@@ -76,7 +100,7 @@ const UserInformation = ({ userId }: Props) => {
 
   if(user.isError) {
     return (
-      <Content w="100%">
+      <Content>
         <Stack spacing={3}>
           <Heading fontSize="2xl">Dados Principais</Heading>
           <Text>Ocorreu um erro ao carregar os dados do cliente. Volte e tente novamente...</Text>
@@ -86,7 +110,7 @@ const UserInformation = ({ userId }: Props) => {
   }
 
   return (
-    <Content w="100%">
+    <Content>
       <Flex align="center" mb="8">
         <Heading fontSize="2xl">Dados Principais</Heading>        
         <Spacer/>

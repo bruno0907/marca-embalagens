@@ -1,16 +1,16 @@
 import { useRouter } from "next/router"
 
-import { prefetchOrder } from '../../../../../services/prefetchOrder'
-
 import { Content } from "../../../../../components/Layout/Content"
+import { Table } from "../../../../../components/Table"
 
 import { useUserOrdersQuery } from "../../../../../hooks/useUserOrdersQuery"
+
+import { prefetchOrder } from '../../../../../services/prefetchOrder'
 
 import { handleFormatDate } from "../../../../../utils/handleFormatDate"
 import { handleFormatPrice } from "../../../../../utils/handleFormatPrice"
 
-import { 
-  Box,
+import {   
   Button, 
   Flex, 
   Heading,
@@ -20,12 +20,10 @@ import {
   Thead, 
   Tr,  
   Badge,  
-  Spinner,
-  Text,
+  Spinner,  
 } from "@chakra-ui/react"
-import { Table } from "../../../../../components/Table"
 
-type UserOrdersProps = {
+export type UserOrdersProps = {
   userId: string | string[];  
 }
 

@@ -2,6 +2,7 @@ import { useState, ChangeEvent } from 'react'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 
 import useDebounce from '../../hooks/useDebounce'
 
@@ -9,7 +10,7 @@ import { Authenticated } from '../../components/Layout/Authenticated'
 import { Divider } from '../../components/Layout/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Layout/Content'
-import { UsersList } from './components/UsersList'
+import { UsersListProps } from './components/UsersList'
 
 import {    
   Button,
@@ -17,10 +18,27 @@ import {
   Input,  
   InputGroup,
   InputLeftElement,  
-  InputRightElement,  
+  InputRightElement, 
+  Center,
+  Spinner 
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
+
+const UsersList = dynamic<UsersListProps>(
+  async () => {
+    const { UsersList } = await import('./components/UsersList')
+
+    return UsersList
+  }, {
+    // eslint-disable-next-line react/display-name
+    loading: () => (
+      <Center>
+        <Spinner color="blue.500"/>
+      </Center>
+    )
+  }
+)
 
 export default function Users() {     
   const router = useRouter()

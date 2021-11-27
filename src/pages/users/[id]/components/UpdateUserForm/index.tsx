@@ -1,4 +1,4 @@
-import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -19,7 +19,7 @@ import { UserProps } from "../../../../../types";
 
 import { useUpdateUserMutation } from '../../../../../hooks/useUpdateUserMutation'
 
-type UpdateUserFormProps = {
+export type UpdateUserFormProps = {
   user: UserProps ;
   onClose: () => void;
 }
