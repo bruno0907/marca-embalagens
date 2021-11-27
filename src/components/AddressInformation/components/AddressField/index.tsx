@@ -4,7 +4,7 @@ import dynamic from "next/dynamic"
 import { prefetchAddress } from "../../../../services/prefetchAddress"
 
 import { ModalProps } from "../../../Modal"
-import { UpdateAddressFormProps } from "../UpdateAddressForm"
+import { UpdateAddressFormProps } from "./components/UpdateAddressForm"
 
 import { 
   Box,  
@@ -31,7 +31,7 @@ const Modal = dynamic<ModalProps>(
 
 const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
   async () => {
-    const { UpdateAddressForm } = await import('../UpdateAddressForm')
+    const { UpdateAddressForm } = await import('./components/UpdateAddressForm')
 
     return UpdateAddressForm
   }, {

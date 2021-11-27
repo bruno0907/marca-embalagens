@@ -4,13 +4,13 @@ import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Input } from "../../../Input"
-import { Select } from "../../../Select"
+import { Input } from "../../../../../Input"
+import { Select } from "../../../../../Select"
 
-import { useUpdateAddressMutation } from "../../../../hooks/updateAddressMutation"
-import { useStatesQuery } from "../../../../hooks/useStatesQuery"
+import { useUpdateAddressMutation } from "../../../../../../hooks/updateAddressMutation"
+import { useStatesQuery } from "../../../../../../hooks/useStatesQuery"
 
-import { getCities } from "../../../../services/getCities"
+import { getCities } from "../../../../../../services/getCities"
 
 import { 
   Stack,
@@ -43,7 +43,7 @@ const updateAddressSchema = yup.object().shape({
   complemento: yup.string().trim(),  
 });
 
-import { AddressProps, CityProps } from "../../../../types"
+import { AddressProps, CityProps } from "../../../../../../types"
 
 export type UpdateAddressFormProps = {
   address: AddressProps;

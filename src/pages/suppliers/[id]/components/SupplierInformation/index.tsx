@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Content } from "../../../../../components/Layout/Content"
-import { InformationField } from '../../../../../components/Layout/InformationField'
+import dynamic from 'next/dynamic'
 
-import { Modal } from '../../../../../components/Modal'
+import { Content } from "../../../../../components/Layout/Content"
+
+import { useSupplierQuery } from '../../../../../hooks/useSupplierQuery'
 
 import { 
   Text,
@@ -14,7 +15,8 @@ import {
   HStack,
   Spacer,
   Skeleton,
-  useDisclosure
+  useDisclosure,
+  Center,
 } from "@chakra-ui/react"
 
 import { 
@@ -28,9 +30,42 @@ import {
   FiPackage,   
 } from 'react-icons/fi'
 
+import { ModalProps } from '../../../../../components/Modal'
+import { InformationFieldProps } from '../../../../../components/Layout/InformationField'
+import { UpdateSupplierFormProps } from '../UpdateSupplierForm'
+
 import { SupplierProps } from '../../../../../types'
-import { UpdateSupplierForm } from '../UpdateSupplierForm'
-import { useSupplierQuery } from '../../../../../hooks/useSupplierQuery'
+
+const InformationField = dynamic<InformationFieldProps>(
+  async () => {
+    const { InformationField } = await import ('../../../../../components/Layout/InformationField')
+
+    return InformationField
+  }
+)
+
+const Modal = dynamic<ModalProps>(
+  async () => {
+    const { Modal } = await import('../../../../../components/Modal')
+
+    return Modal
+  }
+)
+
+const UpdateSupplierForm = dynamic<UpdateSupplierFormProps>(
+  async () => {
+    const { UpdateSupplierForm } = await import('../UpdateSupplierForm')
+
+    return UpdateSupplierForm
+  }, {
+    // eslint-disable-next-line react/display-name
+    loading: () => (
+      <Center mb="8">
+        <Spinner color="blue.500"/>
+      </Center>
+    )
+  }
+)
 
 type SupplierInformationProps = {
   supplierId: string | string[];  

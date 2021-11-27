@@ -18,7 +18,7 @@ import {
 
 import { SupplierProps } from "../../../../../types";
 
-type UpdateSupplierFormProps = {
+export type UpdateSupplierFormProps = {
   supplier: SupplierProps ;
   onClose: () => void;
 }
