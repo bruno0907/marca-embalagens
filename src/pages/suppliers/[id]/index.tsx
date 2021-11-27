@@ -1,17 +1,34 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 
 import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
 import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Layout/Divider'
 import { Header } from '../../../components/Header'
-import { SupplierInformation } from './components/SupplierInformation'
-import { AddressesInformation } from '../../../components/AddressInformation'
+import { SupplierInformationProps } from './components/SupplierInformation'
+import { AddressesInformationProps } from '../../../components/AddressInformation'
 
 import { VStack, Button } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
+
+const SupplierInformation = dynamic<SupplierInformationProps>(
+  async () => {
+    const { SupplierInformation } = await import('./components/SupplierInformation')
+
+    return SupplierInformation
+  }
+)
+
+const AddressesInformation = dynamic<AddressesInformationProps>(
+  async () => {
+    const { AddressesInformation } = await import('../../../components/AddressInformation')
+
+    return AddressesInformation
+  }
+)
 
 export default function Supplier() {  
   const router = useRouter()

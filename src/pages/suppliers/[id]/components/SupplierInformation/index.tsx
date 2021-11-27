@@ -67,7 +67,7 @@ const UpdateSupplierForm = dynamic<UpdateSupplierFormProps>(
   }
 )
 
-type SupplierInformationProps = {
+export type SupplierInformationProps = {
   supplierId: string | string[];  
 }
 

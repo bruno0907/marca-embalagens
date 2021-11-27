@@ -57,7 +57,7 @@ const CreateAddressForm = dynamic<CreateAddressFormProps>(
   }
 )
 
-type AddressesInformationProps = {
+export type AddressesInformationProps = {
   userId: string | string[];
 }
   

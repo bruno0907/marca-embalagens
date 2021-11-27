@@ -1,13 +1,13 @@
 import { useState, ChangeEvent } from 'react'
-import { useRouter } from 'next/router'
-
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+
 
 import { Authenticated } from '../../components/Layout/Authenticated'
 import { Divider } from '../../components/Layout/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Layout/Content'
-import { SuppliersList } from './components/SuppliersList'
 
 import useDebounce from '../../hooks/useDebounce'
 
@@ -17,10 +17,29 @@ import {
   Input,  
   InputGroup,
   InputLeftElement,  
-  InputRightElement,     
+  InputRightElement,
+  Center,
+  Spinner     
 } from '@chakra-ui/react'
 
 import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
+
+import { SuppliersListProps } from './components/SuppliersList'
+
+const SuppliersList = dynamic<SuppliersListProps>(
+  async () => {
+    const { SuppliersList } = await import('./components/SuppliersList')
+
+    return SuppliersList
+  }, {
+    // eslint-disable-next-line react/display-name
+    loading: () => (
+      <Center>
+        <Spinner color="blue.500" />
+      </Center>
+    )
+  }
+)
 
 export default function Suppliers() {   
   const router = useRouter()
