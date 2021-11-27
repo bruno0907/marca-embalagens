@@ -3,30 +3,33 @@ import { supabase } from "../database/supabase"
 import { OrderProps } from "../types"
 
 const getOrder = async (id: string): Promise<OrderProps>=> {
-  if(!id) return null
-
-  const { data, error } = await supabase
-    .from<OrderProps>('orders')
-    .select()
-    .eq('id', id)
-    .single()
-
-  if(error) throw new Error(error.message)
-
-  if(!data) throw new Error('Order not found')
-
-  return data
+  try {
+    const { data, error } = await supabase
+      .from<OrderProps>('orders')
+      .select()
+      .eq('id', id)
+      .single()
+  
+    if(error) throw new Error(error.message)
+  
+    if(!data) throw new Error('Order not found')
+  
+    return data
+    
+  } catch (error) {
+    return error
+    
+  }
 }
 
-const useOrderQuery = (id: string) => {
-  return useQuery(['order', id], () => {
-    return getOrder(id)
-  
-  }, {
+const useOrderQuery = (id: string) => useQuery(
+  ['order', id], 
+  () => getOrder(id), {
     staleTime: 1000 * 60 * 10, //10minutes
     useErrorBoundary: true
-  })
-}
+  }
+)
+
 
 export {
   getOrder,

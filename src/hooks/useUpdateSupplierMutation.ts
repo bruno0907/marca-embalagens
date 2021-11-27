@@ -3,13 +3,11 @@ import { queryClient } from "../contexts/queryContext"
 import { updateSupplier } from "../services/updateSupplier"
 import { SupplierProps } from "../types"
 
-const useUpdateSupplierMutation = () => {
-  return useMutation(async (supplier: SupplierProps) => {
+const useUpdateSupplierMutation = () => useMutation(
+  async (supplier: SupplierProps) => {
     const { data, error } = await updateSupplier(supplier)
 
-    if(error) {
-      throw Error('Erro ao atualizar o cadastro. Tente novamente.')
-    }
+    if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
 
     return data
   }, {
@@ -17,8 +15,8 @@ const useUpdateSupplierMutation = () => {
       await queryClient.invalidateQueries(['supplier', supplier[0].id])
       await queryClient.invalidateQueries(['suppliers[]'])
     }
-  })
-}
+  }
+)
 
 export {
   useUpdateSupplierMutation

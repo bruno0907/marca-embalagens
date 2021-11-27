@@ -21,9 +21,10 @@ const signIn = async ({ email, password }: AuthProps): Promise<User> => {
   }
 }
 
-const useSignInMutation = () => {
-  return useMutation('signIn', ({ email, password }: AuthProps) => signIn({ email, password }))
-}
+const useSignInMutation = () => useMutation(
+  'signIn', 
+  ({ email, password }: AuthProps) => signIn({ email, password })
+)
 
 export {
   useSignInMutation

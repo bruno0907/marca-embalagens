@@ -10,9 +10,9 @@ type NewUserMutationProps = {
   addressData: Omit<NewAddressProps, 'user_id'>;
 }
 
-const useCreateUserMutation = () => {
-  return useMutation(
-    async ({ userData, addressData }: NewUserMutationProps) => {
+const useCreateUserMutation = () => useMutation(
+  async ({ userData, addressData }: NewUserMutationProps) => {
+    try {
       const newUserData = await createUser(userData)
   
       if(newUserData.error) throw Error('Erro ao cadastrar novo cliente.')
@@ -36,13 +36,18 @@ const useCreateUserMutation = () => {
       }
   
       return mutationResult
-  
-    }, {    
-      onSuccess: () => queryClient.invalidateQueries(['users[]']),
-      onError: error => console.log('New User Mutation Error: ', error)
+      
+    } catch (error) {
+      return error
+      
     }
-  )
-}
+
+  }, {    
+    onSuccess: () => queryClient.invalidateQueries(['users[]']),
+    onError: error => console.log('New User Mutation Error: ', error)
+  }
+)
+
 
 export {
   useCreateUserMutation

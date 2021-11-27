@@ -20,18 +20,15 @@ const getUser = async (id: string): Promise<UserProps> => {
     return error
 
   }
-
 }
 
-const useUserQuery = (id: string) => {  
-  return useQuery(['user', id], () => {
-    return getUser(id)
-    
-  }, {
+const useUserQuery = (id: string) => useQuery(
+  ['user', id], 
+  () => getUser(id), {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true
-  })  
-}
+  }
+)
 
 export { 
   useUserQuery,

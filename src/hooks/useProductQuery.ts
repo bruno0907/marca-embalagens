@@ -3,30 +3,31 @@ import { supabase } from "../database/supabase"
 import { ProductProps } from "../types"
 
 const getProduct = async (id: string): Promise<ProductProps> => {
-  if(!id) return null
+  try {
+    const { data, error } = await supabase
+      .from<ProductProps>('products')
+      .select()
+      .eq('id', id)
+      .single()
   
-  const { data, error } = await supabase
-    .from<ProductProps>('products')
-    .select()
-    .eq('id', id)
-    .single()
-
-  if(error) throw new Error(error.message)
-
-  if(!data) throw new Error('No product found')
-
-  return data
-}
-
-const useProductQuery = (id: string) => {
-  return useQuery(['product', id], () => {
-    return getProduct(id)
+    if(error) throw new Error(error.message)
+  
+    if(!data) throw new Error('No product found')
+  
+    return data
     
-  }, {
-    staleTime: 1000 * 60 * 10, //10minutes
-    useErrorBoundary: true
-  })  
+  } catch (error) {
+    return error
+    
+  }
 }
+
+const useProductQuery = (id: string) => useQuery(
+  ['product', id], 
+  () => getProduct(id), {
+  staleTime: 1000 * 60 * 10, //10minutes
+  useErrorBoundary: true
+})
 
 export { 
   useProductQuery,

@@ -48,8 +48,6 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
 
   const { isSubmitting, errors } = formState  
 
-  const handleCancelEdit = () => setIsEditing(!isEditing)
-
   const updateProductMutation = useUpdateProductMutation()
 
   const handleUpdateProduct: SubmitHandler<ProductProps> = async values => {
@@ -132,7 +130,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
         />
       </VStack>
       <HStack spacing={3} justify="flex-end" mt="8">
-        <Button colorScheme="blue" variant="ghost" onClick={handleCancelEdit}>Cancelar</Button>
+        <Button colorScheme="blue" variant="ghost" onClick={() => router.back()}>Cancelar</Button>
         <Button colorScheme="blue" type="submit" isDisabled={isSubmitting}>Salvar Alterações</Button>
       </HStack>
     </Box>

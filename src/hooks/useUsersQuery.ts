@@ -46,12 +46,9 @@ const useUsersQuery = (filterQuery?: string) => {
   const queryKey = filterQuery ? ['users[]', filterQuery] : 'users[]'
   
   return useQuery(queryKey, () => {
-    if(filterQuery) {
-      return getUsers(filterQuery)
-
-    }
-    return getUsers()
+    if(!filterQuery) return getUsers()
     
+    return getUsers(filterQuery)
   }, {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true

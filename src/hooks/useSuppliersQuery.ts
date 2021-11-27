@@ -47,11 +47,9 @@ const useSuppliersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['suppliers[]', pattern] : 'suppliers[]'
   
   return useQuery(queryKey, () => {
-    if(!pattern) {
-      return getSuppliers()    
-    }
-    return getSuppliers(pattern)
+    if(!pattern) return getSuppliers()
 
+    return getSuppliers(pattern)
   }, {
     staleTime: 1000 * 60 * 10,
     useErrorBoundary: true

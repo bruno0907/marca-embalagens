@@ -40,7 +40,7 @@ function UsersList ({ filterValue }: UsersListProps) {
         </Thead>
         <Tbody>
           <Tr>
-            <Td colSpan={4}>
+            <Td colSpan={4} textAlign="center">
               <Spinner size="md" color="blue.500"/>
             </Td>
           </Tr>

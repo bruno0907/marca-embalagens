@@ -34,9 +34,7 @@ const updateAddress = async (address: AddressProps) => {
     .eq('id', address.id)
     .single()
 
-  if(addressExists.error) {
-    throw new Error('Endereço não encontrado!')
-  }
+  if(addressExists.error) throw new Error('Endereço não encontrado!')
   
   return await supabase
     .from<AddressProps>('addresses')
@@ -45,22 +43,20 @@ const updateAddress = async (address: AddressProps) => {
   
 }
 
-const useUpdateProfileMutation = () => {
-  return useMutation(
-    async ({profileData, profileAddress }: UpdateProfileMutation) => {
-      
-      const updatedProfile = await updateProfile(profileData)
-      const updatedAddress = await updateAddress(profileAddress)
+const useUpdateProfileMutation = () => useMutation(
+  async ({ profileData, profileAddress }: UpdateProfileMutation) => {
+    
+    const updatedProfile = await updateProfile(profileData)
+    const updatedAddress = await updateAddress(profileAddress)
 
-      return {
-        ...updatedProfile.data[0],
-        ...updatedAddress.data[0]
-      }      
-    }, {
-      onSuccess: async () => await queryClient.invalidateQueries('profile')
-    }
-  )
-}
+    return {
+      ...updatedProfile.data[0],
+      ...updatedAddress.data[0]
+    }      
+  }, {
+    onSuccess: async () => await queryClient.invalidateQueries('profile')
+  }
+)
 
 export {
   useUpdateProfileMutation

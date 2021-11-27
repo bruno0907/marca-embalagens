@@ -7,17 +7,11 @@ import { Authenticated } from '../../../components/Layout/Authenticated'
 import { Divider } from '../../../components/Layout/Divider'
 import { Header } from '../../../components/Header'
 import { AddressesInformation } from '../../../components/AddressInformation'
-import { Content } from '../../../components/Layout/Content'
 
 import { UserInformation } from './components/UserInformation'
 import { UserOrders } from './components/UserOrders'
 
-import {     
-  Center,
-  Spinner,
-  VStack,
-  Button,  
-} from '@chakra-ui/react'
+import { VStack, Button } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
@@ -45,19 +39,11 @@ export default function User() {
 
         <Divider />
 
-        { !user.data ? (
-          <Content>
-            <Center>
-              <Spinner size="lg" color="blue.500"/>
-            </Center>
-          </Content>
-        ) : (
-          <VStack spacing={3} align="flex-start">
-            <UserInformation userId={id}/>
-            <AddressesInformation userId={id}/>
-            <UserOrders userId={id}/>          
-          </VStack>
-        )}
+        <VStack spacing={3} align="flex-start">
+          <UserInformation userId={id}/>
+          <AddressesInformation userId={id}/>
+          <UserOrders userId={id}/>          
+        </VStack>
         
       </Authenticated>
 

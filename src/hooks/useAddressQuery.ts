@@ -3,30 +3,32 @@ import { supabase } from "../database/supabase";
 import { AddressProps } from "../types";
 
 const getAddress = async (id: string): Promise<AddressProps> => {
-  if(!id) return null
+  try {
+    const { data, error } = await supabase
+      .from<AddressProps>('addresses')
+      .select()
+      .eq('id', id)
+      .single()
   
-  const { data, error } = await supabase
-    .from<AddressProps>('addresses')
-    .select()
-    .eq('id', id)
-    .single()
-
-  if(error) throw new Error(error.message)
-
-  if(!data) throw new Error('Address not found')
-
-  return data
+    if(error) throw new Error(error.message)
+  
+    if(!data) throw new Error('Address not found')
+  
+    return data
+    
+  } catch (error) {
+    return error
+    
+  }  
 }
 
-const useAddressQuery = (id: string) => {
-  return useQuery(['address', id], () => {
-    return getAddress(id)
-
-  }, {
+const useAddressQuery = (id: string) => useQuery(
+  ['address', id], 
+  () => getAddress(id), {
     staleTime: 1000 * 60 * 10, //10minutes
     useErrorBoundary: true
-  })  
-}
+  }
+)  
 
 export {
   useAddressQuery,

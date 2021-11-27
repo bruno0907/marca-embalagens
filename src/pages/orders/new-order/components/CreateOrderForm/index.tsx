@@ -225,7 +225,7 @@ const CreateOrderForm = () => {
         >
           <option value="defaultValue" disabled>Selecione o cliente...</option>   
 
-          { users.data.map(user => {
+          { users.data?.map(user => {
             return (
               <option key={user.id} value={user.id}>{user.nome}</option>
               )

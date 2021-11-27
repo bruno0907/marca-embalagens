@@ -22,15 +22,13 @@ const getSupplier = async (id: string): Promise<SupplierProps> => {
   }
 }
 
-const useSupplierQuery = (id: string) => {
-  return useQuery(['supplier', id], () => {
-    return getSupplier(id)
-
-  }, {
+const useSupplierQuery = (id: string) => useQuery(
+  ['supplier', id], 
+  () => getSupplier(id), {
     staleTime: 1000 * 60 * 10, //10minutes
     useErrorBoundary: true
-  })
-}
+  }
+)
 
 export {
   useSupplierQuery,

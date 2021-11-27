@@ -9,13 +9,7 @@ import { Header } from '../../../components/Header'
 import { SupplierInformation } from './components/SupplierInformation'
 import { AddressesInformation } from '../../../components/AddressInformation'
 
-import {     
-  Center,
-  Spinner,  
-  VStack,  
-  Button,  
-  Text
-} from '@chakra-ui/react'
+import { VStack, Button } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
@@ -44,21 +38,11 @@ export default function Supplier() {
         </Header>
 
         <Divider />
-
-        { supplier.isLoading ? (
-          <Center py="16">
-            <Spinner size="lg" color="blue.500"/>
-          </Center>
-        ) : supplier.isError ? (
-          <Center py="16">
-            <Text>Erro ao carregar as informações...</Text>
-          </Center>          
-        ) : (
-          <VStack spacing={3} align="flex-start" >
-            <SupplierInformation supplierId={id}/>
-            <AddressesInformation userId={id}/>          
-          </VStack>
-        )}
+        
+        <VStack spacing={3} align="flex-start" >
+          <SupplierInformation supplierId={id}/>
+          <AddressesInformation userId={id}/>          
+        </VStack>
 
       </Authenticated>
     </>

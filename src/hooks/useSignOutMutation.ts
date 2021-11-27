@@ -14,11 +14,11 @@ const signOut = async () => {
   }
 }
 
-const useSignOutMutation = () => {
-  return useMutation(() => signOut(), {
-    onSuccess: () => queryClient.removeQueries()
-  })
-}
+const useSignOutMutation = () => useMutation(() => signOut(), {
+  onSuccess: () => queryClient.removeQueries()
+  
+})
+
 
 export {
   useSignOutMutation

@@ -20,13 +20,12 @@ type NewProfileMutationProps = {
   address: AddressProps;
 }
 
-const getProfileByEmail = async (email: string) => {
-  return await supabase
-    .from('profiles')
-    .select()
-    .eq('username', email)    
-    .single()
-}
+const getProfileByEmail = async (email: string) => await supabase
+  .from('profiles')
+  .select()
+  .eq('username', email)    
+  .single()
+
 
 const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutationProps> => {
   try {
@@ -76,18 +75,13 @@ const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutatio
     return error
     
   }
-
 }
 
-const useSignUpMutation = () => {
-  return useMutation( async ({ email, password }: AuthProps) => {    
-    return await signUp({ email, password })
+const useSignUpMutation = () => useMutation(
+  async ({ email, password }: AuthProps) => await signUp({ email, password }), {
+  onSuccess: async profile => queryClient.setQueryData('profile', profile)
 
-  }, {
-    onSuccess: async profile => queryClient.setQueryData('profile', profile)
-
-  })
-}
+})
 
 export {
   useSignUpMutation
