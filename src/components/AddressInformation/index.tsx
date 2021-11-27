@@ -48,7 +48,6 @@ const CreateAddressForm = dynamic<CreateAddressFormProps>(
        
     return CreateAddressForm
   }, {
-    // eslint-disable-next-line react/display-name
     loading: () => (
       <Center mb="8">
         <Spinner color="blue.500" />

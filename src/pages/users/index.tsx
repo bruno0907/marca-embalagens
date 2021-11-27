@@ -31,7 +31,6 @@ const UsersList = dynamic<UsersListProps>(
 
     return UsersList
   }, {
-    // eslint-disable-next-line react/display-name
     loading: () => (
       <Center>
         <Spinner color="blue.500"/>

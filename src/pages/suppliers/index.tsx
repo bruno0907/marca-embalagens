@@ -32,7 +32,6 @@ const SuppliersList = dynamic<SuppliersListProps>(
 
     return SuppliersList
   }, {
-    // eslint-disable-next-line react/display-name
     loading: () => (
       <Center>
         <Spinner color="blue.500" />
