@@ -7,7 +7,7 @@ import {
   Text
 } from "@chakra-ui/react"
 
-type InformationFieldProps = {
+export type InformationFieldProps = {
   label: string;
   value: string;
   icon: ElementType;

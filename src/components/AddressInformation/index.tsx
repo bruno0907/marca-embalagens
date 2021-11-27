@@ -1,5 +1,6 @@
+import dynamic from 'next/dynamic'
+
 import { Content } from '../Layout/Content'
-import { AddressField } from './components/AddressField'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
@@ -8,24 +9,59 @@ import {
   Stack,  
   Button,
   Box,
-  Flex,  
-  Center,
+  Flex,    
   Spinner,
   Heading,
   Skeleton,
   Spacer,  
-  useDisclosure
+  useDisclosure,
+  Center,  
 } from "@chakra-ui/react"
 
 import { FiEdit } from 'react-icons/fi'
-import { Modal } from '../Modal'
-import { CreateAddressForm } from './components/CreateAddressForm'
 
-type Props = {
+import { AddressFieldProps } from './components/AddressField'
+
+const AddressField = dynamic<AddressFieldProps>(
+  async () => {
+    const { AddressField } = await import('./components/AddressField')
+    
+    return AddressField
+  }
+)
+  
+import { ModalProps } from '../Modal'
+
+const Modal = dynamic<ModalProps>(
+  async () => {
+    const { Modal } = await import('../Modal')
+
+    return Modal
+  }
+)
+
+import { CreateAddressFormProps } from './components/CreateAddressForm'
+
+const CreateAddressForm = dynamic<CreateAddressFormProps>(
+  async () => {
+    const { CreateAddressForm } = await import('./components/CreateAddressForm') 
+       
+    return CreateAddressForm
+  }, {
+    // eslint-disable-next-line react/display-name
+    loading: () => (
+      <Center mb="8">
+        <Spinner color="blue.500" />
+      </Center>
+    )   
+  }
+)
+
+type AddressesInformationProps = {
   userId: string | string[];
 }
-
-const AddressesInformation = ({ userId }: Props) => {   
+  
+const AddressesInformation = ({ userId }: AddressesInformationProps) => {   
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const addresses = useAddressesQuery(String(userId))

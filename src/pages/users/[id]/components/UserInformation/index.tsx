@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
+
 import { Content } from "../../../../../components/Layout/Content"
-import { InformationField } from '../../../../../components/Layout/InformationField'
+import { InformationFieldProps } from '../../../../../components/Layout/InformationField'
 
 import { Modal } from '../../../../../components/Modal'
 import { UpdateUserForm } from '../UpdateUserForm'
@@ -35,6 +37,14 @@ import { UserProps } from '../../../../../types'
 type Props = {
   userId: string | string[];  
 }
+
+const InformationField = dynamic<InformationFieldProps>(
+  async () => {
+    const { InformationField } = await import('../../../../../components/Layout/InformationField')
+
+    return InformationField
+  }
+)
 
 const UserInformation = ({ userId }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure()  

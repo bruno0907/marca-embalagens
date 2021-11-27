@@ -9,7 +9,7 @@ import {
   ModalOverlay, 
 } from "@chakra-ui/react"
 
-type ModalProps = {
+export type ModalProps = {
  isOpen: boolean;
  onClose: () => void;
  children: ReactNode; 

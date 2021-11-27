@@ -46,12 +46,12 @@ const newAddressSchema = yup.object().shape({
 import { AddressProps, NewAddressProps, CityProps } from "../../../../types"
 
 
-type NewAddressFormProps = {
+export type CreateAddressFormProps = {
   userId: string;
   onClose: () => void;
 }
 
-const CreateAddressForm = ({ userId, onClose }: NewAddressFormProps) => {  
+const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {  
   const toast = useToast()
 
   const [cities, setCities] = useState<CityProps[]>([]);

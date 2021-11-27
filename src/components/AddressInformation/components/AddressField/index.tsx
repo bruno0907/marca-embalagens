@@ -18,7 +18,7 @@ import { FiEdit, FiHome } from "react-icons/fi"
 import { AddressProps } from "../../../../types"
 import { UpdateAddressForm } from "../UpdateAddressForm"
 
-type AddressFieldProps = {
+export type AddressFieldProps = {
   address: AddressProps
 }
 
