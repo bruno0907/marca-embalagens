@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
+import dynamic from "next/dynamic"
 
 import { prefetchAddress } from "../../../../services/prefetchAddress"
 
-import { Modal } from "../../../Modal"
+import { ModalProps } from "../../../Modal"
+import { UpdateAddressFormProps } from "../UpdateAddressForm"
 
 import { 
   Box,  
@@ -10,13 +12,37 @@ import {
   Icon,
   Text,
   Button,   
-  useDisclosure
+  useDisclosure,
+  Center,
+  Spinner,
 } from "@chakra-ui/react"
 
 import { FiEdit, FiHome } from "react-icons/fi"
 
 import { AddressProps } from "../../../../types"
-import { UpdateAddressForm } from "../UpdateAddressForm"
+
+const Modal = dynamic<ModalProps>(
+  async () => {
+    const { Modal } = await import('../../../Modal')
+
+    return Modal
+  }
+)
+
+const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
+  async () => {
+    const { UpdateAddressForm } = await import('../UpdateAddressForm')
+
+    return UpdateAddressForm
+  }, {
+    // eslint-disable-next-line react/display-name
+    loading: () => (
+      <Center mb="8">
+        <Spinner color="blue.500"/>
+      </Center>
+    )
+  }
+)
 
 export type AddressFieldProps = {
   address: AddressProps

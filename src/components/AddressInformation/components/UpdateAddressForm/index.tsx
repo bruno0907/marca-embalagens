@@ -4,7 +4,6 @@ import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form"
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Content } from "../../../Layout/Content"
 import { Input } from "../../../Input"
 import { Select } from "../../../Select"
 
@@ -46,7 +45,7 @@ const updateAddressSchema = yup.object().shape({
 
 import { AddressProps, CityProps } from "../../../../types"
 
-type UpdateAddressFormProps = {
+export type UpdateAddressFormProps = {
   address: AddressProps;
   onClose: () => void;
 }
