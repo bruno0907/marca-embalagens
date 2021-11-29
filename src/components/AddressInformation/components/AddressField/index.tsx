@@ -43,7 +43,7 @@ const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
   }
 )
 
-export type AddressFieldProps = {
+type AddressFieldProps = {
   address: AddressProps
 }
 

@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { Content } from "../../../../../components/Layout/Content"
 
-import { InformationFieldProps } from '../../../../../components/Layout/InformationField'
+import { InformationField } from '../../../../../components/Layout/InformationField'
 import { ModalProps } from '../../../../../components/Modal'
 import { UpdateUserFormProps } from '../UpdateUserForm'
 
@@ -35,17 +35,9 @@ import {
 
 import { UserProps } from '../../../../../types'
 
-export type UserInformationProps = {
+type UserInformationProps = {
   userId: string | string[];  
 }
-
-const InformationField = dynamic<InformationFieldProps>(
-  async () => {
-    const { InformationField } = await import('../../../../../components/Layout/InformationField')
-
-    return InformationField
-  }
-)
 
 const Modal = dynamic<ModalProps>(
   async () => {

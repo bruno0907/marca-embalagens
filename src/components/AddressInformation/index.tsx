@@ -1,6 +1,9 @@
 import dynamic from 'next/dynamic'
 
 import { Content } from '../Layout/Content'
+import { AddressField } from './components/AddressField'
+import { CreateAddressFormProps } from './components/CreateAddressForm'
+import { ModalProps } from '../Modal'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
@@ -18,19 +21,7 @@ import {
   Center,  
 } from "@chakra-ui/react"
 
-import { FiEdit } from 'react-icons/fi'
-
-import { AddressFieldProps } from './components/AddressField'
-
-const AddressField = dynamic<AddressFieldProps>(
-  async () => {
-    const { AddressField } = await import('./components/AddressField')
-    
-    return AddressField
-  }
-)
-  
-import { ModalProps } from '../Modal'
+import { FiEdit } from 'react-icons/fi'  
 
 const Modal = dynamic<ModalProps>(
   async () => {
@@ -39,8 +30,6 @@ const Modal = dynamic<ModalProps>(
     return Modal
   }
 )
-
-import { CreateAddressFormProps } from './components/CreateAddressForm'
 
 const CreateAddressForm = dynamic<CreateAddressFormProps>(
   async () => {

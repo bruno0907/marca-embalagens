@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { Center, Button, Heading } from "@chakra-ui/react";
-import { Logo } from '../components/Logo';
 
 export default function Home () {
   const router = useRouter()

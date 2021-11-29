@@ -15,7 +15,7 @@ import {
   Flex,
 } from "@chakra-ui/react"
 
-export type SuppliersListProps = {
+type SuppliersListProps = {
   filterValue: string;
 }
 

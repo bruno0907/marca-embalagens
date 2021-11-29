@@ -1,31 +1,31 @@
 import { useRef } from 'react'
-import { useRouter } from "next/router"
+
 import Head from 'next/head'
+import { useRouter } from "next/router"
 
 import { useReactToPrint } from 'react-to-print'
 
-import { useOrderQuery } from "../../../hooks/useOrderQuery"
-
+import { Content } from '../../../components/Layout/Content'
 import { Divider } from '../../../components/Layout/Divider'
 
 import { OrderHeader } from './components/OrderHeader'
 import { OrderUser } from './components/OrderUser'
 import { OrderProducts } from './components/OrderProducts'
+import { OrderPaymentConditions } from './components/OrderPaymentConditions'
+import { OrderTotal } from './components/OrderTotal'
+import { Header } from '../../../components/Header'
+
+import { useOrderQuery } from "../../../hooks/useOrderQuery"
 
 import {     
   Box,
-  Text,
-  Heading,  
+  Text,  
   Button,
   Center,
   Spinner
 } from "@chakra-ui/react"
 
 import { FiPrinter } from 'react-icons/fi'
-import { Content } from '../../../components/Layout/Content'
-import { OrderPaymentConditions } from './components/OrderPaymentConditions'
-import { OrderTotal } from './components/OrderTotal'
-import { Header } from '../../../components/Header'
 
 export default function Order() {
   const router = useRouter()
@@ -65,17 +65,36 @@ export default function Order() {
               </Center>
             ) : (
               <Box ref={orderRef} p="8">
+
                 <OrderHeader 
                   orderNumber={order.data?.numero_pedido} 
                   orderDeliveryDate={order.data?.data_entrega}
                 />
+
                 <Divider/>
-                <OrderUser userId={order.data?.cliente} deliveryAddress={order.data?.endereco_entrega}/>
-                <OrderPaymentConditions paymentCondition={order.data?.condicao_pagamento}/>
+
+                <OrderUser 
+                  userId={order.data?.cliente} 
+                  deliveryAddress={order.data?.endereco_entrega}
+                />
+
+                
+                <OrderPaymentConditions 
+                  paymentCondition={order.data?.condicao_pagamento}
+                />
+                
                 <Divider/>
-                <OrderProducts order={order.data?.pedido}/>
+
+                <OrderProducts 
+                  order={order.data?.pedido}
+                />
+                
                 <Divider/>
-                <OrderTotal orderTotal={order.data?.total}/>
+
+                <OrderTotal 
+                  orderTotal={order.data?.total}
+                />
+
               </Box>
             )
           }

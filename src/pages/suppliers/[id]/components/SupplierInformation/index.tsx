@@ -2,6 +2,9 @@ import { useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import { Content } from "../../../../../components/Layout/Content"
+import { ModalProps } from '../../../../../components/Modal'
+import { InformationField } from '../../../../../components/Layout/InformationField'
+import { UpdateSupplierFormProps } from '../UpdateSupplierForm'
 
 import { useSupplierQuery } from '../../../../../hooks/useSupplierQuery'
 
@@ -30,19 +33,7 @@ import {
   FiPackage,   
 } from 'react-icons/fi'
 
-import { ModalProps } from '../../../../../components/Modal'
-import { InformationFieldProps } from '../../../../../components/Layout/InformationField'
-import { UpdateSupplierFormProps } from '../UpdateSupplierForm'
-
 import { SupplierProps } from '../../../../../types'
-
-const InformationField = dynamic<InformationFieldProps>(
-  async () => {
-    const { InformationField } = await import ('../../../../../components/Layout/InformationField')
-
-    return InformationField
-  }
-)
 
 const Modal = dynamic<ModalProps>(
   async () => {
@@ -66,7 +57,7 @@ const UpdateSupplierForm = dynamic<UpdateSupplierFormProps>(
   }
 )
 
-export type SupplierInformationProps = {
+type SupplierInformationProps = {
   supplierId: string | string[];  
 }
 

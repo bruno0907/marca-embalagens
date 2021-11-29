@@ -23,7 +23,7 @@ import {
   Spinner,  
 } from "@chakra-ui/react"
 
-export type UserOrdersProps = {
+type UserOrdersProps = {
   userId: string | string[];  
 }
 
