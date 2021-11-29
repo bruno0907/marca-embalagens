@@ -17,11 +17,14 @@ import {
   HStack,
   Input as ChakraInput,
   Box,
+  Flex,
   FormLabel,
   InputGroup,
   InputLeftAddon,
   Button,
-  useToast
+  useToast,
+  FormControl,  
+  Switch
 } from '@chakra-ui/react'
 
 import { ProductProps } from "../../../../../types"
@@ -41,6 +44,8 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
   const toast = useToast()
   const router = useRouter()
   const [isEditing, setIsEditing] = useState(true)
+
+  const handleEditProduct = () => setIsEditing(!isEditing)
 
   const { formState, register, handleSubmit } = useForm<ProductProps>({
     resolver: yupResolver(updateProductSchema)    
@@ -85,20 +90,30 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
   if(isFetching) {
     return (
       <VStack spacing={3}>
-        <Skeleton h="10" w="100%" borderRadius="md"/>
-        <Skeleton h="10" w="100%" borderRadius="md"/>
+        <Skeleton h="10" w="200px" borderRadius="md" alignSelf="flex-end" mb="8"/>        
+        <HStack spacing={3} w="100%">
+          <Skeleton h="14" w="100%" borderRadius="md"/>
+          <Skeleton h="14" w="200px" borderRadius="md"/>
+        </HStack>
+        <Skeleton h="36" w="100%" borderRadius="md"/>
       </VStack>
     )
   }
 
   return (
     <Box as="form" onSubmit={handleSubmit(handleUpdateProduct, handleSubmitErrors)}>
+      <FormControl htmlFor="edit-product" display="flex" aling="center" justifyContent="flex-end" mb="8">
+        <FormLabel>Editar produto:</FormLabel>
+        <Switch id="edit-product" onChange={handleEditProduct}/>
+      </FormControl>      
+      
       <VStack spacing={3} align="flex-start">
         <HStack spacing={3} w="100%">
           <Input
             name="nome"
             label="Nome:"
             defaultValue={product.nome}
+            isDisabled={isEditing}
             error={errors.nome}
             {...register('nome')}
           />
@@ -111,7 +126,8 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
                 type="number"
                 step="0.01"
                 defaultValue={product.preco_unitario.toFixed(2)}
-                pattern="^\d+(?:\.\d{1,2})?$"                                
+                pattern="^\d+(?:\.\d{1,2})?$"
+                isDisabled={isEditing}                                
                 error={errors.preco_unitario}
                 {...register('preco_unitario')}
               />
@@ -125,14 +141,17 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
           name="descricao"
           label="Descrição:"
           defaultValue={product.descricao}
+          isDisabled={isEditing}
           error={errors.descricao}
           {...register('descricao')}
         />
       </VStack>
-      <HStack spacing={3} justify="flex-end" mt="8">
-        <Button colorScheme="blue" variant="ghost" onClick={() => router.back()}>Cancelar</Button>
-        <Button colorScheme="blue" type="submit" isDisabled={isSubmitting}>Salvar Alterações</Button>
-      </HStack>
+      { !isEditing &&
+        <HStack spacing={3} justify="flex-end" mt="8">
+          <Button colorScheme="blue" variant="ghost" onClick={() => router.back()}>Cancelar</Button>
+          <Button colorScheme="blue" type="submit" isDisabled={isSubmitting}>Salvar Alterações</Button>
+        </HStack>
+      }
     </Box>
   )
 }
