@@ -15,7 +15,7 @@ type InformationFieldProps = {
 
 const InformationField = ({ label, value, icon }: InformationFieldProps) => {
   return (
-    <Box py="2" px="4" bgColor="gray.100" borderRadius="8" border="1" borderColor="gray.600" w="100%">
+    <Box py="2" px="4" bgColor="gray.100" borderRadius="md" w="100%">
       <Flex align="center">
         <Icon as={icon} fontSize="24" color="gray.500"/>
         <Box ml="4">

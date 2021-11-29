@@ -186,28 +186,28 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
     return (      
       <Stack spacing={3}>
         <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
         </HStack>
         <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
         </HStack>
         <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
         </HStack>
         <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
           <Box w="40%">
-            <Skeleton h="10" w="100%" borderRadius="8"/>
+            <Skeleton h="10" w="100%" borderRadius="md"/>
           </Box>
         </HStack>
         <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
-          <Skeleton h="10" w="100%" borderRadius="8"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
+          <Skeleton h="10" w="100%" borderRadius="md"/>
         </HStack>
       </Stack>
     )

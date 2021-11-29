@@ -64,7 +64,7 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
           <Spinner size="sm" color="gray.600" ml="4"/>
         </Flex>
         <Stack spacing={3}>
-          <Skeleton h="14" borderRadius="8"/>
+          <Skeleton h="14" borderRadius="md"/>
         </Stack>
       </Content>    
     )

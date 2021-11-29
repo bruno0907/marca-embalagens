@@ -7,11 +7,11 @@ import {
 
 import { SupplierProps } from '../../../../../../types'
 
-type SupplierInformationProps = {
+type SupplierInformationToPrintProps = {
   supplier: SupplierProps;
 }
 
-const Information = ({ supplier }: SupplierInformationProps) => {
+const SupplierInformationToPrint = ({ supplier }: SupplierInformationToPrintProps) => {
   return (
     <VStack spacing={3} align="start" borderWidth="1px" borderRadius="md" p="4">
       <HStack w="100%" spacing={3} align="flex-start" justify="space-between">
@@ -75,5 +75,5 @@ const Information = ({ supplier }: SupplierInformationProps) => {
 }
 
 export {
-  Information
+  SupplierInformationToPrint
 }

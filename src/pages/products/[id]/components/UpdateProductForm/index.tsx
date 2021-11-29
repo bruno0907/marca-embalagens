@@ -85,8 +85,8 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
   if(isFetching) {
     return (
       <VStack spacing={3}>
-        <Skeleton h="10" w="100%" borderRadius="8"/>
-        <Skeleton h="10" w="100%" borderRadius="8"/>
+        <Skeleton h="10" w="100%" borderRadius="md"/>
+        <Skeleton h="10" w="100%" borderRadius="md"/>
       </VStack>
     )
   }

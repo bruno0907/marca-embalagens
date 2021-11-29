@@ -9,8 +9,8 @@ import { Divider } from "../../../../components/Layout/Divider"
 import { Content } from "../../../../components/Layout/Content"
 import { Header } from "../../../../components/Header"
 
-import { Information } from "./components/Information"
-import { Addresses } from "./components/Addresses"
+import { SupplierInformationToPrint } from "./components/SupplierInformationToPrint"
+import { AddressesToPrint } from "../../../../components/AddressesToPrint"
 
 import { useSupplierQuery } from "../../../../hooks/useSupplierQuery"
 import { useAddressesQuery } from "../../../../hooks/useAddressesQuery"
@@ -65,7 +65,7 @@ export default function SupplierToPrint() {
                 </Center>
               : supplier.isError 
               ? <Text>Erro ao carregar os dados do cliente...</Text>                
-              : <Information supplier={supplier.data}/>              
+              : <SupplierInformationToPrint supplier={supplier.data}/>              
             }
 
             <Divider/>
@@ -78,7 +78,7 @@ export default function SupplierToPrint() {
                   </Center>
               : addresses.isError 
               ? <Text>Erro ao carregar os endereços do cliente...</Text>
-              : <Addresses addresses={addresses.data}/>              
+              : <AddressesToPrint addresses={addresses.data}/>              
             }
           </Box>
         </Content>

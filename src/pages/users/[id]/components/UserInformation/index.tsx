@@ -80,10 +80,10 @@ const UserInformation = ({ userId }: UserInformationProps) => {
           <Spinner size="sm" color="gray.600" ml="4"/>
         </Flex>
         <Stack spacing={3}>
-          <Skeleton h="10" borderRadius="8"/>
-          <Skeleton h="10" borderRadius="8"/>
-          <Skeleton h="10" borderRadius="8"/>
-          <Skeleton h="10" borderRadius="8"/>
+          <Skeleton h="10" borderRadius="md"/>
+          <Skeleton h="10" borderRadius="md"/>
+          <Skeleton h="10" borderRadius="md"/>
+          <Skeleton h="10" borderRadius="md"/>
         </Stack>
       </Content>    
     )
