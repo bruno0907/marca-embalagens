@@ -1,4 +1,3 @@
-import { useState, ChangeEvent } from 'react'
 import Head from 'next/head'
 
 import { useRouter } from 'next/router'
@@ -9,33 +8,25 @@ import { Divider } from '../../components/Layout/Divider'
 import { Header } from '../../components/Header'
 import { ProductsList } from './components/ProductsList'
 
-
-import useDebounce from '../../hooks/useDebounce'
+import { useSearch, SearchInput } from '../../hooks/useSearch'
 
 import { 
   Button,
-  Icon,    
-  InputGroup,
-  Input,
-  InputLeftElement,
-  InputRightElement,  
+  Icon,
 } from '@chakra-ui/react'
 
-import { FiPlus, FiSearch, FiX } from 'react-icons/fi'
+import { FiPlus } from 'react-icons/fi'
 
 export default function Products() {
   const router = useRouter() 
   
-  const [searchValue, setSearchValue] = useState('')  
-  
-  const debouncedSearch = useDebounce(searchValue, 500)
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    setSearchValue(value)
-  }
-
-  const handleClearFilter = () => setSearchValue('')
+  const {
+    toSearch,
+    handleSearch,
+    searchValue,
+    clearSearch,
+    searchInputRef
+  } = useSearch()
 
   return (
     <>
@@ -60,31 +51,16 @@ export default function Products() {
 
         <Content>
 
-          <InputGroup mb="8">
-            <InputLeftElement pointerEvents="none">
-              <Icon as={FiSearch} color="gray.500" />
-            </InputLeftElement>
-            <Input 
-              placeholder="Digite sua pesquisa aqui..."
-              borderColor="gray.300"
-              value={searchValue}              
-              onChange={handleChange}
-            />
-            { !!searchValue &&
-              <InputRightElement 
-                cursor="pointer" 
-                onClick={handleClearFilter}
-                _hover={{
-                svg: {
-                  color: 'gray.700'
-                }
-              }}>
-                <Icon as={FiX} color="gray.500" fontSize="18px" />
-              </InputRightElement>         
-            }   
-          </InputGroup>
+          <SearchInput
+            ref={searchInputRef}
+            placeholder="Pesquise pelo nome do produto..."
+            hasSearch={!!searchValue}
+            value={searchValue}
+            onChange={handleSearch}
+            onClearSearch={clearSearch}
+          />
 
-          <ProductsList filterValue={debouncedSearch}/>
+          <ProductsList filterValue={toSearch}/>
 
         </Content>
       </Authenticated>

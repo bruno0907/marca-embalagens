@@ -13,7 +13,7 @@ type OrderQueryProps = {
   }
 }
 
-const getOrders = async (pattern?: string): Promise<OrderQueryProps[]> => {
+const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
   try {
     const user = supabase.auth.user()
   
@@ -66,13 +66,13 @@ const getOrders = async (pattern?: string): Promise<OrderQueryProps[]> => {
   }
 }
 
-const useOrdersQuery = (pattern?: string) => {
+const useOrdersQuery = (pattern?: number) => {
   const queryKey = pattern ? ['orders[]', pattern] : ['orders[]']
 
   return useQuery(queryKey, () => {
-    if(pattern) getOrders(pattern)
+    if(!pattern) getOrders()
 
-    return getOrders()
+    return getOrders(pattern)
 
   }, {
     staleTime: 1000 * 10 * 60,

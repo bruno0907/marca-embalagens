@@ -56,7 +56,7 @@ export default function Order() {
         <Content>
           { !order.data ? null : order.isLoading ? (
               <Center py="16">
-                <Spinner size="md" color="blue.500" />
+                <Spinner color="blue.500" />
               </Center>
             ) : order.isError ? (
               <Center py="16">
