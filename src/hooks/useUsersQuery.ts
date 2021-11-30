@@ -1,5 +1,4 @@
 import { useQuery } from "react-query"
-
 import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
@@ -45,14 +44,13 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
 const useUsersQuery = (filterQuery?: string) => {
   const queryKey = filterQuery ? ['users[]', filterQuery] : 'users[]'
   
-  return useQuery(queryKey, () => {
-    if(!filterQuery) return getUsers()
-    
-    return getUsers(filterQuery)
-  }, {
-    staleTime: 1000 * 60 * 10,
-    useErrorBoundary: true
-  })
+  return useQuery(
+    queryKey, 
+      () => !filterQuery ? getUsers() : getUsers(filterQuery), {
+      staleTime: 1000 * 60 * 10,
+      useErrorBoundary: true
+    }
+  )
 }
 
 export {

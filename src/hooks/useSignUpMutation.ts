@@ -2,12 +2,18 @@ import { useMutation } from 'react-query'
 import { queryClient } from '../contexts/queryContext'
 import { supabase } from '../database/supabase'
 import { createAddress } from '../services/createAddress'
-import { createProfile } from '../services/createProfile'
+
+const createProfile = async (profile: NewProfileProps) => {
+  return await supabase
+    .from<ProfileProps>('profiles')
+    .insert(profile)
+}
 
 import { 
   AddressProps, 
   NewAddressProps, 
-  NewProfileProps,   
+  NewProfileProps,
+  ProfileProps,   
 } from '../types'
 
 type AuthProps = {

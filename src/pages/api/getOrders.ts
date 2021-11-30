@@ -1,5 +1,5 @@
-import { useQuery } from "react-query"
-import { supabase } from "../database/supabase"
+import { NextApiRequest, NextApiResponse } from "next";
+import { supabase } from "../../database/supabase";
 
 type OrderQueryProps = {
   id: string;
@@ -13,11 +13,13 @@ type OrderQueryProps = {
   }
 }
 
-const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
+export default async function handler(request: NextApiRequest, response: NextApiResponse) {  
   try {
-    const user = supabase.auth.user()
-    
+    const { user } = supabase.auth.session()
+
     if(!user) throw new Error('Not authenticated')
+
+    const { pattern } = request.body
     
     if(!pattern) {
       console.time()
@@ -37,8 +39,8 @@ const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
       if(error) throw new Error(error.message)
       
       if(!data) throw new Error('No orders found')
-      
-      return data      
+
+      return response.status(200).json(data)
     }
     
     const { data, error } = await supabase
@@ -60,26 +62,13 @@ const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
 
     if(!data) throw new Error('No orders found')
 
-    return data
+    response.status(200).json(data)
+
+    return response.end()
     
   } catch (error) {
-    return error
-    
+    return response.status(500).json({
+      error: error
+    })
   }
-}
-
-const useOrdersQuery = (pattern?: number) => {
-  const queryKey = pattern ? ['orders[]', pattern] : ['orders[]']
-
-  return useQuery(
-    queryKey, 
-    () => !pattern ? getOrders() : getOrders(pattern), {
-      staleTime: 1000 * 10 * 60,
-      useErrorBoundary: true,
-    }
-  )
-}
-
-export {
-  useOrdersQuery
 }

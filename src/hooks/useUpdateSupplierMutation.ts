@@ -1,7 +1,15 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { updateSupplier } from "../services/updateSupplier"
+import { supabase } from "../database/supabase"
+
 import { SupplierProps } from "../types"
+
+const updateSupplier = async (supplier: SupplierProps) => {
+  return await supabase
+    .from<SupplierProps>('suppliers')    
+    .update(supplier)
+    .eq('id', supplier.id)
+}
 
 const useUpdateSupplierMutation = () => useMutation(
   async (supplier: SupplierProps) => {

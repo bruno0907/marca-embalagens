@@ -1,5 +1,4 @@
 import { useQuery } from "react-query"
-
 import { supabase } from "../database/supabase"
 import { SupplierProps } from "../types"
 
@@ -46,17 +45,15 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
 const useSuppliersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['suppliers[]', pattern] : 'suppliers[]'
   
-  return useQuery(queryKey, () => {
-    if(!pattern) return getSuppliers()
-
-    return getSuppliers(pattern)
-  }, {
-    staleTime: 1000 * 60 * 10,
-    useErrorBoundary: true
-  })
+  return useQuery(
+    queryKey, 
+    () => !pattern ? getSuppliers(): getSuppliers(pattern), {
+      staleTime: 1000 * 60 * 10,
+      useErrorBoundary: true
+    }
+  )
 }
 
 export {
-  useSuppliersQuery,
-  getSuppliers
+  useSuppliersQuery  
 }

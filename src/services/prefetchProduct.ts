@@ -3,7 +3,8 @@ import { getProduct } from "../hooks/useProductQuery"
 
 const prefetchProduct = async (id: string) => {
   return await queryClient.prefetchQuery(
-    ['product', id], async () => await getProduct(id), {
+    ['product', id], 
+    () => getProduct(id), {
       staleTime: 1000 * 60 * 10
     }
   )

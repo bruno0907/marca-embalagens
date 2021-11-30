@@ -44,15 +44,13 @@ const getProducts = async (pattern?: string) => {
 const useProductsQuery = (pattern?: string) => {
   const queryKey = pattern ? ['products[]', pattern] : ['products[]']
 
-  return useQuery(queryKey, () => {
-    if(!pattern) return getProducts()
-    
-    return getProducts(pattern)
-    
-  }, {
-    staleTime: 1000 * 10 * 60,
-    useErrorBoundary: true,
-  })
+  return useQuery(
+    queryKey, 
+    () => !pattern ? getProducts() : getProducts(pattern), {
+      staleTime: 1000 * 10 * 60,
+      useErrorBoundary: true,
+    }
+  )
 }
 
 export {

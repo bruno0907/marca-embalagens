@@ -1,7 +1,16 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { updateProduct } from "../services/updateProduct"
+import { supabase } from "../database/supabase"
+
 import { ProductProps } from "../types"
+
+const updateProduct = async (product: ProductProps) => {    
+  return await supabase
+    .from<ProductProps>('products')    
+    .update(product)
+    .eq('id', product.id)  
+}
+
 
 const useUpdateProductMutation = () => useMutation(
   async (productToUpdate: ProductProps) => {

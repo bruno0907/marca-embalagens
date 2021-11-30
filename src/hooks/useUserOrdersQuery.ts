@@ -41,22 +41,17 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
     return error
 
   }
-  
-
 }
 
 const useUserOrdersQuery = (userId: string, limit?: number) => {
   const queryKey = ['userOrders[]', userId]
 
-  return useQuery(queryKey, async () => {
-    if(!limit) return await getUserOrders(userId)
-      
-    return await getUserOrders(userId, limit)
-
-  }, {
-    useErrorBoundary: true,
-    refetchOnWindowFocus: true
-  })
+  return useQuery(queryKey, 
+    () => !limit ? getUserOrders(userId) : getUserOrders(userId, limit), {
+      useErrorBoundary: true,
+      refetchOnWindowFocus: true
+    }
+  )
 }
 
 export {

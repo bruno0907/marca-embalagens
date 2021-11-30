@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from "../../../../../Input"
 import { Select } from "../../../../../Select"
 
-import { useUpdateAddressMutation } from "../../../../../../hooks/updateAddressMutation"
+import { useUpdateAddressMutation } from "../../../../../../hooks/useUpdateAddressMutation"
 import { useStatesQuery } from "../../../../../../hooks/useStatesQuery"
 
 import { getCities } from "../../../../../../services/getCities"

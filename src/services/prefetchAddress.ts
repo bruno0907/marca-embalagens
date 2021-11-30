@@ -1,20 +1,13 @@
 import { queryClient } from "../contexts/queryContext"
-import { supabase } from "../database/supabase"
-
-const getAddress = async (id: string) => {
-    return await supabase
-      .from('addresses')
-      .select()
-      .eq('id', id)
-      .single()
-}
+import { getAddress } from "../hooks/useAddressQuery"
 
 const prefetchAddress = async (id: string) => {
-  return await queryClient.prefetchQuery(['address', id], async () => {
-    await getAddress(id)
-  }, {
-    staleTime: 1000 * 10 * 10
-  })
+  return await queryClient.prefetchQuery(
+    ['address', id], 
+    () => getAddress(id), {
+      staleTime: 1000 * 10 * 10
+    }
+  )
 }
 
 export {

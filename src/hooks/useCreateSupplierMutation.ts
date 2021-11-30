@@ -1,9 +1,21 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
+import { supabase } from "../database/supabase"
 import { createAddress } from "../services/createAddress"
-import { createSupplier } from "../services/createSupplier"
-import { removeUser } from "../services/removeUser"
-import { NewAddressProps, NewSupplierProps } from "../types"
+import { NewAddressProps, NewSupplierProps, SupplierProps } from "../types"
+
+const createSupplier = async (supplier: NewSupplierProps) => {
+  return await supabase
+    .from<SupplierProps>('suppliers')
+    .insert(supplier)
+}
+
+const removeSupplier = async (id: string) => {
+  return await supabase
+    .from<SupplierProps>('suppliers')
+    .delete()
+    .eq('id', id)
+}
 
 type NewUserMutationProps = {
   supplierData: NewSupplierProps;
@@ -25,7 +37,7 @@ const useCreateSupplierMutation = () => useMutation(
       const newSupplierAddress = await createAddress(supplierAddress)
   
       if(newSupplierAddress.error) {
-        await removeUser(newSupplier.data[0].id)
+        await removeSupplier(newSupplier.data[0].id)
   
         throw Error('Erro ao cadastrar o endereço do fornecedor.')
       }

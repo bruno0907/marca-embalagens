@@ -11,6 +11,7 @@ import { handleFormatPrice } from '../../../../../utils/handleFormatPrice'
 import { Divider } from '../../../../../components/Layout/Divider'
 import { Input } from '../../../../../components/Input'
 import { Select } from '../../../../../components/Select'
+import { Table } from '../../../../../components/Table'
 
 import { useAuth } from '../../../../../hooks/useAuth'
 import { useUsersQuery } from '../../../../../hooks/useUsersQuery'
@@ -50,7 +51,6 @@ import {
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi'
  
 import { OrderItemProps, NewOrderProps } from '../../../../../types'
-import { Table } from '../../../../../components/Table'
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
@@ -234,7 +234,7 @@ const CreateOrderForm = () => {
 
         </Select>
 
-        { !user.data ? null : user.isError ? (
+        { !user.data?.id ? null : user.isError ? (
           <Text my="8">Erro ao carregar os dados do usuário...</Text>
         ) : (
           <Stack spacing={3}>      
@@ -304,7 +304,7 @@ const CreateOrderForm = () => {
               })}
             </Select>
 
-            { !address.data ? null : (
+            { !address.data?.id ? null : (
               <Stack spacing={3}>
                 <HStack spacing={3}>
                   <Input 
@@ -372,7 +372,7 @@ const CreateOrderForm = () => {
 
       <Divider />
 
-      { address.data && 
+      { address.data?.id && 
         <Stack spacing={6}>
           <HStack spacing={3} align="flex-end">            
             <Select

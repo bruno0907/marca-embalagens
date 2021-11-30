@@ -1,5 +1,4 @@
 import { supabase } from "../database/supabase"
-
 import { AddressProps } from "../types"
 
 const updateAddress = async (address: AddressProps) => {

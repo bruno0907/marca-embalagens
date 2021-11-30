@@ -3,7 +3,8 @@ import { getOrder } from "../hooks/useOrderQuery"
 
 const prefetchOrder = async (id: string) => {
   return await queryClient.prefetchQuery(
-    ['order', id], async () => await getOrder(id), {
+    ['order', id], 
+    () => getOrder(id), {
       staleTime: 1000 * 60 * 10
     }
   )

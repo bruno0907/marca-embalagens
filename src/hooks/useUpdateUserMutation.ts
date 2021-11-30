@@ -1,7 +1,15 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { updateUser } from "../services/updateUser"
+import { supabase } from "../database/supabase"
+
 import { UserProps } from "../types"
+
+const updateUser = async (user: UserProps) => {
+  return await supabase
+    .from<UserProps>('users')    
+    .update(user)
+    .eq('id', user.id)
+}
 
 const useUpdateUserMutation = () => useMutation(
   async (user: UserProps) => {

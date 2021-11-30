@@ -1,9 +1,21 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { createAddress } from "../services/createAddress"
-import { createUser } from "../services/createUser"
-import { removeUser } from "../services/removeUser"
-import { NewAddressProps, NewUserProps } from "../types"
+import { supabase } from "../database/supabase";
+import { createAddress } from "../services/createAddress";
+import { NewAddressProps, NewUserProps, UserProps } from "../types"
+
+const createUser = async (user: NewUserProps) => {
+  return await supabase
+    .from<UserProps>('users')
+    .insert(user);
+}
+
+const removeUser = async (id: string) => {
+  return await supabase
+    .from<UserProps>('users')
+    .delete()
+    .eq('id', id)
+}
 
 type NewUserMutationProps = {
   userData: NewUserProps;
@@ -47,7 +59,6 @@ const useCreateUserMutation = () => useMutation(
     onError: error => console.log('New User Mutation Error: ', error)
   }
 )
-
 
 export {
   useCreateUserMutation

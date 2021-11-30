@@ -32,5 +32,5 @@ const useUserQuery = (id: string) => useQuery(
 
 export { 
   useUserQuery,
-  getUser,
+  getUser  
 }

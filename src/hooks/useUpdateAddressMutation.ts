@@ -1,6 +1,7 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { updateAddress } from "../services/updateAddress"
+
 import { AddressProps } from "../types"
 
 const useUpdateAddressMutation = () => useMutation(
@@ -17,7 +18,7 @@ const useUpdateAddressMutation = () => useMutation(
       
     }
   }, {
-    onSuccess: async (address) => {
+    onSuccess: async address => {
       await queryClient.invalidateQueries(['address', address[0].id])
       await queryClient.invalidateQueries(['address[]', address[0].user_id])
     }

@@ -30,7 +30,6 @@ const useOrderQuery = (id: string) => useQuery(
   }
 )
 
-
 export {
   getOrder,
   useOrderQuery
