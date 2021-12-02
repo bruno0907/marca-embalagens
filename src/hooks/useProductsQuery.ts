@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { ProductProps } from "../types"
 
-const getProducts = async (pattern?: string) => {
+const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
   try {
     const user = supabase.auth.user()
   
