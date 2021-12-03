@@ -27,7 +27,7 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
       .from<SupplierProps>('suppliers')
       .select()
       .eq('user_id', user.id)
-      .ilike('nome', `${pattern}%`)
+      .ilike('nome', `%${pattern}%`)
       .order('nome')
 
     if(error) throw new Error(error.message)
