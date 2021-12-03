@@ -26,7 +26,7 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
       .from<UserProps>('users')
       .select()
       .eq('user_id', user.id)      
-      .ilike('nome', `${filterQuery}%`)
+      .ilike('nome', `%${filterQuery}%`)
       .order('nome')
 
     if(error) throw new Error(error.message)
