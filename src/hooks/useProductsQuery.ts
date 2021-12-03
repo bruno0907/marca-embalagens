@@ -8,31 +8,31 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
   
     if(!user) throw new Error('Not WithAuth')
   
-    if(pattern) {
+    if(!pattern) {
       const { data, error } = await supabase
         .from<ProductProps>('products')
         .select()
         .eq('user_id', user.id)
-        .ilike('nome', `${pattern}%`)
         .order('nome')
-  
+    
       if(error) throw new Error(error.message)
-  
+    
       if(!data) throw new Error('No products found')
-  
+    
       return data
     }
-  
+    
     const { data, error } = await supabase
       .from<ProductProps>('products')
       .select()
       .eq('user_id', user.id)
+      .ilike('nome', `%${pattern}%`)
       .order('nome')
-  
+
     if(error) throw new Error(error.message)
-  
+
     if(!data) throw new Error('No products found')
-  
+
     return data
     
   } catch (error) {
