@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Authenticated } from '../../../components/Layout/Authenticated'
-import { Divider } from '../../../components/Layout/Divider'
+import { WithAuth } from '../../../components/WithAuth'
+import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
-import { Content } from '../../../components/Layout/Content'
+import { Content } from '../../../components/Content'
 import { UpdateProductForm } from './components/UpdateProductForm'
 
 import { useProductQuery } from '../../../hooks/useProductQuery'
@@ -43,7 +43,7 @@ export default function Product() {
         <title>MARCA | {product.data.nome}</title>
       </Head>
 
-      <Authenticated>
+      <WithAuth>
 
         <Header withGoBack title={product.data.nome} />
 
@@ -53,7 +53,7 @@ export default function Product() {
           <UpdateProductForm product={product.data} isFetching={product.isFetching} />          
         </Content>
 
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

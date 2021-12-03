@@ -6,7 +6,7 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
   try {
     const user = supabase.auth.user()
   
-    if(!user) throw new Error('Not authenticated')
+    if(!user) throw new Error('Not WithAuth')
   
     if(pattern) {
       const { data, error } = await supabase

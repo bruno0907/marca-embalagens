@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Authenticated } from '../../components/Layout/Authenticated'
-import { Divider } from '../../components/Layout/Divider'
+import { WithAuth } from '../../components/WithAuth'
+import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
-import { Content } from '../../components/Layout/Content'
+import { Content } from '../../components/Content'
 import { UsersList } from './components/UsersList'
 
 import { useSearch, SearchInput } from '../../hooks/useSearch'
@@ -33,7 +33,7 @@ export default function Users() {
         <title>MARCA | Clientes</title>        
       </Head>
 
-      <Authenticated>
+      <WithAuth>
         
         <Header title="Clientes">
           <Button
@@ -61,7 +61,7 @@ export default function Users() {
 
         </Content>
         
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

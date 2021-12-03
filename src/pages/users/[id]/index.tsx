@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 
 import { useUserQuery } from '../../../hooks/useUserQuery'
 
-import { Authenticated } from '../../../components/Layout/Authenticated'
-import { Divider } from '../../../components/Layout/Divider'
+import { WithAuth } from '../../../components/WithAuth'
+import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 
 import { UserInformation } from './components/UserInformation'
@@ -28,7 +28,7 @@ export default function User() {
         <title>MARCA | {user.data?.nome}</title>
       </Head>
 
-      <Authenticated>
+      <WithAuth>
 
         <Header withGoBack title={user.data?.nome}>
           <Button 
@@ -46,7 +46,7 @@ export default function User() {
           <UserOrders userId={id}/>          
         </VStack>
         
-      </Authenticated>
+      </WithAuth>
 
     </>
   )

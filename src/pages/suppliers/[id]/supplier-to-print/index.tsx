@@ -5,8 +5,8 @@ import { useRouter } from "next/router"
 
 import { useReactToPrint } from "react-to-print"
 
-import { Divider } from "../../../../components/Layout/Divider"
-import { Content } from "../../../../components/Layout/Content"
+import { Divider } from "../../../../components/Divider"
+import { Content } from "../../../../components/Content"
 import { Header } from "../../../../components/Header"
 
 import { SupplierInformationToPrint } from "./components/SupplierInformationToPrint"

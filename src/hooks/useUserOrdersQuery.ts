@@ -6,7 +6,7 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
   try {
     const user = supabase.auth.user()
     
-    if(!user) throw new Error('Not authenticated')
+    if(!user) throw new Error('Not WithAuth')
     
     if(!limit) {
       const { data, error } = await supabase

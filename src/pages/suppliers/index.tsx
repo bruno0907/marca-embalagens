@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Authenticated } from '../../components/Layout/Authenticated'
-import { Divider } from '../../components/Layout/Divider'
+import { WithAuth } from '../../components/WithAuth'
+import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
-import { Content } from '../../components/Layout/Content'
+import { Content } from '../../components/Content'
 import { SuppliersList } from './components/SuppliersList'
 
 import { useSearch, SearchInput } from '../../hooks/useSearch'
@@ -33,7 +33,7 @@ export default function Suppliers() {
         <title>MARCA | Fornecedores</title>        
       </Head>
 
-      <Authenticated>      
+      <WithAuth>      
 
         <Header title="Fornecedores">
           <Button
@@ -60,7 +60,7 @@ export default function Suppliers() {
           <SuppliersList filterValue={toSearch}/>
         </Content> 
 
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

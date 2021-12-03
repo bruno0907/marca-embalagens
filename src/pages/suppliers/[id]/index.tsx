@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 
 import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
-import { Authenticated } from '../../../components/Layout/Authenticated'
-import { Divider } from '../../../components/Layout/Divider'
+import { WithAuth } from '../../../components/WithAuth'
+import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { SupplierInformation } from './components/SupplierInformation'
 import { AddressesInformation } from '../../../components/AddressInformation'
@@ -26,7 +26,7 @@ export default function Supplier() {
       <Head>
         <title>MARCA | {supplier.data?.nome}</title>
       </Head>
-      <Authenticated>
+      <WithAuth>
 
         <Header withGoBack title={supplier.data?.nome}>
           <Button
@@ -44,7 +44,7 @@ export default function Supplier() {
           <AddressesInformation userId={id}/>          
         </VStack>
 
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

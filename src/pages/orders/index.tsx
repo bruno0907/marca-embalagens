@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { Authenticated } from '../../components/Layout/Authenticated'
-import { Divider } from '../../components/Layout/Divider'
+import { WithAuth } from '../../components/WithAuth'
+import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
-import { Content } from '../../components/Layout/Content'
-import { OrdersList } from './components/OrdersList'
+import { Content } from '../../components/Content'
+import { OrdersList } from './components/OrderList'
 
 import { useSearch, SearchInput } from '../../hooks/useSearch'
 
@@ -35,7 +35,7 @@ export default function Orders() {
         <title>Pedidos | MARCA</title>        
       </Head>
 
-      <Authenticated>
+      <WithAuth>
 
         <Header title="Pedidos">
           <Button 
@@ -64,7 +64,7 @@ export default function Orders() {
           <OrdersList filterValue={Number(toSearch)}/>
         </Content>
 
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

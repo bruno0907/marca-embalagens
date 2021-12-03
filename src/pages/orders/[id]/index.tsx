@@ -5,8 +5,8 @@ import { useRouter } from "next/router"
 
 import { useReactToPrint } from 'react-to-print'
 
-import { Content } from '../../../components/Layout/Content'
-import { Divider } from '../../../components/Layout/Divider'
+import { Content } from '../../../components/Content'
+import { Divider } from '../../../components/Divider'
 
 import { OrderHeader } from './components/OrderHeader'
 import { OrderUser } from './components/OrderUser'
@@ -77,7 +77,6 @@ export default function Order() {
                   userId={order.data?.cliente} 
                   deliveryAddress={order.data?.endereco_entrega}
                 />
-
                 
                 <OrderPaymentConditions 
                   paymentCondition={order.data?.condicao_pagamento}

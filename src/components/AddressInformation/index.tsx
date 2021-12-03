@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 
-import { Content } from '../Layout/Content'
+import { Content } from '../Content'
 import { AddressField } from './components/AddressField'
 import { CreateAddressFormProps } from './components/CreateAddressForm'
 import { ModalProps } from '../Modal'

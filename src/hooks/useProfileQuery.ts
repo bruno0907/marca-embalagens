@@ -11,7 +11,7 @@ const getProfile = async (): Promise<ProfileQueryProps> => {
   try {
     const user = supabase.auth.user()
   
-    if(!user) throw new Error('Not authenticated')
+    if(!user) throw new Error('Not WithAuth')
     
     const { data: profileData, error: profileError } = await supabase
         .from<ProfileProps>('profiles')

@@ -17,7 +17,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   try {
     const { user } = supabase.auth.session()
 
-    if(!user) throw new Error('Not authenticated')
+    if(!user) throw new Error('Not WithAuth')
 
     const { pattern } = request.body
     

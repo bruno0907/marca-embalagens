@@ -2,9 +2,9 @@ import Head from 'next/head'
 
 import { useRouter } from 'next/router'
 
-import { Authenticated } from '../../components/Layout/Authenticated'
-import { Content } from '../../components/Layout/Content'
-import { Divider } from '../../components/Layout/Divider'
+import { WithAuth } from '../../components/WithAuth'
+import { Content } from '../../components/Content'
+import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { ProductsList } from './components/ProductsList'
 
@@ -34,7 +34,7 @@ export default function Products() {
         <title>MARCA | Produtos</title>        
       </Head>
 
-      <Authenticated>
+      <WithAuth>
 
         <Header title="Produtos">          
           <Button              
@@ -63,7 +63,7 @@ export default function Products() {
           <ProductsList filterValue={toSearch}/>
 
         </Content>
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

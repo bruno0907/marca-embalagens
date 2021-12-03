@@ -5,10 +5,10 @@ import { useRouter } from "next/router"
 
 import { useReactToPrint } from 'react-to-print'
 
-import { Authenticated } from '../../../../components/Layout/Authenticated'
+import { WithAuth } from '../../../../components/WithAuth'
 import { Header } from '../../../../components/Header'
-import { Content } from '../../../../components/Layout/Content'
-import { Divider } from '../../../../components/Layout/Divider'
+import { Content } from '../../../../components/Content'
+import { Divider } from '../../../../components/Divider'
 import { OrderHeader } from './components/OrderHeader'
 import { OrderItemsList } from './components/OrderItemsList'
 
@@ -45,7 +45,7 @@ export default function UserOrders() {
         <title>Todos os pedidos: {user.data?.nome} | MARCA</title>
       </Head>
 
-      <Authenticated>
+      <WithAuth>
         <Header 
           withGoBack 
           title={user.data?.nome && `Pedidos de ${user.data.nome}`}>
@@ -95,7 +95,7 @@ export default function UserOrders() {
             )}
           </Box>
         </Content>
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

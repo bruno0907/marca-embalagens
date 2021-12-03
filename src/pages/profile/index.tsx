@@ -1,9 +1,9 @@
 import Head from "next/head";
 
-import { Authenticated } from "../../components/Layout/Authenticated";
-import { Divider } from "../../components/Layout/Divider";
+import { WithAuth } from "../../components/WithAuth";
+import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
-import { Content } from "../../components/Layout/Content";
+import { Content } from "../../components/Content";
 import { ProfileForm } from "./components/ProfileForm";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
@@ -20,7 +20,7 @@ export default function Profile() {
       <Head>
         <title>MARCA | Perfil</title>
       </Head>
-      <Authenticated>
+      <WithAuth>
         <Flex>
           <Header title="Perfil" />
         </Flex>
@@ -28,7 +28,7 @@ export default function Profile() {
         <Content>
           <ProfileForm profile={profile} isFetching={isFetching}/>
         </Content>
-      </Authenticated>
+      </WithAuth>
     </>
   )
 }

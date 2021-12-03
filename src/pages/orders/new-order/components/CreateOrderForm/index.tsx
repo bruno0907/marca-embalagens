@@ -7,11 +7,14 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useForm, SubmitHandler } from 'react-hook-form'
 
-import { Divider } from '../../../../../components/Layout/Divider'
+import { Divider } from '../../../../../components/Divider'
 import { Input } from '../../../../../components/Input'
+import { UserInfo } from './components/UserInfo'
+import { UserAddressProps } from '../UserAddress'
+import { OrderProducts } from './components/OrderProducts'
+import { ProductsProps } from './components/Products'
 
 import { useAuth } from '../../../../../hooks/useAuth'
-
 
 import { useOrdersQuery } from '../../../../../hooks/useOrdersQuery'
 
@@ -28,13 +31,13 @@ import {
   useToast,
 } from '@chakra-ui/react'
  
-import { OrderItemProps, NewOrderProps, AddressProps, ProductProps, UserProps } from '../../../../../types'
-import { UserInfo } from './UserInfo'
-
-import { UserAddressProps } from './UserAddress'
-
-import { OrderProductsList } from './OrderProductsList'
-import { ProductsListProps } from './ProductsList'
+import { 
+  OrderItemProps, 
+  NewOrderProps, 
+  AddressProps, 
+  ProductProps, 
+  UserProps 
+} from '../../../../../types'
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
@@ -43,7 +46,7 @@ const newOrderSchema = yup.object().shape({
 
 const UserAddress = dynamic<UserAddressProps>(
   async () => {
-    const { UserAddress } = await import('./UserAddress')
+    const { UserAddress } = await import('../UserAddress')
 
     return UserAddress
   }, {
@@ -56,11 +59,11 @@ const UserAddress = dynamic<UserAddressProps>(
   }
 )
 
-const ProductsList = dynamic<ProductsListProps>(
+const ProductsList = dynamic<ProductsProps>(
   async () => {
-    const { ProductsList } = await import('./ProductsList')
+    const { Products } = await import('./components/Products')
 
-    return ProductsList
+    return Products
   }, {
     loading: () => (
       <HStack spacing={2} align="center">
@@ -199,12 +202,13 @@ const CreateOrderForm = () => {
             setProductAmount={setProductAmount}
             setOrderTotal={setOrderTotal}
           />
-          <OrderProductsList
+          <OrderProducts
             orderProducts={orderProducts}
             setOrderProducts={setOrderProducts}
             orderTotal={orderTotal}
             setOrderTotal={setOrderTotal}            
           />
+
           <HStack spacing={3} justify="flex-end">
             <Button
               type="reset" 
@@ -220,8 +224,6 @@ const CreateOrderForm = () => {
               isLoading={isSubmitting}
             >Gerar pedido</Button>
           </HStack>
-          
-          
         </Stack> 
       }
     </Box>
