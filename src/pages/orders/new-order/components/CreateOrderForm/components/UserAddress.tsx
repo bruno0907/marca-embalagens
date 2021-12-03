@@ -1,22 +1,21 @@
 import { ChangeEvent } from 'react'
 
-import { Stack, HStack, Box, Spinner, FormLabel, Text } from "@chakra-ui/react"
+import { Stack, HStack, Box, Spinner, Text } from "@chakra-ui/react"
 
-import { Input } from '../../../../components/Input'
+import { Input } from '../../../../../../components/Input'
 
-import { AddressProps } from "../../../../types"
-import { Select } from '../../../../components/Select'
-import { useAddressesQuery } from '../../../../hooks/useAddressesQuery'
+import { Select } from '../../../../../../components/Select'
+import { useAddressesQuery } from '../../../../../../hooks/useAddressesQuery'
+import { useCreateOrder } from '../../../hooks/useCreateOrder'
 
-export type UserAddressProps = {  
-  userId: string;
-  selectedAddress: AddressProps;
-  setSelectedAddress: (selectedAddress: AddressProps) => void;  
-}
+const UserAddress = () => { 
+  const {
+    selectedUser,
+    selectedAddress,
+    setSelectedAddress
+  } = useCreateOrder()
 
-const UserAddress = ({ setSelectedAddress, userId, selectedAddress }: UserAddressProps) => { 
-
-  const addresses = useAddressesQuery(userId)
+  const addresses = useAddressesQuery(selectedUser.id)
 
   const handleSelectAddress = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target

@@ -6,6 +6,7 @@ import { Divider } from '../../../components/Divider'
 import { Content } from '../../../components/Content'
 
 import { CreateOrderForm } from './components/CreateOrderForm'
+import { CreateOrderProvider } from './hooks/useCreateOrder'
 
 export default function NewOrder() {
   return (
@@ -21,7 +22,9 @@ export default function NewOrder() {
         <Divider />
 
         <Content>
-          <CreateOrderForm />
+          <CreateOrderProvider>
+            <CreateOrderForm />
+          </CreateOrderProvider>
         </Content>
       </WithAuth> 
     </>   

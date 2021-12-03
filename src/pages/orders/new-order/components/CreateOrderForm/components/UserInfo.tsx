@@ -5,32 +5,26 @@ import { Select } from '../../../../../../components/Select'
 
 import { HStack } from "@chakra-ui/react"
 
-import { AddressProps, UserProps } from '../../../../../../types'
 import { useUsersQuery } from '../../../../../../hooks/useUsersQuery'
+import { useCreateOrder } from '../../../hooks/useCreateOrder'
 
-type Props = {
-  selectedUser: UserProps;
-  setSelectedUser: (selectedUser: UserProps) => void;
-  setSelectedAddress: (selectedAddress: AddressProps) => void;
-}
+const UserInfo = () => {  
+  const {
+    selectedUser,
+    setSelectedAddress,
+    setSelectedUser    
+  } = useCreateOrder()
 
-const UserInfo = ({ 
-  selectedUser,
-  setSelectedAddress,
-  setSelectedUser,
-
-}: Props) => {  
-  const users = useUsersQuery()  
-
+  const users = useUsersQuery()
+  
   const handleSelectUser = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
 
-    const user = users.data?.find(user => user.id === value)
+    const user = users?.data?.find(user => user.id === value)
 
     setSelectedAddress(null)
     setSelectedUser(user)
   }
-  
 
   return (
     <>

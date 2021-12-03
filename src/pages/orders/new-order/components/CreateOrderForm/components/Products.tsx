@@ -17,29 +17,19 @@ import {
 } from "@chakra-ui/react"
 
 import { FiMinus, FiPlus } from "react-icons/fi"
-import { OrderItemProps, ProductProps } from "../../../../../../types"
+import { OrderItemProps } from "../../../../../../types"
+import { useCreateOrder } from "../../../hooks/useCreateOrder"
 
-export type ProductsProps = {  
-  selectedProduct: ProductProps;
-  setSelectedProduct: (selectedProduct: ProductProps) => void;
-  productAmount: number;
-  setProductAmount: (productAmount: number) => void;  
-  orderProducts: OrderItemProps[];
-  setOrderProducts: (orderProducts: OrderItemProps[]) => void;
-  
-  setOrderTotal: (total: number) => void;
-}
-
-const Products = ({  
-  selectedProduct,
-  setSelectedProduct,
-  productAmount,
-  setProductAmount,
-  orderProducts, 
-  setOrderProducts,  
-  
-  setOrderTotal, 
-}: ProductsProps) => {
+const Products = () => {
+  const {
+    selectedProduct,
+    setSelectedProduct,
+    productAmount,
+    setProductAmount,
+    orderProducts,
+    setOrderProducts,
+    setOrderTotal,
+  } = useCreateOrder()
   const products = useProductsQuery()
 
   const handleSelectProduct = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -50,7 +40,7 @@ const Products = ({
     setSelectedProduct(product)    
   }
 
-  const incrementProductAmount = () => setProductAmount(productAmount + 1)
+  const incrementProductAmount = () => setProductAmount(prevState => prevState + 1)
 
   const decrementProductAmount = () => {
     if(productAmount <= 0) {

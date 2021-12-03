@@ -10,13 +10,12 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Divider } from '../../../../../components/Divider'
 import { Input } from '../../../../../components/Input'
 import { UserInfo } from './components/UserInfo'
-import { UserAddressProps } from '../UserAddress'
 import { OrderProducts } from './components/OrderProducts'
-import { ProductsProps } from './components/Products'
 
 import { useAuth } from '../../../../../hooks/useAuth'
-
 import { useOrdersQuery } from '../../../../../hooks/useOrdersQuery'
+
+import { useCreateOrder } from '../../hooks/useCreateOrder'
 
 import { useCreateOrderMutation } from '../../../../../hooks/useCreateOrderMutation'
 
@@ -31,22 +30,19 @@ import {
   useToast,
 } from '@chakra-ui/react'
  
-import { 
-  OrderItemProps, 
-  NewOrderProps, 
-  AddressProps, 
-  ProductProps, 
-  UserProps 
+import {   
+  NewOrderProps,   
 } from '../../../../../types'
+
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
   data_entrega: yup.string().required('A data da entrega é obrigatória').trim(),
 })
 
-const UserAddress = dynamic<UserAddressProps>(
+const UserAddress = dynamic(
   async () => {
-    const { UserAddress } = await import('../UserAddress')
+    const { UserAddress } = await import('./components/UserAddress')
 
     return UserAddress
   }, {
@@ -59,7 +55,7 @@ const UserAddress = dynamic<UserAddressProps>(
   }
 )
 
-const ProductsList = dynamic<ProductsProps>(
+const Products = dynamic(
   async () => {
     const { Products } = await import('./components/Products')
 
@@ -77,26 +73,23 @@ const ProductsList = dynamic<ProductsProps>(
 const CreateOrderForm = () => {
   const { session } = useAuth()
 
+  const {    
+    selectedUser,
+    orderProducts,
+    selectedAddress,
+    orderTotal,
+  } = useCreateOrder()  
+
   const router = useRouter()  
   const toast = useToast()    
+
+  const orders = useOrdersQuery()
   
-  const [selectedUser, setSelectedUser] = useState<UserProps>(null)  
-  const [selectedAddress, setSelectedAddress] = useState<AddressProps>(null)  
-  
-  const [selectedProduct, setSelectedProduct] = useState<ProductProps>(null)  
-  const [productAmount, setProductAmount] = useState(0)
-
-  const [orderProducts, setOrderProducts] = useState<OrderItemProps[]>([])
-
-  const [orderTotal, setOrderTotal] = useState(0)
-
   const { handleSubmit, register, formState } = useForm<NewOrderProps>({
     resolver: yupResolver(newOrderSchema)
   })
 
-  const { errors, isSubmitting } = formState    
-
-  const orders = useOrdersQuery()
+  const { errors, isSubmitting } = formState      
 
   const createOrderMutation = useCreateOrderMutation()
   
@@ -153,80 +146,54 @@ const CreateOrderForm = () => {
   }
 
   return (
-    <Box as="form" onSubmit={handleSubmit(handleCreateNewOrderMutation)}>      
-      <Stack spacing={3}>      
-        <UserInfo 
-          selectedUser={selectedUser}              
-          setSelectedAddress={setSelectedAddress} 
-          setSelectedUser={setSelectedUser}
-        />
-        { selectedUser &&
-          <UserAddress
-            userId={selectedUser.id}              
-            selectedAddress={selectedAddress}              
-            setSelectedAddress={setSelectedAddress}
-          />
-        }
-        { selectedAddress &&
-          <Stack spacing={3}>
-            <HStack spacing={3}>
-              <Input 
-                name="condicao_pagamento"
-                label="Condição de pagamento:"
-                {...register('condicao_pagamento')}
-              />
-              <Box w="380px">
+    
+      <Box as="form" onSubmit={handleSubmit(handleCreateNewOrderMutation)}>      
+        
+        <Stack spacing={3}>      
+          
+          <UserInfo />
+          
+          { selectedUser && <UserAddress /> }
+                    
+          { selectedAddress &&          
+            <Stack spacing={3}>
+              <HStack spacing={3}>
                 <Input 
-                  type="date"
-                  name="data_entrega"
-                  label="Data de entrega:"
-                  error={errors.data_entrega}
-                  {...register('data_entrega')}
+                  name="condicao_pagamento"
+                  label="Condição de pagamento:"
+                  {...register('condicao_pagamento')}
                 />
-              </Box>
-            </HStack>
-          </Stack>
+                <Box w="380px">
+                  <Input 
+                    type="date"
+                    name="data_entrega"
+                    label="Data de entrega:"
+                    error={errors.data_entrega}
+                    {...register('data_entrega')}
+                  />
+                </Box>
+              </HStack>
+            </Stack>
+          }
+        </Stack>
+
+        <Divider />
+
+        { selectedAddress && 
+          <Stack spacing={6}>  
+
+            <Products/>
+
+            <OrderProducts
+              canSubmitOrder={canSubmitOrder}
+              isSubmitting={isSubmitting}
+              handleCancelOrder={handleCancelOrder}
+            />
+            
+          </Stack> 
         }
-      </Stack>
-
-      <Divider />
-
-      { selectedAddress && 
-        <Stack spacing={6}>          
-          <ProductsList     
-            orderProducts={orderProducts}       
-            setOrderProducts={setOrderProducts}
-            selectedProduct={selectedProduct}
-            setSelectedProduct={setSelectedProduct}
-            productAmount={productAmount}
-            setProductAmount={setProductAmount}
-            setOrderTotal={setOrderTotal}
-          />
-          <OrderProducts
-            orderProducts={orderProducts}
-            setOrderProducts={setOrderProducts}
-            orderTotal={orderTotal}
-            setOrderTotal={setOrderTotal}            
-          />
-
-          <HStack spacing={3} justify="flex-end">
-            <Button
-              type="reset" 
-              colorScheme="blue"
-              variant="ghost" 
-              onClick={handleCancelOrder} 
-              isDisabled={!orderProducts.length}
-            >Cancelar</Button>
-            <Button 
-              type="submit"
-              colorScheme="blue" 
-              isDisabled={canSubmitOrder}
-              isLoading={isSubmitting}
-            >Gerar pedido</Button>
-          </HStack>
-        </Stack> 
-      }
-    </Box>
+      </Box>
+    
   )
 }
 
