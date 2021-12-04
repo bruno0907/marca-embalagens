@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react'
+import { ChangeEvent, memo } from 'react'
 
 import { Stack, HStack, Box, Spinner, Text } from "@chakra-ui/react"
 

@@ -7,8 +7,6 @@ import { useCreateOrder } from "../../../hooks/useCreateOrder"
 import { Thead, Tr, Th, Td, Tbody, Button, Flex, HStack, Text } from "@chakra-ui/react"
 import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi"
 
-import { OrderItemProps } from "../../../../../../types"
-
 export type OrderProductsProps = {
   canSubmitOrder: boolean;
   handleCancelOrder: () => void;
@@ -20,49 +18,8 @@ const OrderProducts = ({ canSubmitOrder, handleCancelOrder, isSubmitting }: Orde
     orderProducts,    
     orderTotal,
     handleRemoveItemFromOrder,
-    setOrderProducts,
-    setOrderTotal,
+    handleProductInOrderAmount
   } = useCreateOrder()
-
-  const handleProductAmount = (amount: 'increment' | 'decrement', index: number) => {    
-    const currentOrderProducts = [...orderProducts]
-    const productInOrder = currentOrderProducts.find((_, i) => i === index)
-
-    if(amount === 'decrement' && productInOrder.quantidade <= 1) {
-      const updatedOrderProducts = currentOrderProducts.filter((_, i) => i !== index)      
-
-      setOrderProducts(updatedOrderProducts)
-      const total = getSumTotal(updatedOrderProducts)
-      setOrderTotal(total)
-
-      return
-    }
-    
-    const updatedOrderProductsAmount = currentOrderProducts.map((product, i) => {
-      if(i !== index) return product      
-      
-      return {
-        ...productInOrder,
-        quantidade: amount === 'increment' ? product.quantidade + 1: product.quantidade - 1,
-        valor_total: amount === 'increment' ? product.valor_total + product.valor_unitario : product.valor_total - product.valor_unitario
-      }
-    })
-     
-    setOrderProducts(updatedOrderProductsAmount)
-    const total = getSumTotal(updatedOrderProductsAmount)
-    
-    setOrderTotal(total)
-
-    return
-    
-  }    
-
-  const getSumTotal = (order: OrderItemProps[]) => {
-    return order.reduce((acc, value) => {      
-      return acc + value.valor_total
-    }, 0)
-  }
-  
 
   return (
     <>
@@ -85,7 +42,7 @@ const OrderProducts = ({ canSubmitOrder, handleCancelOrder, isSubmitting }: Orde
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    onClick={() => handleProductAmount('decrement', index)} 
+                    onClick={() => handleProductInOrderAmount('decrement', index)} 
                     variant="unstyled"
                     _hover={{ svg: { color: 'blue.500' }}}
                   >
@@ -93,7 +50,7 @@ const OrderProducts = ({ canSubmitOrder, handleCancelOrder, isSubmitting }: Orde
                   </Button>
                   <Text px="2">{orderProduct.quantidade}</Text>
                   <Button 
-                    onClick={() => handleProductAmount('increment', index)} 
+                    onClick={() => handleProductInOrderAmount('increment', index)} 
                     variant="unstyled"
                     display="flex"
                     alignItems="center"
