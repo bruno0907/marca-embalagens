@@ -15,7 +15,7 @@ const UserAddress = () => {
     setSelectedAddress
   } = useCreateOrder()
 
-  const addresses = useAddressesQuery(selectedUser.id)
+  const addresses = useAddressesQuery(selectedUser?.id)
 
   const handleSelectAddress = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -51,24 +51,26 @@ const UserAddress = () => {
 
   return (
     <>
-      <Select
-        label="Endereço:"
-        name="endereco"        
-        isLoading={addresses.isLoading}
-        onChange={handleSelectAddress}
-        value={!selectedAddress && 'defaultValue'}        
-      >
-        <option value="defaultValue" disabled>Selecione o endereço de entrega...</option>
-        { addresses.data?.map(address => {
-          return (
-            <option key={address.id} value={address.id}>{address.endereco}</option>
-          )
-        })}
-      </Select>
-      { !selectedAddress ? null : 
+      { selectedUser && 
+        <Select
+          label="Endereço:"
+          name="endereco"        
+          isLoading={addresses.isLoading}
+          onChange={handleSelectAddress}
+          value={!selectedAddress && 'defaultValue'}        
+        >
+          <option value="defaultValue" disabled>Selecione o endereço de entrega...</option>
+          { addresses.data?.map(address => {
+            return (
+              <option key={address.id} value={address.id}>{address.endereco}</option>
+            )
+          })}
+        </Select>
+      } 
+      { selectedAddress && 
         <Stack spacing={3}>
           <HStack spacing={3}>
-            <Input 
+            <Input
               name="cidade"
               label="Cidade:"
               isDisabled
@@ -76,7 +78,7 @@ const UserAddress = () => {
               onChange={handleChange}
             />
             <Box w="100px">
-              <Input 
+              <Input
                 name="estado"
                 label="Estado:"
                 isDisabled
@@ -86,14 +88,14 @@ const UserAddress = () => {
             </Box>
           </HStack>
           <HStack spacing={3}>
-            <Input 
+            <Input
               name="bairro"
               label="Bairro:"
               isDisabled
               value={selectedAddress?.bairro}
               onChange={handleChange}
             />
-            <Input 
+            <Input
               name="cep"
               label="CEP:"
               isDisabled
@@ -102,14 +104,13 @@ const UserAddress = () => {
             />
           </HStack>
                     
-            <Input 
+            <Input
               name="complemento"
               label="Complemento:"
               isDisabled
               value={selectedAddress?.complemento}
               onChange={handleChange}
             />
-          
         </Stack>
       }      
     </>

@@ -20,8 +20,7 @@ import { useCreateOrder } from '../../hooks/useCreateOrder'
 import { useCreateOrderMutation } from '../../../../../hooks/useCreateOrderMutation'
 
 import { 
-  Text,  
-  Button,
+  Text,    
   Stack,
   HStack,
   Box,
@@ -153,7 +152,7 @@ const CreateOrderForm = () => {
           
           <UserInfo />
           
-          { selectedUser && <UserAddress /> }
+          <UserAddress />
                     
           { selectedAddress &&          
             <Stack spacing={3}>
@@ -180,16 +179,13 @@ const CreateOrderForm = () => {
         <Divider />
 
         { selectedAddress && 
-          <Stack spacing={6}>  
-
+          <Stack spacing={6}>
             <Products/>
-
             <OrderProducts
               canSubmitOrder={canSubmitOrder}
               isSubmitting={isSubmitting}
               handleCancelOrder={handleCancelOrder}
-            />
-            
+            />            
           </Stack> 
         }
       </Box>

@@ -1,7 +1,8 @@
-import { ChangeEvent } from "react"
+import { ChangeEvent, useEffect, useRef } from "react"
 
 import { Select } from "../../../../../../components/Select"
 import { useProductsQuery } from "../../../../../../hooks/useProductsQuery"
+import { useCreateOrder } from "../../../hooks/useCreateOrder"
 
 import { 
   HStack, 
@@ -18,7 +19,6 @@ import {
 
 import { FiMinus, FiPlus } from "react-icons/fi"
 import { OrderItemProps } from "../../../../../../types"
-import { useCreateOrder } from "../../../hooks/useCreateOrder"
 
 const Products = () => {
   const {
@@ -26,11 +26,15 @@ const Products = () => {
     setSelectedProduct,
     productAmount,
     setProductAmount,
+    // handleAddItemToOrder
     orderProducts,
     setOrderProducts,
     setOrderTotal,
   } = useCreateOrder()
+
   const products = useProductsQuery()
+
+  const ref = useRef<HTMLSelectElement>(null)
 
   const handleSelectProduct = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -43,43 +47,73 @@ const Products = () => {
   const incrementProductAmount = () => setProductAmount(prevState => prevState + 1)
 
   const decrementProductAmount = () => {
-    if(productAmount <= 0) {
-      return
-    }
+    if(productAmount <= 0) return
 
-    setProductAmount(productAmount - 1)
+    setProductAmount(prevState => prevState - 1)
   }  
+
+  const handleAddItemToOrder = () => {    
+    const currentOrderProducts = [...orderProducts]
+
+    const productExists = currentOrderProducts.find(product => product.produto === selectedProduct.nome)
+
+    if(!productExists) {      
+      const newOrderProducts = {
+        produto: selectedProduct.nome,
+        quantidade: productAmount,
+        valor_unitario: selectedProduct.preco_unitario,
+        valor_total: selectedProduct.preco_unitario * productAmount
+      }
+    
+      const updatedOrderProducts = [
+        ...currentOrderProducts,
+        newOrderProducts
+      ]
+    
+      setOrderProducts(updatedOrderProducts)
+  
+      const total = getSumTotal(updatedOrderProducts)
+    
+      setOrderTotal(total)
+      
+      setSelectedProduct(null)
+      setProductAmount(0)
+      ref.current.value = 'defaultValue'
+      
+      return
+    } 
+
+    const updatedProducts = currentOrderProducts.map(product => {
+      if(product.produto === productExists.produto) return {
+        ...product,
+        quantidade: product.quantidade + productAmount,
+        valor_total: product.valor_total + (selectedProduct.preco_unitario * productAmount)
+      }
+      return product
+    })
+
+    setOrderProducts(updatedProducts)
+
+    ref.current.value = 'defaultValue'
+
+    const total = getSumTotal(updatedProducts)
+
+    setOrderTotal(total)
+  
+    setSelectedProduct(null)
+    setProductAmount(0)
+
+    return
+
+  }
 
   const getSumTotal = (order: OrderItemProps[]) => {
     return order.reduce((acc, value) => {      
       return acc + value.valor_total
     }, 0)
   }
-
-  const handleAddItemToOrder = () => {    
-    const currentOrderProducts = [...orderProducts]
-    
-    const newOrderProducts = {
-      produto: selectedProduct.nome,
-      quantidade: productAmount,
-      valor_unitario: selectedProduct.preco_unitario,
-      valor_total: selectedProduct.preco_unitario * productAmount
-    }    
-
-    const updatedOrderProducts = [
-      ...currentOrderProducts,
-      newOrderProducts
-    ]
-
-    setOrderProducts(updatedOrderProducts)
-    setProductAmount(0)
-
-    const sumTotal = getSumTotal(updatedOrderProducts)
   
-    setOrderTotal(sumTotal)
-  }
-
-  const canAddProduct = selectedProduct && productAmount > 0  
+  const canAddProduct = selectedProduct && productAmount > 0    
 
   if(products.isLoading) {
     return (      
@@ -105,6 +139,7 @@ const Products = () => {
         name="produto"
         defaultValue="defaultValue"
         onChange={handleSelectProduct}
+        ref={ref}
       >
         <option value="defaultValue" disabled>Selecione um produto...</option>
         { products.data.map(product => {
