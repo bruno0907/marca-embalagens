@@ -1,7 +1,6 @@
-## Marca ERP
-
+## Marca-CRM
 EN<br/>
-MARCA-ERP is a simple ERP under development to handle a local business necessities for handling its Customers, Suppliers, Products and Sale Orders.
+MARCA-CRM is a simple CRM system under development to handle a local business necessities for handling its Customers, Suppliers, Products and Sales Order.
 
 This project is a serverless project that so far is running:
 
