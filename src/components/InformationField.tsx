@@ -1,4 +1,4 @@
-import { ElementType } from "react"
+import { ElementType, memo } from "react"
 
 import { 
   Box,
@@ -13,7 +13,7 @@ type InformationFieldProps = {
   icon: ElementType;
 }
 
-const InformationField = ({ label, value, icon }: InformationFieldProps) => {
+const InformationFieldComponent = ({ label, value, icon }: InformationFieldProps) => {
   return (
     <Box py="2" px="4" bgColor="gray.100" borderRadius="md" w="100%">
       <Flex align="center">
@@ -26,5 +26,9 @@ const InformationField = ({ label, value, icon }: InformationFieldProps) => {
     </Box>
   )
 }
+
+const InformationField = memo(InformationFieldComponent, (prevProps, nextProps) => {
+  return prevProps.value !== nextProps.value
+})
 
 export { InformationField }

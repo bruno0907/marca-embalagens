@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useForm, SubmitHandler } from 'react-hook-form'
@@ -15,6 +14,8 @@ import { useAuth } from '../../../../../hooks/useAuth'
 import { useOrdersQuery } from '../../../../../hooks/useOrdersQuery'
 
 import { useCreateOrder } from '../../hooks/useCreateOrder'
+
+import { newOrderSchemaModel } from '../../../../../Models/NewOrderSchemaModel'
 
 import { useCreateOrderMutation } from '../../../../../hooks/useCreateOrderMutation'
 
@@ -32,11 +33,6 @@ import {
   NewOrderProps,   
 } from '../../../../../types'
 
-
-const newOrderSchema = yup.object().shape({
-  condicao_pagamento: yup.string().trim(),     
-  data_entrega: yup.string().required('A data da entrega é obrigatória').trim(),
-})
 
 const UserAddress = dynamic(
   async () => {
@@ -84,7 +80,7 @@ const CreateOrderForm = () => {
   const orders = useOrdersQuery()
   
   const { handleSubmit, register, formState } = useForm<NewOrderProps>({
-    resolver: yupResolver(newOrderSchema)
+    resolver: yupResolver(newOrderSchemaModel)
   })
 
   const { errors, isSubmitting } = formState      
@@ -156,7 +152,7 @@ const CreateOrderForm = () => {
                     
           { selectedAddress &&          
             <Stack spacing={3}>
-              <HStack spacing={3}>
+              <HStack spacing={3} align="flex-start">
                 <Input 
                   name="condicao_pagamento"
                   label="Condição de pagamento:"

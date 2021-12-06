@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { useForm, SubmitHandler } from "react-hook-form";
-import * as yup from "yup";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useCreateUserMutation } from "../../../../hooks/useCreateUserMutation";
@@ -13,6 +13,9 @@ import { useAuth } from '../../../../hooks/useAuth'
 
 import { Input } from "../../../../components/Input";
 import { Select } from "../../../../components/Select";
+
+import { InputMask } from "../../../../utils/inputMasksHandler";
+import { newUserSchemaModel } from "../../../../Models/NewUserSchemaModel";
 
 import {
   Box,
@@ -26,38 +29,6 @@ import {
   RadioGroup,  
 } from "@chakra-ui/react"
 
-const newUserSchema = yup.object().shape({
-  nome: yup.string().required("O nome é obrigatório").trim(),
-  razao_social: yup.string().trim(),
-  telefone: yup.string().trim(),
-  celular: yup.string().trim(),
-  email: yup.string().email().trim(),
-  cpf_cnpj: yup.string().trim(),
-  rg_ie: yup.string().trim(),
-  contato: yup.string().trim(),
-  outras_informacoes: yup.string().trim(),
-  endereco: yup.string().required("O endereço é obrigatório").trim(),
-  bairro: yup.string().required("O bairo/distrito é obrigatório"),
-  estado: yup
-    .string()
-    .required("Você deve selecionar um estado")
-    .test({
-      message: "Selecione um estado",
-      test: value => value !== "default",
-    })
-    .trim(),
-  cidade: yup
-    .string()
-    .required("Você deve selecionar um estado")
-    .test({
-      message: "Você deve selecionar uma cidade",
-      test: value => value !== "default",
-    })
-    .trim(),
-  cep: yup.string().trim(),
-  complemento: yup.string().trim(),  
-});
-
 import {   
   NewUserProps,    
   NewAddressProps,
@@ -68,18 +39,23 @@ type HandleNewUserProps = NewUserProps & NewAddressProps
 
 const CreateUserForm = () => {  
   const { session } = useAuth()
-
   const router = useRouter()
+  const masked = new InputMask()
+  const toast = useToast()
 
   const [cities, setCities] = useState<CityProps[]>([]);  
-  const [isCNPJ, setIsCNPJ] = useState('Jurídica');
+  const [isCNPJ, setIsCNPJ] = useState(true);
 
-  const toast = useToast()
   const states = useStatesQuery()
+
+  const handleSelectUserType = () => {
+    setIsCNPJ(!isCNPJ)
+    reset()
+  }  
 
   const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
     useForm<HandleNewUserProps>({
-      resolver: yupResolver(newUserSchema),
+      resolver: yupResolver(newUserSchemaModel),
     });
 
   const { errors, isDirty, isSubmitting } = formState;
@@ -107,7 +83,7 @@ const CreateUserForm = () => {
 
     const userData: NewUserProps = {
       user_id: session.user.id,      
-      natureza_cliente: isCNPJ,
+      natureza_cliente: isCNPJ ? 'Jurídica' : 'Física',
       nome,
       razao_social,
       telefone,
@@ -187,14 +163,14 @@ const CreateUserForm = () => {
       onSubmit={handleSubmit(handleNewUser)}
     >
       <Stack spacing={3}>        
-        <RadioGroup value={isCNPJ} onChange={setIsCNPJ} mb="4">                
+        <RadioGroup value={isCNPJ ? 'Jurídica' : 'Física'} onChange={handleSelectUserType} mb="4">                
           <HStack spacing={3}>
             <Text color="gray.600" fontWeight="medium" mr="4">Tipo de pessoa: </Text>
-            <Radio value="Jurídica">Jurídica</Radio>
-            <Radio value="Física">Física</Radio>
+            <Radio name="Jurídica" value="Jurídica">Jurídica</Radio>
+            <Radio name="Física" value="Física">Física</Radio>
           </HStack>
         </RadioGroup>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
             name="nome"
             label="Nome:"
@@ -202,7 +178,7 @@ const CreateUserForm = () => {
             error={errors?.nome}
             {...register("nome")}
           />
-          { isCNPJ === 'Jurídica' &&
+          { isCNPJ &&
             <Input
               name="razao_social"
               label="Razão Social:"
@@ -213,20 +189,30 @@ const CreateUserForm = () => {
 
           }
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3}  align="flex-start">
           <Input
             name="telefone"
             label="Telefone:"
+            placeholder='## ####-####'
+            type="tel"
+            inputMode="numeric"
+            autoComplete="phone-number"
             bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
+            onChange={({ target}) => target.value = masked.phone(target.value)}
           />
           <Input
             name="celular"
             label="Celular:"
+            placeholder='## ####-####'
+            type="tel"
+            inputMode="numeric"
+            autoComplete="cel-number"
             bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
+            onChange={({ target}) => target.value = masked.celphone(target.value)}
           />
           <Input
             name="email"
@@ -237,20 +223,22 @@ const CreateUserForm = () => {
             {...register("email")}
           />
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3}  align="flex-start">
           <Input
             name="cpf_cnpj"
-            label={isCNPJ === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
+            label={isCNPJ ? 'CNPJ:' : 'CPF:' }
             bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
+            onChange={({ target}) => target.value = isCNPJ ? masked.cnpj(target.value) : masked.cpf(target.value)}
           />
           <Input
             name="rg_ie"
-            label={ isCNPJ === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
+            label={ isCNPJ ? 'Inscrição Estadual:' : 'RG:' }
             bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
+            onChange={({ target }) => target.value = isCNPJ ? target.value : masked.rg(target.value)}
           />          
           <Input
             name="contato"
@@ -297,16 +285,16 @@ const CreateUserForm = () => {
             error={errors?.estado}
             defaultValue="default"
             {...register("estado")}
-            onChange={(event) => fetchCities(event.target.value)}
+            onChange={({ target }) => fetchCities(target.value)}
           >
             <option value="default" hidden aria-readonly>
               Selecione um estado...
             </option>
             { states.isFetching && <option>Carregando...</option> }
-            { states.data?.map((state) => {
+            { states.data?.map(({ id, sigla, nome }) => {
               return (
-                <option key={state.id} value={state.sigla}>
-                  {state.nome}
+                <option key={id} value={sigla}>
+                  {nome}
                 </option>
               );
             }) }
@@ -316,7 +304,7 @@ const CreateUserForm = () => {
             label="Cidade:"
             bgColor="gray.50"
             error={errors?.cidade}
-            isDisabled={!Boolean(cities.length)}
+            isDisabled={!cities.length}
             defaultValue="default"
             {...register("cidade")}
             onChange={() => clearErrors('cidade')}
@@ -324,8 +312,8 @@ const CreateUserForm = () => {
             <option value="default" hidden aria-readonly>
               Selecione uma cidade...
             </option>
-            {cities.map((city) => {
-              return <option key={city.id}>{city.nome}</option>;
+            {cities.map(({ id, nome }) => {
+              return <option key={id}>{nome}</option>;
             })}
           </Select>
           
@@ -335,6 +323,7 @@ const CreateUserForm = () => {
             bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
+            onChange={({ target }) => target.value = masked.cep(target.value)}
           />
         </HStack>
         <Input

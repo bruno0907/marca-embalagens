@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 
 import { 
   Box, 
@@ -10,7 +10,7 @@ interface TableProps extends ChakraTableProps {
   children: ReactNode;
 }
 
-const Table = ({ children, ...rest }: TableProps) => {
+const TableComponent = ({ children, ...rest }: TableProps) => {
   return (
     <Box borderRadius="md" overflow="hidden">
       <ChakraTable colorScheme="gray" variant="striped" {...rest}>
@@ -19,6 +19,10 @@ const Table = ({ children, ...rest }: TableProps) => {
     </Box>
   )
 }
+
+const Table = memo(TableComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.children, nextProps.children)
+})
 
 export {
   Table

@@ -1,14 +1,16 @@
+import { memo } from 'react'
+
 import Link from 'next/link'
 
 import { ActiveLink } from "./components/ActiveLink"
 
-import { Logo } from "../Logo"
 import { useSignOutMutation } from '../../hooks/useSignOutMutation'
+
+import { Logo } from "../Logo"
 
 import {
   Box,   
   Flex,
-  Stack,  
   Button,
   Spacer,
   Link as ChakraLink
@@ -24,7 +26,7 @@ import {
 } from "react-icons/fi"
 
 
-const SideMenu = () => {
+const SideMenuComponent = () => {
   const signOutMutation = useSignOutMutation()
 
   const handleSignOut = () => signOutMutation.mutate()
@@ -36,7 +38,6 @@ const SideMenu = () => {
       flexDir="column"
       justify="flex-start"
       align="center"
-      // px="8"
       py="10"
       bgColor="gray.50"
       boxShadow="sm"
@@ -89,5 +90,7 @@ const SideMenu = () => {
     </Flex>
   )
 }
+
+const SideMenu = memo(SideMenuComponent)
 
 export { SideMenu }

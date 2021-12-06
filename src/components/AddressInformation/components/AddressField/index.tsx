@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 import dynamic from "next/dynamic"
 
 import { prefetchAddress } from "../../../../services/prefetchAddress"
@@ -43,11 +43,11 @@ const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
   }
 )
 
-type AddressFieldProps = {
+export type AddressFieldProps = {
   address: AddressProps
 }
 
-const AddressField = ({ address }: AddressFieldProps) => {
+const AddressFieldComponent = ({ address }: AddressFieldProps) => {
   const { onOpen, isOpen, onClose } = useDisclosure()
   const [addressToEdit, setAddressToEdit] = useState<AddressProps>(null)
 
@@ -95,5 +95,9 @@ const AddressField = ({ address }: AddressFieldProps) => {
     </>
   )
 }
+
+const AddressField = memo(AddressFieldComponent, (prevProps, nextProps) => {
+  return prevProps.address !== nextProps.address
+})
 
 export { AddressField }

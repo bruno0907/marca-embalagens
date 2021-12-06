@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, memo } from "react"
 import { useRouter } from "next/router"
 
 import { 
@@ -15,7 +15,7 @@ type HeaderProps = FlexProps & {
   title?: string;
 }
 
-const Header = ({ withGoBack, children, title, ...rest }: HeaderProps) => {
+const HeaderComponent = ({ withGoBack, children, title, ...rest }: HeaderProps) => {
   const router = useRouter()
 
   const handleGoBack = () => router.back()
@@ -39,5 +39,9 @@ const Header = ({ withGoBack, children, title, ...rest }: HeaderProps) => {
     </Flex>
   )
 }
+
+const Header = memo(HeaderComponent, (prevProps, nextProps) => {
+  return Object.is(prevProps.title, nextProps.title)
+})
 
 export { Header }

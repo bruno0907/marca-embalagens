@@ -15,11 +15,12 @@ interface InputProps extends ChakraInputProps {
   name: string;  
   label?: string;
   error?: FieldError;
-  isLoading?: boolean;    
+  isLoading?: boolean;  
+  placeholder?: string;    
 }
 
 const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> = 
-  ({ label, name, error = null, isLoading, ...rest }, ref) => {    
+  ({ label, name, error, isLoading, placeholder, ...rest }, ref) => {  
     return (
       <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
         { label && 
@@ -30,10 +31,11 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> =
         }
         <ChakraInput
           id={name}
-          name={name}
-          borderColor="gray.300"
-          ref={ref}
+          name={name}            
+          ref={ref}          
           error={error}
+          borderColor="gray.300"
+          flexShrink={0}
           {...rest}
         />
         { !!error && <FormErrorMessage>{error.message}</FormErrorMessage> }

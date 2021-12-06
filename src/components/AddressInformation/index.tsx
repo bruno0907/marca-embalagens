@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic'
 
 import { Content } from '../Content'
-import { AddressField } from './components/AddressField'
+import { AddressFieldProps } from './components/AddressField'
 import { CreateAddressFormProps } from './components/CreateAddressForm'
 import { ModalProps } from '../Modal'
 
@@ -42,6 +42,14 @@ const CreateAddressForm = dynamic<CreateAddressFormProps>(
         <Spinner color="blue.500" />
       </Center>
     )   
+  }
+)
+
+const AddressField = dynamic<AddressFieldProps>(
+  async () => {
+    const { AddressField } = await import('./components/AddressField')
+
+    return AddressField
   }
 )
 
