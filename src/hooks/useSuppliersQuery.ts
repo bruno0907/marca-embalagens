@@ -6,7 +6,7 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
   try {
     const user = supabase.auth.user()
   
-    if(!user) throw new Error('Not WithAuth')
+    if(!user) throw new Error('User not authenticated')
     
     if(!pattern) {
       const { data, error } = await supabase    
@@ -16,8 +16,6 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
         .order('nome')
     
       if(error) throw new Error(error.message)
-    
-      if(!data) throw new Error('No suppliers found')
     
       return data
 

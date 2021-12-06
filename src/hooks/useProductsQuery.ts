@@ -6,7 +6,7 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
   try {
     const user = supabase.auth.user()
   
-    if(!user) throw new Error('Not WithAuth')
+    if(!user) throw new Error('User not authenticated')
   
     if(!pattern) {
       const { data, error } = await supabase
@@ -16,8 +16,6 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
         .order('nome')
     
       if(error) throw new Error(error.message)
-    
-      if(!data) throw new Error('No products found')
     
       return data
     }
@@ -30,8 +28,6 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
       .order('nome')
 
     if(error) throw new Error(error.message)
-
-    if(!data) throw new Error('No products found')
 
     return data
     

@@ -12,8 +12,6 @@ const getSupplier = async (id: string): Promise<SupplierProps> => {
       
     if(error) throw new Error(error.message)
   
-    if(!data) throw new Error('No supplier found')
-  
     return data
     
   } catch (error) {

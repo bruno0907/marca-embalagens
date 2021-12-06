@@ -11,7 +11,7 @@ const getProfile = async (): Promise<ProfileQueryProps> => {
   try {
     const user = supabase.auth.user()
   
-    if(!user) throw new Error('Not WithAuth')
+    if(!user) throw new Error('User not authenticated')
     
     const { data: profileData, error: profileError } = await supabase
         .from<ProfileProps>('profiles')
@@ -19,13 +19,7 @@ const getProfile = async (): Promise<ProfileQueryProps> => {
         .eq('user_id', user.id)
         .single()    
     
-    if(profileError) {
-      throw new Error(profileError.message)
-    }
-  
-    if(!profileData) {
-      throw new Error('Profile not found')
-    }
+    if(profileError) throw new Error(profileError.message)
     
     const { data: profileAddress, error: profileAddressError } = await supabase
       .from<AddressProps>('addresses')
@@ -33,13 +27,9 @@ const getProfile = async (): Promise<ProfileQueryProps> => {
       .eq('user_id', profileData.id)
       .single()
       
-    if(profileAddressError) {
-      throw new Error(profileAddressError.message)
-    }
+    if(profileAddressError) throw new Error(profileAddressError.message)
   
-    if(!profileAddress) {
-      throw new Error('Profile address not found')
-    }
+    if(!profileAddress) throw new Error('Profile address not found')
   
     return {
       data: profileData,

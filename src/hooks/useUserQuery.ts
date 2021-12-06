@@ -12,8 +12,6 @@ const getUser = async (id: string): Promise<UserProps> => {
       
     if(error) throw new Error(error.message)
   
-    if(!data) throw new Error('No user found')
-  
     return data  
     
   } catch (error) {

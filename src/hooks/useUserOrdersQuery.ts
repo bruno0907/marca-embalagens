@@ -6,7 +6,7 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
   try {
     const user = supabase.auth.user()
     
-    if(!user) throw new Error('Not WithAuth')
+    if(!user) throw new Error('User not authenticated')
     
     if(!limit) {
       const { data, error } = await supabase
@@ -19,8 +19,6 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
     
       if(error) throw new Error(error.message)
       
-      if(!data) throw new Error('No orders for the user found')
-      
       return data
     }
     
@@ -32,8 +30,6 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
       .limit(limit)
   
     if(error) throw new Error(error.message)
-  
-    if(!data) throw new Error('No orders for the user found')
   
     return data
 

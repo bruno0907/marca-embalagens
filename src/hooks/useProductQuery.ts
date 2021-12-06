@@ -12,8 +12,6 @@ const getProduct = async (id: string): Promise<ProductProps> => {
   
     if(error) throw new Error(error.message)
   
-    if(!data) throw new Error('No product found')
-  
     return data
     
   } catch (error) {

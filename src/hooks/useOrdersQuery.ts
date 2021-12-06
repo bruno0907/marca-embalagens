@@ -17,24 +17,22 @@ const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
   try {
     const user = supabase.auth.user()
     
-    if(!user) throw new Error('Not WithAuth')
+    if(!user) throw new Error('User not authenticated')
     
     if(!pattern) {      
       const { data, error } = await supabase
       .from<OrderQueryProps>('orders')
       .select(`
-      id, 
-      numero_pedido,
-      created_at, 
-      total,
-      users ( nome )
+        id, 
+        numero_pedido,
+        created_at, 
+        total,
+        users ( nome )
       `)
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       
       if(error) throw new Error(error.message)
-      
-      if(!data) throw new Error('No orders found')
       
       return data      
     }
@@ -42,11 +40,11 @@ const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
     const { data, error } = await supabase
       .from<OrderQueryProps>('orders')
       .select(`
-      id, 
-      numero_pedido,
-      created_at, 
-      total,
-      users ( nome )
+        id, 
+        numero_pedido,
+        created_at, 
+        total,
+        users ( nome )
       `)
       .eq('user_id', user.id)
       .match({ numero_pedido: pattern })
@@ -55,8 +53,6 @@ const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
       })
       
     if(error) throw new Error(error.message)
-
-    if(!data) throw new Error('No orders found')
 
     return data
     

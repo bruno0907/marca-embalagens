@@ -6,7 +6,7 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
   try {
     const user = supabase.auth.user()
   
-    if(!user) throw new Error('Not WithAuth')
+    if(!user) throw new Error('User not authenticated')
   
     if(!filterQuery) {
       const { data, error } = await supabase    
@@ -16,8 +16,6 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
       .order('nome')
       
       if(error) throw new Error(error.message)
-      
-      if(!data) throw new Error('No users found')
       
       return data
     }
@@ -30,8 +28,6 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
       .order('nome')
 
     if(error) throw new Error(error.message)
-
-    if(!data) throw new Error('No users found')
 
     return data
     

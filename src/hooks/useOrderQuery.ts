@@ -12,8 +12,6 @@ const getOrder = async (id: string): Promise<OrderProps>=> {
   
     if(error) throw new Error(error.message)
   
-    if(!data) throw new Error('Order not found')
-  
     return data
     
   } catch (error) {
