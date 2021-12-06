@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 
+import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useForm, SubmitHandler } from 'react-hook-form'
@@ -15,9 +16,12 @@ import { useOrdersQuery } from '../../../../../hooks/useOrdersQuery'
 
 import { useCreateOrder } from '../../hooks/useCreateOrder'
 
-import { newOrderSchemaModel } from '../../../../../Models/NewOrderSchemaModel'
-
 import { useCreateOrderMutation } from '../../../../../hooks/useCreateOrderMutation'
+
+const newOrderSchema = yup.object().shape({
+  condicao_pagamento: yup.string().trim(),     
+  data_entrega: yup.string().required('A data da entrega é obrigatória').trim(),
+})
 
 import { 
   Text,    
@@ -80,7 +84,7 @@ const CreateOrderForm = () => {
   const orders = useOrdersQuery()
   
   const { handleSubmit, register, formState } = useForm<NewOrderProps>({
-    resolver: yupResolver(newOrderSchemaModel)
+    resolver: yupResolver(newOrderSchema)
   })
 
   const { errors, isSubmitting } = formState      
@@ -141,51 +145,48 @@ const CreateOrderForm = () => {
   }
 
   return (
-    
-      <Box as="form" onSubmit={handleSubmit(handleCreateNewOrderMutation)}>      
+    <Box as="form" onSubmit={handleSubmit(handleCreateNewOrderMutation)}>      
+      <Stack spacing={3}>      
         
-        <Stack spacing={3}>      
-          
-          <UserInfo />
-          
-          <UserAddress />
-                    
-          { selectedAddress &&          
-            <Stack spacing={3}>
-              <HStack spacing={3} align="flex-start">
+        <UserInfo />
+        
+        <UserAddress />
+                  
+        { selectedAddress &&          
+          <Stack spacing={3}>
+            <HStack spacing={3} align="flex-start">
+              <Input 
+                name="condicao_pagamento"
+                label="Condição de pagamento:"
+                {...register('condicao_pagamento')}
+              />
+              <Box w="380px">
                 <Input 
-                  name="condicao_pagamento"
-                  label="Condição de pagamento:"
-                  {...register('condicao_pagamento')}
+                  type="date"
+                  name="data_entrega"
+                  label="Data de entrega:"
+                  error={errors.data_entrega}
+                  {...register('data_entrega')}
                 />
-                <Box w="380px">
-                  <Input 
-                    type="date"
-                    name="data_entrega"
-                    label="Data de entrega:"
-                    error={errors.data_entrega}
-                    {...register('data_entrega')}
-                  />
-                </Box>
-              </HStack>
-            </Stack>
-          }
-        </Stack>
-
-        <Divider />
-
-        { selectedAddress && 
-          <Stack spacing={6}>
-            <Products/>
-            <OrderProducts
-              canSubmitOrder={canSubmitOrder}
-              isSubmitting={isSubmitting}
-              handleCancelOrder={handleCancelOrder}
-            />            
-          </Stack> 
+              </Box>
+            </HStack>
+          </Stack>
         }
-      </Box>
-    
+      </Stack>
+
+      <Divider />
+
+      { selectedAddress && 
+        <Stack spacing={6}>
+          <Products/>
+          <OrderProducts
+            canSubmitOrder={canSubmitOrder}
+            isSubmitting={isSubmitting}
+            handleCancelOrder={handleCancelOrder}
+          />            
+        </Stack> 
+      }
+    </Box>   
   )
 }
 

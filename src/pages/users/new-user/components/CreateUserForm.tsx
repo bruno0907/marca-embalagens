@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useCreateUserMutation } from "../../../../hooks/useCreateUserMutation";
@@ -15,7 +16,38 @@ import { Input } from "../../../../components/Input";
 import { Select } from "../../../../components/Select";
 
 import { InputMask } from "../../../../utils/inputMasksHandler";
-import { newUserSchemaModel } from "../../../../Models/NewUserSchemaModel";
+
+const newUserSchema= yup.object().shape({
+  nome: yup.string().required("O nome do cliente é necessário").trim(),
+  razao_social: yup.string().trim(),
+  telefone: yup.string().trim(),
+  celular: yup.string().trim(),
+  email: yup.string().email().trim(),
+  cpf_cnpj: yup.string().trim(),
+  rg_ie: yup.string().trim(),
+  contato: yup.string().trim(),
+  outras_informacoes: yup.string().trim(),
+  endereco: yup.string().required("O endereço é necessário").trim(),
+  bairro: yup.string().required("O bairro ou distrito é necessário kkkkkkkkkkkkkkkkkkkkkkk"),
+  estado: yup
+    .string()
+    .required('')
+    .test({
+      message: "Selecione um estado",
+      test: value => value !== "default",
+    })
+    .trim(),
+  cidade: yup
+    .string()
+    .required('É preciso selecionar um estado')
+    .test({
+      message: "Selecione uma cidade",
+      test: value => value !== "default",
+    })
+    .trim(),
+  cep: yup.string().trim(),
+  complemento: yup.string().trim(),  
+})
 
 import {
   Box,
@@ -55,7 +87,7 @@ const CreateUserForm = () => {
 
   const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
     useForm<HandleNewUserProps>({
-      resolver: yupResolver(newUserSchemaModel),
+      resolver: yupResolver(newUserSchema),
     });
 
   const { errors, isDirty, isSubmitting } = formState;

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react"
 
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form"
+
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -11,14 +12,6 @@ import { useUpdateAddressMutation } from "../../../../../../hooks/useUpdateAddre
 import { useStatesQuery } from "../../../../../../hooks/useStatesQuery"
 
 import { getCities } from "../../../../../../services/getCities"
-
-import { 
-  Stack,
-  HStack,
-  Box,
-  Button,
-  useToast,
-} from "@chakra-ui/react"
 
 const updateAddressSchema = yup.object().shape({  
   endereco: yup.string().required("O endereço é obrigatório").trim(),
@@ -42,6 +35,14 @@ const updateAddressSchema = yup.object().shape({
   cep: yup.string().trim(),
   complemento: yup.string().trim(),  
 });
+
+import { 
+  Stack,
+  HStack,
+  Box,
+  Button,
+  useToast,
+} from "@chakra-ui/react"
 
 import { AddressProps, CityProps } from "../../../../../../types"
 
