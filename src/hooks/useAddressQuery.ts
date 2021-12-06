@@ -12,12 +12,10 @@ const getAddress = async (id: string): Promise<AddressProps> => {
   
     if(error) throw new Error(error.message)
   
-    if(!data) throw new Error('Address not found')
-  
     return data
     
   } catch (error) {
-    return error
+    throw error
     
   }  
 }

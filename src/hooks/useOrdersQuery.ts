@@ -57,7 +57,7 @@ const getOrders = async (pattern?: number): Promise<OrderQueryProps[]> => {
     return data
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

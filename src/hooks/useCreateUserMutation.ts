@@ -50,7 +50,7 @@ const useCreateUserMutation = () => useMutation(
       return mutationResult
       
     } catch (error) {
-      return error
+      throw error
       
     }
 

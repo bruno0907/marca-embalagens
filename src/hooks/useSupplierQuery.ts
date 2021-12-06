@@ -15,7 +15,7 @@ const getSupplier = async (id: string): Promise<SupplierProps> => {
     return data
     
   } catch (error) {
-    return error
+    throw error
 
   }
 }

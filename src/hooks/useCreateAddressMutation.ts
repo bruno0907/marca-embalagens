@@ -14,7 +14,7 @@ const useCreateAddressMutation = () => useMutation(
       return data
       
     } catch (error) {
-      return error
+      throw error
       
     }
 

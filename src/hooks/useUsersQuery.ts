@@ -32,7 +32,7 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
     return data
     
   } catch (error) {
-    return error
+    throw error
 
   }
 }

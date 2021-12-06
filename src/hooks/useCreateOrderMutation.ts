@@ -2,13 +2,13 @@ import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase";
 
+import { NewOrderProps, OrderProps } from "../types"
+
 const createOrder = async (order: NewOrderProps) => { 
   return await supabase
     .from<OrderProps>('orders')
     .insert(order);
 }
-
-import { NewOrderProps, OrderProps } from "../types"
 
 const useCreateOrderMutation = () => useMutation(
   async (newOrder: NewOrderProps) => {
@@ -20,7 +20,7 @@ const useCreateOrderMutation = () => useMutation(
       return data
       
     } catch (error) {
-      return error
+      throw error
       
     }
 

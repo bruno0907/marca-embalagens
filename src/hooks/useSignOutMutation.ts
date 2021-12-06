@@ -9,7 +9,7 @@ const signOut = async () => {
     if(error) throw error  
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

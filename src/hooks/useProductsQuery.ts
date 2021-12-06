@@ -32,7 +32,7 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
     return data
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

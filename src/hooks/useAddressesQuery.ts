@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { supabase } from "../database/supabase";
 import { AddressProps } from "../types";
 
-const getAddresses = async (id: string): Promise<AddressProps[]> => {
+const getAddresses = async (id?: string): Promise<AddressProps[]> => {
   try {
     if(!id) return
     
@@ -16,17 +16,15 @@ const getAddresses = async (id: string): Promise<AddressProps[]> => {
   
     if(error) throw new Error(error.message)
   
-    if(!data) throw new Error('No addresses found')
-  
     return data
     
   } catch (error) {
-    return error
+    throw error
     
   }  
 }
 
-const useAddressesQuery = (id: string) => useQuery(
+const useAddressesQuery = (id?: string) => useQuery(
   ['address[]', id], 
   () => getAddresses(id), {
     staleTime: 1000 * 60 * 10, //10minutes

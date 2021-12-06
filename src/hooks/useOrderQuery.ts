@@ -15,7 +15,7 @@ const getOrder = async (id: string): Promise<OrderProps>=> {
     return data
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

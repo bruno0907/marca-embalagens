@@ -37,7 +37,7 @@ const getProfile = async (): Promise<ProfileQueryProps> => {
     }
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

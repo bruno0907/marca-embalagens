@@ -34,7 +34,7 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
     return data
 
   } catch (error) {
-    return error
+    throw error
 
   }
 }

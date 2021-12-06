@@ -145,7 +145,7 @@ export type OrderProps = {
   condicao_pagamento: string; // condicao do pagamento do pedido
   pedido: OrderItemProps[]; // pedido será um array de produtos
   total: number; // valor total do pedido
-  data_entrega: string;
+  data_entrega: Date;
   created_at: Date;
 }
 

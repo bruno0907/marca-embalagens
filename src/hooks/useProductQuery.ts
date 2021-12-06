@@ -15,7 +15,7 @@ const getProduct = async (id: string): Promise<ProductProps> => {
     return data
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

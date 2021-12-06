@@ -50,7 +50,7 @@ const useCreateSupplierMutation = () => useMutation(
       return mutationResult
       
     } catch (error) {
-      return error
+      throw error
       
     }
 

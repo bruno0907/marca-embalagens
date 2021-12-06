@@ -15,7 +15,7 @@ const getUser = async (id: string): Promise<UserProps> => {
     return data  
     
   } catch (error) {
-    return error
+    throw error
 
   }
 }
