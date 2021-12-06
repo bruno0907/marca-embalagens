@@ -7,11 +7,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useSignUpMutation } from '../../hooks/useSignUpMutation'
 
+import { Content } from '../../components/Content'
 import { Input } from '../../components/Input'
 
 import { 
-  Container, 
-  Flex,
+  Container,
   Stack,
   Button,  
   useToast,
@@ -19,7 +19,6 @@ import {
   Link as ChakraLink,
   Heading
 } from '@chakra-ui/react'
-import { Content } from '../../components/Content'
 
 type SignInProps = {
   email: string;
@@ -78,23 +77,23 @@ export default function SignUp () {
     } catch (error) {      
       toast({
         title: 'Erro ao fazer o cadastro...',
-        description: error.message,
+        description: 'O e-mail informado já está em uso.',
         status: 'error',
         isClosable: true,
         duration: 5000,
         position: 'top-right'
+      })
+      
+      reset({
+        ...values,
+        password: '',
+        password_verify: ''
       })
 
       setFocus('email')
 
       setError('email', {
         message: 'O e-mail informado já está em uso.'
-      })
-
-      reset({
-        ...values,
-        password: '',
-        password_verify: ''
       })
 
       return
@@ -115,6 +114,7 @@ export default function SignUp () {
         >
           <Stack spacing={3} mb="12">
             <Input 
+              name="email"
               type="email"
               label="E-mail:"
               isDisabled={isSubmitting}
@@ -122,6 +122,7 @@ export default function SignUp () {
               {...register('email')}
             />
             <Input 
+              name="password"
               type="password"
               label="Senha:"
               isDisabled={isSubmitting}
@@ -129,6 +130,7 @@ export default function SignUp () {
               {...register('password')}
             />
             <Input 
+              name="password_verify"
               type="password"
               label="Cofirme sua senha:"
               isDisabled={isSubmitting}

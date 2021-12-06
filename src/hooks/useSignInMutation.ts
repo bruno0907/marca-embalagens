@@ -16,7 +16,7 @@ const signIn = async ({ email, password }: AuthProps): Promise<User> => {
     return user
     
   } catch (error) {
-    return error
+    throw error
     
   }
 }

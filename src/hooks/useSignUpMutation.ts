@@ -3,12 +3,6 @@ import { queryClient } from '../contexts/queryContext'
 import { supabase } from '../database/supabase'
 import { createAddress } from '../services/createAddress'
 
-const createProfile = async (profile: NewProfileProps) => {
-  return await supabase
-    .from<ProfileProps>('profiles')
-    .insert(profile)
-}
-
 import { 
   AddressProps, 
   NewAddressProps, 
@@ -26,18 +20,21 @@ type NewProfileMutationProps = {
   address: AddressProps;
 }
 
-const getProfileByEmail = async (email: string) => await supabase
-  .from('profiles')
-  .select()
-  .eq('username', email)    
-  .single()
-
+const createProfile = async (profile: NewProfileProps) => {
+  return await supabase
+    .from<ProfileProps>('profiles')
+    .insert(profile)
+}
 
 const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutationProps> => {
   try {
-    const { data: userAlreadyExists } = await getProfileByEmail(email)
-  
-    if(userAlreadyExists) throw new Error('O e-mail informado já está em uso.')
+    const { data: userAlreadyExists } = await supabase
+      .from<ProfileProps>('profiles')
+      .select('username')
+      .eq('username', email)
+      .single()
+
+    if(userAlreadyExists) throw new Error('E-mail already in use')
   
     const { user, error } = await supabase.auth.signUp({
       email,
@@ -78,7 +75,7 @@ const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutatio
     }  
     
   } catch (error) {
-    return error
+    throw Error(error)
     
   }
 }

@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import Head from 'next/head'
 import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -7,19 +6,16 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useSignInMutation } from '../../hooks/useSignInMutation'
 
+import { Content } from '../../components/Content'
 import { Input } from '../../components/Input'
 
 import { 
   Container,
-  Flex, 
   Stack,
-  Button,  
+  Button,
   useToast,
-  Text,  
   Heading,
-  Link as ChakraLink
 } from '@chakra-ui/react'
-import { Content } from '../../components/Content'
 
 type SignInProps = {
   email: string;
@@ -27,8 +23,8 @@ type SignInProps = {
 }
 
 const signInFormSchema = yup.object().shape({
-  email: yup.string().required('E-mail obrigatório').email('E-mail inválido').trim(),
-  password: yup.string().required('Senha obrigatória').trim()
+  email: yup.string().required('Informe o seu e-mail de acesso').email('O formato de e-mail parece ser inválido').trim(),
+  password: yup.string().required('Informe a sua senha').trim()
 })
 
 export default function SignIn () {
@@ -62,7 +58,7 @@ export default function SignIn () {
       await signInMutation.mutateAsync({ email, password })
     
       toast({
-        title: 'Login Efetuado com sucesso',
+        title: 'Login Efetuado com sucesso, aguarde...',
         duration: 3000,
         status: 'success',
         position: 'top-right'
@@ -72,8 +68,8 @@ export default function SignIn () {
       
     } catch (error) {
       toast({
-        title: 'Erro ao fazer o login',
-        description: 'Nome de usuário ou senha inválidos',
+        title: 'Não foi possível fazer o seu login',
+        description: 'O e-mail ou senha informados são inválidos',
         duration: 5000,
         status: 'error',
         isClosable: true,
@@ -86,7 +82,7 @@ export default function SignIn () {
       })
       
       setError('email', {
-        message: 'Usuário ou senha inválidos',        
+        message: 'O e-mail ou a senha informados são inválidos.',        
       })
   
       setFocus('password')     
@@ -132,11 +128,11 @@ export default function SignIn () {
             isDisabled={!isDirty}                 
           >Entrar</Button>    
         </Content>
-        <Text>Não é cadastrado?
+        {/* <Text>Não é cadastrado?
           <Link href="/sign-up" passHref>
             <ChakraLink fontWeight="bold" color="blue.500" _hover={{ color: 'blue.600' }}> Faça seu cadastro aqui!</ChakraLink>
           </Link>              
-        </Text>      
+        </Text>       */}
       </Container>
     </>
   )
