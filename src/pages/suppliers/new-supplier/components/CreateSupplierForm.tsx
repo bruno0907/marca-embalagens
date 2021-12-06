@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react"
 
 const newSupplierSchema = yup.object().shape({
-  nome: yup.string().required("O nome é obrigatório").trim(),
+  nome: yup.string().required("Informe um nome").trim(),
   razao_social: yup.string().trim(),
   produto: yup.string().trim(),
   telefone: yup.string().trim(),
@@ -37,11 +37,11 @@ const newSupplierSchema = yup.object().shape({
   rg_ie: yup.string().trim(),
   contato: yup.string().trim(),
   outras_informacoes: yup.string().trim(),
-  endereco: yup.string().required("O endereço é obrigatório").trim(),
-  bairro: yup.string().required("O bairo/distrito é obrigatório"),
+  endereco: yup.string().required("É preciso informar um endereço").trim(),
+  bairro: yup.string().required("Informe o endereço ou distritro"),
   estado: yup
     .string()
-    .required("Você deve selecionar um estado")
+    .required("Selecione um estado")
     .test({
       message: "Selecione um estado",
       test: value => value !== "default",
@@ -49,9 +49,9 @@ const newSupplierSchema = yup.object().shape({
     .trim(),
   cidade: yup
     .string()
-    .required("Você deve selecionar um estado")
+    .required("Selecione um estado")
     .test({
-      message: "Você deve selecionar uma cidade",
+      message: "Selecione uma cidade",
       test: value => value !== "default",
     })
     .trim(),
@@ -64,18 +64,19 @@ import {
   NewAddressProps, 
   CityProps 
 } from "../../../../types";
+import { InputMask } from "../../../../utils/inputMasksHandler";
 
 type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
 
 const CreateSupplierForm = () => {
-  const { session } = useAuth()
-  
+  const { session } = useAuth()  
   const router = useRouter()
+  const toast = useToast()
+  const masked = new InputMask()
 
   const [cities, setCities] = useState<CityProps[]>([]);  
-  const [isCNPJ, setIsCNPJ] = useState('Jurídica');
+  const [isCNPJ, setIsCNPJ] = useState(true);
 
-  const toast = useToast()
   const states = useStatesQuery()  
 
   const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
@@ -84,6 +85,12 @@ const CreateSupplierForm = () => {
     });
 
   const { errors, isDirty, isSubmitting } = formState;
+
+  const handleIsCNPJ = () => {
+    setIsCNPJ(!isCNPJ)
+
+    reset()
+  }
 
   const newSupplierMutation = useCreateSupplierMutation()
 
@@ -109,7 +116,7 @@ const CreateSupplierForm = () => {
 
     const supplierData: NewSupplierProps = {
       user_id: session.user.id,      
-      natureza_cliente: isCNPJ,
+      natureza_cliente: isCNPJ ? 'Jurídica' : 'Física',
       produto,
       nome,
       razao_social,
@@ -136,7 +143,7 @@ const CreateSupplierForm = () => {
       await newSupplierMutation.mutateAsync({ supplierData, addressData })
 
       toast({
-        title: 'Cliente cadastrado com sucesso',
+        title: 'Fornecedor cadastrado com sucesso',
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -147,7 +154,7 @@ const CreateSupplierForm = () => {
 
     } catch (error) {
       toast({        
-        title: error.message,
+        title: 'Ocorreu um erro ao cadastrar o novo fornecedor',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -186,7 +193,7 @@ const CreateSupplierForm = () => {
       onSubmit={handleSubmit(handleNewUser)}
     >
       <Stack spacing={3}>        
-        <RadioGroup value={isCNPJ} onChange={setIsCNPJ} mb="4">                
+        <RadioGroup value={isCNPJ ? 'Jurídica' : 'Física'} onChange={handleIsCNPJ} mb="4">                
           <HStack spacing={3}>
             <Text color="gray.600" fontWeight="medium" mr="4">Tipo de pessoa: </Text>
             <Radio value="Jurídica">Jurídica</Radio>
@@ -201,7 +208,7 @@ const CreateSupplierForm = () => {
             error={errors?.nome}
             {...register("nome")}
           />
-          { isCNPJ === 'Jurídica' &&
+          { isCNPJ &&
             <Input
               name="razao_social"
               label="Razão Social:"
@@ -226,6 +233,7 @@ const CreateSupplierForm = () => {
             bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
+            onChange={({ target }) => target.value = masked.phone(target.value)}
           />
           <Input
             name="celular"
@@ -233,6 +241,7 @@ const CreateSupplierForm = () => {
             bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
+            onChange={({ target }) => target.value = masked.celphone(target.value)}
           />
           <Input
             name="email"
@@ -246,14 +255,15 @@ const CreateSupplierForm = () => {
         <HStack spacing={3}>
           <Input
             name="cpf_cnpj"
-            label={isCNPJ === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
+            label={isCNPJ ? 'CNPJ:' : 'CPF:' }
             bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
+            onChange={({ target }) => target.value =  isCNPJ ? masked.cnpj(target.value) : masked.cpf(target.value)}
           />
           <Input
             name="rg_ie"
-            label={ isCNPJ === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
+            label={ isCNPJ ? 'Inscrição Estadual:' : 'RG:' }
             bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
@@ -309,10 +319,10 @@ const CreateSupplierForm = () => {
               Selecione um estado...
             </option>
             { states.isFetching && <option>Carregando...</option> }
-            { states.data?.map((state) => {
+            { states.data?.map(({ id, sigla, nome }) => {
               return (
-                <option key={state.id} value={state.sigla}>
-                  {state.nome}
+                <option key={id} value={sigla}>
+                  {nome}
                 </option>
               );
             })}
@@ -330,8 +340,8 @@ const CreateSupplierForm = () => {
             <option value="default" hidden aria-readonly>
               Selecione uma cidade...
             </option>
-            {cities.map((city) => {
-              return <option key={city.id}>{city.nome}</option>;
+            {cities.map(({ id, nome }) => {
+              return <option key={id}>{nome}</option>;
             })}
           </Select>
           
@@ -341,6 +351,7 @@ const CreateSupplierForm = () => {
             bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
+            onChange={({ target }) => target.value = masked.cep(target.value)}
           />
         </HStack>
         <Input

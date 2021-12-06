@@ -41,9 +41,9 @@ export class InputMask {
     v = v.replace(/\D/g, '')
   
     v = v.replace(/^(\d{2})(\d)/g, '$1 $2')
-    v = v.replace(/^(\d{2}).(\d{4})(\d)/g, '$1 $2-$3')    
+    v = v.replace(/^(\d{2}).(\d{5})(\d)/g, '$1 $2-$3')    
   
-    return v.substring(0, 12)
+    return v.substring(0, 13)
   }
 
   cep (v: string): string {
