@@ -6,7 +6,8 @@ import {
   Link as ChakraLink,
   Text,
   Icon,  
-  LinkProps
+  LinkProps,
+  Flex
 } from '@chakra-ui/react'
 
 interface ActiveLinkProps extends LinkProps {
@@ -26,16 +27,22 @@ const ActiveLink = ({ icon, label, href, ...rest }: ActiveLinkProps) => {
     <Link href={href} passHref>
       <ChakraLink
         display="flex"
-        // alignItems="flex-end"
-        fontWeight="bold"
-        p="2"
-        _hover={{ color: "blue.500" }}
+        px="8"
+        py="4"
+        alignItems="center"
+        justifyContent="flex-start"
+        fontWeight="bold"        
+        borderRightWidth="3px"       
+        borderRightColor={
+          itMatchesHref(href) ? 'blue.500' : 'gray.50'
+        }
+        _hover={{ color: "blue.500", borderRightColor: "blue.500" }}
         {...rest}
-      >
+      >        
         <Icon as={icon} fontSize="xl" mr="4" color={itMatchesHref(href) && "blue.500"}/>        
         <Text color={itMatchesHref(href) && "blue.500"}>
           {label}
-        </Text>
+        </Text>        
       </ChakraLink>
     </Link>
   );

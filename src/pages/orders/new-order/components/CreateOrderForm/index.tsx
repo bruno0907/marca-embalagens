@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 
@@ -118,6 +117,7 @@ const CreateOrderForm = () => {
         status: 'success',
         isClosable: true,
         duration: 3000,
+        position: 'top-right',
       })
 
       router.push(`/orders/${response[0].id}`)

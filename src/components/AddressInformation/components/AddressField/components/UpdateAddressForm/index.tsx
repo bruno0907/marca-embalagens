@@ -93,7 +93,8 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
       console.log(error)
       toast({
         status: 'error',
-        description: 'Ocorreu um erro ao atualizar o endereço...'
+        description: 'Ocorreu um erro ao atualizar o endereço...',
+        position: 'top-right',
       })
     }
 

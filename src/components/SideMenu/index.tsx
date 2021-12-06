@@ -5,7 +5,8 @@ import { ActiveLink } from "./components/ActiveLink"
 import { Logo } from "../Logo"
 import { useSignOutMutation } from '../../hooks/useSignOutMutation'
 
-import { 
+import {
+  Box,   
   Flex,
   Stack,  
   Button,
@@ -19,7 +20,7 @@ import {
   FiPackage, 
   FiPhoneCall, 
   FiHome,
-  FiLogOut
+  FiLogOut,  
 } from "react-icons/fi"
 
 
@@ -35,7 +36,7 @@ const SideMenu = () => {
       flexDir="column"
       justify="flex-start"
       align="center"
-      px="8"
+      // px="8"
       py="10"
       bgColor="gray.50"
       boxShadow="sm"
@@ -48,7 +49,7 @@ const SideMenu = () => {
           </ChakraLink>
         </Link>
       </Flex>
-      <Stack as="nav" spacing={3} mt="16">        
+      <Box as="nav" mt="16">        
         <ActiveLink 
           href="/dashboard"
           icon={FiHome}
@@ -74,15 +75,17 @@ const SideMenu = () => {
           icon={FiPhoneCall}
           label="Fornecedores"
         />        
-      </Stack>
+      </Box>
       <Spacer />
-      <Button
-        rightIcon={<FiLogOut />}        
-        onClick={handleSignOut}
-        colorScheme="blue"
-        flexShrink={0}        
-        w="100%"                             
-      >Sair</Button>
+      <Flex px="8" w="100%">
+        <Button
+          rightIcon={<FiLogOut />}
+          onClick={handleSignOut}
+          colorScheme="blue"
+          flexShrink={0}
+          flex="1"
+        >Sair</Button>
+      </Flex>
     </Flex>
   )
 }

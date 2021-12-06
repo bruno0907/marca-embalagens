@@ -1,4 +1,4 @@
-import { createContext, MutableRefObject, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, MutableRefObject, ReactNode, useContext, useState } from 'react'
 import { AddressProps, OrderItemProps, ProductProps, UserProps } from '../../../../types'
 
 type ContextProps = {  
@@ -16,7 +16,7 @@ type ContextProps = {
   setOrderTotal: (result: number) => void  
   handleAddItemToOrder: (ref: MutableRefObject<HTMLSelectElement>) => void;
   handleRemoveItemFromOrder: (index: number) => void;
-  handleProductInOrderAmount: (amount: 'increment' | 'decrement', index) => void
+  handleProductInOrderAmount: (amount: 'increment' | 'decrement', index: number) => void
 }
 
 type ProviderProps = {
@@ -35,12 +35,6 @@ const CreateOrderProvider = ({ children }: ProviderProps) => {
   const [orderProducts, setOrderProducts] = useState<OrderItemProps[]>([])
 
   const [orderTotal, setOrderTotal] = useState(0)
-
-  const getSumTotal = (order: OrderItemProps[]) => {
-    return order.reduce((acc, value) => {      
-      return acc + value.valor_total
-    }, 0)
-  }
   
   const handleAddItemToOrder = (ref: MutableRefObject<HTMLSelectElement>) => {    
     const currentOrderProducts = [...orderProducts]
@@ -61,8 +55,10 @@ const CreateOrderProvider = ({ children }: ProviderProps) => {
       ]
     
       setOrderProducts(updatedOrderProducts)
-  
-      const total = getSumTotal(updatedOrderProducts)
+
+      const total = updatedOrderProducts.reduce((acc, value) => {      
+        return acc + value.valor_total
+      }, 0)
     
       setOrderTotal(total)
       
@@ -79,6 +75,7 @@ const CreateOrderProvider = ({ children }: ProviderProps) => {
         quantidade: product.quantidade + productAmount,
         valor_total: product.valor_total + (selectedProduct.preco_unitario * productAmount)
       }
+
       return product
     })
 
@@ -86,7 +83,9 @@ const CreateOrderProvider = ({ children }: ProviderProps) => {
 
     ref.current.value = 'defaultValue'
 
-    const total = getSumTotal(updatedProducts)
+    const total = updatedProducts.reduce((acc, value) => {      
+      return acc + value.valor_total
+    }, 0)
 
     setOrderTotal(total)
   
@@ -104,7 +103,11 @@ const CreateOrderProvider = ({ children }: ProviderProps) => {
       const updatedOrderProducts = currentOrderProducts.filter((_, i) => i !== index)      
 
       setOrderProducts(updatedOrderProducts)
-      const total = getSumTotal(updatedOrderProducts)
+
+      const total = updatedOrderProducts.reduce((acc, value) => {
+        return acc + value.valor_total
+      }, 0)
+
       setOrderTotal(total)
 
       return
@@ -121,21 +124,29 @@ const CreateOrderProvider = ({ children }: ProviderProps) => {
     })
      
     setOrderProducts(updatedOrderProductsAmount)
-    const total = getSumTotal(updatedOrderProductsAmount)
+
+    const total = updatedOrderProductsAmount.reduce((acc, value) => {      
+      return acc + value.valor_total
+    }, 0)
     
     setOrderTotal(total)
 
-    return
-    
+    return    
   }
 
   const handleRemoveItemFromOrder = (itemIndex: number) => {
     const currentOrderProducts = [...orderProducts]
     const updatedOrderProducts = currentOrderProducts.filter((_, index) => index !== itemIndex)
+
     setOrderProducts(updatedOrderProducts)
     
-    const result = getSumTotal(updatedOrderProducts)  
+    const result = updatedOrderProducts.reduce((acc, value) => {      
+      return acc + value.valor_total
+    }, 0)
+
     setOrderTotal(result)
+    
+    return
   }
 
   return (
