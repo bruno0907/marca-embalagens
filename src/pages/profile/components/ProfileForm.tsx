@@ -17,8 +17,7 @@ import {
   Button,
   Flex,  
   Stack,
-  HStack,
-  Text,
+  HStack,  
   useToast,
   Skeleton
 } from "@chakra-ui/react"
@@ -52,6 +51,7 @@ import {
   ProfileProps,  
   CityProps
 } from "../../../types";
+import { InputMask } from "../../../utils/inputMasksHandler";
 
 type HandleUpdateProfileProps = NewProfileProps & NewAddressProps
 
@@ -66,6 +66,7 @@ type ProfileFormProps = {
 const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
   const toast = useToast()
   const router = useRouter()    
+  const masked = new InputMask()
   
   const [cities, setCities] = useState<CityProps[]>([])
 
@@ -243,6 +244,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
+            onChange={({ target }) => target.value = masked.phone(target.value)}
           />
           <Input
             name="celular"
@@ -250,6 +252,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
+            onChange={({ target }) => target.value = masked.celphone(target.value)}
           />
           <Input
             name="email"
@@ -267,6 +270,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
+            onChange={({ target }) => target.value = masked.cnpj(target.value)}
           />
           <Input
             name="rg_ie"
@@ -305,10 +309,10 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             onChange={(event) => fetchCities(event.target.value)}
           >{ states.isFetching && <option>Carregando...</option> }
             <option value="default" hidden aria-readonly>Selecione um estado...</option>
-            { states.data?.map((state) => {
+            { states.data?.map(({ id, sigla, nome }) => {
               return (
-                <option key={state.id} value={state.sigla}>
-                  {state.nome}
+                <option key={id} value={sigla}>
+                  {nome}
                 </option>
               );
             }) }
@@ -322,8 +326,8 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             {...register("cidade")}
           >{!cities && <option>Carregando...</option>}
             <option value="default" hidden aria-readonly>Selecione uma cidade...</option>
-            { cities.map((city) => {
-              return <option key={city.id} value={city.nome}>{city.nome}</option>;
+            { cities.map(({ id, nome }) => {
+              return <option key={id} value={nome}>{nome}</option>;
             }) }
           </Select>
           
@@ -333,6 +337,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
+            onChange={({ target }) => target.value = masked.cep(target.value)}
           />
         </HStack>
         <Input
