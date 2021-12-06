@@ -23,9 +23,9 @@ import {
 } from "@chakra-ui/react"
 
 const newProductSchema = yup.object().shape({
-  nome: yup.string().required("O nome é obrigatório").trim(),
+  nome: yup.string().required("Informe um nome pro seu produto").trim(),
   descricao: yup.string().trim(),
-  preco_unitario: yup.number().required('O valor do produto é obrigatório'),    
+  preco_unitario: yup.number().required('Informe o valor'),    
 });
 
 import { NewProductProps } from "../../../../types";

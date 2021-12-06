@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 
-import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useUpdateProfileMutation } from "../../../hooks/useUpdateProfileMutation";
 import { useStatesQuery } from "../../../hooks/useStatesQuery";
 import { getCities } from "../../../services/getCities";
+import { InputMask } from "../../../utils/inputMasksHandler";
 
 import { Input } from "../../../components/Input";
 import { Select } from "../../../components/Select";
@@ -23,21 +24,21 @@ import {
 } from "@chakra-ui/react"
 
 const profileFormSchema = yup.object().shape({
-  nome: yup.string().required("O nome é obrigatório").trim(),
+  nome: yup.string().required("É necessário informar um nome").trim(),
   razao_social: yup.string().trim().nullable(),
   telefone: yup.string().trim().nullable(),
-  celular: yup.string().required('O celular é obrigatório').trim().nullable(),
+  celular: yup.string().required('Informe um número de celular').trim().nullable(),
   email: yup.string().email().trim().nullable(),
   cpf_cnpj: yup.string().trim().nullable(),
   rg_ie: yup.string().trim().nullable(),
-  endereco: yup.string().required("O endereço é obrigatório").trim().nullable(),
-  bairro: yup.string().required("O bairo é obrigatório").trim().nullable(),
+  endereco: yup.string().required("O endereço precisa ser informado").trim().nullable(),
+  bairro: yup.string().required("Informe o bairro ou distrito").trim().nullable(),
   estado: yup.string().test({
-      message: "O estado é obrigatório",
+      message: "É preciso selecionar um estado",
       test: value => value !== "default",
     }).required().trim().nullable(),
   cidade: yup.string().test({
-      message: "A cidade é obrigatória",
+      message: "Selecione uma cidade",
       test: value => value !== "default",
     }).required("Você precisa selecionar um estado").trim().nullable(),
   cep: yup.string().trim().nullable(),
@@ -51,7 +52,6 @@ import {
   ProfileProps,  
   CityProps
 } from "../../../types";
-import { InputMask } from "../../../utils/inputMasksHandler";
 
 type HandleUpdateProfileProps = NewProfileProps & NewAddressProps
 
@@ -140,7 +140,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
 
     } catch (error) {
       toast({        
-        title: error.message,
+        title: 'Um erro ocorreu ao atualizar os dados do seu perfil. Tente novamente.',
         status: 'error',
         duration: 5000,
         isClosable: true,
