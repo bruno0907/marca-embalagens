@@ -36,7 +36,7 @@ import {
 import { UserProps } from '../../../../types'
 
 type UserInformationProps = {
-  userId: string | string[];  
+  userId: string;  
 }
 
 const Modal = dynamic<ModalProps>(
@@ -65,7 +65,7 @@ const UserInformation = ({ userId }: UserInformationProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure()  
   const [userToEdit, setUserToEdit] = useState<UserProps>(null)
 
-  const user = useUserQuery(String(userId))
+  const user = useUserQuery(userId)
 
   function handleEditUser(user: UserProps) {
     setUserToEdit(user)

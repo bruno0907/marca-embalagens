@@ -30,8 +30,7 @@ import {
 import { ProductProps } from "../../../../types"
 
 type UpdateProductFormProps = {
-  product: ProductProps;
-  isFetching: boolean;
+  product: ProductProps;  
 }
 
 const updateProductSchema = yup.object().shape({
@@ -40,7 +39,7 @@ const updateProductSchema = yup.object().shape({
   descricao: yup.string().required('A descrição do produto é obrigatória').trim(),  
 })
 
-const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {  
+const UpdateProductForm = ({ product }: UpdateProductFormProps) => {  
   const toast = useToast()
   const router = useRouter()
   const [isEditing, setIsEditing] = useState(true)
@@ -87,19 +86,6 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
 
   const handleSubmitErrors: SubmitErrorHandler<ProductProps> = errors => console.log(errors)
 
-  if(isFetching) {
-    return (
-      <VStack spacing={3}>
-        <Skeleton h="10" w="200px" borderRadius="md" alignSelf="flex-end" mb="8"/>        
-        <HStack spacing={3} w="100%">
-          <Skeleton h="14" w="100%" borderRadius="md"/>
-          <Skeleton h="14" w="200px" borderRadius="md"/>
-        </HStack>
-        <Skeleton h="36" w="100%" borderRadius="md"/>
-      </VStack>
-    )
-  }
-
   return (
     <Box as="form" onSubmit={handleSubmit(handleUpdateProduct, handleSubmitErrors)}>
       <FormControl htmlFor="edit-product" display="flex" aling="center" justifyContent="flex-end" mb="8">
@@ -113,7 +99,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
             name="nome"
             label="Nome:"
             defaultValue={product.nome}
-            isDisabled={isEditing}
+            isDisabled={isEditing || isSubmitting}
             error={errors.nome}
             {...register('nome')}
           />
@@ -127,7 +113,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
                 step="0.01"
                 defaultValue={product.preco_unitario.toFixed(2)}
                 pattern="^\d+(?:\.\d{1,2})?$"
-                isDisabled={isEditing}                                
+                isDisabled={isEditing || isSubmitting}                                
                 error={errors.preco_unitario}
                 {...register('preco_unitario')}
               />
@@ -141,7 +127,7 @@ const UpdateProductForm = ({ product, isFetching }: UpdateProductFormProps) => {
           name="descricao"
           label="Descrição:"
           defaultValue={product.descricao}
-          isDisabled={isEditing}
+          isDisabled={isEditing || isSubmitting}
           error={errors.descricao}
           {...register('descricao')}
         />

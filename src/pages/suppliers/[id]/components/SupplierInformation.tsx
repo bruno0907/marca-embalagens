@@ -58,14 +58,14 @@ const UpdateSupplierForm = dynamic<UpdateSupplierFormProps>(
 )
 
 type SupplierInformationProps = {
-  supplierId: string | string[];  
+  supplierId: string;  
 }
 
 const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [supplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)
   
-  const supplier = useSupplierQuery(String(supplierId))
+  const supplier = useSupplierQuery(supplierId)
 
   function handleEditSupplier(supplier: SupplierProps) {
     setSupplierToEdit(supplier)

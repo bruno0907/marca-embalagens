@@ -54,13 +54,13 @@ const AddressField = dynamic<AddressFieldProps>(
 )
 
 export type AddressesInformationProps = {
-  userId: string | string[];
+  userId: string;
 }
   
 const AddressesInformation = ({ userId }: AddressesInformationProps) => {   
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const addresses = useAddressesQuery(String(userId))
+  const addresses = useAddressesQuery(userId)
 
   const handleNewAddress = () => onOpen()
 

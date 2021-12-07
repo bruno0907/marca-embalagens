@@ -11,9 +11,11 @@ import { UpdateProductForm } from './components/UpdateProductForm'
 import { useProductQuery } from '../../../hooks/useProductQuery'
 
 import {   
-  Center,
-  Spinner,
+  Center,  
   Text,
+  VStack,
+  Skeleton,
+  HStack
  } from '@chakra-ui/react'
 
  type Props = {
@@ -22,42 +24,38 @@ import {
    }
  }
 
-export default function Product({ params }: Props) {
-  const router = useRouter()
+export default function Product({ params }: Props) {  
   const { id } = params
 
-  const product = useProductQuery(id)
-
-  if(product.isLoading) {
-    return (
-      <Center my="8" h="100vh">
-        <Spinner size="lg" color="blue.500"/>
-      </Center>
-    )
-  }
-
-  if(product.isError) {
-    return (
-      <Center my="8" h="100vh">
-        <Text>Erro ao carregar as informações...</Text>
-      </Center>
-    )
-  }
+  const { data, isLoading, isError } = useProductQuery(id)
 
   return (
     <>
       <Head>
-        <title>MARCA | {product.data.nome}</title>
+        <title>MARCA | {data?.nome}</title>
       </Head>
 
       <WithAuth>
 
-        <Header withGoBack title={product.data.nome} />
+        <Header withGoBack title={data?.nome} />
 
         <Divider />
 
         <Content>
-          <UpdateProductForm product={product.data} isFetching={product.isFetching} />          
+          { isLoading ? (
+            <VStack spacing={3}>
+              <Skeleton h="10" w="200px" borderRadius="md" alignSelf="flex-end" mb="8"/>        
+              <HStack spacing={3} w="100%">
+                <Skeleton h="12" w="100%" borderRadius="md"/>
+                <Skeleton h="12" w="200px" borderRadius="md"/>
+              </HStack>
+              <Skeleton h="12" w="100%" borderRadius="md"/>
+            </VStack>
+          ) : isError ? (
+            <Text>Erro ao carregar as informações...</Text>
+          ) : (
+            <UpdateProductForm product={data} />          
+          )}
         </Content>
 
       </WithAuth>
