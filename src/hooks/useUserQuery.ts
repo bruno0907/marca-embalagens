@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
-const getUser = async (id: string): Promise<UserProps> => {
+const getUser = async (id: string): Promise<UserProps> => {  
   try {
     const { data, error } = await supabase
       .from<UserProps>('users')

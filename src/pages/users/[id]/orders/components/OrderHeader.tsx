@@ -9,7 +9,7 @@ import {
 type OrderHeaderProps = {
  orderNumber: number;
  createdAt: Date;
- deliveryDate: string;
+ deliveryDate: Date;
 }
 
 const OrderHeader = ({

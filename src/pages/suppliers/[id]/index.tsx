@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { GetServerSideProps } from 'next'
 
 import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
@@ -13,11 +14,18 @@ import { VStack, Button } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
-export default function Supplier() {  
+type Props = {
+  params: {
+    id: string
+  }
+}
+
+export default function Supplier({ params }: Props) {  
   const router = useRouter()
-  const id = router.query.id
   
-  const supplier = useSupplierQuery(String(id))
+  const { id } = params
+  
+  const supplier = useSupplierQuery(id)
 
   const handlePrintUser = () => router.push(`/suppliers/${id}/supplier-to-print`)  
 
@@ -47,4 +55,13 @@ export default function Supplier() {
       </WithAuth>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
+  return {
+    props: {
+      params
+    }
+  }
 }

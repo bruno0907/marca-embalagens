@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 
 import Head from 'next/head'
-import { useRouter } from "next/router"
+import { GetServerSideProps } from 'next'
 
 import { useReactToPrint } from 'react-to-print'
 
@@ -26,14 +26,19 @@ import {
 } from "@chakra-ui/react"
 import { FiPrinter } from 'react-icons/fi'
 
-export default function UserOrders() {
-  const router = useRouter()
-  const id = router.query.id  
+type Props = {
+  params: {
+    id: string;
+  }
+}
+
+export default function UserOrders({ params }: Props) {  
+  const { id } = params
 
   const OrderstoPrintRef = useRef<HTMLDivElement>(null)
 
-  const user = useUserQuery(String(id))
-  const orders = useUserOrdersQuery(String(id))  
+  const user = useUserQuery(id)
+  const orders = useUserOrdersQuery(id)  
 
   const handlePrintOrders = useReactToPrint({
     content: () => OrderstoPrintRef.current,
@@ -98,4 +103,12 @@ export default function UserOrders() {
       </WithAuth>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
+  return {
+    props: {
+      params
+    }
+  }
 }

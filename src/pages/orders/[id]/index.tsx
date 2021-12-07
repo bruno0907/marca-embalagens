@@ -2,6 +2,7 @@ import { useRef } from 'react'
 
 import Head from 'next/head'
 import { useRouter } from "next/router"
+import { GetServerSideProps } from 'next'
 
 import { useReactToPrint } from 'react-to-print'
 
@@ -27,13 +28,20 @@ import {
 
 import { FiPrinter } from 'react-icons/fi'
 
-export default function Order() {
+type Props = {
+  params: {
+    id: string;
+  }
+}
+
+export default function Order({ params }: Props) {
   const router = useRouter()
-  const id = router.query.id  
+  
+  const { id } = params
 
   const orderRef = useRef<HTMLDivElement>(null)
 
-  const order = useOrderQuery(String(id))
+  const order = useOrderQuery(id)
 
   const handlePrintOrder = useReactToPrint({
     content: () => orderRef.current,
@@ -101,4 +109,13 @@ export default function Order() {
       </Box>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
+  return {
+    props: {
+      params
+    }
+  }
 }

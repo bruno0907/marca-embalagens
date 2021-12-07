@@ -2,6 +2,7 @@ import Head from "next/head"
 
 import { useRef } from "react"
 import { useRouter } from "next/router"
+import { GetServerSideProps } from "next"
 
 import { useReactToPrint } from "react-to-print"
 
@@ -26,14 +27,20 @@ import {
 
 import { FiPrinter } from "react-icons/fi"
 
-export default function SupplierToPrint() {
+type Props = {
+  params: {
+    id: string;
+  }
+}
+
+export default function SupplierToPrint({ params }: Props) {
   const router = useRouter()
-  const supplierId = router.query.id
+  const { id } = params
 
   const ref = useRef<HTMLDivElement>(null)
 
-  const supplier = useSupplierQuery(String(supplierId))
-  const addresses = useAddressesQuery(String(supplierId))  
+  const supplier = useSupplierQuery(id)
+  const addresses = useAddressesQuery(id)  
 
   const handlePrint = useReactToPrint({
     content: () => ref.current,
@@ -85,4 +92,13 @@ export default function SupplierToPrint() {
       </Box>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
+  return {
+    props: {
+      params
+    }
+  }
 }

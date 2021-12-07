@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { GetServerSideProps } from 'next'
 import { useRouter } from 'next/router'
 
 import { useUserQuery } from '../../../hooks/useUserQuery'
@@ -15,12 +16,17 @@ import { VStack, Button } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
+type Props = {
+  params: {
+    id: string;
+  }
+}
 
-export default function User() {  
-  const router = useRouter()
-  const id = router.query.id  
+export default function User({ params }: Props) {
+  const { id } = params
+  const router = useRouter()  
   
-  const user = useUserQuery(String(id))
+  const user = useUserQuery(id)
 
   return (
     <>
@@ -50,4 +56,12 @@ export default function User() {
 
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
+  return {
+    props: {
+      params
+    }
+  }
 }

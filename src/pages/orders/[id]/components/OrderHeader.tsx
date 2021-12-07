@@ -14,7 +14,7 @@ import {
 
 type OrderHeaderProps = {
   orderNumber: number;
-  orderDeliveryDate: string;
+  orderDeliveryDate: Date;
 }
 
 const OrderHeader = ({ orderNumber, orderDeliveryDate }: OrderHeaderProps) => {

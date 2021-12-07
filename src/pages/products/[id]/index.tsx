@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { GetServerSideProps } from 'next'
 
 import { WithAuth } from '../../../components/WithAuth'
 import { Divider } from '../../../components/Divider'
@@ -15,11 +16,17 @@ import {
   Text,
  } from '@chakra-ui/react'
 
-export default function Product() {
-  const router = useRouter()
-  const { id } = router.query
+ type Props = {
+   params: {
+     id: string
+   }
+ }
 
-  const product = useProductQuery(String(id))
+export default function Product({ params }: Props) {
+  const router = useRouter()
+  const { id } = params
+
+  const product = useProductQuery(id)
 
   if(product.isLoading) {
     return (
@@ -56,4 +63,13 @@ export default function Product() {
       </WithAuth>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
+  return {
+    props: {
+      params
+    }
+  }
 }
