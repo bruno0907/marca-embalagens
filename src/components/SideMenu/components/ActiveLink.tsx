@@ -32,7 +32,9 @@ const ActiveLink = ({ icon, label, href, ...rest }: ActiveLinkProps) => {
         alignItems="center"
         justifyContent="flex-start"
         fontWeight="bold"        
-        borderRightWidth="3px"       
+        borderLeftWidth="3px"        
+        borderRightWidth="3px"
+        borderLeftColor="gray.50"
         borderRightColor={
           itMatchesHref(href) ? 'blue.500' : 'gray.50'
         }
