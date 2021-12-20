@@ -2,8 +2,9 @@ import { render, screen } from "@testing-library/react"
 import { GoBackButton } from ".."
 
 describe('GoBackButton', () => {
-  it('Should display FiArrowLeft', () => {  
+  it('should render properly', () => {  
+    const { getByRole } = render(<GoBackButton/>)
 
-    expect(1+1).toBe(2)
-  })
+    expect(getByRole('button')).toBeInTheDocument()
+  })  
 })
