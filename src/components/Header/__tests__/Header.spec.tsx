@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-
 import { Header } from '..'
 
 describe('Header', () => {
@@ -17,5 +16,14 @@ describe('Header', () => {
     const goBackButton = screen.getByRole('button')
 
     expect(goBackButton).toContainElement(goBackButton)
-  }) 
+  })
+
+  test('It should render "Mocked Title" if it has title props', () => {
+    render(<Header title='Mocked Title'/>)    
+
+    const title = screen.getByRole('heading', { level: 2 })
+
+    expect(title.innerHTML).toEqual('Mocked Title')
+  })
+   
 })
