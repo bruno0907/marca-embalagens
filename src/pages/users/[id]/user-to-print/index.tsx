@@ -23,7 +23,8 @@ import {
   Text,
   Button,  
   Center,
-  Spinner
+  Spinner,
+  Spacer
 } from "@chakra-ui/react"
 
 import { FiPrinter } from "react-icons/fi"
@@ -56,13 +57,15 @@ export default function UserToPrint({ params }: Props) {
       </Head>
 
       <Box maxW="1090px" margin="auto" px="8">
-        <Header withGoBack py="16" title={user.data?.nome}>          
-          { !orders.isFetching &&
+        <Header withGoBack py="16" title={user.data?.nome}>
+          { !user.isFetching &&
             <Button
               leftIcon={<FiPrinter />}
               onClick={handlePrint}
               colorScheme="blue"
-            >Imprimir</Button>
+            >
+              Imprimir
+            </Button>
           }        
         </Header>
         

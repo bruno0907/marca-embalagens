@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import { GetServerSideProps } from 'next'
 
 import { WithAuth } from '../../../components/WithAuth'
@@ -10,8 +9,7 @@ import { UpdateProductForm } from './components/UpdateProductForm'
 
 import { useProductQuery } from '../../../hooks/useProductQuery'
 
-import {   
-  Center,  
+import {      
   Text,
   VStack,
   Skeleton,

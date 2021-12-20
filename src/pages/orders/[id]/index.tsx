@@ -55,7 +55,7 @@ export default function Order({ params }: Props) {
       </Head>
 
       <Box maxW="1090px" m="auto" px="8">
-        <Header withGoBack py="16" title={`Pedido: ${order.data?.numero_pedido || ''}`}>          
+        <Header withGoBack py="16" title={`Pedido: ${order.data?.numero_pedido}`}>          
           <Button colorScheme="blue" rightIcon={<FiPrinter />} onClick={handlePrintOrder}>
             Imprimir
           </Button>
