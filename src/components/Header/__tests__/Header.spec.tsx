@@ -1,29 +1,42 @@
 import { render, screen } from '@testing-library/react'
+
 import { Header } from '..'
 
 describe('Header', () => {
   test('It should render correctly', () => {
-    const { container: HeaderComponent } = render(
-      <Header />
-    )
+    const { container } = render(<Header />)
+
+    expect(container.querySelector('#header')).toBeInTheDocument()
+  })
   
-    expect(HeaderComponent).toBeInTheDocument()
-  })
-
   test('It should render with "withGoBack" button correctly', () => {
-    render(<Header withGoBack/>) 
+    render(<Header withGoBack/>)
 
-    const goBackButton = screen.getByRole('button')
+    const withGoBackButton = screen.getByRole('button')
 
-    expect(goBackButton).toContainElement(goBackButton)
+    expect(withGoBackButton).toBeInTheDocument()
+  })
+  
+  test('It should render title and "Title Mock" if it has title props', () => {
+    const titleMock = 'Title Mock'
+
+    render(<Header title={titleMock}/>)
+
+    const title = screen.getByRole('heading', { level: 2 }) 
+
+    expect(title).toBeInTheDocument()
+    expect(title).toHaveTextContent(titleMock)
   })
 
-  test('It should render "Mocked Title" if it has title props', () => {
-    render(<Header title='Mocked Title'/>)    
+  test('It should render children element if it has children value', () => {
+    render(
+      <Header>
+        <button data-testid="childrenMock">Mocked Button</button>
+      </Header>
+    )
 
-    const title = screen.getByRole('heading', { level: 2 })
+    const children = screen.getByTestId('childrenMock')   
 
-    expect(title.innerHTML).toEqual('Mocked Title')
-  })
-   
+    expect(children).toBeInTheDocument()
+  })  
 })

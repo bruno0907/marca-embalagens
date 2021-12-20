@@ -17,7 +17,7 @@ type HeaderProps = FlexProps & {
 
 const HeaderComponent = ({ withGoBack, children, title, ...rest }: HeaderProps) => {
   return (
-    <Flex align="center" justify="space-between" {...rest}>
+    <Flex id="header" align="center" justify="space-between" {...rest}>
       { withGoBack && <GoBackButton /> }
       { title && <Heading fontSize="xx-large" mr="auto">{title}</Heading>}
       { children ? children : <Flex w="10" h="10"/> }
