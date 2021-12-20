@@ -39,4 +39,24 @@ describe('Header', () => {
 
     expect(children).toBeInTheDocument()
   })  
+
+  test('It should render fully with "withGoBack", "title" and "children" props', () => {
+    const titleMock = 'Title Mock'
+
+    render(
+      <Header withGoBack title={titleMock}>
+        <div data-testid="childrenMock">Mocked Button</div>
+      </Header>
+    )
+
+    const withGoBackButton = screen.getByRole('button')
+    expect(withGoBackButton).toBeInTheDocument()
+
+    const title = screen.getByRole('heading', { level: 2 }) 
+    expect(title).toBeInTheDocument()
+    expect(title).toHaveTextContent(titleMock)
+    
+    const children = screen.getByTestId('childrenMock')
+    expect(children).toBeInTheDocument()
+  })   
 })
