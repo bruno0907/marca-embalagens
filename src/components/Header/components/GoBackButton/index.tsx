@@ -9,7 +9,7 @@ const GoBackButton = () => {
   const handleGoBack = () => router.back()
 
   return (
-    <Button 
+    <Button
       type="button"
       variant="unstyled"
       mr="auto"
