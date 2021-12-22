@@ -2,26 +2,45 @@ import { render, screen } from "@testing-library/react"
 import { AddressesToPrint } from "."
 import { AddressProps } from "../../types"
 
-const addressesMock: AddressProps[] = [
-  {
-    id: 'fake-id',
-    user_id: 'fake-userId',
-    endereco: 'fake-address',
-    bairro: 'fake-prescint',
-    cep: 'fake-cep',
-    cidade: 'fake-city',
-    estado: 'fake-state',
-    complemento: 'fake-complement',
-    principal: true
-  }
-]
+const addressMock: AddressProps = {
+  id: 'fake-id',
+  user_id: 'fake-userId',
+  endereco: 'fake-address',
+  bairro: 'fake-prescint',
+  cep: 'fake-cep',
+  cidade: 'fake-city',
+  estado: 'fake-state',
+  complemento: 'fake-complement',
+  principal: true
+}
 
 describe('AddressesToPrint', () => {
   it('should render properly', () => {
+    const addressesMock: AddressProps[] = [      
+      {
+        ...addressMock
+      }
+    ]
+
     render(<AddressesToPrint addresses={addressesMock}/>)
 
-    const addressesToPrintMock = screen.getByText('Endereço:')
+    const addressToPrintMock = screen.getByText('Endereço:')
 
-    expect(addressesToPrintMock.nextSibling).toHaveTextContent('fake-address')
+    expect(addressToPrintMock.nextSibling).toHaveTextContent('fake-address')
   })
+
+  it('should display "Endereço principal" if address.principal === true', () => {
+    const addressesMock: AddressProps[] = [      
+      {
+        ...addressMock,
+      }
+    ]
+    
+    render(<AddressesToPrint addresses={addressesMock}/>)
+
+    const addressToPrintMock = screen.getByText('Endereço principal')
+
+    expect(addressToPrintMock).toBeInTheDocument()
+    
+  })  
 })

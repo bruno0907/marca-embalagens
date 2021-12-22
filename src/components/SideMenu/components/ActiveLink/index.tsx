@@ -32,9 +32,9 @@ const ActiveLink = ({ icon, label, href, ...rest }: ActiveLinkProps) => {
         borderLeftWidth="3px"        
         borderRightWidth="3px"
         borderColor="gray.50"
-        borderRightColor={isActive && "blue.500"} 
-        outline="none"
+        borderRightColor={isActive && "blue.500"}         
         _hover={{ color: "blue.500", borderRightColor: "blue.500" }}
+        _focus={{ boxShadow: 'none' }}
         {...rest}
       >        
         <Icon as={icon} fontSize="xl" mr="4" color={isActive && "blue.500"}/>        
