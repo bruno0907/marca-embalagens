@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "coverage": "jest --collectCoverage"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.14",

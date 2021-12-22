@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react'
+import { memo } from 'react'
 
 import { Header } from '.'
 
 describe('Header', () => {
-  test('It should render correctly', () => {
+  it('should render correctly', () => {
     const { container } = render(<Header />)
 
     expect(container.querySelector('#header')).toBeInTheDocument()
@@ -28,7 +29,7 @@ describe('Header', () => {
     expect(title).toHaveTextContent(titleMock)
   })
 
-  test('It should render children element if it has children value', () => {
+  it('should render children element if it has children value', () => {
     render(
       <Header>
         <button data-testid="childrenMock">Mocked Button</button>
@@ -40,7 +41,7 @@ describe('Header', () => {
     expect(children).toBeInTheDocument()
   })  
 
-  test('It should render fully with "withGoBack", "title" and "children" props', () => {
+  it('should render fully with "withGoBack", "title" and "children" props', () => {
     const titleMock = 'Title Mock'
 
     render(
@@ -58,5 +59,15 @@ describe('Header', () => {
     
     const children = screen.getByTestId('childrenMock')
     expect(children).toBeInTheDocument()
-  })   
+  })
+  
+  it('should re-render HeaderComponent if a change to title has occuried', () => {
+    const { rerender } = render(<Header title="Mocked title"/>)    
+
+    rerender(<Header title="Another mocked title"/>)
+
+    const reRenderedComponent = screen.getByRole('heading', { level: 2 })
+
+    expect(reRenderedComponent).toHaveTextContent('Another mocked title')
+  })
 })
