@@ -2,16 +2,6 @@ import { render, screen, fireEvent } from "@testing-library/react"
 
 import { GoBackButton } from "."
 
-jest.mock('next/router', () => {
-  return {
-    useRouter() {
-      return {
-        back: jest.fn()
-      }
-    }
-  }
-})
-
 const useRouter = jest.spyOn(require('next/router'), 'useRouter')
 
 describe('GoBackButton', () => {

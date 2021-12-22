@@ -1,16 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react"
 import { SideMenu } from "."
 
-jest.mock('next/router', () => {
-  return {
-    useRouter() {
-      return {
-        asPath: '/'
-      }
-    }
-  }
-})
-
 jest.mock('../../hooks/useSignOutMutation', () => {
   return {
     useSignOutMutation() {

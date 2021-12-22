@@ -5,33 +5,10 @@ import { useRouter } from "next/router"
 import { ActiveLink } from "."
 import { FiHome } from "react-icons/fi"
 
-jest.mock('next/router', () => {
-  return {
-    useRouter() {
-      return {
-        asPath: '/',
-        push: jest.fn()
-      }
-    }
-  }
-})
-
-const useRouterSpy = jest.spyOn(require('next/router'), 'useRouter')
-
-jest.mock('@chakra-ui/react', () => {
-  const modules = jest.requireActual('@chakra-ui/react')
-
-  return {
-    __esModule: true,
-    ...modules,
-    customKey: 'customValue',
-  }
-})
-
 describe('ActiveLink', () => {
   it('should render properly', () => {
     const hrefMock = '/mock-home'
-    const labelMock = 'Mock-Home'
+    const labelMock = 'Mock Home'
     const iconMock = FiHome
     
     render(
@@ -48,8 +25,8 @@ describe('ActiveLink', () => {
   })
   
   it('should navigate to given href', () => {       
-    const hrefMock = '/mock-fake-link'
-    const labelMock = 'Mock-Fake-Label'
+    const hrefMock = '/mock-another-link'
+    const labelMock = 'Mock Another Label'
     const iconMock = FiHome
     
     render(
@@ -62,7 +39,26 @@ describe('ActiveLink', () => {
 
     const link = screen.getByRole('link', { name: labelMock })
 
-    expect(link.getAttribute('href')).toBe(hrefMock)
+    expect(link.getAttribute('href')).toBe(hrefMock)    
+  })
+
+  it('should return color as blue.500 if asPath starts with href', () => {       
+    const hrefMock = '/'
+    const labelMock = 'Mock-Fake-Label'
+    const iconMock = FiHome
+
+    const { asPath } = useRouter()
+
+    const isActive = asPath.startsWith(hrefMock) && 'blue.500'
     
+    render(
+      <ActiveLink 
+        href={hrefMock}
+        icon={iconMock}
+        label={labelMock}
+      />
+    )   
+
+    expect(isActive).toBe('blue.500')    
   })
 })
