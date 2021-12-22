@@ -29,7 +29,7 @@ describe('AddressesToPrint', () => {
     expect(addressToPrintMock.nextSibling).toHaveTextContent('fake-address')
   })
 
-  it('should display "Endereço principal" if address.principal === true', () => {
+  it('should display Endereço principal if address.principal === true', () => {
     const addressesMock: AddressProps[] = [      
       {
         ...addressMock,
@@ -42,5 +42,21 @@ describe('AddressesToPrint', () => {
 
     expect(addressToPrintMock).toBeInTheDocument()
     
-  })  
+  })
+
+  it('should display Outro endereço if address.principal === false', () => {
+    const addressesMock: AddressProps[] = [      
+      {
+        ...addressMock,
+        principal: false
+      }
+    ]
+    
+    render(<AddressesToPrint addresses={addressesMock}/>)
+
+    const addressToPrintMock = screen.getByText('Outro endereço')
+
+    expect(addressToPrintMock).toBeInTheDocument()
+    
+  })
 })
