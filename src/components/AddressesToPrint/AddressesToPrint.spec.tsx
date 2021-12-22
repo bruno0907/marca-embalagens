@@ -2,15 +2,6 @@ import { render, screen } from "@testing-library/react"
 import { AddressesToPrint } from "."
 import { AddressProps } from "../../types"
 
-jest.mock('@chakra-ui/react', () => {
-  const modules = jest.requireActual('@chakra-ui/react')
-
-  return {
-    __esModule: true,
-    ...modules
-  }
-})
-
 const addressesMock: AddressProps[] = [
   {
     id: 'fake-id',
@@ -32,5 +23,5 @@ describe('AddressesToPrint', () => {
     const addressesToPrintMock = screen.getByText('Endereço:')
 
     expect(addressesToPrintMock.nextSibling).toHaveTextContent('fake-address')
-  })  
+  })
 })

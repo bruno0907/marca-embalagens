@@ -10,6 +10,7 @@ const GoBackButton = () => {
 
   return (
     <Button
+      display="flex"
       type="button"
       variant="unstyled"
       mr="auto"

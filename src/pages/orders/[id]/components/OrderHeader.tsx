@@ -34,18 +34,14 @@ const OrderHeader = ({ orderNumber, orderDeliveryDate }: OrderHeaderProps) => {
     )
   }
 
-  if(!profile.data) {
-    return null
-  }
-  
   return (
     <Flex justify="space-between" w="100%">
       
-      <Box h="20" w="40">
+      <Center h="20" w="40">
         <Logo />
-      </Box>
+      </Center>
 
-      <Box mx="4">
+      <Flex mx="4" flexDir="column" alignItems="flex-start" justify="center">
         {profile.data.data.razao_social && (
           <Text fontSize="x-small">{profile.data.data.razao_social}</Text>
         )}
@@ -63,9 +59,9 @@ const OrderHeader = ({ orderNumber, orderDeliveryDate }: OrderHeaderProps) => {
             {profile.data.address.cep && `- ${profile.data.address.cep}`}
           </Text>
         </Box>
-      </Box>
+      </Flex>
 
-      <Box>
+      <Flex flexDir="column" alignItems="flex-start" justify="center">
         <Flex align="center">
           <Text mr="2">Número do pedido:</Text>
           <Text fontSize="large" fontWeight="bold">
@@ -78,7 +74,7 @@ const OrderHeader = ({ orderNumber, orderDeliveryDate }: OrderHeaderProps) => {
             {handleFormatDate(orderDeliveryDate)}
           </Text>
         </Flex>
-      </Box> 
+      </Flex> 
              
     </Flex>
   );

@@ -2,9 +2,7 @@ import {
   VStack,
   Box,
   HStack,
-  Text, 
-  Center,
-  Spinner,
+  Text,
 } from "@chakra-ui/react";
 
 import { AddressProps } from "../../types";
@@ -14,14 +12,6 @@ type AddressesToPrintProps = {
 }
 
 const AddressesToPrint = ({ addresses }: AddressesToPrintProps) => {
-  if(!addresses) {
-    return (
-      <Center>
-        <Spinner color="blue.500"/>
-      </Center>
-    )
-  }
-
   return (
     <VStack spacing={3} align="start">
       { addresses.map((address) => {
