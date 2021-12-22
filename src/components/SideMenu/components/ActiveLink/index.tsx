@@ -6,8 +6,7 @@ import {
   Link as ChakraLink,
   Text,
   Icon,  
-  LinkProps,
-  Flex
+  LinkProps,  
 } from '@chakra-ui/react'
 
 interface ActiveLinkProps extends LinkProps {
