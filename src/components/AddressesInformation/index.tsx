@@ -64,9 +64,9 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
 
   const handleNewAddress = () => onOpen()
 
-  if(addresses.isLoading || addresses.isFetching){
+  if(addresses.isLoading){
     return (
-      <Content w="100%">
+      <Content w="100%" data-testid="isLoading">
         <Flex align="center" mb="8">
           <Heading fontSize="2xl">Endereços</Heading>   
           <Spinner size="sm" color="gray.600" ml="4"/>
@@ -80,7 +80,7 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
 
   if(addresses.isError) {
     return (
-      <Content w="100%">
+      <Content w="100%" data-testid="isError">
         <Stack spacing={3}>
           <Heading fontSize="2xl">Endereços</Heading>
           <Text>Ocorreu um erro ao carregar os endereços. Volte e tente novamente...</Text>

@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react"
 import preloadAll from 'jest-next-dynamic'
 
 import { AddressesInformation } from "."
+import { useAddressesQuery } from "../../hooks/useAddressesQuery"
 
 jest.mock('./components/CreateAddressForm')
 
@@ -42,5 +43,19 @@ describe('AddressesInformation', () => {
     const addressesInformation = screen.getByText('Endereços')
 
     expect(addressesInformation).toBeInTheDocument()
+  })
+
+  it('should display loading skeleton if isLoading', async () => {
+    await preloadAll()
+
+    jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery').mockReturnValueOnce({
+      isLoading: true
+    })
+
+    render(<AddressesInformation userId="fake-user-id"/>)
+
+    const isLoadingSekeleton = screen.getByTestId('isLoading')
+
+    expect(isLoadingSekeleton).toBeInTheDocument()
   })
 })
