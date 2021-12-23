@@ -40,12 +40,12 @@ describe('AddressesInformation', () => {
 
     render(<AddressesInformation userId="fake-user-id"/>)
 
-    const addressesInformation = screen.getByText('Endereços')
+    const addressesInformation = screen.getByTestId('hasAddresses')
 
     expect(addressesInformation).toBeInTheDocument()
   })
 
-  it('should display loading skeleton if isLoading', async () => {
+  it('should display isLoadingComponent if isLoading', async () => {
     await preloadAll()
 
     jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery').mockReturnValueOnce({
@@ -54,8 +54,22 @@ describe('AddressesInformation', () => {
 
     render(<AddressesInformation userId="fake-user-id"/>)
 
-    const isLoadingSekeleton = screen.getByTestId('isLoading')
+    const isLoadingComponent = screen.getByTestId('isLoading')
 
-    expect(isLoadingSekeleton).toBeInTheDocument()
+    expect(isLoadingComponent).toBeInTheDocument()
+  })
+
+  it('should display isErrorComponent if isError', async () => {
+    await preloadAll()
+
+    jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery').mockReturnValueOnce({
+      isError: true
+    })
+
+    render(<AddressesInformation userId="fake-user-id"/>)
+
+    const isErrorComponent = screen.getByTestId('isError')
+
+    expect(isErrorComponent).toBeInTheDocument()    
   })
 })

@@ -91,7 +91,7 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
 
   return (
     <>
-      <Content w="100%">
+      <Content w="100%" data-testid="hasAddresses">
         <Flex align='center' mb="8">
           <Heading fontSize="2xl">Endereços</Heading>
           <Spacer />
