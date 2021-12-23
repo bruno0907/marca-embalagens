@@ -60,7 +60,7 @@ const AddressFieldComponent = ({ address }: AddressFieldProps) => {
 
   return (
     <>
-      <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+      <Box py="2" px="4" bgColor="gray.100" borderRadius="md" data-testid="dataTestAddress">
         <Flex align="center">        
           <Icon as={FiHome} fontSize="24" color="gray.500"/>
           <Box ml="4">

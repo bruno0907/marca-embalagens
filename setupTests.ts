@@ -1,3 +1,4 @@
+import { UseDisclosureProps } from '@chakra-ui/react'
 import '@testing-library/jest-dom/extend-expect'
 
 jest.mock('next/router', () => {
@@ -20,6 +21,12 @@ jest.mock('@chakra-ui/react', () => {
   return {
     __esModule: true,
     ...modules,
+    useDisclosure: jest.fn<UseDisclosureProps, any>().mockImplementation(() => {
+      return {
+        onOpen: jest.fn(),
+        onClose: jest.fn(),
+      }
+    }),
     customKey: 'customValue',
   }
 })

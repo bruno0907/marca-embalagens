@@ -91,21 +91,19 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
 
   return (
     <>
-      <Content w="100%" data-testid="hasAddresses">
+      <Content w="100%" data-testid="hasData">
         <Flex align='center' mb="8">
           <Heading fontSize="2xl">Endereços</Heading>
           <Spacer />
-          <Button 
-            colorScheme="blue" 
-            leftIcon={<FiEdit />}
-            onClick={handleNewAddress}
-          >Novo endereço</Button>
+          <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={handleNewAddress}>
+            Novo endereço
+          </Button>
         </Flex>
         <Box mb="8">
           <Stack spacing={3}>
             { addresses.data?.map(address => (
-                  <AddressField key={address.id} address={address} />
-                ))
+                <AddressField key={address.id} address={address}/>
+              ))
             }
           </Stack>
         </Box>
