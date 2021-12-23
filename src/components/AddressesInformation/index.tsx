@@ -76,7 +76,7 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
         </Stack>
       </Content>    
     )
-  } 
+  }   
 
   if(addresses.isError) {
     return (

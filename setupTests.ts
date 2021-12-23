@@ -23,3 +23,5 @@ jest.mock('@chakra-ui/react', () => {
     customKey: 'customValue',
   }
 })
+
+jest.mock('@supabase/supabase-js')

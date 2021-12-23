@@ -9,7 +9,7 @@ import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 
 import { UserInformation } from './components/UserInformation'
-import { AddressesInformation } from '../../../components/AddressInformation'
+import { AddressesInformation } from '../../../components/AddressesInformation'
 import { UserOrders } from './components/UserOrders'
 
 import { VStack, Button } from '@chakra-ui/react'

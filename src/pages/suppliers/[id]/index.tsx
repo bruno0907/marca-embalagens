@@ -8,7 +8,7 @@ import { WithAuth } from '../../../components/WithAuth'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { SupplierInformation } from './components/SupplierInformation'
-import { AddressesInformation } from '../../../components/AddressInformation'
+import { AddressesInformation } from '../../../components/AddressesInformation'
 
 import { VStack, Button } from '@chakra-ui/react'
 
