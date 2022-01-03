@@ -63,7 +63,14 @@ describe('AddressItem', () => {
     expect(mainAddress).toBeInTheDocument()
   })
 
-  it('should display "Endereço principal" if is "principal" is true', () => {
+  it('should display "Endereço principal" if "principal" is true', () => {
+    render(<AddressItem address={mockAddress} />)
+
+    const mainAddress = screen.getByText(/Endereço principal/)
+    expect(mainAddress).toBeInTheDocument()
+  })
+
+  it('should display "Outro endereço" if "principal" is false', () => {
     const mockOtherAddress = {
       ...mockAddress,
       principal: false,
