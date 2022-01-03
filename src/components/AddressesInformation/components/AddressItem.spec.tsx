@@ -40,6 +40,26 @@ describe('AddressItem', () => {
 
     const addressItem = screen.getByText(/fake-address/)
 
-    expect(addressItem).toBeInTheDocument
+    expect(addressItem).toBeInTheDocument()
+  })
+
+  it('should display mock data', () => {
+    render(<AddressItem address={mockAddress} />)
+
+    const address = screen.getByText(/fake-address/)
+    const prescint = screen.getByText(/fake-prescint/)
+    const city = screen.getByText(/fake-city/)
+    const state = screen.getByText(/fake-state/)
+    const zipcode = screen.getByText(/fake-zipcode/)
+    const aditional = screen.getByText(/fake-aditional/)
+    const mainAddress = screen.getByText(/Endereço principal/)
+
+    expect(address).toBeInTheDocument()
+    expect(prescint).toBeInTheDocument()
+    expect(city).toBeInTheDocument()
+    expect(state).toBeInTheDocument()
+    expect(zipcode).toBeInTheDocument()
+    expect(aditional).toBeInTheDocument()
+    expect(mainAddress).toBeInTheDocument()
   })
 })
