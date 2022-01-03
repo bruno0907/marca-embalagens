@@ -1,6 +1,6 @@
 
 import { PortalManager, useDisclosure } from "@chakra-ui/react"
-import { render, screen } from "@testing-library/react"
+import { render, screen, fireEvent } from "@testing-library/react"
 
 import { AddressProps } from "../../../types"
 import { Modal } from "../../Modal"
@@ -80,5 +80,23 @@ describe('AddressItem', () => {
 
     const otherAddress = screen.getByText(/Outro endereço/)
     expect(otherAddress).toBeInTheDocument()
+  })
+  
+  it('should display call onOpen on Edit button click', () => {
+    const mockOtherAddress = {
+      ...mockAddress,
+      principal: false,
+    }
+
+    const { onOpen } = useDisclosure()
+
+    const { debug } = render(<AddressItem address={mockOtherAddress} />)
+
+    const editButton = screen.getByRole('button')
+
+    fireEvent.click(editButton)
+
+    expect(onOpen).toBeCalled()
+
   })
 })
