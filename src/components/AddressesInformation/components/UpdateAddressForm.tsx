@@ -1,26 +1,19 @@
-import { useState, useCallback } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 import { useForm, SubmitHandler, SubmitErrorHandler } from "react-hook-form"
+
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { Input } from "../../../Input"
-import { Select } from "../../../Select"
+import { Input } from "../../Input"
+import { Select } from "../../Select"
 
-import { useCreateAddressMutation } from "../../../../hooks/useCreateAddressMutation"
-import { useStatesQuery } from "../../../../hooks/useStatesQuery"
+import { useUpdateAddressMutation } from "../../../hooks/useUpdateAddressMutation"
+import { useStatesQuery } from "../../../hooks/useStatesQuery"
 
-import { getCities } from "../../../../services/getCities"
+import { getCities } from "../../../services/getCities"
 
-import { 
-  Stack,
-  HStack,
-  Box,
-  Button,
-  useToast,
-} from "@chakra-ui/react"
-
-const newAddressSchema = yup.object().shape({  
+const updateAddressSchema = yup.object().shape({  
   endereco: yup.string().required("O endereço é obrigatório").trim(),
   bairro: yup.string().required("O bairo/distrito é obrigatório"),
   estado: yup
@@ -43,27 +36,34 @@ const newAddressSchema = yup.object().shape({
   complemento: yup.string().trim(),  
 });
 
-import { AddressProps, NewAddressProps, CityProps } from "../../../../types"
+import { 
+  Stack,
+  HStack,
+  Box,
+  Button,
+  useToast,
+} from "@chakra-ui/react"
 
+import { AddressProps, CityProps } from "../../../types"
 
-export type CreateAddressFormProps = {
-  userId: string;
+export type UpdateAddressFormProps = {
+  address: AddressProps;
   onClose: () => void;
 }
 
-const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {  
+const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {  
   const toast = useToast()
 
   const [cities, setCities] = useState<CityProps[]>([]);
 
   const states = useStatesQuery()
 
-  const { handleSubmit, formState, register, clearErrors } =
-    useForm<NewAddressProps>({
-      resolver: yupResolver(newAddressSchema),
+  const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
+    useForm<AddressProps>({
+      resolver: yupResolver(updateAddressSchema),
     });
 
-  const { errors, isSubmitting, isDirty } = formState;
+  const { errors, isDirty, isSubmitting } = formState;
 
   const fetchCities = useCallback( async (uf: string) => {
     const { data } = await getCities(uf)
@@ -71,21 +71,20 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
     setCities(data)
   }, [])  
 
-  const NewAddressMutation = useCreateAddressMutation()
+  const updateAddressMutation = useUpdateAddressMutation()
 
-  const handleNewAddress: SubmitHandler<NewAddressProps> = async values => {
+  const handleUpdateAddress: SubmitHandler<AddressProps> = async values => {
     try {
-      const newAddress: NewAddressProps = {
-        user_id: userId,
-        principal: false,
+      const updateAddress = {
+        ...address,
         ...values
       }
   
-      await NewAddressMutation.mutateAsync(newAddress)
+      await updateAddressMutation.mutateAsync(updateAddress)
   
       toast({
         status: 'success',
-        description: 'Novo endereço cadastrado com sucesso!',
+        description: 'Endereço do usuário atualizado com sucesso!',
         position: 'top-right',
       })
 
@@ -95,7 +94,7 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
       console.log(error)
       toast({
         status: 'error',
-        description: 'Ocorreu um erro ao cadastrar novo endereço...',
+        description: 'Ocorreu um erro ao atualizar o endereço...',
         position: 'top-right',
       })
     }
@@ -104,21 +103,35 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
 
   const handleCancelUpdate = () => onClose() 
 
-  const handleNewAddressError: SubmitErrorHandler<AddressProps> = errors => console.log(errors)
+  const handleUpdateAddressError: SubmitErrorHandler<AddressProps> = errors => console.log(errors)
+
+  useEffect(() => {
+   fetchCities(address.estado)
+   .then(() => {
+     reset({
+       cidade: address.cidade
+     })
+   })
+
+   return () => setCities([])
+    
+  }, [address.estado, fetchCities, address.cidade, reset])
 
   return (
-    <Box as="form" onSubmit={handleSubmit(handleNewAddress, handleNewAddressError)}>
+    <Box as="form" onSubmit={handleSubmit(handleUpdateAddress, handleUpdateAddressError)}>
       <Stack spacing={3}>
 
         <HStack spacing={3}>
           <Input 
             label="Endereço:"
-            name="endereco"            
+            name="endereco"
+            defaultValue={address.endereco}
             {...register('endereco')}
           />
           <Input 
             label="Bairro:"
-            name="bairro"            
+            name="bairro"
+            defaultValue={address.bairro}
             {...register('bairro')}
           />
         </HStack>
@@ -130,11 +143,11 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
             label="Estado:"
             bgColor="gray.50"
             error={errors?.estado}
-            defaultValue="defaultValue"
+            defaultValue={address.estado}
             {...register("estado")}
             onChange={(event) => fetchCities(event.target.value)}
           >
-            <option value="defaultValue" hidden aria-readonly>
+            <option value="default" hidden aria-readonly>
               Selecione um estado...
             </option>
             { states.isFetching && <option>Carregando...</option> }
@@ -151,11 +164,11 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
             label="Cidade:"
             bgColor="gray.50"
             error={errors?.cidade}
-            defaultValue="defaultValue"
+            defaultValue={address.cidade}
             {...register("cidade")}
             onChange={() => clearErrors('cidade')}
           >
-            <option value="defaultValue" hidden aria-readonly>
+            <option value="default" hidden aria-readonly>
               Selecione uma cidade...
             </option>
             {cities.map((city) => {
@@ -165,20 +178,32 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
 
           <Input 
             label="CEP:"
-            name="cep"            
+            name="cep"
+            defaultValue={address.cep}
             {...register('cep')}
           />
         </HStack>
 
         <Input 
           label="Complemento:"
-          name="complemento"          
+          name="complemento"
+          defaultValue={address.complemento}
           {...register('complemento')}
         />
 
         <HStack spacing={3} justifyContent="flex-end">
-          <Button type="reset" variant="ghost" colorScheme="blue" onClick={handleCancelUpdate}>Cancelar</Button>
-          <Button type="submit" colorScheme="blue" isLoading={isSubmitting} isDisabled={!isDirty}>Salvar alterações</Button>
+          <Button 
+            type="reset" 
+            variant="ghost" 
+            colorScheme="blue" 
+            onClick={handleCancelUpdate}
+          >Cancelar</Button>
+          <Button 
+            type="submit" 
+            colorScheme="blue"
+            isLoading={isSubmitting}
+            isDisabled={!isDirty}
+          >Salvar alterações</Button>
         </HStack>
 
       </Stack>
@@ -187,5 +212,5 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
 }
 
 export {
-  CreateAddressForm
+  UpdateAddressForm
 }

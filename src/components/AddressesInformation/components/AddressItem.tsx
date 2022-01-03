@@ -1,10 +1,10 @@
 import { useState, memo } from "react"
 import dynamic from "next/dynamic"
 
-import { prefetchAddress } from "../../../../services/prefetchAddress"
+import { prefetchAddress } from "../../../services/prefetchAddress"
 
-import { ModalProps } from "../../../Modal"
-import { UpdateAddressFormProps } from "./components/UpdateAddressForm"
+import { ModalProps } from "../../Modal"
+import { UpdateAddressFormProps } from "./UpdateAddressForm"
 
 import { 
   Box,  
@@ -19,11 +19,11 @@ import {
 
 import { FiEdit, FiHome } from "react-icons/fi"
 
-import { AddressProps } from "../../../../types"
+import { AddressProps } from "../../../types"
 
 const Modal = dynamic<ModalProps>(
   async () => {
-    const { Modal } = await import('../../../Modal')
+    const { Modal } = await import('../../Modal')
 
     return Modal
   }
@@ -31,7 +31,7 @@ const Modal = dynamic<ModalProps>(
 
 const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
   async () => {
-    const { UpdateAddressForm } = await import('./components/UpdateAddressForm')
+    const { UpdateAddressForm } = await import('./UpdateAddressForm')
 
     return UpdateAddressForm
   }, {
@@ -43,11 +43,11 @@ const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
   }
 )
 
-export type AddressFieldProps = {
+export type AddressItemProps = {
   address: AddressProps
 }
 
-const AddressFieldComponent = ({ address }: AddressFieldProps) => {
+const AddressItemComponent = ({ address }: AddressItemProps) => {
   const { onOpen, isOpen, onClose } = useDisclosure()
   const [addressToEdit, setAddressToEdit] = useState<AddressProps>(null)
 
@@ -60,7 +60,7 @@ const AddressFieldComponent = ({ address }: AddressFieldProps) => {
 
   return (
     <>
-      <Box py="2" px="4" bgColor="gray.100" borderRadius="md" data-testid="dataTestAddress">
+      <Box as="li" py="2" px="4" bgColor="gray.100" borderRadius="md">
         <Flex align="center">        
           <Icon as={FiHome} fontSize="24" color="gray.500"/>
           <Box ml="4">
@@ -96,8 +96,8 @@ const AddressFieldComponent = ({ address }: AddressFieldProps) => {
   )
 }
 
-const AddressField = memo(AddressFieldComponent, (prevProps, nextProps) => {
+const AddressItem = memo(AddressItemComponent, (prevProps, nextProps) => {
   return prevProps.address !== nextProps.address
 })
 
-export { AddressField }
+export { AddressItem }

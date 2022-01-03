@@ -1,27 +1,18 @@
 import dynamic from 'next/dynamic'
 
-import { Content } from '../Content'
-import { AddressFieldProps } from './components/AddressField'
 import { CreateAddressFormProps } from './components/CreateAddressForm'
+import { LoadingSkeleton } from './components/LoadingSkeleton'
+import { ErrorComponent } from './components/ErrorComponent'
+import { AddressList } from './components/AddressList'
 import { ModalProps } from '../Modal'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
-import {
-  Text, 
-  Stack,  
-  Button,
-  Box,
-  Flex,    
-  Spinner,
-  Heading,
-  Skeleton,
-  Spacer,  
+import {  
+  Spinner,  
   useDisclosure,
   Center,  
 } from "@chakra-ui/react"
-
-import { FiEdit } from 'react-icons/fi'  
 
 const Modal = dynamic<ModalProps>(
   async () => {
@@ -45,69 +36,23 @@ const CreateAddressForm = dynamic<CreateAddressFormProps>(
   }
 )
 
-const AddressField = dynamic<AddressFieldProps>(
-  async () => {
-    const { AddressField } = await import('./components/AddressField')
-
-    return AddressField
-  }
-)
-
 export type AddressesInformationProps = {
   userId: string;
 }
   
 const AddressesInformation = ({ userId }: AddressesInformationProps) => {   
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const addresses = useAddressesQuery(userId)
+  
+  const handleNewAddress = () => onOpen()  
 
-  const handleNewAddress = () => onOpen()
+  if(addresses.isLoading) return <LoadingSkeleton />    
 
-  if(addresses.isLoading){
-    return (
-      <Content w="100%" data-testid="isLoading">
-        <Flex align="center" mb="8">
-          <Heading fontSize="2xl">Endereços</Heading>   
-          <Spinner size="sm" color="gray.600" ml="4"/>
-        </Flex>
-        <Stack spacing={3}>
-          <Skeleton h="14" borderRadius="md"/>
-        </Stack>
-      </Content>    
-    )
-  }   
-
-  if(addresses.isError) {
-    return (
-      <Content w="100%" data-testid="isError">
-        <Stack spacing={3}>
-          <Heading fontSize="2xl">Endereços</Heading>
-          <Text>Ocorreu um erro ao carregar os endereços. Volte e tente novamente...</Text>
-        </Stack>
-      </Content>    
-    )
-  }
+  if(addresses.isError) return <ErrorComponent />
 
   return (
     <>
-      <Content w="100%" data-testid="hasData">
-        <Flex align='center' mb="8">
-          <Heading fontSize="2xl">Endereços</Heading>
-          <Spacer />
-          <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={handleNewAddress}>
-            Novo endereço
-          </Button>
-        </Flex>
-        <Box mb="8">
-          <Stack spacing={3}>
-            { addresses.data?.map(address => (
-                <AddressField key={address.id} address={address}/>
-              ))
-            }
-          </Stack>
-        </Box>
-      </Content>
+      <AddressList addresses={addresses.data} handleNewAddress={handleNewAddress}/>
       <Modal isOpen={isOpen} onClose={onClose} title="Novo endereço">
         <CreateAddressForm userId={String(userId)} onClose={onClose}/>
       </Modal>

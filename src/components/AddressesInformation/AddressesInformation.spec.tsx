@@ -1,73 +1,47 @@
-import { useDisclosure } from "@chakra-ui/react"
 import { render, screen, fireEvent } from "@testing-library/react"
-import preloadAll from 'jest-next-dynamic'
+
+// import preloadAll from 'jest-next-dynamic'
+
+import { 
+  PortalManager, 
+  useDisclosure 
+} from '@chakra-ui/react'
 
 import { AddressesInformation } from "."
-import { useAddressesQuery } from "../../hooks/useAddressesQuery"
+
+import { Modal } from '../Modal'
+import { CreateAddressForm } from "./components/CreateAddressForm"
 
 jest.mock('../../hooks/useAddressesQuery')
+jest.mock('../../hooks/useStatesQuery')
+jest.mock('@chakra-ui/react')
 
 const useAddressesQuerySpy = jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery')
 
 describe('AddressesInformation', () => {
-  it('should render properly if hasData', async () => {
-    await preloadAll()
-
-    useAddressesQuerySpy.mockReturnValueOnce({
-      data: []
-    })
-
+  // beforeAll(async () => await preloadAll())
+  afterAll(() => jest.clearAllMocks())    
+  
+  it('should render properly and display 2 addresses if it has data', () => {
     render(<AddressesInformation userId="fake-user-id"/>)
     
-    const addressesInformation = screen.getByTestId('hasData')
+    const addresses = screen.getAllByText(/fake-address/)
   
-    expect(addressesInformation).toBeInTheDocument()
-  }) 
+    expect(addresses).toHaveLength(2)
+  })
+  
+  it('should display addresses correctly', () => {
 
-  it('should list 2 addresses if hasData and data >= 2', async () => {
-    await preloadAll()
+    render(<AddressesInformation userId="fake-user-id"/>)
 
-    useAddressesQuerySpy.mockReturnValueOnce({
-      isLoading: false,
-      data: [
-        {
-          id: 'fake-id',
-          user_id: 'fake-user_id',
-          endereco: 'fake-address',
-          bairro: 'fake-prescint',
-          cidade: 'fake-city',
-          estado: 'fake-state',
-          cep: 'fake-zipcode',
-          complemento: 'fake-complement',
-          principal: true,
-          
-        },
-        {
-          id: 'fake-id2',
-          user_id: 'fake-user_id2',
-          endereco: 'fake-address2',
-          bairro: 'fake-prescint2',
-          cidade: 'fake-city2',
-          estado: 'fake-state2',
-          cep: 'fake-zipcode2',
-          complemento: 'fake-complement2',
-          principal: false,
-        },
-      ]   
-    })
-    
-    render(<AddressesInformation userId="fake-user-id"/>)    
-    
-    expect(useAddressesQuery).toBeCalledWith('fake-user-id')
+    const addressMock1 = screen.getAllByText(/fake-address/)[0]
+    expect(addressMock1).toHaveTextContent(/fake-address/)
 
-    const addressesMock = screen.getAllByTestId('dataTestAddress')
-
-    expect(addressesMock).toHaveLength(2)
+    const addressMock2 = screen.getAllByText(/fake-address/)[1]
+    expect(addressMock2).toHaveTextContent(/fake-address2/)
   })  
 
-  it('should display isLoadingComponent if isLoading', async () => {
-    await preloadAll()
-
+  it('should display isLoadingComponent if isLoading is true and data is null', () => {
     useAddressesQuerySpy.mockReturnValueOnce({
       isLoading: true,
       data: null
@@ -75,15 +49,13 @@ describe('AddressesInformation', () => {
 
     render(<AddressesInformation userId="fake-user-id"/>)
 
-    const isLoadingComponent = screen.getByTestId('isLoading')
+    const loadingSkeleton = screen.getByText(/Carregando.../)
 
-    expect(isLoadingComponent).toBeInTheDocument()
+    expect(loadingSkeleton).toBeInTheDocument()
 
   })
 
-  it('should display isErrorComponent if isError', async () => {
-    await preloadAll()
-    
+  it('should display ErrorComponent if isError is true is null', () => {    
     useAddressesQuerySpy.mockReturnValueOnce({
       isError: true,
       data: null
@@ -91,9 +63,45 @@ describe('AddressesInformation', () => {
 
     render(<AddressesInformation userId="fake-user-id"/>)
     
-    const isErrorComponent = screen.getByTestId('isError')
+    const errorComponent = screen.getByText(/Ocorreu um erro/)
 
-    expect(isErrorComponent).toBeInTheDocument()
+    expect(errorComponent).toBeInTheDocument()
   })  
+
+  it('should call onOpen on Novo endereço click', () => {    
+    render(<AddressesInformation userId="fake-user-id"/>)    
+    
+    const { onOpen } = useDisclosure()
+
+    const newAddressButton = screen.getByRole('button', { name: 'Novo endereço'})
+
+    expect(newAddressButton).toBeInTheDocument()
+
+    fireEvent.click(newAddressButton)  
+    
+    expect(onOpen).toHaveBeenCalled()
+  })
+
+  it('should render Modal with CreateAddressForm if isOpen is true', () => {
+    jest.spyOn(require('@chakra-ui/react'), 'useDisclosure')
+    .mockReturnValueOnce({ isOpen: true })
+    
+    const { isOpen, onClose } = useDisclosure()
+
+    jest.mock('../Modal')
+
+    render(
+      <PortalManager>
+        <AddressesInformation userId="fake-user-id"/>
+        <Modal isOpen={isOpen} onClose={onClose} title="mock-title">
+          <CreateAddressForm userId="fake-userId" onClose={onClose}/>
+        </Modal>
+      </PortalManager>
+    )
+
+    const submitButton = screen.getByRole('button', { name: 'Salvar novo endereço' })
+
+    expect(submitButton).toBeInTheDocument()
+  })
   
 })

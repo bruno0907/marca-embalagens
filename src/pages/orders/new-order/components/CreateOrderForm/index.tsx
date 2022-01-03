@@ -46,9 +46,9 @@ const UserAddress = dynamic(
   }, {
     loading: () => (
       <HStack spacing={2} align="center">
-        <Text fontWeight="medium">Endereço:</Text> 
+        <Text fontWeight="medium">Endereço:</Text>
         <Spinner ml="2" size="sm" color="blue.500"/>
-      </HStack>     
+      </HStack>
     )
   }
 )

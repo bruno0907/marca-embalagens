@@ -6,14 +6,13 @@ import { Session } from "@supabase/supabase-js"
 
 import { SideMenu } from "./SideMenu"
 
-import { Center, Flex, Spinner, Box, useToast } from '@chakra-ui/react'
+import { Center, Flex, Spinner, Box } from '@chakra-ui/react'
 
 type Props = {
   children: ReactNode;   
 }
 
-const WithAuth = ({ children }: Props) => {
-  const toast = useToast()
+const WithAuth = ({ children }: Props) => {  
   const router = useRouter() 
   const { session } = useAuth()
 

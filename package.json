@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watchAll",
-    "coverage": "jest --collectCoverage"
+    "test": "jest --watch --verbose",
+    "test-coverage": "jest --collectCoverage"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.14",
@@ -34,11 +34,12 @@
     "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/jest": "^27.0.3",
     "@types/react": "17.0.15",
     "@types/react-input-mask": "^3.0.1",
     "babel-jest": "^27.4.5",
-    "babel-plugin-transform-dynamic-import": "^2.1.0",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
     "eslint": "7.31.0",
     "eslint-config-next": "11.0.1",
     "jest": "^27.4.5",
