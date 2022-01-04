@@ -8,32 +8,17 @@ import { ModalProps } from '../Modal'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
-import {  
-  Spinner,  
-  useDisclosure,
-  Center,  
-} from "@chakra-ui/react"
+import { Box, Button, Flex, Heading, Spacer, useDisclosure } from "@chakra-ui/react"
+import { FiEdit } from 'react-icons/fi'
+import { Content } from '../Content'
 
-const Modal = dynamic<ModalProps>(
-  async () => {
-    const { Modal } = await import('../Modal')
-
-    return Modal
-  }
+const Modal = dynamic<ModalProps>(() => import('../Modal')
+  .then(({ Modal }) => Modal)  
 )
 
 const CreateAddressForm = dynamic<CreateAddressFormProps>(
-  async () => {
-    const { CreateAddressForm } = await import('./components/CreateAddressForm') 
-       
-    return CreateAddressForm
-  }, {
-    loading: () => (
-      <Center mb="8">
-        <Spinner color="blue.500" />
-      </Center>
-    )   
-  }
+  () => import('./components/CreateAddressForm') 
+    .then(({ CreateAddressForm }) => CreateAddressForm)  
 )
 
 export type AddressesInformationProps = {
@@ -42,9 +27,8 @@ export type AddressesInformationProps = {
   
 const AddressesInformation = ({ userId }: AddressesInformationProps) => {   
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   const addresses = useAddressesQuery(userId)
-  
-  const handleNewAddress = () => onOpen()  
 
   if(addresses.isLoading) return <LoadingSkeleton />    
 
@@ -52,7 +36,18 @@ const AddressesInformation = ({ userId }: AddressesInformationProps) => {
 
   return (
     <>
-      <AddressList addresses={addresses.data} handleNewAddress={handleNewAddress}/>
+      <Content w="100%">
+        <Flex align='center' mb="8">
+          <Heading fontSize="2xl">Endereços</Heading>
+          <Spacer />
+          <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => onOpen()}>
+            Novo endereço
+          </Button>
+        </Flex>
+        <Box mb="8">
+          <AddressList addresses={addresses.data}/>        
+        </Box>
+      </Content>
       <Modal isOpen={isOpen} onClose={onClose} title="Novo endereço">
         <CreateAddressForm userId={String(userId)} onClose={onClose}/>
       </Modal>

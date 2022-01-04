@@ -54,25 +54,19 @@ export type UpdateAddressFormProps = {
 const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {  
   const toast = useToast()
 
-  const [cities, setCities] = useState<CityProps[]>([]);
+  const [cities, setCities] = useState<CityProps[]>(null);
 
   const states = useStatesQuery()
 
-  const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
+  const { handleSubmit, formState, register, reset, clearErrors } =
     useForm<AddressProps>({
       resolver: yupResolver(updateAddressSchema),
     });
 
   const { errors, isDirty, isSubmitting } = formState;
-
-  const fetchCities = useCallback( async (uf: string) => {
-    const { data } = await getCities(uf)
-
-    setCities(data)
-  }, [])  
-
+  
   const updateAddressMutation = useUpdateAddressMutation()
-
+  
   const handleUpdateAddress: SubmitHandler<AddressProps> = async values => {
     try {
       const updateAddress = {
@@ -90,8 +84,7 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
 
       onClose()
       
-    } catch (error) {
-      console.log(error)
+    } catch (error) {      
       toast({
         status: 'error',
         description: 'Ocorreu um erro ao atualizar o endereço...',
@@ -105,22 +98,29 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
 
   const handleUpdateAddressError: SubmitErrorHandler<AddressProps> = errors => console.log(errors)
 
-  useEffect(() => {
-   fetchCities(address.estado)
-   .then(() => {
-     reset({
-       cidade: address.cidade
-     })
-   })
-
-   return () => setCities([])
+  const fetchCities = useCallback(async (uf: string) => {
+    const response = await getCities(uf)
     
-  }, [address.estado, fetchCities, address.cidade, reset])
+    setCities(response)
+    return response
+  }, [])
+
+  useEffect(() => {    
+    const handleGetCities = async () => {
+      const { estado, cidade } = address    
+      await fetchCities(estado)
+      reset({ estado, cidade })
+      return
+    }
+    handleGetCities()
+
+    return () => setCities([])
+    
+  }, [address, reset, fetchCities]) 
 
   return (
     <Box as="form" onSubmit={handleSubmit(handleUpdateAddress, handleUpdateAddressError)}>
       <Stack spacing={3}>
-
         <HStack spacing={3}>
           <Input 
             label="Endereço:"
@@ -135,15 +135,13 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
             {...register('bairro')}
           />
         </HStack>
-
         <HStack spacing={3}>
-
           <Select
             name="estado"
             label="Estado:"
+            isLoading={states.isLoading || states.isFetching}
             bgColor="gray.50"
-            error={errors?.estado}
-            defaultValue={address.estado}
+            error={errors?.estado}            
             {...register("estado")}
             onChange={(event) => fetchCities(event.target.value)}
           >
@@ -164,14 +162,13 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
             label="Cidade:"
             bgColor="gray.50"
             error={errors?.cidade}
-            defaultValue={address.cidade}
             {...register("cidade")}
             onChange={() => clearErrors('cidade')}
           >
             <option value="default" hidden aria-readonly>
               Selecione uma cidade...
             </option>
-            {cities.map((city) => {
+            {cities?.map((city) => {
               return <option key={city.id}>{city.nome}</option>;
             })}
           </Select>
@@ -183,14 +180,12 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
             {...register('cep')}
           />
         </HStack>
-
         <Input 
           label="Complemento:"
           name="complemento"
           defaultValue={address.complemento}
           {...register('complemento')}
         />
-
         <HStack spacing={3} justifyContent="flex-end">
           <Button 
             type="reset" 
@@ -205,7 +200,6 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
             isDisabled={!isDirty}
           >Salvar alterações</Button>
         </HStack>
-
       </Stack>
     </Box>
   )

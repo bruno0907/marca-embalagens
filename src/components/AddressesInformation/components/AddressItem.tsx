@@ -1,4 +1,4 @@
-import { useState, memo } from "react"
+import { useState } from "react"
 import dynamic from "next/dynamic"
 
 import { prefetchAddress } from "../../../services/prefetchAddress"
@@ -22,45 +22,32 @@ import { FiEdit, FiHome } from "react-icons/fi"
 import { AddressProps } from "../../../types"
 
 const Modal = dynamic<ModalProps>(
-  async () => {
-    const { Modal } = await import('../../Modal')
-
-    return Modal
-  }
+  () =>import('../../Modal').then(({ Modal }) => Modal)
 )
 
 const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
-  async () => {
-    const { UpdateAddressForm } = await import('./UpdateAddressForm')
-
-    return UpdateAddressForm
-  }, {
-    loading: () => (
-      <Center mb="8">
-        <Spinner color="blue.500"/>
-      </Center>
-    )
-  }
+  () => import('./UpdateAddressForm')
+    .then(({ UpdateAddressForm }) => UpdateAddressForm)  
 )
 
 export type AddressItemProps = {
   address: AddressProps
 }
 
-const AddressItemComponent = ({ address }: AddressItemProps) => {
+const AddressItem = ({ address }: AddressItemProps) => {
   const { onOpen, isOpen, onClose } = useDisclosure()
   const [addressToEdit, setAddressToEdit] = useState<AddressProps>(null)
 
-  const handlePrefetchAddress = async (id: string) => await prefetchAddress(id)
+  const handlePrefetchAddress = async () => await prefetchAddress(address.id)
 
-  const handleOpenModal = (address: AddressProps) => {
+  const handleOpenModal = () => {
     setAddressToEdit(address)
     onOpen()
   }
 
   return (
     <>
-      <Box as="li" py="2" px="4" bgColor="gray.100" borderRadius="md">
+      <Box as="li" listStyleType="none" py="2" px="4" bgColor="gray.100" borderRadius="md">
         <Flex align="center">        
           <Icon as={FiHome} fontSize="24" color="gray.500"/>
           <Box ml="4">
@@ -80,8 +67,8 @@ const AddressItemComponent = ({ address }: AddressItemProps) => {
           <Button 
             ml="auto" 
             variant="link"
-            onMouseEnter={() => handlePrefetchAddress(address.id)}
-            onClick={() => handleOpenModal(address)} 
+            onMouseEnter={handlePrefetchAddress}
+            onClick={handleOpenModal} 
             _hover={{ svg: { color: "blue.600" } }}
           >
             <Icon as={FiEdit} fontSize="24" color="blue.500"/>
@@ -95,9 +82,5 @@ const AddressItemComponent = ({ address }: AddressItemProps) => {
     </>
   )
 }
-
-const AddressItem = memo(AddressItemComponent, (prevProps, nextProps) => {
-  return prevProps.address !== nextProps.address
-})
 
 export { AddressItem }

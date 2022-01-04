@@ -1,8 +1,8 @@
 
 import '@testing-library/jest-dom/extend-expect'
-import preloadAll from 'jest-next-dynamic'
+// import preloadAll from 'jest-next-dynamic'
 
-beforeAll(async () => await preloadAll())
+// beforeAll(async () => await preloadAll())
 
 jest.mock('@supabase/supabase-js')
 jest.mock('react-query')
@@ -42,7 +42,7 @@ jest.mock('next/dynamic', () => {() => {
   return {
     __esModule: true,
     ...originalModules,
-    loadablefn: jest.fn(() => options)
+    loadablefn: jest.fn(() => options),    
   }
 }})
 

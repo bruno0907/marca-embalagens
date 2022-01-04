@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onClose, children, title }: ModalProps) => {
       onClose={onClose}          
       onEsc={onClose}
       useInert={isOpen}
-      size="5xl"
+      size="4xl"
       closeOnOverlayClick={false}
       scrollBehavior="inside"
     >

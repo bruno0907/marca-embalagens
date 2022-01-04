@@ -1,14 +1,10 @@
+import preloadAll from 'jest-next-dynamic'
 import { render, screen, fireEvent } from "@testing-library/react"
-
-// import preloadAll from 'jest-next-dynamic'
-
 import { 
   PortalManager, 
   useDisclosure 
 } from '@chakra-ui/react'
-
 import { AddressesInformation } from "."
-
 import { Modal } from '../Modal'
 import { CreateAddressForm } from "./components/CreateAddressForm"
 
@@ -19,7 +15,7 @@ jest.mock('@chakra-ui/react')
 const useAddressesQuerySpy = jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery')
 
 describe('AddressesInformation', () => {
-  // beforeAll(async () => await preloadAll())
+  beforeAll(async () => await preloadAll())
   afterAll(() => jest.clearAllMocks())    
   
   it('should render properly and display 2 addresses if it has data', () => {

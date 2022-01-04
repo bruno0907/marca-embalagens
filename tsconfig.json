@@ -18,7 +18,7 @@
     "next-env.d.ts", 
     "**/*.ts",
     "**/*.tsx",
-    "setupTests.tsx"
+    "setupTests.ts"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,4 +1,7 @@
 
+import React from 'react'
+import preloadAll from 'jest-next-dynamic'
+
 import { PortalManager, useDisclosure } from "@chakra-ui/react"
 import { render, screen, fireEvent } from "@testing-library/react"
 
@@ -20,21 +23,13 @@ const mockAddress: AddressProps = {
   principal: true,
 }
 
-// jest.mock('../../Modal')
-
-// const Wrapper = ({ children }) => {
-//   const { isOpen, onClose } = useDisclosure()
-//   return (
-//     <PortalManager>
-//       <Modal isOpen={isOpen} onClose={onClose} title="mock-update-address-modal">
-//         <UpdateAddressForm address={mockAddress} onClose={onClose}/>
-//       </Modal>
-//       {children}
-//     </PortalManager>
-//   )
-// }
+jest.mock('../../../hooks/useStatesQuery')
+jest.mock('../../../services/getCities')
 
 describe('AddressItem', () => {
+  afterAll(() => jest.clearAllMocks())
+  beforeAll(async () => await preloadAll())
+
   it('should render properly', () => {
     render(<AddressItem address={mockAddress} />)
 
@@ -47,26 +42,15 @@ describe('AddressItem', () => {
     render(<AddressItem address={mockAddress} />)
 
     const address = screen.getByText(/fake-address/)
-    const prescint = screen.getByText(/fake-prescint/)
-    const city = screen.getByText(/fake-city/)
-    const state = screen.getByText(/fake-state/)
-    const zipcode = screen.getByText(/fake-zipcode/)
-    const aditional = screen.getByText(/fake-aditional/)
-    const mainAddress = screen.getByText(/Endereço principal/)
 
     expect(address).toBeInTheDocument()
-    expect(prescint).toBeInTheDocument()
-    expect(city).toBeInTheDocument()
-    expect(state).toBeInTheDocument()
-    expect(zipcode).toBeInTheDocument()
-    expect(aditional).toBeInTheDocument()
-    expect(mainAddress).toBeInTheDocument()
   })
 
   it('should display "Endereço principal" if "principal" is true', () => {
     render(<AddressItem address={mockAddress} />)
 
     const mainAddress = screen.getByText(/Endereço principal/)
+
     expect(mainAddress).toBeInTheDocument()
   })
 
@@ -79,24 +63,74 @@ describe('AddressItem', () => {
     render(<AddressItem address={mockOtherAddress} />)
 
     const otherAddress = screen.getByText(/Outro endereço/)
+
     expect(otherAddress).toBeInTheDocument()
   })
+
+  it('should prefetch address on mouse hover', () => { 
+    render(<AddressItem address={mockAddress} />)
+
+    const mockPrefetchAddress = jest
+      .spyOn(require('../../../services/prefetchAddress'), 'prefetchAddress')
+      .mockResolvedValueOnce('fake-id')
+
+    const editAddressBtn = screen.getByRole('button')
+    fireEvent.mouseEnter(editAddressBtn)
+
+    expect(mockPrefetchAddress).toHaveBeenCalledWith('fake-id')    
+  })  
   
-  it('should display call onOpen on Edit button click', () => {
-    const mockOtherAddress = {
-      ...mockAddress,
-      principal: false,
-    }
+  it('should call onOpen on Edit button click', () => {
+    render(<AddressItem address={mockAddress} />)
 
     const { onOpen } = useDisclosure()
 
-    const { debug } = render(<AddressItem address={mockOtherAddress} />)
-
-    const editButton = screen.getByRole('button')
-
-    fireEvent.click(editButton)
+    const editAddressBtn = screen.getByRole('button')
+    fireEvent.click(editAddressBtn)
 
     expect(onOpen).toBeCalled()
 
+  })
+
+  it('should show Modal component with UpdateAddressForm component as children', () => {    
+    jest.spyOn(require('@chakra-ui/react'), 'useDisclosure').mockReturnValueOnce({
+      isOpen: true
+    })
+
+    const { isOpen, onClose } = useDisclosure()
+
+    render(
+      <PortalManager>
+        <AddressItem address={mockAddress}/>
+        <Modal isOpen={isOpen} onClose={onClose} title="mock-update-address-modal">
+          <UpdateAddressForm address={mockAddress} onClose={onClose}/>
+        </Modal>
+      </PortalManager>
+    )
+
+    const mockModal = screen.getByText(/mock-update-address-modal/)
+    
+    expect(mockModal).toBeInTheDocument()
+  })
+
+  it('should render data from mock on UpdateAddressForm component', () => {
+    jest.spyOn(require('@chakra-ui/react'), 'useDisclosure').mockReturnValueOnce({
+      isOpen: true
+    })
+
+    const { isOpen, onClose } = useDisclosure()
+    
+    render(
+      <PortalManager>
+        <AddressItem address={mockAddress}/>
+        <Modal isOpen={isOpen} onClose={onClose} title="mock-update-address-modal">
+          <UpdateAddressForm address={mockAddress} onClose={onClose}/>
+        </Modal>
+      </PortalManager>
+    )
+
+    const fakeAddressData = screen.getByText(/fake-address/)
+
+    expect(fakeAddressData).toBeInTheDocument()
   })
 })
