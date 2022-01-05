@@ -100,9 +100,7 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
       })
     }
 
-  }
-
-  const handleCancelUpdate = () => onClose() 
+  }  
 
   const handleNewAddressError: SubmitErrorHandler<AddressProps> = errors => console.log(errors)
 
@@ -177,7 +175,7 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
         />
 
         <HStack spacing={3} justifyContent="flex-end">
-          <Button type="reset" variant="ghost" colorScheme="blue" onClick={handleCancelUpdate}>Cancelar</Button>
+          <Button type="reset" variant="ghost" colorScheme="blue" onClick={onClose}>Cancelar</Button>
           <Button type="submit" colorScheme="blue" isLoading={isSubmitting} isDisabled={!isDirty}>Salvar novo endereço</Button>
         </HStack>
 

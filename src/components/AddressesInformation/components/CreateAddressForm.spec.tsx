@@ -2,7 +2,7 @@ import React from 'react'
 import preloadAll from 'jest-next-dynamic'
 
 import { useDisclosure } from "@chakra-ui/react"
-import { render, screen } from "@testing-library/react"
+import { render, screen, fireEvent } from "@testing-library/react"
 
 import { unmountComponentAtNode } from 'react-dom'
 
@@ -56,5 +56,17 @@ describe('CreateAddressForm', () => {
     const saveAddressBtn = screen.getByRole('button', { name: /Salvar novo endereço/})
 
     expect(saveAddressBtn).toBeInTheDocument()
+  })
+
+  it('should call onClose on Cancelar button press', () => {
+    const { onClose } = useDisclosure()   
+
+    render(<CreateAddressForm userId="fake-userId" onClose={onClose}/>, container)
+
+    const cancelBtn = screen.getByRole('button', { name: /Cancelar/})
+
+    fireEvent.click(cancelBtn)
+
+    expect(onClose).toBeCalled()
   })
 })
