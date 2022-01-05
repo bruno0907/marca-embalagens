@@ -45,7 +45,7 @@ describe('AddressItem', () => {
   })
 
   it('should render properly', () => {
-    render(<AddressItem address={mockAddress} />)
+    render(<AddressItem address={mockAddress} />, container)
 
     const addressItem = screen.getByText(/fake-address/)
 
@@ -53,7 +53,7 @@ describe('AddressItem', () => {
   })
 
   it('should display mock data', () => {
-    render(<AddressItem address={mockAddress} />)
+    render(<AddressItem address={mockAddress} />, container)
 
     const address = screen.getByText(/fake-address/)
 
@@ -61,7 +61,7 @@ describe('AddressItem', () => {
   })
 
   it('should display "Endereço principal" if "principal" is true', () => {
-    render(<AddressItem address={mockAddress} />)
+    render(<AddressItem address={mockAddress} />, container)
 
     const mainAddress = screen.getByText(/Endereço principal/)
 
@@ -74,7 +74,7 @@ describe('AddressItem', () => {
       principal: false,
     }
 
-    render(<AddressItem address={mockOtherAddress} />)
+    render(<AddressItem address={mockOtherAddress} />, container)
 
     const otherAddress = screen.getByText(/Outro endereço/)
 
@@ -86,7 +86,7 @@ describe('AddressItem', () => {
       .spyOn(require('../../../services/prefetchAddress'), 'prefetchAddress')
       .mockResolvedValueOnce('fake-id')
       
-    render(<AddressItem address={mockAddress} />)
+    render(<AddressItem address={mockAddress} />, container)
     
     const editAddressBtn = screen.getByRole('button')
     fireEvent.mouseEnter(editAddressBtn)
@@ -95,7 +95,7 @@ describe('AddressItem', () => {
   })  
   
   it('should call onOpen on Edit button click', () => {
-    render(<AddressItem address={mockAddress} />)
+    render(<AddressItem address={mockAddress} />, container)
 
     const { onOpen } = useDisclosure()
 
@@ -119,7 +119,8 @@ describe('AddressItem', () => {
         <Modal isOpen={isOpen} onClose={onClose} title="mock-update-address-modal">
           <UpdateAddressForm address={mockAddress} onClose={onClose}/>
         </Modal>
-      </PortalManager>
+      </PortalManager>,
+      container
     )
 
     const mockModal = screen.getByText(/mock-update-address-modal/)
@@ -140,7 +141,8 @@ describe('AddressItem', () => {
         <Modal isOpen={isOpen} onClose={onClose} title="mock-update-address-modal">
           <UpdateAddressForm address={mockAddress} onClose={onClose}/>
         </Modal>
-      </PortalManager>
+      </PortalManager>,
+      container
     )
 
     const fakeAddressData = screen.getByText(/fake-address/)

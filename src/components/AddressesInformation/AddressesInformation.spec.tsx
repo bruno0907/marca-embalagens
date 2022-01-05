@@ -33,7 +33,7 @@ describe('AddressesInformation', () => {
   })
   
   it('should render properly and display 2 addresses if it has data', () => {
-    render(<AddressesInformation userId="fake-user-id"/>)
+    render(<AddressesInformation userId="fake-user-id"/>, container)
     
     const addresses = screen.getAllByText(/fake-address/)
   
@@ -42,7 +42,7 @@ describe('AddressesInformation', () => {
   
   it('should display addresses correctly', () => {
 
-    render(<AddressesInformation userId="fake-user-id"/>)
+    render(<AddressesInformation userId="fake-user-id"/>, container)
 
     const addressMock1 = screen.getAllByText(/fake-address/)[0]
     expect(addressMock1).toHaveTextContent(/fake-address/)
@@ -57,7 +57,7 @@ describe('AddressesInformation', () => {
       data: null
     })
 
-    render(<AddressesInformation userId="fake-user-id"/>)
+    render(<AddressesInformation userId="fake-user-id"/>, container)
 
     const loadingSkeleton = screen.getByText(/Carregando.../)
 
@@ -71,7 +71,7 @@ describe('AddressesInformation', () => {
       data: null
     })
 
-    render(<AddressesInformation userId="fake-user-id"/>)
+    render(<AddressesInformation userId="fake-user-id"/>, container)
     
     const errorComponent = screen.getByText(/Ocorreu um erro/)
 
@@ -79,7 +79,7 @@ describe('AddressesInformation', () => {
   })  
 
   it('should call onOpen on Novo endereço click', () => {    
-    render(<AddressesInformation userId="fake-user-id"/>)    
+    render(<AddressesInformation userId="fake-user-id"/>, container)    
     
     const { onOpen } = useDisclosure()
 
@@ -106,7 +106,7 @@ describe('AddressesInformation', () => {
         <Modal isOpen={isOpen} onClose={onClose} title="mock-title">
           <CreateAddressForm userId="fake-userId" onClose={onClose}/>
         </Modal>
-      </PortalManager>
+      </PortalManager>, container
     )
 
     const submitButton = screen.getByRole('button', { name: 'Salvar novo endereço' })
