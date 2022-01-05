@@ -7,6 +7,7 @@ import {
 import { AddressesInformation } from "."
 import { Modal } from '../Modal'
 import { CreateAddressForm } from "./components/CreateAddressForm"
+import { unmountComponentAtNode } from 'react-dom'
 
 jest.mock('../../hooks/useAddressesQuery')
 jest.mock('../../hooks/useStatesQuery')
@@ -14,9 +15,22 @@ jest.mock('@chakra-ui/react')
 
 const useAddressesQuerySpy = jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery')
 
+let container = null
+
 describe('AddressesInformation', () => {
   beforeAll(async () => await preloadAll())
-  afterAll(() => jest.clearAllMocks())    
+  afterAll(() => jest.clearAllMocks())  
+  
+  beforeEach(() => {
+    container = document.createElement('div')
+    document.body.appendChild(container)
+  })
+
+  afterEach(() => {
+    unmountComponentAtNode(container)
+    container.remove()
+    container = null
+  })
   
   it('should render properly and display 2 addresses if it has data', () => {
     render(<AddressesInformation userId="fake-user-id"/>)

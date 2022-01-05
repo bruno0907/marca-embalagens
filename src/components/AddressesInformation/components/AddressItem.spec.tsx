@@ -10,6 +10,7 @@ import { Modal } from "../../Modal"
 
 import { AddressItem } from "./AddressItem"
 import { UpdateAddressForm } from "./UpdateAddressForm"
+import { unmountComponentAtNode } from 'react-dom'
 
 const mockAddress: AddressProps = {
   id: 'fake-id',
@@ -26,9 +27,22 @@ const mockAddress: AddressProps = {
 jest.mock('../../../hooks/useStatesQuery')
 jest.mock('../../../services/getCities')
 
+let container = null
+
 describe('AddressItem', () => {
   afterAll(() => jest.clearAllMocks())
   beforeAll(async () => await preloadAll())
+
+  beforeEach(() => {
+    container = document.createElement('div')
+    document.body.appendChild(container)
+  })
+
+  afterEach(() => {
+    unmountComponentAtNode(container)
+    container.remove()
+    container = null
+  })
 
   it('should render properly', () => {
     render(<AddressItem address={mockAddress} />)
@@ -67,13 +81,13 @@ describe('AddressItem', () => {
     expect(otherAddress).toBeInTheDocument()
   })
 
-  it('should prefetch address on mouse hover', () => { 
-    render(<AddressItem address={mockAddress} />)
-
+  it('should prefetch address on mouse hover', async () => { 
     const mockPrefetchAddress = jest
       .spyOn(require('../../../services/prefetchAddress'), 'prefetchAddress')
       .mockResolvedValueOnce('fake-id')
-
+      
+    render(<AddressItem address={mockAddress} />)
+    
     const editAddressBtn = screen.getByRole('button')
     fireEvent.mouseEnter(editAddressBtn)
 

@@ -66,7 +66,7 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
   const { errors, isSubmitting, isDirty } = formState;
 
   const fetchCities = useCallback( async (uf: string) => {
-    const { data } = await getCities(uf)
+    const data = await getCities(uf)
 
     setCities(data)
   }, [])  
