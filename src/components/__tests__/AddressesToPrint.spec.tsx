@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { AddressesToPrint } from "."
+import { AddressesToPrint } from "../AddressesToPrint"
 import { AddressProps } from "../../types"
 
 const addressMock: AddressProps = {
@@ -14,7 +14,7 @@ const addressMock: AddressProps = {
   principal: true
 }
 
-describe('AddressesToPrint', () => {
+describe('<AddressesToPrint/>', () => {
   it('should render properly', () => {
     const addressesMock: AddressProps[] = [      
       {

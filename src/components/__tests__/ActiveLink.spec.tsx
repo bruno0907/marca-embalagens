@@ -2,10 +2,10 @@ import { render, screen } from "@testing-library/react"
 
 import { useRouter } from "next/router"
 
-import { ActiveLink } from "."
+import { ActiveLink } from "../SideMenu/components/ActiveLink"
 import { FiHome } from "react-icons/fi"
 
-describe('ActiveLink', () => {
+describe('<ActiveLink/>', () => {
   it('should render properly', () => {
     const hrefMock = '/mock-home'
     const labelMock = 'Mock Home'

@@ -1,8 +1,11 @@
-
 import '@testing-library/jest-dom/extend-expect'
-// import preloadAll from 'jest-next-dynamic'
+import preloadAll from 'jest-next-dynamic'
+import { cleanup } from '@testing-library/react'
 
-// beforeAll(async () => await preloadAll())
+beforeAll(async () => await preloadAll())
+afterAll(jest.clearAllMocks)
+
+afterEach(cleanup)
 
 jest.mock('@supabase/supabase-js')
 jest.mock('react-query')

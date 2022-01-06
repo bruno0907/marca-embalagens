@@ -1,39 +1,36 @@
-import preloadAll from 'jest-next-dynamic'
 import { render, screen, fireEvent } from "@testing-library/react"
+
 import { 
-  PortalManager, 
+  ChakraProvider,
+  PortalManager,    
   useDisclosure 
 } from '@chakra-ui/react'
-import { AddressesInformation } from "."
+
+import { AddressesInformation } from "../AddressesInformation"
 import { Modal } from '../Modal'
-import { CreateAddressForm } from "./components/CreateAddressForm"
-import { unmountComponentAtNode } from 'react-dom'
+import { CreateAddressForm } from "../AddressesInformation/components/CreateAddressForm"
+import { theme } from '../../styles/theme'
 
 jest.mock('../../hooks/useAddressesQuery')
 jest.mock('../../hooks/useStatesQuery')
-jest.mock('@chakra-ui/react')
 
 const useAddressesQuerySpy = jest.spyOn(require('../../hooks/useAddressesQuery'), 'useAddressesQuery')
 
-let container = null
+let wrapper = null
 
-describe('AddressesInformation', () => {
-  beforeAll(async () => await preloadAll())
-  afterAll(() => jest.clearAllMocks())  
-  
+describe('<AddressesInformation/>', () => {  
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-  })
-
-  afterEach(() => {
-    unmountComponentAtNode(container)
-    container.remove()
-    container = null
+    wrapper = ({ children }): JSX.Element => {
+      return (
+      <ChakraProvider resetCSS theme={theme}>
+        {children}
+      </ChakraProvider>
+      )
+    }
   })
   
   it('should render properly and display 2 addresses if it has data', () => {
-    render(<AddressesInformation userId="fake-user-id"/>, container)
+    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
     
     const addresses = screen.getAllByText(/fake-address/)
   
@@ -42,7 +39,7 @@ describe('AddressesInformation', () => {
   
   it('should display addresses correctly', () => {
 
-    render(<AddressesInformation userId="fake-user-id"/>, container)
+    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
 
     const addressMock1 = screen.getAllByText(/fake-address/)[0]
     expect(addressMock1).toHaveTextContent(/fake-address/)
@@ -57,7 +54,7 @@ describe('AddressesInformation', () => {
       data: null
     })
 
-    render(<AddressesInformation userId="fake-user-id"/>, container)
+    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
 
     const loadingSkeleton = screen.getByText(/Carregando.../)
 
@@ -71,7 +68,7 @@ describe('AddressesInformation', () => {
       data: null
     })
 
-    render(<AddressesInformation userId="fake-user-id"/>, container)
+    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
     
     const errorComponent = screen.getByText(/Ocorreu um erro/)
 
@@ -79,7 +76,7 @@ describe('AddressesInformation', () => {
   })  
 
   it('should call onOpen on Novo endereço click', () => {    
-    render(<AddressesInformation userId="fake-user-id"/>, container)    
+    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })    
     
     const { onOpen } = useDisclosure()
 
@@ -106,7 +103,7 @@ describe('AddressesInformation', () => {
         <Modal isOpen={isOpen} onClose={onClose} title="mock-title">
           <CreateAddressForm userId="fake-userId" onClose={onClose}/>
         </Modal>
-      </PortalManager>, container
+      </PortalManager>, { wrapper }
     )
 
     const submitButton = screen.getByRole('button', { name: 'Salvar novo endereço' })

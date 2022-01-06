@@ -1,10 +1,9 @@
-import preloadAll from 'jest-next-dynamic'
+import { render, screen } from "@testing-library/react"
+import { AddressProps } from '../../types'
+import { AddressList } from '../AddressesInformation/components/AddressList'
 
-import { render, screen, fireEvent } from "@testing-library/react"
-import { AddressProps } from '../../../types'
-import { AddressList } from './AddressList'
-import { unmountComponentAtNode } from 'react-dom'
-
+import { ChakraProvider } from '@chakra-ui/react'
+import { theme } from '../../styles/theme'
 
 const mockAddresses: AddressProps[] = [
   {
@@ -32,25 +31,21 @@ const mockAddresses: AddressProps[] = [
   },
 ] 
 
-let container = null
+let wrapper = null
 
-describe('AddressList', () => {
-  afterAll(() => jest.clearAllMocks())
-  beforeAll(async () => await preloadAll())
-
+describe('<AddressList/>', () => {
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-  })
-
-  afterEach(() => {
-    unmountComponentAtNode(container)
-    container.remove()
-    container = null
+    wrapper = ({ children }): JSX.Element => {
+      return (
+      <ChakraProvider resetCSS theme={theme}>
+        {children}
+      </ChakraProvider>
+      )
+    }
   })
 
   it('should render properly', () => {
-    render(<AddressList addresses={mockAddresses}/>, container)
+    render(<AddressList addresses={mockAddresses}/>, { wrapper })
 
     const address = screen.getByText('Endereço principal')
     expect(address).toBeInTheDocument()

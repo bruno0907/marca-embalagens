@@ -1,16 +1,13 @@
 
-import React from 'react'
-import preloadAll from 'jest-next-dynamic'
-
-import { PortalManager, useDisclosure } from "@chakra-ui/react"
+import { ChakraProvider, PortalManager, useDisclosure } from "@chakra-ui/react"
 import { render, screen, fireEvent } from "@testing-library/react"
 
-import { AddressProps } from "../../../types"
-import { Modal } from "../../Modal"
+import { AddressProps } from "../../types"
+import { Modal } from "../Modal"
 
-import { AddressItem } from "./AddressItem"
-import { UpdateAddressForm } from "./UpdateAddressForm"
-import { unmountComponentAtNode } from 'react-dom'
+import { AddressItem } from "../AddressesInformation/components/AddressItem"
+import { UpdateAddressForm } from "../AddressesInformation/components/UpdateAddressForm"
+import { theme } from '../../styles/theme'
 
 const mockAddress: AddressProps = {
   id: 'fake-id',
@@ -24,28 +21,24 @@ const mockAddress: AddressProps = {
   principal: true,
 }
 
-jest.mock('../../../hooks/useStatesQuery')
-jest.mock('../../../services/getCities')
+jest.mock('../../hooks/useStatesQuery')
+jest.mock('../../services/getCities')
 
-let container = null
+let wrapper = null
 
-describe('AddressItem', () => {
-  afterAll(() => jest.clearAllMocks())
-  beforeAll(async () => await preloadAll())
-
+describe('<AddressItem/>', () => {
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-  })
-
-  afterEach(() => {
-    unmountComponentAtNode(container)
-    container.remove()
-    container = null
+    wrapper = ({ children }): JSX.Element => {
+      return (
+      <ChakraProvider resetCSS theme={theme}>
+        {children}
+      </ChakraProvider>
+      )
+    }
   })
 
   it('should render properly', () => {
-    render(<AddressItem address={mockAddress} />, container)
+    render(<AddressItem address={mockAddress} />, { wrapper })
 
     const addressItem = screen.getByText(/fake-address/)
 
@@ -53,7 +46,7 @@ describe('AddressItem', () => {
   })
 
   it('should display mock data', () => {
-    render(<AddressItem address={mockAddress} />, container)
+    render(<AddressItem address={mockAddress} />, { wrapper })
 
     const address = screen.getByText(/fake-address/)
 
@@ -61,7 +54,7 @@ describe('AddressItem', () => {
   })
 
   it('should display "Endereço principal" if "principal" is true', () => {
-    render(<AddressItem address={mockAddress} />, container)
+    render(<AddressItem address={mockAddress} />, { wrapper })
 
     const mainAddress = screen.getByText(/Endereço principal/)
 
@@ -74,7 +67,7 @@ describe('AddressItem', () => {
       principal: false,
     }
 
-    render(<AddressItem address={mockOtherAddress} />, container)
+    render(<AddressItem address={mockOtherAddress} />, { wrapper })
 
     const otherAddress = screen.getByText(/Outro endereço/)
 
@@ -83,10 +76,10 @@ describe('AddressItem', () => {
 
   it('should prefetch address on mouse hover', async () => { 
     const mockPrefetchAddress = jest
-      .spyOn(require('../../../services/prefetchAddress'), 'prefetchAddress')
+      .spyOn(require('../../services/prefetchAddress'), 'prefetchAddress')
       .mockResolvedValueOnce('fake-id')
       
-    render(<AddressItem address={mockAddress} />, container)
+    render(<AddressItem address={mockAddress} />, { wrapper })
     
     const editAddressBtn = screen.getByRole('button')
     fireEvent.mouseEnter(editAddressBtn)
@@ -95,7 +88,7 @@ describe('AddressItem', () => {
   })  
   
   it('should call onOpen on Edit button click', () => {
-    render(<AddressItem address={mockAddress} />, container)
+    render(<AddressItem address={mockAddress} />, { wrapper })
 
     const { onOpen } = useDisclosure()
 
@@ -120,7 +113,7 @@ describe('AddressItem', () => {
           <UpdateAddressForm address={mockAddress} onClose={onClose}/>
         </Modal>
       </PortalManager>,
-      container
+      { wrapper }
     )
 
     const mockModal = screen.getByText(/mock-update-address-modal/)
@@ -142,7 +135,7 @@ describe('AddressItem', () => {
           <UpdateAddressForm address={mockAddress} onClose={onClose}/>
         </Modal>
       </PortalManager>,
-      container
+      { wrapper }
     )
 
     const fakeAddressData = screen.getByText(/fake-address/)

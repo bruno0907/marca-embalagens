@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react"
-import { SideMenu } from "."
+import { SideMenu } from "../SideMenu"
 
 jest.mock('../../hooks/useSignOutMutation', () => {
   return {
@@ -13,7 +13,7 @@ jest.mock('../../hooks/useSignOutMutation', () => {
 
 const useSignOutMutation = jest.spyOn(require('../../hooks/useSignOutMutation'), 'useSignOutMutation')
 
-describe('SideMenu', () => {
+describe('<SideMenu/>', () => {
   it('should render correcly', () => {
     const { container } = render(<SideMenu />)
 

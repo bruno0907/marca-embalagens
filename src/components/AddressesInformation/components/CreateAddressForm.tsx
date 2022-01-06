@@ -109,7 +109,8 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
       <Stack spacing={3}>
 
         <HStack spacing={3}>
-          <Input 
+          <Input
+            data-testid="address"
             label="Endereço:"
             name="endereco"            
             {...register('endereco')}
