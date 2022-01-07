@@ -4,7 +4,7 @@ import { WithAuth } from "../../components/WithAuth";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
-import { ProfileForm } from "./components/ProfileForm";
+import { ProfileForm } from "../../components/pages/Profile/ProfileForm";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 

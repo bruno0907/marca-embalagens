@@ -1,0 +1,154 @@
+import { useRouter } from 'next/router'
+
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+
+import { useForm, SubmitHandler } from 'react-hook-form'
+
+import { Divider } from '../../../Divider'
+import { Input } from '../../../Input'
+import { UserInfo } from './UserInfo'
+import { OrderProducts } from './OrderProducts'
+import { UserAddress } from './UserAddress'
+import { Products } from './Products'
+
+import { useAuth } from '../../../../hooks/useAuth'
+
+import { useCreateOrder } from '../../../../hooks/useCreateOrder'
+
+import { useCreateOrderMutation } from '../../../../hooks/useCreateOrderMutation'
+
+const newOrderSchema = yup.object().shape({
+  condicao_pagamento: yup.string().trim(),     
+  data_entrega: yup.string().required('A data da entrega é obrigatória').trim(),
+})
+
+import {   
+  Stack,
+  HStack,
+  Box,
+  Center,
+  Spinner,
+  useToast,
+} from '@chakra-ui/react'
+ 
+import { NewOrderProps } from '../../../../types'
+
+const CreateOrderForm = () => {
+  const { session } = useAuth()
+
+  const {        
+    orders,
+    selectedUser,
+    orderProducts,
+    selectedAddress,
+    orderTotal,
+  } = useCreateOrder()  
+
+  const router = useRouter()  
+  const toast = useToast()
+  
+  const { handleSubmit, register, formState } = useForm<NewOrderProps>({
+    resolver: yupResolver(newOrderSchema)
+  })
+
+  const { errors, isSubmitting } = formState      
+
+  const createOrderMutation = useCreateOrderMutation()
+  
+  const canSubmitOrder = selectedUser && Boolean(orderProducts.length <= 0)  
+
+  const ordersAmount = orders.data?.length
+
+  const handleCreateNewOrderMutation: SubmitHandler<NewOrderProps> = async values => {
+    const { data_entrega, condicao_pagamento } = values
+
+    const newOrder: NewOrderProps = {
+      user_id: session.user.id,
+      numero_pedido: ordersAmount + 1,
+      cliente: selectedUser.id,
+      endereco_entrega: selectedAddress.id,
+      pedido: [...orderProducts],
+      total: orderTotal,
+      condicao_pagamento,
+      data_entrega,
+    }
+
+    try {
+      const response = await createOrderMutation.mutateAsync(newOrder)
+
+      toast({
+        description: 'Pedido criado com sucesso!',
+        status: 'success',
+        isClosable: true,
+        duration: 3000,
+        position: 'top-right',
+      })
+
+      router.push(`/orders/${response[0].id}`)
+
+    } catch (error) {
+      toast({        
+        title: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top-right',
+      })
+    }
+  }
+
+  const handleCancelOrder = () => router.push('/orders')
+
+  if(orders.isLoading) {
+    return (
+      <Center>
+        <Spinner size="md" color="blue.500" />
+      </Center>
+    )
+  }
+
+  return (
+    <Box as="form" onSubmit={handleSubmit(handleCreateNewOrderMutation)}>      
+      <Stack spacing={3}>    
+        <UserInfo />
+
+        { selectedUser && <UserAddress /> }
+                  
+        { selectedAddress &&  
+          <HStack spacing={3} align="flex-start">
+            <Input 
+              name="condicao_pagamento"
+              label="Condição de pagamento:"
+              {...register('condicao_pagamento')}
+            />
+            <Box w="380px">
+              <Input 
+                type="date"
+                name="data_entrega"
+                label="Data de entrega:"
+                error={errors.data_entrega}
+                {...register('data_entrega')}
+              />
+            </Box>
+          </HStack>
+        }
+      </Stack>
+
+      <Divider my="8"/>
+
+      <Stack spacing={6}>
+        <Products/>
+        <OrderProducts
+          canSubmitOrder={canSubmitOrder}
+          isSubmitting={isSubmitting}
+          handleCancelOrder={handleCancelOrder}
+        />            
+      </Stack> 
+    </Box>   
+  )
+}
+
+export { 
+  CreateOrderForm
+}

@@ -8,7 +8,8 @@ import {
   Input as ChakraInput,
   InputProps as ChakraInputProps,
   FormErrorMessage,
-  Spinner
+  Spinner,
+  FormErrorIcon
 } from "@chakra-ui/react"
 
 interface InputProps extends ChakraInputProps {
@@ -24,21 +25,22 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> =
     return (
       <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
         { label && 
-          <FormLabel htmlFor={name} display="flex" alignItems="center">
+          <FormLabel htmlFor={label} display="flex" alignItems="center">
             {label}
             { isLoading && <Spinner ml="2" size="sm" color="blue.500"/>}
           </FormLabel> 
         }
         <ChakraInput
-          id={name}
+          id={label}
           name={name}            
           ref={ref}          
           error={error}
-          borderColor="gray.300"
+          borderColor={!error ? "gray.300" : "red"}
+          bgColor={!error ? "gray.50" : "red.50"}
           flexShrink={0}
           {...rest}
         />
-        { !!error && <FormErrorMessage>{error.message}</FormErrorMessage> }
+        { !!error && <FormErrorMessage><FormErrorIcon />{error.message}</FormErrorMessage> }
       </FormControl>
     )  
 }

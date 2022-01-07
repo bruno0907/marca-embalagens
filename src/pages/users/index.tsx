@@ -5,7 +5,7 @@ import { WithAuth } from '../../components/WithAuth'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
-import { UsersList } from './components/UsersList'
+import { UsersList } from '../../components/pages/Users/UsersList'
 
 import { useSearch, SearchInput } from '../../hooks/useSearch'
 

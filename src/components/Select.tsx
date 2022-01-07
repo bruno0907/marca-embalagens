@@ -8,7 +8,8 @@ import {
   Select as ChakraSelect,  
   SelectProps as ChakraSelectProps,
   FormErrorMessage,
-  Spinner
+  Spinner,
+  FormErrorIcon
 } from "@chakra-ui/react"
 
 import { MdArrowDropDown } from 'react-icons/md'
@@ -35,14 +36,15 @@ const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> =
           icon={<MdArrowDropDown fontSize="24" />}          
           id={name}
           name={name}
-          borderColor="gray.300"
+          borderColor={!error ? "gray.300" : "red"}
+          bgColor={!error ? "gray50" : "red.50"}
           ref={ref}
           error={error}
           {...rest}
         >
           {children}
         </ChakraSelect>
-        { !!error && <FormErrorMessage>{error.message}</FormErrorMessage> }
+        { !!error && <FormErrorMessage><FormErrorIcon/>{error.message}</FormErrorMessage> }
       </FormControl>
     )  
 }

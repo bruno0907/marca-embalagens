@@ -36,6 +36,12 @@ jest.mock("@chakra-ui/react", () => {
       onClose: jest.spyOn(require("react"), 'useCallback').mockReturnValue(jest.fn()),
       onToggle: jest.spyOn(require("react"), 'useCallback').mockReturnValue(jest.fn()),
     }),
+    // useToast: {
+    //   close: jest.fn(),
+    //   closeAll: jest.fn(),
+    //   update: jest.fn(),
+    //   isActive: jest.fn(),
+    // },
   }
 })
 

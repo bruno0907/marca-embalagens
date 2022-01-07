@@ -1,6 +1,6 @@
 import { ReactNode, memo } from "react"
 
-import { GoBackButton } from "./components/GoBackButton"
+import { GoBackButton } from "./GoBackButton"
 
 import { 
   Flex, 

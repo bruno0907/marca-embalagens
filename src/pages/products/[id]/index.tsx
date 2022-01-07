@@ -5,7 +5,7 @@ import { WithAuth } from '../../../components/WithAuth'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { Content } from '../../../components/Content'
-import { UpdateProductForm } from './components/UpdateProductForm'
+import { UpdateProductForm } from '../../../components/pages/Products/UpdateProductForm'
 
 import { useProductQuery } from '../../../hooks/useProductQuery'
 

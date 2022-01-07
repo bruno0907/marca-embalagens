@@ -1,9 +1,9 @@
 import dynamic from 'next/dynamic'
 
-import { CreateAddressFormProps } from './components/CreateAddressForm'
-import { LoadingSkeleton } from './components/LoadingSkeleton'
-import { ErrorComponent } from './components/ErrorComponent'
-import { AddressList } from './components/AddressList'
+import { CreateAddressFormProps } from './CreateAddressForm'
+import { LoadingSkeleton } from './LoadingSkeleton'
+import { ErrorComponent } from './ErrorComponent'
+import { AddressList } from './AddressList'
 import { ModalProps } from '../Modal'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
@@ -17,7 +17,7 @@ const Modal = dynamic<ModalProps>(() => import('../Modal')
 )
 
 const CreateAddressForm = dynamic<CreateAddressFormProps>(
-  () => import('./components/CreateAddressForm') 
+  () => import('./CreateAddressForm') 
     .then(({ CreateAddressForm }) => CreateAddressForm)  
 )
 

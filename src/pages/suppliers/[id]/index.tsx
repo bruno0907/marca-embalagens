@@ -7,7 +7,7 @@ import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 import { WithAuth } from '../../../components/WithAuth'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
-import { SupplierInformation } from './components/SupplierInformation'
+import { SupplierInformation } from '../../../components/pages/Suppliers/SupplierInformation'
 import { AddressesInformation } from '../../../components/AddressesInformation'
 
 import { VStack, Button } from '@chakra-ui/react'

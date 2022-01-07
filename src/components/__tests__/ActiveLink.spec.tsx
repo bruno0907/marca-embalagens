@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 
 import { useRouter } from "next/router"
 
-import { ActiveLink } from "../SideMenu/components/ActiveLink"
+import { ActiveLink } from "../ActiveLink"
 import { FiHome } from "react-icons/fi"
 
 describe('<ActiveLink/>', () => {

@@ -3,9 +3,9 @@ import Head from 'next/head'
 import { WithAuth } from '../../components/WithAuth'
 import { Header } from '../../components/Header'
 import { Divider } from '../../components/Divider'
-import { OrdersCard } from './components/OrdersCard'
-import { UsersCard } from './components/UsersCard'
-import { ProductsCard } from './components/ProductsCard'
+import { OrdersCard } from '../../components/pages/Dashboard/OrdersCard'
+import { UsersCard } from '../../components/pages/Dashboard/UsersCard'
+import { ProductsCard } from '../../components/pages/Dashboard/ProductsCard'
 
 import {
   HStack,

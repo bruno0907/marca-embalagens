@@ -1,7 +1,7 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 
-type OrderQueryProps = {
+export type OrderQueryProps = {
   id: string;
   user_id: string;
   numero_pedido: number;

@@ -9,11 +9,11 @@ import { useReactToPrint } from 'react-to-print'
 import { Content } from '../../../components/Content'
 import { Divider } from '../../../components/Divider'
 
-import { OrderHeader } from './components/OrderHeader'
-import { OrderUser } from './components/OrderUser'
-import { OrderProducts } from './components/OrderProducts'
-import { OrderPaymentConditions } from './components/OrderPaymentConditions'
-import { OrderTotal } from './components/OrderTotal'
+import { OrderHeader } from '../../../components/pages/Orders/Order/OrderHeader'
+import { OrderUser } from '../../../components/pages/Orders/Order/OrderUser'
+import { OrderProducts } from '../../../components/pages/Orders/Order/OrderProducts'
+import { OrderPaymentConditions } from '../../../components/pages/Orders/Order/OrderPaymentConditions'
+import { OrderTotal } from '../../../components/pages/Orders/Order/OrderTotal'
 import { Header } from '../../../components/Header'
 
 import { useOrderQuery } from "../../../hooks/useOrderQuery"
