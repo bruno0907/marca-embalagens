@@ -11,14 +11,15 @@ import {
 
 type HeaderProps = FlexProps & {
   withGoBack?: boolean;
+  to?: string;
   children?: ReactNode;
   title?: string;
 }
 
-const HeaderComponent = ({ withGoBack, children, title, ...rest }: HeaderProps) => {
+const HeaderComponent = ({ withGoBack, children, title, to, ...rest }: HeaderProps) => {
   return (
     <Flex id="header" align="center" justify="space-between" {...rest}>
-      { withGoBack && <GoBackButton /> }
+      { withGoBack && <GoBackButton to={to}/> }
       { title && <Heading fontSize="xx-large" mr="auto">{title}</Heading>}
       { children ? children : <Flex w="10" h="10"/> }
     </Flex>

@@ -126,25 +126,25 @@ export type NewProductProps = {
 }
 
 export type NewOrderProps = {  
-  user_id: string; // dono do pedido (usuario autenticado)
+  user_id: string; 
   numero_pedido: number;
-  cliente: string; // id do cliente do pedido  
+  cliente: string; 
   endereco_entrega: string;
-  condicao_pagamento: string; // condicao do pagamento do pedido
-  pedido: OrderItemProps[]; // pedido será um array de produtos
-  total: number; // valor total do pedido
+  condicao_pagamento: string; 
+  pedido: OrderItemProps[]; 
+  total: number; 
   data_entrega: Date;  
 }
 
 export type OrderProps = {
-  id: string; // numero pedido
-  user_id: string; // dono do pedido (usuario autenticado)
+  id: string; 
+  user_id: string; 
   numero_pedido: number;
-  cliente: string; // id do cliente do pedido  
+  cliente: string; 
   endereco_entrega: string;
-  condicao_pagamento: string; // condicao do pagamento do pedido
-  pedido: OrderItemProps[]; // pedido será um array de produtos
-  total: number; // valor total do pedido
+  condicao_pagamento: string; 
+  pedido: OrderItemProps[];
+  total: number;
   data_entrega: Date;
   created_at: Date;
 }

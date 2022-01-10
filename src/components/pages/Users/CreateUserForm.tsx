@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateUserMutation } from "../../../hooks/useCreateUserMutation";
 import { useStatesQuery } from "../../../hooks/useStatesQuery";
 import { getCities } from "../../../services/getCities";
-import { useAuth } from '../../../hooks/useAuth'
+import { useAuth } from '../../../contexts/useAuth'
 
 import { Input } from "../../Input";
 import { Select } from "../../Select";

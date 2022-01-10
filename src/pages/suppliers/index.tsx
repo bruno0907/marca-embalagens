@@ -11,7 +11,9 @@ import { useSearch, SearchInput } from '../../hooks/useSearch'
 
 import {    
   Button,
-  Icon,   
+  HStack,
+  Icon,
+  Stack,   
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
@@ -35,29 +37,34 @@ export default function Suppliers() {
 
       <WithAuth>      
 
-        <Header title="Fornecedores">
-          <Button
-            colorScheme="blue"            
-            leftIcon={<Icon as={FiPlus}/>}
-            onClick={() => router.push('/suppliers/new-supplier')}
-          >
-            Cadastrar novo fornecedor
-          </Button>
-        </Header>
+        <Header title="Fornecedores"/>
 
         <Divider />
 
         <Content>
-          <SearchInput
-            ref={searchInputRef}
-            placeholder="Pesquise pelo nome do fornecedor..."
-            hasSearch={!!searchValue}
-            value={searchValue}
-            onChange={handleSearch}
-            onClearSearch={clearSearch}
-          />
+          <Stack spacing={6}>
+            <HStack spacing={3}>
+              <SearchInput
+                ref={searchInputRef}
+                placeholder="Pesquise pelo nome do fornecedor..."
+                hasSearch={!!searchValue}
+                value={searchValue}
+                onChange={handleSearch}
+                onClearSearch={clearSearch}
+              />
+              <Button
+                colorScheme="blue"            
+                leftIcon={<Icon as={FiPlus}/>}
+                flexShrink={0}
+                onClick={() => router.push('/suppliers/new-supplier')}
+              >
+                Novo fornecedor
+              </Button>
+            </HStack>
 
-          <SuppliersList filterValue={toSearch}/>
+            <SuppliersList filterValue={toSearch}/>
+          </Stack>
+
         </Content> 
 
       </WithAuth>

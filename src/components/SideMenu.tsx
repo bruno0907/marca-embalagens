@@ -38,7 +38,7 @@ const SideMenuComponent = () => {
       flexDir="column"
       justify="flex-start"
       align="center"
-      py="10"
+      py="12"
       bgColor="gray.50"
       boxShadow="sm"
     >
@@ -55,6 +55,11 @@ const SideMenuComponent = () => {
           href="/dashboard"
           icon={FiHome}
           label="Página Inicial"
+        />
+        <ActiveLink 
+          href="/estimates"
+          icon={FiEdit}
+          label="Orçamentos"
         />
         <ActiveLink 
           href="/orders"

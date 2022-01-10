@@ -17,6 +17,7 @@ import {
   Spinner,    
   Flex,
 } from "@chakra-ui/react"
+import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
 type OrdersListProps = {
   filterValue: number;
@@ -118,7 +119,7 @@ const OrdersList = ({ filterValue }: OrdersListProps) => {
                 onMouseEnter={() => handlePrefetchOrder(order.id)}
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >
-                <Td>{order.numero_pedido}</Td>                        
+                <Td>{handleFormatPadStart(order.numero_pedido)}</Td>                        
                 <Td>{order.users.nome}</Td>
                 <Td>{handleFormatDate(order.created_at)}</Td>
                 <Td>{handleFormatPrice(order.total)}</Td>   

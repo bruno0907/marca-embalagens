@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { useAuth } from "../hooks/useAuth"
+import { useAuth } from "../contexts/useAuth"
 
 import { Session } from "@supabase/supabase-js"
 
@@ -38,8 +38,7 @@ const WithAuth = ({ children }: Props) => {
       <SideMenu />
       <Box
         as="main"        
-        px="8"
-        py="10"
+        p="12"        
         w="100vw"
         h="100vh"    
         flexDir="column"

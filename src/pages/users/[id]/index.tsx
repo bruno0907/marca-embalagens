@@ -12,7 +12,7 @@ import { UserInformation } from '../../../components/pages/Users/UserInformation
 import { AddressesInformation } from '../../../components/AddressesInformation'
 import { UserOrders } from '../../../components/pages/Users/UserOrders'
 
-import { VStack, Button } from '@chakra-ui/react'
+import { VStack, Button, HStack, Stack } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
@@ -46,11 +46,14 @@ export default function User({ params }: Props) {
 
         <Divider />
 
-        <VStack spacing={3} align="flex-start">
-          <UserInformation userId={id}/>
-          <AddressesInformation userId={id}/>
-          <UserOrders userId={id}/>          
-        </VStack>
+        <Stack spacing={6}>
+          <HStack spacing={6} align="flex-start">
+            <UserInformation userId={id}/>
+            <AddressesInformation userId={id}/>
+          </HStack>
+
+          <UserOrders userId={id}/>
+        </Stack>
         
       </WithAuth>
 

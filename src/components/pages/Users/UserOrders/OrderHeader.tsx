@@ -1,4 +1,5 @@
 import { handleFormatDate } from '../../../../utils/handleFormatDate'
+import { handleFormatPadStart } from '../../../../utils/handleFormatPadStart'
 
 import {
   HStack,
@@ -20,7 +21,7 @@ const OrderHeader = ({
   return (
     <HStack spacing={6} w="100%" justify="space-between">
       <Box>
-        <Text>Pedido: <strong>{orderNumber}</strong></Text>
+        <Text>Pedido: <strong>{handleFormatPadStart(orderNumber)}</strong></Text>
       </Box>
       <Box>
         <Text>Data de emissão: <strong>{handleFormatDate(createdAt)}</strong></Text>

@@ -8,7 +8,7 @@ import {
 
 import { AddressesInformation } from "../AddressesInformation"
 import { Modal } from '../Modal'
-import { CreateAddressForm } from "../AddressesInformation/components/CreateAddressForm"
+import { CreateAddressForm } from "../AddressesInformation/CreateAddressForm"
 import { theme } from '../../styles/theme'
 
 jest.mock('../../hooks/useAddressesQuery')

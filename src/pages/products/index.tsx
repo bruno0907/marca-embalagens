@@ -12,7 +12,9 @@ import { useSearch, SearchInput } from '../../hooks/useSearch'
 
 import { 
   Button,
+  HStack,
   Icon,
+  Stack,
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
@@ -36,31 +38,34 @@ export default function Products() {
 
       <WithAuth>
 
-        <Header title="Produtos">          
-          <Button              
-            colorScheme="blue"            
-            leftIcon={<Icon as={FiPlus} />}
-            onClick={() => router.push('/products/new-product')}
-          >
-            Cadastrar novo produto
-          </Button> 
-
-        </Header>  
+        <Header title="Produtos"/>          
 
         <Divider />
 
         <Content>
+          <Stack spacing={6}>
 
-          <SearchInput
-            ref={searchInputRef}
-            placeholder="Pesquise pelo nome do produto..."
-            hasSearch={!!searchValue}
-            value={searchValue}
-            onChange={handleSearch}
-            onClearSearch={clearSearch}
-          />
-
-          <ProductsList filterValue={toSearch}/>
+            <HStack spacing={3}>
+              <SearchInput
+                ref={searchInputRef}
+                placeholder="Pesquise pelo nome do produto..."
+                hasSearch={!!searchValue}
+                value={searchValue}
+                onChange={handleSearch}
+                onClearSearch={clearSearch}
+              />
+              <Button              
+                colorScheme="blue"            
+                leftIcon={<Icon as={FiPlus} />}
+                onClick={() => router.push('/products/new-product')}
+                flexShrink={0}
+              >
+                Novo produto
+              </Button> 
+            </HStack>
+            
+            <ProductsList filterValue={toSearch}/>
+          </Stack>
 
         </Content>
       </WithAuth>

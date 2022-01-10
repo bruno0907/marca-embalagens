@@ -2,13 +2,13 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { UserProps } from "../types"
 
-const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
+const getUsers = async (query?: string): Promise<UserProps[]> => {
   try {
     const user = supabase.auth.user()
   
     if(!user) throw new Error('User not authenticated')
   
-    if(!filterQuery) {
+    if(!query) {
       const { data, error } = await supabase    
       .from<UserProps>('users')
       .select()
@@ -24,7 +24,7 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
       .from<UserProps>('users')
       .select()
       .eq('user_id', user.id)      
-      .ilike('nome', `%${filterQuery}%`)
+      .ilike('nome', `%${query}%`)
       .order('nome')
 
     if(error) throw new Error(error.message)
@@ -37,12 +37,12 @@ const getUsers = async (filterQuery?: string): Promise<UserProps[]> => {
   }
 }
 
-const useUsersQuery = (filterQuery?: string) => {
-  const queryKey = filterQuery ? ['users[]', filterQuery] : 'users[]'
+const useUsersQuery = (query?: string) => {
+  const queryKey = query ? ['users[]', query] : 'users[]'
   
   return useQuery(
     queryKey, 
-      () => !filterQuery ? getUsers() : getUsers(filterQuery), {
+      () => !query ? getUsers() : getUsers(query), {
       staleTime: 1000 * 60 * 10,
       useErrorBoundary: true
     }

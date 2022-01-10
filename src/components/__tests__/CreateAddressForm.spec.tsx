@@ -1,10 +1,12 @@
-import { ChakraProvider, useDisclosure } from "@chakra-ui/react"
+import React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
-import { CreateAddressForm } from "../AddressesInformation/components/CreateAddressForm"
+import { CreateAddressForm } from "../AddressesInformation/CreateAddressForm"
+
+import { ChakraProvider, useDisclosure } from "@chakra-ui/react"
 import { theme } from '../../styles/theme'
-import React from "react"
+import { getCities } from "../../services/getCities"
 
 jest.mock('../../hooks/useStatesQuery')
 
@@ -28,6 +30,15 @@ jest.spyOn(require('react-hook-form'), 'useForm').mockImplementation(() => {
     setValue: jest.fn(),
   }
 })
+
+jest.mock('../../services/getCities', () => ({
+  data: [
+    { id: 1, nome: 'Fake city1'},
+    { id: 2, nome: 'Fake city2'},
+  ]
+}))
+
+jest.spyOn(require('../../services/getCities'), 'getCities')
 
 let wrapper = null
 
@@ -79,41 +90,24 @@ describe('<CreateAddressForm/>', () => {
   })
 
   it.only('should submit form if fields are fullfiled', async () => {
+    const onClose = jest.fn()   
 
-    // jest.spyOn(React, 'useEffect').mockImplementationOnce(() => {      
-    //     return f => f()()
-    // })
+    render(<CreateAddressForm userId="fake-userId" onClose={onClose}/>, { wrapper })
+    
+    const submitBtn = screen.getByRole('button', { name: /Salvar novo endereço/i})
+    
+    const address = screen.getByLabelText(/Endereço/i)
+    const state = screen.getByLabelText(/Estado/i)    
+    
+    userEvent.type(address, 'new-fake-address')
+    userEvent.selectOptions(state, 'Fake State')    
 
-    // jest.spyOn(require('../../services/getCities'), 'getCities')
+    expect(address).toHaveValue('new-fake-address')
+    expect(state).toHaveValue('FS')
 
-    // const setStateMock = jest.fn()    
-    // const useStateMock: any = (useState: any) => [useState, setStateMock]
-    // jest.spyOn(React, 'useState').mockImplementationOnce(useStateMock)
+    userEvent.click(submitBtn)
 
-    // let test = jest.fn()
-
-    // const { onClose } = useDisclosure()    
-
-    // const { debug } = render(<CreateAddressForm userId="fake-userId" onClose={onClose}/>, { wrapper })
-
-    // // const submitBtn = screen.getByRole('button', { name: /Salvar novo endereço/i})
-
-    // const address = screen.getByLabelText(/Endereço/i)
-    // const state = screen.getByLabelText(/Estado/i)
-    // const city = screen.getByLabelText(/Cidade/i)
-
-    // userEvent.type(address, 'new-fake-address')
-    // await waitFor(() => userEvent.selectOptions(state, 'Fake State'))
-    // // await waitFor(() => userEvent.selectOptions(city, 'Fake city2'))
-
-    // expect(address).toHaveValue('new-fake-address')
-    // await waitFor(() => expect(state).toHaveValue('FS'))
-
-    // expect(test).toBeCalled()
-    // // expect(city).toHaveValue('Fake city2')
-
-    // // userEvent.click(submitBtn)
-
-    // debug()
+    //UNDER DEVELOPMENT
+    
   })
 })

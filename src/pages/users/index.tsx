@@ -11,7 +11,9 @@ import { useSearch, SearchInput } from '../../hooks/useSearch'
 
 import {    
   Button,
-  Icon,  
+  HStack,
+  Icon,
+  Stack,  
 } from '@chakra-ui/react'
 
 import { FiPlus } from 'react-icons/fi'
@@ -35,29 +37,34 @@ export default function Users() {
 
       <WithAuth>
         
-        <Header title="Clientes">
-          <Button
-            colorScheme="blue"
-            leftIcon={<Icon as={FiPlus}/>}
-            onClick={() => router.push('/users/new-user')}
-          >
-            Cadastrar novo cliente
-          </Button>
-        </Header>
+        <Header title="Clientes"/>
 
         <Divider />
 
         <Content>
-          <SearchInput
-            ref={searchInputRef}
-            placeholder="Pesquise pelo nome do cliente..."
-            onClearSearch={clearSearch}
-            hasSearch={!!searchValue}
-            value={searchValue}
-            onChange={handleSearch}
-          />      
-          
-          <UsersList filterValue={toSearch}/>
+          <Stack spacing={6}>
+            <HStack spacing={3}>
+              <SearchInput
+                ref={searchInputRef}
+                placeholder="Pesquise pelo nome do cliente..."
+                onClearSearch={clearSearch}
+                hasSearch={!!searchValue}
+                value={searchValue}
+                onChange={handleSearch}
+              />      
+              <Button
+                colorScheme="blue"
+                leftIcon={<Icon as={FiPlus}/>}
+                onClick={() => router.push('/users/new-user')}
+                flexShrink={0}
+              >
+                Novo cliente
+              </Button>
+
+            </HStack>
+            
+            <UsersList filterValue={toSearch}/>
+          </Stack>
 
         </Content>
         

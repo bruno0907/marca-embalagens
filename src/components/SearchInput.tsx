@@ -27,7 +27,7 @@ const SearchInputComponent: ForwardRefRenderFunction<
   hasSearch,
   ...rest }, ref) => {
   return (
-    <InputGroup mb="8">
+    <InputGroup>
       <InputLeftElement pointerEvents="none">
         <Icon as={FiSearch} color="gray.500" />
       </InputLeftElement>

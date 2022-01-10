@@ -5,20 +5,15 @@ import { WithAuth } from '../../components/WithAuth'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
-import { OrdersList } from '../../components/pages/Orders/OrderList'
+import { EstimatesList } from '../../components/pages/Estimates/EstimateList'
 
 import { useSearch, SearchInput } from '../../hooks/useSearch'
 
-import {    
-  Button,  
-  HStack,  
-  Icon,
-  Stack,
-} from '@chakra-ui/react'
-
+import { Button, HStack, Icon, Stack,} from '@chakra-ui/react'
 import { FiPlus } from 'react-icons/fi'
 
-export default function Orders() {  
+
+export default function Estimates() {  
   const router = useRouter()    
 
   const { 
@@ -29,49 +24,46 @@ export default function Orders() {
     searchInputRef 
   } = useSearch()
 
-  const handleNewOrder = () => router.push('/orders/new-order')
+  const handleNewEstimate = () => router.push('/estimates/new-estimate')
 
   return (
     <>
       <Head>
-        <title>Pedidos | MARCA</title>        
+        <title>Orçamentos | MARCA</title>        
       </Head>
 
       <WithAuth>
 
-        <Header title="Pedidos">
-          
-        </Header>
+        <Header title="Orçamentos"/>
 
         <Divider />
 
-        <Content>
-
-          <Stack spacing={6}>
-            <HStack spacing={3}>
+        <Stack spacing={3}>
+          <Content>
+            <HStack spacing={3} mb={8}>
               <SearchInput
                 type="number"
                 ref={searchInputRef}
-                placeholder="Pesquise pelo número do pedido..."
+                placeholder="Pesquise pelo número do orçamento..."
                 onClearSearch={clearSearch}  
                 hasSearch={!!searchValue}                     
                 value={searchValue}
                 onChange={handleSearch}
-              />
+              />              
               <Button 
                 colorScheme="blue"
                 leftIcon={<Icon as={FiPlus} />}
-                onClick={handleNewOrder}
+                onClick={handleNewEstimate}
                 flexShrink={0}
               >
-                Novo pedido
+                Novo orçamento
               </Button>
             </HStack>
+          
+            <EstimatesList query={Number(toSearch)}/>
+          </Content>
+        </Stack>
 
-            <OrdersList filterValue={Number(toSearch)}/>
-          </Stack>
-
-        </Content>
 
       </WithAuth>
     </>

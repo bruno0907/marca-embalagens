@@ -1,8 +1,7 @@
 import { ChangeEvent, useRef } from "react"
 
-import { Select } from "../../../Select"
-import { useProductsQuery } from "../../../../hooks/useProductsQuery"
-import { useCreateOrder } from "../../../../hooks/useCreateOrder"
+import { Select } from "./Select"
+import { useProductsQuery } from "../hooks/useProductsQuery"
 
 import { 
   HStack, 
@@ -16,17 +15,17 @@ import {
   Text,
   Spinner
 } from "@chakra-ui/react"
-
 import { FiMinus, FiPlus } from "react-icons/fi"
+import { useCartContext } from "../contexts/useCart"
 
-const Products = () => {
+const ProductsSelect = () => {
   const {
     selectedProduct,
     setSelectedProduct,
     productAmount,
     setProductAmount,
-    handleAddItemToOrder,
-  } = useCreateOrder()
+    handleAddProductToCart
+  } = useCartContext()
 
   const products = useProductsQuery()
 
@@ -121,7 +120,8 @@ const Products = () => {
       </FormControl>
       <Button 
         colorScheme="blue"
-        onClick={() => handleAddItemToOrder(selecteRef)}
+        flexShrink={0}
+        onClick={() => handleAddProductToCart(selecteRef)}
         isDisabled={!canAddProduct}
       >Adicionar</Button>
     </HStack>
@@ -129,5 +129,5 @@ const Products = () => {
 }
 
 export {
-  Products
+  ProductsSelect
 }

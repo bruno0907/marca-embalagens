@@ -1,4 +1,4 @@
-import React from "react"
+import { useState, useEffect } from "react"
 
 import { useForm, SubmitHandler } from "react-hook-form"
 import * as yup from 'yup'
@@ -53,8 +53,8 @@ export type CreateAddressFormProps = {
 const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {  
   const toast = useToast()
 
-  const [cities, setCities] = React.useState<CityProps[]>([]);
-  const [selectedState, setSelectedState] = React.useState('')
+  const [cities, setCities] = useState<CityProps[]>([]);
+  const [selectedState, setSelectedState] = useState('')
 
   const states = useStatesQuery()
 
@@ -65,7 +65,7 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
 
   const { errors, isSubmitting, isDirty } = formState;
   
-  React.useEffect(() => {
+  useEffect(() => {
     getCities(selectedState)
     .then((response) => {
       setCities(response.data)      
@@ -75,8 +75,6 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
 
     clearErrors(['estado', 'cidade'])
     setValue('cidade', '')
-
-    // return () => setCities([])
 
   }, [selectedState, clearErrors, setValue])
 

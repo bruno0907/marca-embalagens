@@ -22,6 +22,7 @@ import {
   Badge,  
   Spinner,  
 } from "@chakra-ui/react"
+import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
 type UserOrdersProps = {
   userId: string;  
@@ -52,8 +53,8 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
           </Thead>
           <Tbody>
             <Tr>
-              <Td colSpan={3}>
-                <Spinner size="md" color="blue.500" />
+              <Td colSpan={4} textAlign="center">
+                <Spinner color="blue.500" />
               </Td>
             </Tr>
           </Tbody>        
@@ -77,7 +78,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
           </Thead>
           <Tbody>
             <Tr>
-              <Td colSpan={3}>Ocorreu um erro ao carregar as informações...</Td>
+              <Td colSpan={4}>Ocorreu um erro ao carregar as informações...</Td>
             </Tr>
           </Tbody>
         </Table>
@@ -88,7 +89,7 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
   if(!orders.data?.length) {
     return (
       <Content>        
-        <Heading fontSize="2xl" mb="8">Pedidos</Heading>
+        <Heading fontSize="2xl" mb="8">Últimos Pedidos</Heading>
         <Table>
           <Thead>
             <Tr bgColor="blue.500">
@@ -122,7 +123,6 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
             <Th color="gray.50">Data de Emissão</Th>
             <Th color="gray.50">Data de Entrega</Th>
             <Th color="gray.50">Valor Total</Th>
-            {/* <Th color="gray.50">Situação</Th> */}
           </Tr>
         </Thead>
         <Tbody>
@@ -135,15 +135,11 @@ const UserOrders = ({ userId }: UserOrdersProps) => {
                 onMouseEnter={() => handlePrefetchOrder(order.id)}
                 _hover={{ cursor: 'pointer', color: 'blue.500'}}
               >
-                <Td>{order.numero_pedido}</Td>
+                <Td>{handleFormatPadStart(order.numero_pedido)}</Td>
                 <Td>{handleFormatDate(new Date(order.created_at))}</Td>            
                 <Td>{handleFormatDate(new Date(order.data_entrega))}</Td>            
-                <Td>{handleFormatPrice(order.total)}</Td>
-                {/* <Td>
-                  <Badge variant="subtle" colorScheme="red" py="1" px="4" borderRadius="md">Em aberto</Badge>
-                </Td> */}
-              </Tr>                   
-
+                <Td>{handleFormatPrice(order.total)}</Td>                
+              </Tr>
             )
           })}
         </Tbody>

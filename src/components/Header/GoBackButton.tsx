@@ -4,12 +4,25 @@ import { Button } from "@chakra-ui/react"
 
 import { FiArrowLeft } from "react-icons/fi"
 
-const GoBackButton = () => {
+type Props = {
+  to?: string;
+}
+
+const GoBackButton = ({ to }: Props) => {
   const router = useRouter()
-  const handleGoBack = () => router.back()
+
+  console.log(to)
+
+  const handleGoBack = () => {
+    if(!to) {
+      return router.back()
+    }
+
+    return router.push(to)
+  }
 
   return (
-    <Button
+    <Button      
       display="flex"
       type="button"
       variant="unstyled"

@@ -4,116 +4,134 @@ import {
   Text,  
   Center,
   Spinner,
+  SimpleGrid,
+  Stack,
 } from '@chakra-ui/react'
+import { FiInfo } from 'react-icons/fi'
 import { useAddressQuery } from '../../../../hooks/useAddressQuery'
 
 import { useUserQuery } from '../../../../hooks/useUserQuery'
 
 type OrderUserProps = {
   userId: string;
-  deliveryAddress: string;
+  addressId: string;
 }
 
-const OrderUser = ({ userId, deliveryAddress }: OrderUserProps) => {
+const OrderUser = ({ userId, addressId }: OrderUserProps) => {
   const user = useUserQuery(userId)
-  const address = useAddressQuery(deliveryAddress)
+  const address = useAddressQuery(addressId)
 
   if(user.isLoading || address.isLoading) {
     return (
-      <Center>
+      <Center p={16}>
         <Spinner size="lg" color="blue.500"/>
       </Center>
     )
   }
 
-  if(user.isError || address.isError) {
+  if(user.isError || address.isError || !user.data || !address.data) {
     return (
-      <Text>Ocorreu um erro ao carregar as informações do cliente...</Text>
+      <Center p={16} fontWeight="bold">
+        <FiInfo fontSize={24}/>
+        <Text ml={3}>Ocorreu um erro ao carregar as informações do cliente...</Text>
+      </Center>
     )
   }
 
-  if(!user.data || !address.data) {
-    return null
-  }
-
   return (
-    <>
-      <Flex flexDir="column">
-        <Flex justify="space-between">
-          <Box>
+    <Stack spacing={2} w="100%">
+      <SimpleGrid columns={3} gap={2}>
+        {user.data.nome && (
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Nome:</Text>
-            <Text fontSize="sm">{user.data?.nome}</Text>            
+            <Text fontSize="sm">{user.data.nome}</Text>            
           </Box>
-          { user.data?.razao_social &&
-              <Box>
-                <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
-                <Text fontSize="sm">{user.data?.razao_social}</Text>
-              </Box>
-          }
-          { user.data?.cpf_cnpj &&
-              <Box>
-                <Text fontSize="x-small" fontWeight="semibold">
-                  {user.data?.razao_social ? 'CNPJ' : 'CPF'}
-                </Text>
-                <Text fontSize="sm">
-                  {user.data?.cpf_cnpj}
-                </Text>
-              </Box>
-          }
-        </Flex>
-        <Flex justify="space-between">
-          <Box>
+        )}
+        {user.data.razao_social &&
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+            <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
+            <Text fontSize="sm">{user.data.razao_social}</Text>
+          </Box>
+        }
+        {user.data.cpf_cnpj &&
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+            <Text fontSize="x-small" fontWeight="semibold">
+              {user.data.razao_social ? 'CNPJ' : 'CPF'}
+            </Text>
+            <Text fontSize="sm">
+              {user.data.cpf_cnpj}
+            </Text>
+          </Box>
+        }
+        {user.data.telefone && (
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Telefone:</Text>
             <Text fontSize="sm">
-              {user.data?.telefone}
+              {user.data.telefone}
             </Text>            
           </Box>
-          { user.data?.celular && 
-            <Box>
-              <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
-              <Text fontSize="sm">
-                {user.data?.celular}
-              </Text>            
-            </Box>
-          }
-          { user.data?.contato && 
-            <Box>
-              <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
-              <Text fontSize="sm">
-                {user.data?.contato}
-              </Text>            
-            </Box>
-          }
-        </Flex>
-      </Flex>
+        )}
+        { user.data.celular && 
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+            <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
+            <Text fontSize="sm">
+              {user.data.celular}
+            </Text>            
+          </Box>
+        }
+        { user.data.contato && 
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+            <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
+            <Text fontSize="sm">
+              {user.data.contato}
+            </Text>            
+          </Box>
+        }        
+      </SimpleGrid>
 
-      <Flex justify="space-between">
-        <Box>
+      <SimpleGrid columns={3} gap={2}>
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
           <Text fontSize="x-small" fontWeight="bold">Endereço:</Text>
           <Text fontSize="sm">
-            {address.data?.endereco}
+            {address.data.endereco}
           </Text>
         </Box>
-        <Box>
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
           <Text fontSize="x-small" fontWeight="bold">Bairro:</Text>
           <Text fontSize="sm">
-            {address.data?.bairro}
+            {address.data.bairro}
           </Text>
         </Box>
-        <Box>
-          <Text fontSize="x-small" fontWeight="bold">CEP:</Text>
+        {address.data.cep && (
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+            <Text fontSize="x-small" fontWeight="bold">CEP:</Text>
+            <Text fontSize="sm">
+              {address.data.cep}
+            </Text>
+          </Box>
+        )}
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Text fontSize="x-small" fontWeight="bold">Cidade:</Text>
           <Text fontSize="sm">
-            {address.data?.cep}
+            {address.data.cidade}
           </Text>
         </Box>
-        <Box>
-          <Text fontSize="x-small" fontWeight="bold">Cidade/UF:</Text>
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Text fontSize="x-small" fontWeight="bold">Estado:</Text>
           <Text fontSize="sm">
-            {address.data?.cidade}/{address.data?.estado}
+            {address.data.estado}
           </Text>
         </Box>
-      </Flex>
-    </>
+        {address.data.complemento && (
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+            <Text fontSize="x-small" fontWeight="bold">Complemento:</Text>
+            <Text fontSize="sm">
+              {address.data.complemento}
+            </Text>
+          </Box>
+        )}
+      </SimpleGrid>
+    </Stack>
   )
 }
 

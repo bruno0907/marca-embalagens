@@ -9,8 +9,12 @@ import {
   Text,
   Box,
   Center,
-  Spinner
+  Spinner,
+  HStack,
+  Stack,
+  Image
 } from "@chakra-ui/react";
+import { handleFormatPadStart } from "../../../../utils/handleFormatPadStart";
 
 type OrderHeaderProps = {
   orderNumber: number;
@@ -34,49 +38,48 @@ const OrderHeader = ({ orderNumber, orderDeliveryDate }: OrderHeaderProps) => {
     )
   }
 
-  return (
-    <Flex justify="space-between" w="100%">
+  return (    
+    <HStack spacing={6} justify="space-between" w="100%" borderWidth="1px" borderColor="gray.100" borderRadius="md" px={2} py={1}>
       
-      <Center h="20" w="40">
+      <Flex h="20" w="40" align="center">
         <Logo />
-      </Center>
-
-      <Flex mx="4" flexDir="column" alignItems="flex-start" justify="center">
-        {profile.data.data.razao_social && (
-          <Text fontSize="x-small">{profile.data.data.razao_social}</Text>
-        )}
-        <Text fontSize="x-small">{profile.data.data.nome}</Text>
-        <Text fontSize="x-small">
-          {profile.data.data.telefone && `${profile.data.data.telefone} / `}
-          {profile.data.data.celular}
-        </Text>
-        <Box>
-          <Text fontSize="x-small">
-            {profile.data.address.endereco} - {profile.data.address.bairro}
-          </Text>
-          <Text fontSize="x-small">
-            {profile.data.address.cidade}/{profile.data.address.estado}
-            {profile.data.address.cep && `- ${profile.data.address.cep}`}
-          </Text>
-        </Box>
       </Flex>
 
-      <Flex flexDir="column" alignItems="flex-start" justify="center">
+      <Stack spacing={0}>
+        {profile.data.data.razao_social ? (
+          <Text fontSize="x-small">{profile.data.data.razao_social}</Text>
+        ) : (
+          <Text fontSize="x-small">{profile.data.data.nome}</Text>
+        )}
+        <Text fontSize="x-small">
+          {profile.data.data.telefone && `${profile.data.data.telefone} / `}
+          {profile.data.data.celular && `${profile.data.data.celular}`}
+        </Text>        
+        <Text fontSize="x-small">
+          {profile.data.address.endereco} - {profile.data.address.bairro}
+        </Text>
+        <Text fontSize="x-small">
+          {profile.data.address.cidade}/{profile.data.address.estado}
+          {profile.data.address.cep && ` - ${profile.data.address.cep}`}
+        </Text>        
+      </Stack>
+
+      <Stack spacing={0}>
         <Flex align="center">
           <Text mr="2">Número do pedido:</Text>
-          <Text fontSize="large" fontWeight="bold">
-            {orderNumber}
+          <Text fontSize="larger" fontWeight="bold">
+            {handleFormatPadStart(orderNumber)}
           </Text>
         </Flex>
         <Flex align="center">
           <Text mr="2">Data de entrega:</Text>
-          <Text fontSize="large" fontWeight="bold">
+          <Text fontSize="larger" fontWeight="bold">
             {handleFormatDate(orderDeliveryDate)}
           </Text>
         </Flex>
-      </Flex> 
+      </Stack> 
              
-    </Flex>
+    </HStack>
   );
 };
 

@@ -6,12 +6,13 @@ import {
   Tr,
   Th,
   Tbody,
-  Td
+  Td,  
+  TableBodyProps
 } from "@chakra-ui/react"
 
 import { OrderItemProps } from "../../../../types"
 
-type OrderItemsListProps = {
+type OrderItemsListProps = TableBodyProps & {
   orderItems: OrderItemProps[]
 }
 
@@ -38,7 +39,7 @@ const OrderItemsList = ({ orderItems }: OrderItemsListProps) => {
           )})
         }
       </Tbody>
-    </Table>
+    </Table> 
   )
 }
 

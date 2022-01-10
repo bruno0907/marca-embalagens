@@ -6,13 +6,15 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useAuth } from "../../../hooks/useAuth";
+import { Input } from "../../Input";
+import { Select } from "../../Select";
+
+import { useAuth } from "../../../contexts/useAuth";
 import { useCreateSupplierMutation } from "../../../hooks/useCreateSupplierMutation";
 import { useStatesQuery } from "../../../hooks/useStatesQuery";
 import { getCities } from "../../../services/getCities";
 
-import { Input } from "../../Input";
-import { Select } from "../../Select";
+import { InputMask } from "../../../utils/inputMasksHandler";
 
 import {
   Box,
@@ -64,7 +66,6 @@ import {
   NewAddressProps, 
   CityProps 
 } from "../../../types";
-import { InputMask } from "../../../utils/inputMasksHandler";
 
 type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
 
@@ -204,7 +205,6 @@ const CreateSupplierForm = () => {
           <Input
             name="nome"
             label="Nome:"
-            bgColor="gray.50"
             error={errors?.nome}
             {...register("nome")}
           />
@@ -212,7 +212,6 @@ const CreateSupplierForm = () => {
             <Input
               name="razao_social"
               label="Razão Social:"
-              bgColor="gray.50"
               error={errors?.razao_social}
               {...register("razao_social")}
             />
@@ -222,7 +221,6 @@ const CreateSupplierForm = () => {
         <Input
           name="Produto"
           label="Produto:"
-          bgColor="gray.50"
           error={errors?.produto}
           {...register("produto")}
         />
@@ -230,7 +228,6 @@ const CreateSupplierForm = () => {
           <Input
             name="telefone"
             label="Telefone:"
-            bgColor="gray.50"
             error={errors?.telefone}
             {...register("telefone")}
             onChange={({ target }) => target.value = masked.phone(target.value)}
@@ -238,7 +235,6 @@ const CreateSupplierForm = () => {
           <Input
             name="celular"
             label="Celular:"
-            bgColor="gray.50"
             error={errors?.celular}
             {...register("celular")}
             onChange={({ target }) => target.value = masked.celphone(target.value)}
@@ -247,7 +243,6 @@ const CreateSupplierForm = () => {
             name="email"
             type="email"
             label="E-mail:"
-            bgColor="gray.50"
             error={errors?.email}
             {...register("email")}
           />
@@ -256,7 +251,6 @@ const CreateSupplierForm = () => {
           <Input
             name="cpf_cnpj"
             label={isCNPJ ? 'CNPJ:' : 'CPF:' }
-            bgColor="gray.50"
             error={errors?.cpf_cnpj}
             {...register("cpf_cnpj")}
             onChange={({ target }) => target.value =  isCNPJ ? masked.cnpj(target.value) : masked.cpf(target.value)}
@@ -264,14 +258,12 @@ const CreateSupplierForm = () => {
           <Input
             name="rg_ie"
             label={ isCNPJ ? 'Inscrição Estadual:' : 'RG:' }
-            bgColor="gray.50"
             error={errors?.rg_ie}
             {...register("rg_ie")}
           />          
           <Input
             name="contato"
             label="Contato:"
-            bgColor="gray.50"
             error={errors?.contato}
             {...register("contato")}
           />          
@@ -286,7 +278,6 @@ const CreateSupplierForm = () => {
           <Input
             name="endereco"
             label="Endereço:"
-            bgColor="gray.50"
             error={errors?.endereco}
             {...register("endereco")}
           />
@@ -294,7 +285,6 @@ const CreateSupplierForm = () => {
             <Input
               name="bairro"
               label="Bairro:"
-              bgColor="gray.50"
               error={errors?.bairro}
               {...register("bairro")}
             />
@@ -309,7 +299,6 @@ const CreateSupplierForm = () => {
           <Select
             name="estado"
             label="Estado:"
-            bgColor="gray.50"
             error={errors?.estado}
             defaultValue="default"
             {...register("estado")}
@@ -330,7 +319,6 @@ const CreateSupplierForm = () => {
           <Select
             name="cidade"
             label="Cidade:"
-            bgColor="gray.50"
             error={errors?.cidade}
             isDisabled={!Boolean(cities.length)}
             defaultValue="default"
@@ -348,7 +336,6 @@ const CreateSupplierForm = () => {
           <Input
             name="cep"
             label="CEP:"
-            bgColor="gray.50"
             error={errors?.cep}
             {...register("cep")}
             onChange={({ target }) => target.value = masked.cep(target.value)}
@@ -357,7 +344,6 @@ const CreateSupplierForm = () => {
         <Input
           name="complemento"
           label="Complemento:"
-          bgColor="gray.50"
           error={errors?.complemento}
           {...register("complemento")}
         />
@@ -367,7 +353,6 @@ const CreateSupplierForm = () => {
           p="3"
           name="outras_informacoes"
           label="Outras Informações:"
-          bgColor="gray.50"
           error={errors?.outras_informacoes}
           {...register("outras_informacoes")}
         />

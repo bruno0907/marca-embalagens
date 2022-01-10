@@ -20,7 +20,9 @@ import {
   Spacer,
   Skeleton,
   useDisclosure,
-  Center
+  Center,
+  Box,
+  SimpleGrid
 } from "@chakra-ui/react"
 
 import { 
@@ -108,62 +110,89 @@ const UserInformation = ({ userId }: UserInformationProps) => {
         <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditUser(user.data)}>Editar</Button>
       </Flex>
       <Stack spacing={3}>
-        <HStack spacing={3} align="flex-start">
-          <InformationField 
-            icon={FiUser}
-            label={`Nome ${user.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-            value={user.data.nome}
-          />
-          { user.data.natureza_cliente === 'Jurídica' && 
+        <SimpleGrid gap={3} columns={2}>
+          {user.data.nome && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiUser}
+                label={`Nome ${user.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+                value={user.data.nome}
+              />
+            </Box>
+          )}
+          {user.data.natureza_cliente === 'Jurídica' && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiUser}
+                label="Razão Social"
+                value={user.data.razao_social}
+              />
+            </Box>
+          )}
+          {user.data.cpf_cnpj && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiCreditCard}
+                label={user.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
+                value={user.data.cpf_cnpj}
+              />
+            </Box>
+          )}      
+          {user.data.rg_ie && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiCreditCard}
+                label={user.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+                value={user.data.rg_ie}
+              />
+            </Box>
+          )} 
+          {user.data.contato && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiUser}
+                label="Contato"
+                value={user.data.contato}
+              />
+            </Box>
+          )}
+          {user.data.telefone && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiPhone}
+                label="Telefone"
+                value={user.data.telefone}
+              />
+            </Box>
+          )} 
+          {user.data.celular && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiSmartphone}
+                label="Celular"
+                value={user.data.celular}
+              />
+            </Box>
+          )}
+          {user.data.email && (
+            <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+              <InformationField 
+                icon={FiMail}
+                label="E-mail"
+                value={user.data.email}
+              />
+            </Box>
+          )}
+        </SimpleGrid>
+        {user.data.outras_informacoes && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
             <InformationField 
-              icon={FiUser}
-              label="Razão Social"
-              value={user.data.razao_social}
-            /> }
-        </HStack>
-
-        <HStack spacing={3} align="flex-start">
-          <InformationField 
-            icon={FiCreditCard}
-            label={user.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
-            value={user.data.cpf_cnpj}
-          />
-          <InformationField 
-            icon={FiCreditCard}
-            label={user.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-            value={user.data.rg_ie}
-          />
-          <InformationField 
-            icon={FiUser}
-            label="Contato"
-            value={user.data.contato}
-          />
-        </HStack>
-          
-        <HStack spacing={3} align="flex-start">
-          <InformationField 
-            icon={FiPhone}
-            label="Telefone"
-            value={user.data.telefone}
-          />
-          <InformationField 
-            icon={FiSmartphone}
-            label="Celular"
-            value={user.data.celular}
-          />
-          <InformationField 
-            icon={FiMail}
-            label="E-mail"
-            value={user.data.email}
-          />
-        </HStack>
-
-        <InformationField 
-          icon={FiList}
-          label="Outras informacoes"
-          value={user.data.outras_informacoes}
-        />
-
+              icon={FiList}
+              label="Outras informacões"
+              value={user.data.outras_informacoes}
+            />
+          </Box>
+        )}
       </Stack>
       <Modal isOpen={isOpen} onClose={onClose} title="Editar Cadastro">
         <UpdateUserForm user={userToEdit} onClose={onClose}/>

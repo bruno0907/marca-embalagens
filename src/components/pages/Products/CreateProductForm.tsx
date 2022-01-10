@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useCreateProductMutation } from "../../../hooks/useCreateProductMutation";
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../contexts/useAuth";
 
 import { Input } from "../../Input";
 

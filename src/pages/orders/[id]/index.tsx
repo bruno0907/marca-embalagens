@@ -5,15 +5,15 @@ import { useRouter } from "next/router"
 import { GetServerSideProps } from 'next'
 
 import { useReactToPrint } from 'react-to-print'
+import { handleFormatPadStart } from '../../../utils/handleFormatPadStart'
 
+import { WithAuth } from '../../../components/WithAuth'
 import { Content } from '../../../components/Content'
 import { Divider } from '../../../components/Divider'
 
 import { OrderHeader } from '../../../components/pages/Orders/Order/OrderHeader'
 import { OrderUser } from '../../../components/pages/Orders/Order/OrderUser'
 import { OrderProducts } from '../../../components/pages/Orders/Order/OrderProducts'
-import { OrderPaymentConditions } from '../../../components/pages/Orders/Order/OrderPaymentConditions'
-import { OrderTotal } from '../../../components/pages/Orders/Order/OrderTotal'
 import { Header } from '../../../components/Header'
 
 import { useOrderQuery } from "../../../hooks/useOrderQuery"
@@ -23,7 +23,8 @@ import {
   Text,  
   Button,
   Center,
-  Spinner
+  Spinner,
+  Stack
 } from "@chakra-ui/react"
 
 import { FiPrinter } from 'react-icons/fi'
@@ -51,66 +52,89 @@ export default function Order({ params }: Props) {
   return (
     <>
       <Head>
-        <title>Pedido: {order.data?.numero_pedido} | MARCA</title>
+        <title>
+          {!order.data?.numero_pedido ? `MARCA` :
+            `Pedido: ${handleFormatPadStart(order.data?.numero_pedido)} | MARCA`
+          }
+        </title>
       </Head>
 
-      <Box maxW="1090px" m="auto" px="8">
-        <Header withGoBack py="16" title={`Pedido: ${order.data?.numero_pedido}`}>          
-          <Button colorScheme="blue" rightIcon={<FiPrinter />} onClick={handlePrintOrder}>
+      <WithAuth>        
+        <Header 
+          withGoBack 
+          title={order.data?.numero_pedido &&
+            `Pedido: ${handleFormatPadStart(order.data?.numero_pedido)}`
+          }            
+        >
+          <Button 
+            colorScheme="blue" 
+            rightIcon={<FiPrinter />} 
+            onClick={handlePrintOrder}
+          >
             Imprimir
           </Button>
         </Header>
 
+        <Divider />
+
         <Content>
           { !order.data ? null : order.isLoading ? (
-              <Center py="16">
+              <Center  minH="70vh">
                 <Spinner color="blue.500" />
               </Center>
             ) : order.isError ? (
-              <Center py="16">
-                <Text>Ocorreu um erro ao carregar as informações do pedido. Tente novamente...</Text>
-                <Text>Voltar</Text>
+              <Center  minH="70vh" flexDir="column">            
+                <Text 
+                  fontSize="xl" 
+                  mb="8" 
+                  fontWeight="bold"
+                >
+                  Não foi possível carregar o pedido.
+                </Text>
+                <Button 
+                  colorScheme="blue" 
+                  mb="2" 
+                  onClick={() => router.reload()}
+                >
+                  Tentar novamente
+                </Button>
+                <Button 
+                  colorScheme="blue" 
+                  variant="ghost" 
+                  onClick={() => router.back()}
+                >
+                  Voltar
+                </Button>
               </Center>
             ) : (
-              <Box ref={orderRef} p="8">
-
+              <Stack spacing={2} ref={orderRef} sx={{ "@media print": { p: '4' } }}>
                 <OrderHeader 
                   orderNumber={order.data?.numero_pedido} 
                   orderDeliveryDate={order.data?.data_entrega}
                 />
-
-                <Divider/>
-
                 <OrderUser 
                   userId={order.data?.cliente} 
-                  deliveryAddress={order.data?.endereco_entrega}
+                  addressId={order.data?.endereco_entrega}
                 />
-                
-                <OrderPaymentConditions 
-                  paymentCondition={order.data?.condicao_pagamento}
-                />
-                
-                <Divider/>
 
                 <OrderProducts 
                   order={order.data?.pedido}
-                />
-                
-                <Divider/>
-
-                <OrderTotal 
-                  orderTotal={order.data?.total}
+                  total={order.data?.total}
                 />
 
-              </Box>
+                {order.data?.condicao_pagamento && (                  
+                  <Stack spacing={2} px={2} py={1} borderWidth="1px" borderRadius="md" borderColor="gray.200" w="100%" minH="80px">                    
+                    <Text fontWeight="bold" >Condição de pagamento: {order.data.condicao_pagamento}</Text>
+                  </Stack>
+                )}
+              </Stack>
             )
           }
-        </Content>
-      </Box>
+        </Content>        
+      </WithAuth>
     </>
   )
 }
-
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
   return {

@@ -3,12 +3,12 @@ import Head from 'next/head'
 import { Header } from '../../components/Header'
 import { WithAuth } from '../../components/WithAuth'
 import { Divider } from '../../components/Divider'
-import { Content } from '../../components/Content'
 
 import { CreateOrderForm } from '../../components/pages/Orders/CreateOrderForm'
-import { CreateOrderProvider } from '../../hooks/useCreateOrder'
+import { CreateOrderProvider } from '../../contexts/useCreateOrder'
 
 export default function NewOrder() {
+  
   return (
     <>
       <Head>
@@ -20,12 +20,11 @@ export default function NewOrder() {
         <Header title="Novo pedido" withGoBack/>
 
         <Divider />
-
-        <Content>
-          <CreateOrderProvider>
-            <CreateOrderForm />
-          </CreateOrderProvider>
-        </Content>
+        
+        <CreateOrderProvider>
+          <CreateOrderForm />
+        </CreateOrderProvider>
+        
       </WithAuth> 
     </>   
   )

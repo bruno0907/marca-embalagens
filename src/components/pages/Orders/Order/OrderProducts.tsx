@@ -6,40 +6,48 @@ import {
   Tr,
   Th,
   Tbody,
-  Td
+  Td,
+  Box
 } from "@chakra-ui/react"
 
 import { OrderItemProps } from "../../../../types"
 
 type OrderProductsProps = {
   order: OrderItemProps[]
+  total: number;
 }
 
-const OrderProducts = ({ order }: OrderProductsProps) => {
+const OrderProducts = ({ order, total }: OrderProductsProps) => {
   
   return (
-    <Table variant="striped" size="sm">
-      <Thead>
-        <Tr>
-          <Th w="10">Qtd</Th>
-          <Th>Produto</Th>
-          <Th w="36">Valor unitário</Th>
-          <Th w="30">Valor Total</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        { order.map(orderItem => {
-          return (
-            <Tr key={orderItem.produto}>
-              <Td>{orderItem.quantidade}</Td>
-              <Td>{orderItem.produto}</Td>
-              <Td>{handleFormatPrice(orderItem.valor_unitario)}</Td>
-              <Td>{handleFormatPrice(orderItem.valor_total)}</Td>
-            </Tr>
-          )
-        })}
-      </Tbody>
-    </Table>
+    <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md" overflow="hidden">      
+      <Table variant="striped" size="sm">
+        <Thead>
+          <Tr>
+            <Th>Produto</Th>
+            <Th w="140px" textAlign="end">Quantidade</Th>
+            <Th w="150px" textAlign="end">Valor unitário</Th>
+            <Th w="140px" textAlign="end">Valor Total</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          { order.map(orderItem => {
+            return (
+              <Tr key={orderItem.produto}>
+                <Td>{orderItem.produto}</Td>
+                <Td textAlign="end">{orderItem.quantidade}</Td>
+                <Td textAlign="end">{handleFormatPrice(orderItem.valor_unitario)}</Td>
+                <Td textAlign="end">{handleFormatPrice(orderItem.valor_total)}</Td>
+              </Tr>
+            )})}
+          <Tr>
+            <Td colSpan={4} textAlign="end" fontWeight="bold" fontSize="larger" py={4}>            
+              Total do pedido: {handleFormatPrice(total)}                
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>      
+    </Box>
   )
 }
 
