@@ -20,6 +20,8 @@ import {
   Skeleton,
   useDisclosure,
   Center,
+  Box,
+  SimpleGrid,
 } from "@chakra-ui/react"
 
 import { 
@@ -57,11 +59,9 @@ const UpdateSupplierForm = dynamic<UpdateSupplierFormProps>(
   }
 )
 
-type SupplierInformationProps = {
-  supplierId: string;  
-}
+type Props = { supplierId: string }
 
-const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
+const SupplierDetails = ({ supplierId }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
   const [supplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)
   
@@ -102,75 +102,114 @@ const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
 
   return (
     <Content w="100%">
+
       <Flex align="center" mb="8">
         <Heading fontSize="2xl">Dados Principais</Heading>        
         <Spacer/>
         <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditSupplier(supplier.data)}>Editar</Button>
       </Flex>
-      <Stack spacing={3}>
-        <HStack spacing={3} align="flex-start">
-          <InformationField 
-            icon={FiUser}
-            label={`Nome ${supplier.data?.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-            value={supplier.data?.nome}
-          />
-          { supplier.data?.natureza_cliente === 'Jurídica' && 
+
+      
+      <SimpleGrid gap={3} columns={2}>
+
+        {supplier.data?.nome && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiUser}
+              label={`Nome ${supplier.data?.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+              value={supplier.data?.nome}
+            />
+          </Box>
+        )}
+
+        { supplier.data?.natureza_cliente === 'Jurídica' &&
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
             <InformationField 
               icon={FiUser}
               label="Razão Social"
               value={supplier.data?.razao_social}
-            /> }
-        </HStack>
+            /> 
+          </Box> 
+        }
 
-        <InformationField 
-          icon={FiPackage}
-          label="Produto/Serviço"
-          value={supplier.data?.produto}
-        />
+        {supplier.data?.produto && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiPackage}
+              label="Produto/Serviço"
+              value={supplier.data?.produto}
+            />
+          </Box>
+        )}
 
-        <HStack spacing={3} align="flex-start">
+        <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
           <InformationField 
             icon={FiCreditCard}
             label={supplier.data?.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
             value={supplier.data?.cpf_cnpj}
           />
-          <InformationField 
-            icon={FiCreditCard}
-            label={supplier.data?.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-            value={supplier.data?.rg_ie}
-          />
-          <InformationField 
-            icon={FiUser}
-            label="Contato"
-            value={supplier.data?.contato}
-          />
-        </HStack>
-          
-        <HStack spacing={3} align="flex-start">
-          <InformationField 
-            icon={FiPhone}
-            label="Telefone"
-            value={supplier.data?.telefone}
-          />
-          <InformationField 
-            icon={FiSmartphone}
-            label="Celular"
-            value={supplier.data?.celular}
-          />
-          <InformationField 
-            icon={FiMail}
-            label="E-mail"
-            value={supplier.data?.email}
-          />
-        </HStack>
+        </Box>
 
-        <InformationField 
-          icon={FiList}
-          label="Outras informacoes"
-          value={supplier.data?.outras_informacoes}
-        />
+        {supplier.data?.rg_ie && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiCreditCard}
+              label={supplier.data?.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+              value={supplier.data?.rg_ie}
+            />
+          </Box>
+        )}
 
-      </Stack>
+        {supplier.data?.contato && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiUser}
+              label="Contato"
+              value={supplier.data?.contato}
+            />
+          </Box>
+        )}        
+
+        {supplier.data?.telefone && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiPhone}
+              label="Telefone"
+              value={supplier.data?.telefone}
+            />
+          </Box>
+        )}
+
+        {supplier.data?.celular && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiSmartphone}
+              label="Celular"
+              value={supplier.data?.celular}
+            />
+          </Box>
+        )}
+
+        {supplier.data?.email && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiMail}
+              label="E-mail"
+              value={supplier.data?.email}
+            />
+          </Box>
+        )}
+        {supplier.data?.outras_informacoes && (
+          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
+            <InformationField 
+              icon={FiList}
+              label="Outras informacoes"
+              value={supplier.data?.outras_informacoes}
+            />
+          </Box>
+        )}
+      </SimpleGrid>        
+      
       <Modal isOpen={isOpen} onClose={onClose} title="Editar Cadastro">
         <UpdateSupplierForm supplier={supplierToEdit} onClose={onClose}/>
       </Modal>
@@ -178,4 +217,4 @@ const SupplierInformation = ({ supplierId }: SupplierInformationProps) => {
   )  
 }
 
-export { SupplierInformation }
+export { SupplierDetails }

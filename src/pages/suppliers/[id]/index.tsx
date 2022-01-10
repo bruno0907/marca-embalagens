@@ -7,10 +7,10 @@ import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 import { WithAuth } from '../../../components/WithAuth'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
-import { SupplierInformation } from '../../../components/pages/Suppliers/SupplierInformation'
+import { SupplierDetails } from '../../../components/pages/Suppliers/SupplierDetails'
 import { AddressesInformation } from '../../../components/AddressesInformation'
 
-import { VStack, Button } from '@chakra-ui/react'
+import { HStack, Button } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
@@ -32,7 +32,9 @@ export default function Supplier({ params }: Props) {
   return (
     <>
       <Head>
-        <title>MARCA | {supplier.data?.nome}</title>
+        <title>
+          {!supplier.data?.nome ? `MARCA` : `${supplier.data?.nome} | MARCA`}
+        </title>
       </Head>
       <WithAuth>
 
@@ -47,10 +49,10 @@ export default function Supplier({ params }: Props) {
 
         <Divider />
         
-        <VStack spacing={3} align="flex-start" >
-          <SupplierInformation supplierId={id}/>
+        <HStack spacing={3} align="flex-start" >
+          <SupplierDetails supplierId={id}/>
           <AddressesInformation userId={id}/>          
-        </VStack>
+        </HStack>
 
       </WithAuth>
     </>

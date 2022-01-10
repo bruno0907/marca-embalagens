@@ -8,11 +8,11 @@ import { WithAuth } from '../../../components/WithAuth'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 
-import { UserInformation } from '../../../components/pages/Users/UserInformation'
+import { UserDetails } from '../../../components/pages/Users/UserDetails'
 import { AddressesInformation } from '../../../components/AddressesInformation'
 import { UserOrders } from '../../../components/pages/Users/UserOrders'
 
-import { VStack, Button, HStack, Stack } from '@chakra-ui/react'
+import { Button, HStack, Stack } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
@@ -31,7 +31,9 @@ export default function User({ params }: Props) {
   return (
     <>
       <Head>
-        <title>MARCA | {user.data?.nome}</title>
+        <title>
+          {!user.data?.nome ? `MARCA` : `${user.data?.nome} | MARCA`}
+        </title>
       </Head>
 
       <WithAuth>
@@ -48,7 +50,7 @@ export default function User({ params }: Props) {
 
         <Stack spacing={6}>
           <HStack spacing={6} align="flex-start">
-            <UserInformation userId={id}/>
+            <UserDetails userId={id}/>
             <AddressesInformation userId={id}/>
           </HStack>
 
