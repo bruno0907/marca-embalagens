@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -32,15 +32,11 @@ export default function Suppliers() {
   return (
     <>
       <Head>
-        <title>MARCA | Fornecedores</title>        
+        <title>Fornecedores | MARCA</title>        
       </Head>
-
-      <WithAuth>      
-
+      <AuthWrapper>
         <Header title="Fornecedores"/>
-
         <Divider />
-
         <Content>
           <Stack spacing={6}>
             <HStack spacing={3}>
@@ -61,13 +57,10 @@ export default function Suppliers() {
                 Novo fornecedor
               </Button>
             </HStack>
-
             <SuppliersList filterValue={toSearch}/>
           </Stack>
-
-        </Content> 
-
-      </WithAuth>
+        </Content>
+      </AuthWrapper>
     </>
   )
 }

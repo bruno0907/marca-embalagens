@@ -12,7 +12,7 @@ type Props = {
   children: ReactNode;   
 }
 
-const WithAuth = ({ children }: Props) => {  
+const AuthWrapper = ({ children }: Props) => {  
   const router = useRouter() 
   const { session } = useAuth()
 
@@ -50,4 +50,4 @@ const WithAuth = ({ children }: Props) => {
   )  
 }
 
-export { WithAuth }
+export { AuthWrapper }

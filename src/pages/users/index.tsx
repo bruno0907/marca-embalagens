@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -32,15 +32,11 @@ export default function Users() {
   return (
     <>
       <Head>
-        <title>MARCA | Clientes</title>        
+        <title>Clientes | MARCA</title>        
       </Head>
-
-      <WithAuth>
-        
+      <AuthWrapper>        
         <Header title="Clientes"/>
-
         <Divider />
-
         <Content>
           <Stack spacing={6}>
             <HStack spacing={3}>
@@ -60,15 +56,11 @@ export default function Users() {
               >
                 Novo cliente
               </Button>
-
-            </HStack>
-            
+            </HStack>            
             <UsersList filterValue={toSearch}/>
           </Stack>
-
-        </Content>
-        
-      </WithAuth>
+        </Content>        
+      </AuthWrapper>
     </>
   )
 }

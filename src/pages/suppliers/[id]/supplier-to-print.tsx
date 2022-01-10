@@ -11,7 +11,7 @@ import { Content } from "../../../components/Content"
 import { Header } from "../../../components/Header"
 
 import { SupplierInformationToPrint } from "../../../components/pages/Suppliers/SupplierInformationToPrint"
-import { AddressesToPrint } from "../../../components/AddressesToPrint"
+import { AddressesToPrint } from "../../../components/AddressesDetails/AddressesToPrint"
 
 import { useSupplierQuery } from "../../../hooks/useSupplierQuery"
 import { useAddressesQuery } from "../../../hooks/useAddressesQuery"

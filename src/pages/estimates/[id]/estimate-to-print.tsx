@@ -8,10 +8,16 @@ import { useReactToPrint } from "react-to-print";
 import { Content } from "../../../components/Content";
 import { Divider } from "../../../components/Divider";
 import { Header } from "../../../components/Header";
+import { Table } from "../../../components/Table";
+import { AuthWrapper } from "../../../components/AuthWrapper";
 
 import { EstimateHeader } from "../../../components/pages/Estimates/Estimate-to-print/EstimateHeader";
 
 import { useEstimateQuery } from "../../../hooks/useEstimateQuery";
+
+import { handleFormatDate } from "../../../utils/handleFormatDate";
+import { handleFormatPrice } from "../../../utils/handleFormatPrice";
+import { handleFormatPadStart } from "../../../utils/handleFormatPadStart";
 
 import {
   Box,
@@ -27,16 +33,9 @@ import {
   Tbody,
   HStack,
   Heading,
-  forwardRef,
 } from "@chakra-ui/react";
 
 import { FiPrinter } from "react-icons/fi";
-
-import { handleFormatDate } from "../../../utils/handleFormatDate";
-import { Table } from "../../../components/Table";
-import { WithAuth } from "../../../components/WithAuth";
-import { handleFormatPrice } from "../../../utils/handleFormatPrice";
-import { handleFormatPadStart } from "../../../utils/handleFormatPadStart";
 
 type Props = {
   params: {
@@ -68,7 +67,7 @@ export default function EstimateToPrint({ params }: Props) {
           </title>
       </NextHead>
       
-      <WithAuth>
+      <AuthWrapper>
         { estimate.isLoading ? (
             <Center  minH="70vh" flexDir="column">
               <Spinner color="blue.500" />
@@ -210,7 +209,7 @@ export default function EstimateToPrint({ params }: Props) {
               </Content>
             </>          
         )}
-      </WithAuth>
+      </AuthWrapper>
     </>
   );
 }

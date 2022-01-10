@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
 
-import { WithAuth } from '../../../components/WithAuth'
+import { AuthWrapper } from '../../../components/AuthWrapper'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { Content } from '../../../components/Content'
@@ -30,15 +30,11 @@ export default function Product({ params }: Props) {
   return (
     <>
       <Head>
-        <title>MARCA | {data?.nome}</title>
+        <title>{data?.nome ? `MARCA` : `${data.nome} | MARCA`}</title>
       </Head>
-
-      <WithAuth>
-
+      <AuthWrapper>
         <Header withGoBack title={data?.nome} />
-
         <Divider />
-
         <Content>
           { isLoading ? (
             <VStack spacing={3}>
@@ -56,11 +52,10 @@ export default function Product({ params }: Props) {
           )}
         </Content>
 
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }
-
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {  
   return {

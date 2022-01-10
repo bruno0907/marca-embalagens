@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 import { useRouter } from 'next/router'
 
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Content } from '../../components/Content'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
@@ -33,18 +33,13 @@ export default function Products() {
   return (
     <>
       <Head>
-        <title>MARCA | Produtos</title>        
+        <title>Produtos | MARCA</title>        
       </Head>
-
-      <WithAuth>
-
-        <Header title="Produtos"/>          
-
+      <AuthWrapper>
+        <Header title="Produtos"/>
         <Divider />
-
         <Content>
           <Stack spacing={6}>
-
             <HStack spacing={3}>
               <SearchInput
                 ref={searchInputRef}
@@ -62,13 +57,11 @@ export default function Products() {
               >
                 Novo produto
               </Button> 
-            </HStack>
-            
+            </HStack>            
             <ProductsList filterValue={toSearch}/>
           </Stack>
-
         </Content>
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }

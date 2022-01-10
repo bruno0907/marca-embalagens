@@ -5,7 +5,7 @@ import { Stack, HStack, Spinner, Text, Flex } from "@chakra-ui/react"
 import { Select } from '../../../Select'
 import { useAddressesQuery } from '../../../../hooks/useAddressesQuery'
 import { useCreateOrder } from '../../../../contexts/useCreateOrder'
-import { AddressItem } from '../../../AddressesInformation/AddressItem'
+import { AddressItem } from '../../../AddressesDetails/AddressItem'
 
 const AddressDetails = () => { 
   const {

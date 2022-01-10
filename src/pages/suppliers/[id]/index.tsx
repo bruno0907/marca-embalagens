@@ -4,11 +4,11 @@ import { GetServerSideProps } from 'next'
 
 import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
-import { WithAuth } from '../../../components/WithAuth'
+import { AuthWrapper } from '../../../components/AuthWrapper'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 import { SupplierDetails } from '../../../components/pages/Suppliers/SupplierDetails'
-import { AddressesInformation } from '../../../components/AddressesInformation'
+import { AddressesDetails } from '../../../components/AddressesDetails'
 
 import { HStack, Button } from '@chakra-ui/react'
 
@@ -36,25 +36,20 @@ export default function Supplier({ params }: Props) {
           {!supplier.data?.nome ? `MARCA` : `${supplier.data?.nome} | MARCA`}
         </title>
       </Head>
-      <WithAuth>
-
+      <AuthWrapper>
         <Header withGoBack title={supplier.data?.nome}>
           <Button
             colorScheme="blue"
             leftIcon={<FiPrinter />}            
             onClick={handlePrintUser}
           >Imprimir</Button>
-
         </Header>
-
-        <Divider />
-        
+        <Divider />        
         <HStack spacing={3} align="flex-start" >
           <SupplierDetails supplierId={id}/>
-          <AddressesInformation userId={id}/>          
+          <AddressesDetails userId={id}/>          
         </HStack>
-
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }

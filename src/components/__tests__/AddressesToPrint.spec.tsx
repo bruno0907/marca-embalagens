@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { AddressesToPrint } from "../AddressesToPrint"
+import { AddressesToPrint } from "../AddressesDetails/AddressesToPrint"
 import { AddressProps } from "../../types"
 
 const addressMock: AddressProps = {

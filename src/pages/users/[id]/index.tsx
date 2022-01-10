@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 
 import { useUserQuery } from '../../../hooks/useUserQuery'
 
-import { WithAuth } from '../../../components/WithAuth'
+import { AuthWrapper } from '../../../components/AuthWrapper'
 import { Divider } from '../../../components/Divider'
 import { Header } from '../../../components/Header'
 
 import { UserDetails } from '../../../components/pages/Users/UserDetails'
-import { AddressesInformation } from '../../../components/AddressesInformation'
+import { AddressesDetails } from '../../../components/AddressesDetails'
 import { UserOrders } from '../../../components/pages/Users/UserOrders'
 
 import { Button, HStack, Stack } from '@chakra-ui/react'
@@ -36,7 +36,7 @@ export default function User({ params }: Props) {
         </title>
       </Head>
 
-      <WithAuth>
+      <AuthWrapper>
 
         <Header withGoBack title={user.data?.nome}>
           <Button 
@@ -51,13 +51,12 @@ export default function User({ params }: Props) {
         <Stack spacing={6}>
           <HStack spacing={6} align="flex-start">
             <UserDetails userId={id}/>
-            <AddressesInformation userId={id}/>
+            <AddressesDetails userId={id}/>
           </HStack>
-
           <UserOrders userId={id}/>
         </Stack>
         
-      </WithAuth>
+      </AuthWrapper>
 
     </>
   )

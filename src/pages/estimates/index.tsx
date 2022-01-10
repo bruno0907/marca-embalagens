@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -31,13 +31,9 @@ export default function Estimates() {
       <Head>
         <title>Orçamentos | MARCA</title>        
       </Head>
-
-      <WithAuth>
-
+      <AuthWrapper>
         <Header title="Orçamentos"/>
-
         <Divider />
-
         <Stack spacing={3}>
           <Content>
             <HStack spacing={3} mb={8}>
@@ -58,14 +54,11 @@ export default function Estimates() {
               >
                 Novo orçamento
               </Button>
-            </HStack>
-          
+            </HStack>          
             <EstimatesList query={Number(toSearch)}/>
           </Content>
         </Stack>
-
-
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }

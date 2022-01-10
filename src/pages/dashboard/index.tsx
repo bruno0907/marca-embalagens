@@ -1,15 +1,13 @@
 import Head from 'next/head'
 
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Header } from '../../components/Header'
 import { Divider } from '../../components/Divider'
 import { OrdersCard } from '../../components/pages/Dashboard/OrdersCard'
 import { UsersCard } from '../../components/pages/Dashboard/UsersCard'
 import { ProductsCard } from '../../components/pages/Dashboard/ProductsCard'
 
-import {
-  HStack,
-} from '@chakra-ui/react'
+import { SimpleGrid } from '@chakra-ui/react'
 
 export default function Dashboard() {       
   return (
@@ -17,20 +15,15 @@ export default function Dashboard() {
       <Head>
         <title>Dashboard | MARCA</title>
       </Head>
-
-      <WithAuth>
-
+      <AuthWrapper>
         <Header title="Dashboard" />
-
         <Divider />
-
-        <HStack spacing={3}>
+        <SimpleGrid columns={3} gap={6}>
           <OrdersCard />
           <UsersCard />
           <ProductsCard />
-        </HStack>
-        
-      </WithAuth>
+        </SimpleGrid>        
+      </AuthWrapper>
     </>
   )
 }

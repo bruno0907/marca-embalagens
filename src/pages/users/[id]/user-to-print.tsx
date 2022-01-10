@@ -10,7 +10,7 @@ import { Divider } from "../../../components/Divider"
 import { Content } from "../../../components/Content"
 import { Header } from "../../../components/Header"
 import { UserInformationToPrint } from "../../../components/pages/Users/UserOrders/UserInformationToPrint"
-import { AddressesToPrint } from "../../../components/AddressesToPrint"
+import { AddressesToPrint } from "../../../components/AddressesDetails/AddressesToPrint"
 import { OrdersToPrint } from "../../../components/pages/Users/UserOrders/OrdersToPrint"
 
 import { useUserQuery } from "../../../hooks/useUserQuery"

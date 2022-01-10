@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Header } from '../../components/Header'
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 
 import { CreateOrderForm } from '../../components/pages/Orders/CreateOrderForm'
@@ -12,20 +12,15 @@ export default function NewOrder() {
   return (
     <>
       <Head>
-        <title>Novo pedido | Novo pedido</title>        
+        <title>Novo pedido | MARCA</title>        
       </Head>
-
-      <WithAuth>
-        
+      <AuthWrapper>        
         <Header title="Novo pedido" withGoBack/>
-
-        <Divider />
-        
+        <Divider />        
         <CreateOrderProvider>
           <CreateOrderForm />
-        </CreateOrderProvider>
-        
-      </WithAuth> 
+        </CreateOrderProvider>        
+      </AuthWrapper> 
     </>   
   )
 }

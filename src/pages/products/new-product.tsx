@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Header } from '../../components/Header'
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 import { Content } from '../../components/Content'
 import { CreateProductForm } from '../../components/pages/Products/CreateProductForm'
@@ -9,21 +9,16 @@ import { CreateProductForm } from '../../components/pages/Products/CreateProduct
 export default function NewProduct() {
   return (
     <>
-
       <Head>
-        <title>MARCA | Cadastrar novo produto</title>        
+        <title>Cadastrar novo produto | MARCA</title>        
       </Head>
-      <WithAuth>
-        
+      <AuthWrapper>        
         <Header title="Cadastrar novo produto" withGoBack/>
-
         <Divider />
-
         <Content>
           <CreateProductForm />
         </Content>
-      </WithAuth>
-
+      </AuthWrapper>
     </>
   )
 }

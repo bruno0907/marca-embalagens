@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import { AddressProps } from '../../types'
-import { AddressList } from '../AddressesInformation/AddressList'
+import { AddressList } from '../AddressesDetails/AddressList'
 
 import { ChakraProvider } from '@chakra-ui/react'
 import { theme } from '../../styles/theme'

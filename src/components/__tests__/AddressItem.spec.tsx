@@ -5,8 +5,8 @@ import { render, screen, fireEvent } from "@testing-library/react"
 import { AddressProps } from "../../types"
 import { Modal } from "../Modal"
 
-import { AddressItem } from "../AddressesInformation/AddressItem"
-import { UpdateAddressForm } from "../AddressesInformation/UpdateAddressForm"
+import { AddressItem } from "../AddressesDetails/AddressItem"
+import { UpdateAddressForm } from "../AddressesDetails/UpdateAddressForm"
 import { theme } from '../../styles/theme'
 
 const mockAddress: AddressProps = {

@@ -6,9 +6,9 @@ import {
   useDisclosure 
 } from '@chakra-ui/react'
 
-import { AddressesInformation } from "../AddressesInformation"
+import { AddressesDetails } from "../AddressesDetails"
 import { Modal } from '../Modal'
-import { CreateAddressForm } from "../AddressesInformation/CreateAddressForm"
+import { CreateAddressForm } from "../AddressesDetails/CreateAddressForm"
 import { theme } from '../../styles/theme'
 
 jest.mock('../../hooks/useAddressesQuery')
@@ -18,7 +18,7 @@ const useAddressesQuerySpy = jest.spyOn(require('../../hooks/useAddressesQuery')
 
 let wrapper = null
 
-describe('<AddressesInformation/>', () => {  
+describe('<AddressesDetails/>', () => {  
   beforeEach(() => {
     wrapper = ({ children }): JSX.Element => {
       return (
@@ -30,7 +30,7 @@ describe('<AddressesInformation/>', () => {
   })
   
   it('should render properly and display 2 addresses if it has data', () => {
-    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
+    render(<AddressesDetails userId="fake-user-id"/>, { wrapper })
     
     const addresses = screen.getAllByText(/fake-address/)
   
@@ -39,7 +39,7 @@ describe('<AddressesInformation/>', () => {
   
   it('should display addresses correctly', () => {
 
-    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
+    render(<AddressesDetails userId="fake-user-id"/>, { wrapper })
 
     const addressMock1 = screen.getAllByText(/fake-address/)[0]
     expect(addressMock1).toHaveTextContent(/fake-address/)
@@ -54,7 +54,7 @@ describe('<AddressesInformation/>', () => {
       data: null
     })
 
-    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
+    render(<AddressesDetails userId="fake-user-id"/>, { wrapper })
 
     const loadingSkeleton = screen.getByText(/Carregando.../)
 
@@ -68,7 +68,7 @@ describe('<AddressesInformation/>', () => {
       data: null
     })
 
-    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })
+    render(<AddressesDetails userId="fake-user-id"/>, { wrapper })
     
     const errorComponent = screen.getByText(/Ocorreu um erro/)
 
@@ -76,7 +76,7 @@ describe('<AddressesInformation/>', () => {
   })  
 
   it('should call onOpen on Novo endereço click', () => {    
-    render(<AddressesInformation userId="fake-user-id"/>, { wrapper })    
+    render(<AddressesDetails userId="fake-user-id"/>, { wrapper })    
     
     const { onOpen } = useDisclosure()
 
@@ -99,7 +99,7 @@ describe('<AddressesInformation/>', () => {
 
     render(
       <PortalManager>
-        <AddressesInformation userId="fake-user-id"/>
+        <AddressesDetails userId="fake-user-id"/>
         <Modal isOpen={isOpen} onClose={onClose} title="mock-title">
           <CreateAddressForm userId="fake-userId" onClose={onClose}/>
         </Modal>

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 import { Header } from '../../components/Header'
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 import { CreateEstimateForm } from '../../components/pages/Estimates/CreateEstimateForm'
 
@@ -11,16 +11,11 @@ export default function NewEstimate() {
       <Head>
         <title>Novo orçamento | MARCA</title>
       </Head>
-
-      <WithAuth>
-        
+      <AuthWrapper>        
         <Header title="Novo orçamento" withGoBack/>
-
-        <Divider />
-        
-        <CreateEstimateForm />        
-        
-      </WithAuth> 
+        <Divider />        
+        <CreateEstimateForm />                
+      </AuthWrapper>
     </>   
   )
 }

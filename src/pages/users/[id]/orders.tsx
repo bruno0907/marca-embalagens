@@ -1,11 +1,8 @@
-import { useRef } from 'react'
-
 import Head from 'next/head'
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 
-import { useReactToPrint } from 'react-to-print'
-
-import { WithAuth } from '../../../components/WithAuth'
+import { AuthWrapper } from '../../../components/AuthWrapper'
 import { Header } from '../../../components/Header'
 import { Content } from '../../../components/Content'
 import { Divider } from '../../../components/Divider'
@@ -14,6 +11,8 @@ import { OrderItemsList } from '../../../components/pages/Users/UserOrders/Order
 
 import { useUserOrdersQuery } from "../../../hooks/useUserOrdersQuery"
 import { useUserQuery } from '../../../hooks/useUserQuery'
+
+import { handleFormatPrice } from '../../../utils/handleFormatPrice'
 
 import { 
   Text,
@@ -25,9 +24,6 @@ import {
   Spinner,
   Spacer,
 } from "@chakra-ui/react"
-import { FiPrinter } from 'react-icons/fi'
-import { useRouter } from 'next/router'
-import { handleFormatPrice } from '../../../utils/handleFormatPrice'
 
 type Props = {
   params: {
@@ -51,7 +47,7 @@ export default function UserOrders({ params }: Props) {
         </title>
       </Head>
 
-      <WithAuth>
+      <AuthWrapper>
         <Header 
           withGoBack 
           title={user.data?.nome && `Pedidos de ${user.data.nome}`}>
@@ -108,7 +104,7 @@ export default function UserOrders({ params }: Props) {
             </Stack>
           </Content>
         )}
-      </WithAuth>
+      </AuthWrapper>
     </>   
   )
 }

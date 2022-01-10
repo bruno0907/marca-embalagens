@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
-import { WithAuth } from '../../components/WithAuth'
+import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 import { Header } from '../../components/Header'
 import { Content } from '../../components/Content'
@@ -36,17 +36,11 @@ export default function Orders() {
       <Head>
         <title>Pedidos | MARCA</title>        
       </Head>
-
-      <WithAuth>
-
-        <Header title="Pedidos">
-          
+      <AuthWrapper>
+        <Header title="Pedidos">          
         </Header>
-
         <Divider />
-
         <Content>
-
           <Stack spacing={6}>
             <HStack spacing={3}>
               <SearchInput
@@ -67,13 +61,10 @@ export default function Orders() {
                 Novo pedido
               </Button>
             </HStack>
-
             <OrdersList filterValue={Number(toSearch)}/>
           </Stack>
-
         </Content>
-
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }

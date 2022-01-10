@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import { WithAuth } from "../../components/WithAuth";
+import { AuthWrapper } from "../../components/AuthWrapper";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
@@ -20,7 +20,7 @@ export default function Profile() {
       <Head>
         <title>MARCA | Perfil</title>
       </Head>
-      <WithAuth>
+      <AuthWrapper>
         <Flex>
           <Header title="Perfil" />
         </Flex>
@@ -28,7 +28,7 @@ export default function Profile() {
         <Content>
           <ProfileForm profile={profile} isFetching={isFetching}/>
         </Content>
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }

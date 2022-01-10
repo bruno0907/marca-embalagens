@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next'
 import { useReactToPrint } from 'react-to-print'
 import { handleFormatPadStart } from '../../../utils/handleFormatPadStart'
 
-import { WithAuth } from '../../../components/WithAuth'
+import { AuthWrapper } from '../../../components/AuthWrapper'
 import { Content } from '../../../components/Content'
 import { Divider } from '../../../components/Divider'
 
@@ -59,7 +59,7 @@ export default function Order({ params }: Props) {
         </title>
       </Head>
 
-      <WithAuth>        
+      <AuthWrapper>        
         <Header 
           withGoBack 
           title={order.data?.numero_pedido &&
@@ -131,7 +131,7 @@ export default function Order({ params }: Props) {
             )
           }
         </Content>        
-      </WithAuth>
+      </AuthWrapper>
     </>
   )
 }
