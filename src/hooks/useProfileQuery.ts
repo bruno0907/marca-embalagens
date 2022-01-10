@@ -1,20 +1,35 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { AddressProps, ProfileProps } from "../types"
+import { AddressProps } from "../types"
 
-type ProfileQueryProps = {
-  data: ProfileProps;
+type ProfileQuery = {
+  data: Profile;
   address: AddressProps;
 }
 
-const getProfile = async (): Promise<ProfileQueryProps> => {
+export type Profile = {
+  id: string;
+  user_id: string;    
+  username: string;
+  nome: string;
+  razao_social: string;  
+  cpf_cnpj: string;
+  rg_ie: string;  
+  email: string;
+  telefone: string;
+  celular: string;
+  logo: string;
+  situacao_cadastral: boolean;
+}
+
+const getProfile = async (): Promise<ProfileQuery> => {
   try {
     const user = supabase.auth.user()
   
     if(!user) throw new Error('User not authenticated')
     
     const { data: profileData, error: profileError } = await supabase
-        .from<ProfileProps>('profiles')
+        .from<Profile>('profiles')
         .select()
         .eq('user_id', user.id)
         .single()    

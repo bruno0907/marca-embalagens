@@ -47,17 +47,17 @@ const profileFormSchema = yup.object().shape({
 
 import {         
   AddressProps,
-  NewAddressProps,
-  NewProfileProps,
-  ProfileProps,  
+  NewAddressProps,  
   CityProps
 } from "../../../types";
+import { NewProfile } from "../../../hooks/useSignUpMutation";
+import { Profile } from "../../../hooks/useProfileQuery";
 
-type HandleUpdateProfileProps = NewProfileProps & NewAddressProps
+type HandleUpdateProfileProps = NewProfile & NewAddressProps
 
 type ProfileFormProps = {
   profile: {
-    data: ProfileProps;
+    data: Profile;
     address: AddressProps
   };
   isFetching: boolean;

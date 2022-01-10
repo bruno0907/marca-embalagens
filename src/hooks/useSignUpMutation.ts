@@ -5,10 +5,9 @@ import { createAddress } from '../services/createAddress'
 
 import { 
   AddressProps, 
-  NewAddressProps, 
-  NewProfileProps,
-  ProfileProps,   
+  NewAddressProps,    
 } from '../types'
+import { Profile } from './useProfileQuery'
 
 type AuthProps = {
   email: string;
@@ -16,20 +15,32 @@ type AuthProps = {
 }
 
 type NewProfileMutationProps = {
-  data: NewProfileProps;
+  data: NewProfile;
   address: AddressProps;
 }
 
-const createProfile = async (profile: NewProfileProps) => {
+export type NewProfile = {  
+  user_id: string;  
+  username: string;
+  nome: string | undefined;
+  razao_social: string | undefined;  
+  cpf_cnpj: string | undefined; 
+  rg_ie: string | undefined;  
+  email: string;
+  telefone: string | undefined;
+  celular: string | undefined;    
+}
+
+const createProfile = async (profile: NewProfile) => {
   return await supabase
-    .from<ProfileProps>('profiles')
+    .from<Profile>('profiles')
     .insert(profile)
 }
 
 const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutationProps> => {
   try {
     const { data: userAlreadyExists } = await supabase
-      .from<ProfileProps>('profiles')
+      .from<Profile>('profiles')
       .select('username')
       .eq('username', email)
       .single()
@@ -43,7 +54,7 @@ const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutatio
     
     if(error) throw new Error(error.message)
   
-    const profile: NewProfileProps = {
+    const profile: NewProfile = {
       user_id: user.id,
       username: user.email,
       celular: undefined,

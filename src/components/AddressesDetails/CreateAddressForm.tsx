@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useCallback, useEffect } from "react"
 
 import { useForm, SubmitHandler } from "react-hook-form"
 import * as yup from 'yup'
@@ -64,19 +64,30 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
     });
 
   const { errors, isSubmitting, isDirty } = formState;
+
   
   useEffect(() => {
-    getCities(selectedState)
-    .then((response) => {
-      setCities(response.data)      
-      return response.data
-    })
-    .catch((error) => error)
+    const fetchCities = async (uf: string): Promise<CityProps[]> => {
+      try {
+        const { data } = await getCities(uf)
+        setCities(data)
+        clearErrors(['estado', 'cidade'])
+        setValue('cidade', 'defaultValue')
 
-    clearErrors(['estado', 'cidade'])
-    setValue('cidade', '')
+        return data        
+      } catch (error) {
+        console.log(error)
+        return error
+      }
+    }
+    fetchCities(selectedState)
 
-  }, [selectedState, clearErrors, setValue])
+    return () => {
+      setCities([])
+
+    }
+   
+  }, [clearErrors, selectedState, setValue])
 
   const NewAddressMutation = useCreateAddressMutation()
 
@@ -147,11 +158,12 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
           <Select
             name="cidade"
             label="Cidade:"
-            error={errors.cidade}            
+            error={errors.cidade}
+            defaultValue="defaultValue"            
             {...register("cidade")}
             onChange={() => clearErrors('cidade')}
           >
-            <option value="default" hidden aria-readonly>
+            <option value="defaultValue" hidden aria-readonly>
               Selecione uma cidade...
             </option>            
             {cities.map((city) => {

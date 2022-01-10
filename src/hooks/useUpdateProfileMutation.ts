@@ -2,16 +2,17 @@ import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase"
 import { updateAddress } from "../services/updateAddress"
-import { AddressProps, ProfileProps } from "../types"
+import { AddressProps } from "../types"
+import { Profile } from "./useProfileQuery"
 
 type UpdateProfileMutation = {
-  profileData: ProfileProps;
+  profileData: Profile;
   profileAddress: AddressProps;
 }
 
-const updateProfile = async (profile: ProfileProps) => {  
+const updateProfile = async (profile: Profile) => {  
   return await supabase
-    .from<ProfileProps>('profiles')
+    .from<Profile>('profiles')
     .upsert(profile)
 }
 

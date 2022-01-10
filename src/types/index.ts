@@ -26,33 +26,7 @@ export type NewUserProps = {
   telefone: string;
   celular: string;  
   outras_informacoes: string;
-}  
-
-export type ProfileProps = {
-  id: string;
-  user_id: string;    
-  username: string;
-  nome: string;
-  razao_social: string;  
-  cpf_cnpj: string;
-  rg_ie: string;  
-  email: string;
-  telefone: string;
-  celular: string;
-  situacao_cadastral: boolean;
-}
-
-export type NewProfileProps = {  
-  user_id: string;  
-  username: string;
-  nome: string | undefined;
-  razao_social: string | undefined;  
-  cpf_cnpj: string | undefined; 
-  rg_ie: string | undefined;  
-  email: string;
-  telefone: string | undefined;
-  celular: string | undefined;    
-}  
+} 
 
 export type SupplierProps = {
   id: string;

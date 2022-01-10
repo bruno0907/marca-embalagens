@@ -31,14 +31,15 @@ jest.spyOn(require('react-hook-form'), 'useForm').mockImplementation(() => {
   }
 })
 
-jest.mock('../../services/getCities', () => ({
-  data: [
-    { id: 1, nome: 'Fake city1'},
-    { id: 2, nome: 'Fake city2'},
-  ]
-}))
 
-jest.spyOn(require('../../services/getCities'), 'getCities')
+jest.spyOn(require('../../services/getCities'), 'getCities').mockReturnValue({
+  response: {
+    data: [
+      { id: 1, nome: 'Fake city1'},
+      { id: 2, nome: 'Fake city2'},
+    ]
+  }
+})
 
 let wrapper = null
 

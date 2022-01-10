@@ -205,17 +205,15 @@ const CreateUserForm = () => {
         <HStack spacing={3} align="flex-start">
           <Input
             name="nome"
-            label="Nome:"
-            bgColor="gray.50"
-            error={errors?.nome}
+            label="Nome:"            
+            error={errors.nome}
             {...register("nome")}
           />
           { isCNPJ &&
             <Input
               name="razao_social"
-              label="Razão Social:"
-              bgColor="gray.50"
-              error={errors?.razao_social}
+              label="Razão Social:"              
+              error={errors.razao_social}
               {...register("razao_social")}
             />
 
@@ -228,9 +226,8 @@ const CreateUserForm = () => {
             placeholder='## ####-####'
             type="tel"
             inputMode="numeric"
-            autoComplete="phone-number"
-            bgColor="gray.50"
-            error={errors?.telefone}
+            autoComplete="phone-number"            
+            error={errors.telefone}
             {...register("telefone")}
             onChange={({ target}) => target.value = masked.phone(target.value)}
           />
@@ -240,43 +237,38 @@ const CreateUserForm = () => {
             placeholder='## ####-####'
             type="tel"
             inputMode="numeric"
-            autoComplete="cel-number"
-            bgColor="gray.50"
-            error={errors?.celular}
+            autoComplete="cel-number"            
+            error={errors.celular}
             {...register("celular")}
             onChange={({ target}) => target.value = masked.celphone(target.value)}
           />
           <Input
             name="email"
             type="email"
-            label="E-mail:"
-            bgColor="gray.50"
-            error={errors?.email}
+            label="E-mail:"            
+            error={errors.email}
             {...register("email")}
           />
         </HStack>
         <HStack spacing={3}  align="flex-start">
           <Input
             name="cpf_cnpj"
-            label={isCNPJ ? 'CNPJ:' : 'CPF:' }
-            bgColor="gray.50"
-            error={errors?.cpf_cnpj}
+            label={isCNPJ ? 'CNPJ:' : 'CPF:' }            
+            error={errors.cpf_cnpj}
             {...register("cpf_cnpj")}
             onChange={({ target}) => target.value = isCNPJ ? masked.cnpj(target.value) : masked.cpf(target.value)}
           />
           <Input
             name="rg_ie"
-            label={ isCNPJ ? 'Inscrição Estadual:' : 'RG:' }
-            bgColor="gray.50"
-            error={errors?.rg_ie}
+            label={ isCNPJ ? 'Inscrição Estadual:' : 'RG:' }            
+            error={errors.rg_ie}
             {...register("rg_ie")}
             onChange={({ target }) => target.value = isCNPJ ? target.value : masked.rg(target.value)}
           />          
           <Input
             name="contato"
-            label="Contato:"
-            bgColor="gray.50"
-            error={errors?.contato}
+            label="Contato:"            
+            error={errors.contato}
             {...register("contato")}
           />          
         </HStack>
@@ -289,17 +281,15 @@ const CreateUserForm = () => {
         >
           <Input
             name="endereco"
-            label="Endereço:"
-            bgColor="gray.50"
-            error={errors?.endereco}
+            label="Endereço:"            
+            error={errors.endereco}
             {...register("endereco")}
           />
           <Box w="40%">
             <Input
               name="bairro"
-              label="Bairro:"
-              bgColor="gray.50"
-              error={errors?.bairro}
+              label="Bairro:"              
+              error={errors.bairro}
               {...register("bairro")}
             />
           </Box>
@@ -312,9 +302,8 @@ const CreateUserForm = () => {
         >
           <Select
             name="estado"
-            label="Estado:"
-            bgColor="gray.50"
-            error={errors?.estado}
+            label="Estado:"            
+            error={errors.estado}
             defaultValue="default"
             {...register("estado")}
             onChange={({ target }) => fetchCities(target.value)}
@@ -333,9 +322,8 @@ const CreateUserForm = () => {
           </Select>
           <Select
             name="cidade"
-            label="Cidade:"
-            bgColor="gray.50"
-            error={errors?.cidade}
+            label="Cidade:"            
+            error={errors.cidade}
             isDisabled={!cities.length}
             defaultValue="default"
             {...register("cidade")}
@@ -351,18 +339,16 @@ const CreateUserForm = () => {
           
           <Input
             name="cep"
-            label="CEP:"
-            bgColor="gray.50"
-            error={errors?.cep}
+            label="CEP:"            
+            error={errors.cep}
             {...register("cep")}
             onChange={({ target }) => target.value = masked.cep(target.value)}
           />
         </HStack>
         <Input
           name="complemento"
-          label="Complemento:"
-          bgColor="gray.50"
-          error={errors?.complemento}
+          label="Complemento:"          
+          error={errors.complemento}
           {...register("complemento")}
         />
         <Input
@@ -370,9 +356,8 @@ const CreateUserForm = () => {
           h="120px"
           p="3"
           name="outras_informacoes"
-          label="Outras Informações:"
-          bgColor="gray.50"
-          error={errors?.outras_informacoes}
+          label="Outras Informações:"          
+          error={errors.outras_informacoes}
           {...register("outras_informacoes")}
         />
       </Stack>
