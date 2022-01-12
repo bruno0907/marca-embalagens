@@ -8,6 +8,7 @@ import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import { Content } from '../../Content'
 import { Input } from '../../Input'
 import { Cart } from '../../Cart'
+import { ProductsSelect } from '../../ProductsSelect'
 
 import { useAuth } from '../../../contexts/useAuth'
 import { useUsersQuery } from '../../../hooks/useUsersQuery'
@@ -32,7 +33,6 @@ import {
   useToast,
   Button,
 } from '@chakra-ui/react'
-import { ProductsSelect } from '../../ProductsSelect'
 
 const CreateEstimateForm = () => {
   const { session } = useAuth()

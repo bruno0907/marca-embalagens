@@ -1,12 +1,14 @@
 import '@testing-library/jest-dom/extend-expect'
 import preloadAll from 'jest-next-dynamic'
 import { cleanup } from '@testing-library/react'
+import { UseToastOptions } from '@chakra-ui/react'
 
 beforeAll(async () => await preloadAll())
 afterAll(jest.clearAllMocks)
 
 afterEach(cleanup)
 
+jest.mock('axios')
 jest.mock('@supabase/supabase-js')
 jest.mock('react-query')
 
@@ -36,12 +38,9 @@ jest.mock("@chakra-ui/react", () => {
       onClose: jest.spyOn(require("react"), 'useCallback').mockReturnValue(jest.fn()),
       onToggle: jest.spyOn(require("react"), 'useCallback').mockReturnValue(jest.fn()),
     }),
-    // useToast: {
-    //   close: jest.fn(),
-    //   closeAll: jest.fn(),
-    //   update: jest.fn(),
-    //   isActive: jest.fn(),
-    // },
+    useToast: jest.fn().mockReturnValue({
+      message: 'fake-message'
+    }),
   }
 })
 

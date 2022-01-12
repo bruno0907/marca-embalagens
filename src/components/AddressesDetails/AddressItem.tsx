@@ -13,30 +13,27 @@ import {
   Text,
   Button,   
   useDisclosure,
-  Center,
-  Spinner,
 } from "@chakra-ui/react"
 
 import { FiEdit, FiHome } from "react-icons/fi"
 
-import { AddressProps } from "../../types"
-
 const Modal = dynamic<ModalProps>(
   () =>import('../Modal').then(({ Modal }) => Modal)
 )
-
+  
 const UpdateAddressForm = dynamic<UpdateAddressFormProps>(
-  () => import('./UpdateAddressForm')
-    .then(({ UpdateAddressForm }) => UpdateAddressForm)  
+  () => import('./UpdateAddressForm').then(({ UpdateAddressForm }) => UpdateAddressForm)  
 )
+    
+import { Address } from "../../hooks/useAddressQuery"
 
 export type AddressItemProps = {
-  address: AddressProps
+  address: Address
 }
 
 const AddressItem = ({ address }: AddressItemProps) => {
   const { onOpen, isOpen, onClose } = useDisclosure()
-  const [addressToEdit, setAddressToEdit] = useState<AddressProps>(null)
+  const [addressToEdit, setAddressToEdit] = useState<Address>(null)
 
   const handlePrefetchAddress = async () => await prefetchAddress(address.id)
 
@@ -58,7 +55,8 @@ const AddressItem = ({ address }: AddressItemProps) => {
               {address.endereco} - {address.bairro}
             </Text>
             <Text fontSize="sm" color="gray.700" fontWeight="medium">
-              {address.cidade}/{address.estado} - {address.cep}
+              {address.cidade}/{address.estado} 
+              {address.cep && ` - ${address.cep}`}
             </Text>
             <Text fontSize="sm" color="gray.700" fontWeight="medium">
               {address.complemento}

@@ -1,8 +1,8 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { OrderProps } from "../types"
+import { Order } from "./useOrderQuery"
 
-const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps[]> => {
+const getUserOrders = async (userId: string, limit?: number): Promise<Order[]> => {
   try {
     const user = supabase.auth.user()
     
@@ -10,7 +10,7 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
     
     if(!limit) {
       const { data, error } = await supabase
-        .from<OrderProps>('orders')
+        .from<Order>('orders')
         .select()
         .eq('cliente', userId)
         .order('created_at', {
@@ -23,7 +23,7 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
     }
     
     const { data, error } = await supabase
-      .from<OrderProps>('orders')
+      .from<Order>('orders')
       .select()
       .eq('cliente', userId)
       .order('created_at', { ascending: false })
@@ -40,7 +40,7 @@ const getUserOrders = async (userId: string, limit?: number): Promise<OrderProps
 }
 
 const useUserOrdersQuery = (userId: string, limit?: number) => {
-  const queryKey = ['userOrders[]', userId]
+  const queryKey = ['userOrder[]', userId]
 
   return useQuery(queryKey, 
     () => !limit ? getUserOrders(userId) : getUserOrders(userId, limit), {

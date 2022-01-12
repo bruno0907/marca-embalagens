@@ -7,7 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 
-type OrderHeaderProps = {
+type Props = {
  orderNumber: number;
  createdAt: Date;
  deliveryDate: Date;
@@ -17,7 +17,7 @@ const OrderHeader = ({
   orderNumber,
   createdAt,
   deliveryDate
-}: OrderHeaderProps) => {
+}: Props) => {
   return (
     <HStack spacing={6} w="100%" justify="space-between">
       <Box>

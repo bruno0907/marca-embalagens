@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -7,7 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useUpdateProfileMutation } from "../../../hooks/useUpdateProfileMutation";
 import { useStatesQuery } from "../../../hooks/useStatesQuery";
-import { getCities } from "../../../services/getCities";
 import { InputMask } from "../../../utils/inputMasksHandler";
 
 import { Input } from "../../../components/Input";
@@ -20,73 +19,81 @@ import {
   Stack,
   HStack,  
   useToast,
-  Skeleton
 } from "@chakra-ui/react"
 
 const profileFormSchema = yup.object().shape({
-  nome: yup.string().required("É necessário informar um nome").trim(),
+  nome: yup.string().required("O nome é obrigatório").trim(),
   razao_social: yup.string().trim().nullable(),
   telefone: yup.string().trim().nullable(),
-  celular: yup.string().required('Informe um número de celular').trim().nullable(),
-  email: yup.string().email().trim().nullable(),
+  celular: yup.string().required('O celular é obrigatório').trim(),
+  email: yup.string().required('O e-mail é obrigatório').email().trim(),
   cpf_cnpj: yup.string().trim().nullable(),
   rg_ie: yup.string().trim().nullable(),
-  endereco: yup.string().required("O endereço precisa ser informado").trim().nullable(),
-  bairro: yup.string().required("Informe o bairro ou distrito").trim().nullable(),
-  estado: yup.string().test({
-      message: "É preciso selecionar um estado",
-      test: value => value !== "default",
-    }).required().trim().nullable(),
-  cidade: yup.string().test({
-      message: "Selecione uma cidade",
-      test: value => value !== "default",
-    }).required("Você precisa selecionar um estado").trim().nullable(),
+  endereco: yup.string().required("O endereço é obrigatório").trim(),
+  bairro: yup.string().required("O bairro/distrito é obrigatório").trim(),
+  estado: yup.string().required('O estado é obrigatório')
+    .test({
+      message: "O estado é obrigatório",
+      test: value => value !== "defaultValue",
+    }).trim(),
+  cidade: yup.string().required('Selecione um estado')
+    .test({
+      message: "A cidade é obrigatória",
+      test: value => value !== "defaultValue",
+    }).trim(),
   cep: yup.string().trim().nullable(),
   complemento: yup.string().trim().nullable(),  
 });
 
-import {         
-  AddressProps,
-  NewAddressProps,  
-  CityProps
-} from "../../../types";
 import { NewProfile } from "../../../hooks/useSignUpMutation";
 import { Profile } from "../../../hooks/useProfileQuery";
+import { NewAddress } from "../../../hooks/useCreateAddressMutation";
+import { Address } from "../../../hooks/useAddressQuery";
+import { useCitiesQuery } from "../../../hooks/useCitiesQuery";
 
-type HandleUpdateProfileProps = NewProfile & NewAddressProps
+type HandleUpdateProfile = NewProfile & NewAddress
 
-type ProfileFormProps = {
+type Props = {
   profile: {
     data: Profile;
-    address: AddressProps
-  };
-  isFetching: boolean;
+    address: Address
+  };  
 }
 
-const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
+const ProfileForm = ({ profile }: Props) => {
   const toast = useToast()
   const router = useRouter()    
-  const masked = new InputMask()
+  const masked = new InputMask()  
   
-  const [cities, setCities] = useState<CityProps[]>([])
+  const [selectedState, setSelectedState] = useState('')
 
-  const states = useStatesQuery()      
+  const states = useStatesQuery()
+  const cities = useCitiesQuery(selectedState)      
 
   const { 
     handleSubmit, 
     formState, 
-    register, 
-    
-    reset
-  } = useForm<HandleUpdateProfileProps>({
+    register,
+    reset,
+    clearErrors,
+    setValue
+  } = useForm<HandleUpdateProfile>({
       resolver: yupResolver(profileFormSchema)      
     });
 
   const { errors, isDirty, isSubmitting } = formState;
 
+  const handleSelectState = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    setSelectedState(value)
+    clearErrors(['estado', 'cidade'])
+    setValue('cidade', 'defaultValue')
+    return value
+  }
+
   const updateProfileMutation = useUpdateProfileMutation()
   
-  const handleUpdateProfile: SubmitHandler<HandleUpdateProfileProps> = async (values) => {
+  const handleUpdateProfile: SubmitHandler<HandleUpdateProfile> = async (values) => {
     const {      
       nome,
       razao_social,
@@ -147,73 +154,17 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         position: 'top-right'
       })
     }
-  };    
-
-  const fetchCities = useCallback( async (uf: string) => {
-    const { data } = await getCities(uf)
-
-    setCities(data)
-  }, [])  
+  };
 
   useEffect(() => {
-    if(profile) {
-      fetchCities(profile.address.estado || 'default')
-        .then(() => reset({
-          nome: profile.data.nome,
-          razao_social: profile.data.razao_social,
-          telefone: profile.data.telefone,
-          celular: profile.data.celular,
-          email: profile.data.email,
-          cpf_cnpj: profile.data.cpf_cnpj,
-          rg_ie: profile.data.rg_ie,
-          endereco: profile.address.endereco,
-          bairro: profile.address.bairro,
-          estado: profile.address.estado || 'default',
-          cidade: profile.address.cidade,
-          cep: profile.address.cep,
-          complemento: profile.address.complemento,
-          })
-        )
-        .catch(err => console.log(err))
-    }
+    const { cidade, estado } = profile.address
+    estado && setSelectedState(estado)
+    cidade && reset({ cidade })
 
-    return () => {
-      setCities([])
-    }
+    return () => setSelectedState('')
 
-  }, [profile, reset, fetchCities])
+  }, [profile.address, reset])
 
-  if(isFetching && !profile) {
-    return (      
-      <Stack spacing={3}>
-        <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-        </HStack>
-        <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-        </HStack>
-        <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-        </HStack>
-        <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Box w="40%">
-            <Skeleton h="10" w="100%" borderRadius="md"/>
-          </Box>
-        </HStack>
-        <HStack spacing={3}>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-          <Skeleton h="10" w="100%" borderRadius="md"/>
-        </HStack>
-      </Stack>
-    )
-  }  
-  
   return (
     <Flex
       as="form"
@@ -221,24 +172,27 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
       onSubmit={handleSubmit(handleUpdateProfile)}
     >
       <Stack spacing={3}>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
             name="nome"
             label="Nome:"
+            defaultValue={profile.data.nome}
             error={errors.nome}
             {...register("nome")}
           />          
           <Input
             name="razao_social"
             label="Razão Social:"
+            defaultValue={profile.data.razao_social}
             error={errors.razao_social}
             {...register("razao_social")}
           />
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
             name="telefone"
             label="Telefone:"
+            defaultValue={profile.data.telefone}
             error={errors.telefone}
             {...register("telefone")}
             onChange={({ currentTarget }) => currentTarget.value = masked.phone(currentTarget.value)}
@@ -246,6 +200,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           <Input
             name="celular"
             label="Celular:"
+            defaultValue={profile.data.celular}
             error={errors.celular}
             {...register("celular")}
             onChange={({ currentTarget }) => currentTarget.value = masked.celphone(currentTarget.value)}
@@ -254,14 +209,16 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             name="email"
             type="email"
             label="E-mail:"
+            defaultValue={profile.data.email}
             error={errors.email}
             {...register("email")}
           />
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
             name="cpf_cnpj"
             label="CNPJ:"
+            defaultValue={profile.data.cpf_cnpj}
             error={errors.cpf_cnpj}
             {...register("cpf_cnpj")}
             onChange={({ currentTarget }) => currentTarget.value = masked.cnpj(currentTarget.value)}
@@ -269,14 +226,16 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           <Input
             name="rg_ie"
             label="Inscrição Estadual:"
+            defaultValue={profile.data.rg_ie}
             error={errors.rg_ie}
             {...register("rg_ie")}
           /> 
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
             name="endereco"
             label="Endereço:"
+            defaultValue={profile.address.endereco}
             error={errors.endereco}
             {...register("endereco")}
           />
@@ -284,21 +243,23 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
             <Input
               name="bairro"
               label="Bairro:"
+              defaultValue={profile.address.bairro}
               error={errors.bairro}
               {...register("bairro")}
             />
           </Box>
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Select
             name="estado"
             label="Estado:"
-            defaultValue="default"            
+            isLoading={states.isFetching}
+            defaultValue={profile.address.estado ? profile.address.estado : 'defaultValue'}
             error={errors.estado}
             {...register("estado")}
-            onChange={(event) => fetchCities(event.currentTarget.value)}
-          >{ states.isFetching && <option>Carregando...</option> }
-            <option value="default" hidden aria-readonly>Selecione um estado...</option>
+            onChange={handleSelectState}
+          >
+            <option value="defaultValue" hidden aria-readonly>Selecione um estado...</option>
             { states.data?.map(({ id, sigla, nome }) => {
               return (
                 <option key={id} value={sigla}>
@@ -310,12 +271,14 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           <Select
             name="cidade"
             label="Cidade:"
-            defaultValue="default"
+            isLoading={cities.isLoading}
+            isDisabled={!selectedState}
+            defaultValue="defaultValue"
             error={errors.cidade}
             {...register("cidade")}
-          >{!cities && <option>Carregando...</option>}
-            <option value="default" hidden aria-readonly>Selecione uma cidade...</option>
-            { cities.map(({ id, nome }) => {
+          >
+            <option value="defaultValue" hidden aria-readonly>Selecione uma cidade...</option>
+            { cities.data?.map(({ id, nome }) => {
               return <option key={id} value={nome}>{nome}</option>;
             }) }
           </Select>
@@ -323,6 +286,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
           <Input
             name="cep"
             label="CEP:"
+            defaultValue={profile.address.cep}
             error={errors.cep}
             {...register("cep")}
             onChange={({ currentTarget }) => currentTarget.value = masked.cep(currentTarget.value)}
@@ -331,6 +295,7 @@ const ProfileForm = ({ profile, isFetching }: ProfileFormProps) => {
         <Input
           name="complemento"
           label="Complemento:"
+          defaultValue={profile.address.complemento}
           error={errors.complemento}
           {...register("complemento")}
         />

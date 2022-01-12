@@ -1,11 +1,11 @@
 import { ReactNode } from "react"
 import { Flex, FlexProps } from "@chakra-ui/react"
 
-interface ContentProps extends FlexProps {
+interface Props extends FlexProps {
   children: ReactNode;
 }
 
-const Content = ({ children, ...rest }: ContentProps) => {
+const Content = ({ children, ...rest }: Props) => {
   return (
     <Flex
       flexDir="column"

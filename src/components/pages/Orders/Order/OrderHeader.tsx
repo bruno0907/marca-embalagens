@@ -3,6 +3,7 @@ import { Logo } from "../../../Logo";
 import { useProfileQuery } from "../../../../hooks/useProfileQuery";
 
 import { handleFormatDate } from "../../../../utils/handleFormatDate";
+import { handleFormatPadStart } from "../../../../utils/handleFormatPadStart";
 
 import { 
   Flex,
@@ -14,14 +15,13 @@ import {
   Stack,
   Image
 } from "@chakra-ui/react";
-import { handleFormatPadStart } from "../../../../utils/handleFormatPadStart";
 
-type OrderHeaderProps = {
+type Props = {
   orderNumber: number;
   orderDeliveryDate: Date;
 }
 
-const OrderHeader = ({ orderNumber, orderDeliveryDate }: OrderHeaderProps) => {
+const OrderHeader = ({ orderNumber, orderDeliveryDate }: Props) => {
   const profile = useProfileQuery()
 
   if(profile.isLoading) {

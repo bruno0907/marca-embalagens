@@ -1,17 +1,27 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase";
+import { Order, OrderProduct } from "./useOrderQuery";
 
-import { NewOrderProps, OrderProps } from "../types"
+export type NewOrder = {  
+  user_id: string; 
+  numero_pedido: number;
+  cliente: string; 
+  endereco_entrega: string;
+  condicao_pagamento: string; 
+  pedido: OrderProduct[]; 
+  total: number; 
+  data_entrega: Date;  
+}
 
-const createOrder = async (order: NewOrderProps) => { 
+const createOrder = async (order: NewOrder) => { 
   return await supabase
-    .from<OrderProps>('orders')
+    .from<Order>('orders')
     .insert(order);
 }
 
 const useCreateOrderMutation = () => useMutation(
-  async (newOrder: NewOrderProps) => {
+  async (newOrder: NewOrder) => {
     try {
       const { data, error } = await createOrder(newOrder)
   
@@ -25,8 +35,8 @@ const useCreateOrderMutation = () => useMutation(
     }
 
   }, {    
-    onSuccess: () => queryClient.invalidateQueries(['orders[]']),
-    onError: error => console.log('New Order Mutation Error: ', error)
+    onSuccess: () => queryClient.invalidateQueries(['order[]']),
+    onError: error => console.log('New order mutation error: ', error)
   }
 )
 

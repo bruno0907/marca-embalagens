@@ -1,11 +1,19 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { ProductProps } from "../types"
 
-const getProduct = async (id: string): Promise<ProductProps> => {
+export type Product = {
+  id: string;
+  user_id: string;
+  nome: string;
+  descricao: string;
+  situacao: boolean;
+  preco_unitario: number;
+}
+
+const getProduct = async (id: string): Promise<Product> => {
   try {
     const { data, error } = await supabase
-      .from<ProductProps>('products')
+      .from<Product>('products')
       .select()
       .eq('id', id)
       .single()

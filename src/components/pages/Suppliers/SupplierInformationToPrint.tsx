@@ -4,14 +4,13 @@ import {
   Box,
   Text,
 } from '@chakra-ui/react'
+import { Supplier } from '../../../hooks/useSupplierQuery'
 
-import { SupplierProps } from '../../../types'
-
-type SupplierInformationToPrintProps = {
-  supplier: SupplierProps;
+type Props = {
+  supplier: Supplier;
 }
 
-const SupplierInformationToPrint = ({ supplier }: SupplierInformationToPrintProps) => {
+const SupplierInformationToPrint = ({ supplier }: Props) => {
   return (
     <VStack spacing={3} align="start" borderWidth="1px" borderRadius="md" p="4">
       <HStack w="100%" spacing={3} align="flex-start" justify="space-between">

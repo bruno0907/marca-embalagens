@@ -15,11 +15,11 @@ import {
   Flex,
 } from "@chakra-ui/react"
 
-type SuppliersListProps = {
+type Props = {
   filterValue: string;
 }
 
-const SuppliersList = ({ filterValue }: SuppliersListProps) => {
+const SuppliersList = ({ filterValue }: Props) => {
   const router = useRouter()
 
   const suppliers = useSuppliersQuery(filterValue)

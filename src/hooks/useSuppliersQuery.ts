@@ -1,8 +1,8 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { SupplierProps } from "../types"
+import { Supplier } from "./useSupplierQuery"
 
-const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
+const getSuppliers = async (pattern?: string): Promise<Supplier[]> => {
   try {
     const user = supabase.auth.user()
   
@@ -10,7 +10,7 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
     
     if(!pattern) {
       const { data, error } = await supabase    
-        .from<SupplierProps>('suppliers')
+        .from<Supplier>('suppliers')
         .select()
         .eq('user_id', user.id)    
         .order('nome')
@@ -22,7 +22,7 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
     }
     
     const { data, error } = await supabase
-      .from<SupplierProps>('suppliers')
+      .from<Supplier>('suppliers')
       .select()
       .eq('user_id', user.id)
       .ilike('nome', `%${pattern}%`)
@@ -41,7 +41,7 @@ const getSuppliers = async (pattern?: string): Promise<SupplierProps[]> => {
 }
 
 const useSuppliersQuery = (pattern?: string) => {
-  const queryKey = pattern ? ['suppliers[]', pattern] : 'suppliers[]'
+  const queryKey = pattern ? ['supplier[]', pattern] : 'supplier[]'
   
   return useQuery(
     queryKey, 

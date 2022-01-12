@@ -2,18 +2,18 @@ import dynamic from "next/dynamic"
 import { AddressItemProps } from "./AddressItem"
 import { Stack } from "@chakra-ui/react"
 
-import { AddressProps } from "../../types"
-
 const AddressItem = dynamic<AddressItemProps>(
   async () => {
     const { AddressItem } = await import('./AddressItem')
-
+    
     return AddressItem
   }
 )
+  
+import { Address } from "../../hooks/useAddressQuery"
 
 type Props = {
-  addresses: AddressProps[]  
+  addresses: Address[]  
 }
 
 const AddressList = ({ addresses }: Props) => {

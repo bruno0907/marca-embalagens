@@ -2,9 +2,8 @@ import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase";
 
-import { OrderItemProps } from "../types"
-
 import { Estimate } from "./useEstimatesQuery";
+import { OrderProduct } from "./useOrderQuery";
 
 export type EstimateStatus = 'Pendente' | 'Aprovado' | 'Não aprovado'
 
@@ -12,7 +11,7 @@ export type CreateEstimate = {
   user_id: string; 
   numero_orcamento: number;
   cliente: string;   
-  produtos: OrderItemProps[];   
+  produtos: OrderProduct[];   
   total: number;
   observacoes: string;
   status: EstimateStatus;
@@ -42,7 +41,7 @@ const useCreateEstimateMutation = () => useMutation(
 
   }, {    
     onSuccess: () => queryClient.invalidateQueries(['estimate[]']),
-    onError: error => console.log('New Estimate Mutation Error: ', error)
+    onError: error => console.log('New estimate mutation error: ', error)
   }
 )
 

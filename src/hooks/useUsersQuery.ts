@@ -1,8 +1,8 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { UserProps } from "../types"
+import { User } from "./useUserQuery"
 
-const getUsers = async (query?: string): Promise<UserProps[]> => {
+const getUsers = async (query?: string): Promise<User[]> => {
   try {
     const user = supabase.auth.user()
   
@@ -10,7 +10,7 @@ const getUsers = async (query?: string): Promise<UserProps[]> => {
   
     if(!query) {
       const { data, error } = await supabase    
-      .from<UserProps>('users')
+      .from<User>('users')
       .select()
       .eq('user_id', user.id)      
       .order('nome')
@@ -21,7 +21,7 @@ const getUsers = async (query?: string): Promise<UserProps[]> => {
     }
     
     const { data, error } = await supabase
-      .from<UserProps>('users')
+      .from<User>('users')
       .select()
       .eq('user_id', user.id)      
       .ilike('nome', `%${query}%`)
@@ -38,7 +38,7 @@ const getUsers = async (query?: string): Promise<UserProps[]> => {
 }
 
 const useUsersQuery = (query?: string) => {
-  const queryKey = query ? ['users[]', query] : 'users[]'
+  const queryKey = query ? ['user[]', query] : 'user[]'
   
   return useQuery(
     queryKey, 

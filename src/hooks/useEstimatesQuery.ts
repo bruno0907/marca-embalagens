@@ -1,14 +1,14 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { OrderItemProps } from "../types"
 import { EstimateStatus } from "./useCreateEstimateMutation"
+import { OrderProduct } from "./useOrderQuery"
 
 export type Estimate = {
   id: string; 
   user_id: string;
   numero_orcamento: number;
   cliente: string;  
-  produtos: OrderItemProps[];
+  produtos: OrderProduct[];
   condicao_pagamento: string; 
   total: number;
   data_entrega: Date;

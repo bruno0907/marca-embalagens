@@ -5,13 +5,13 @@ import {
   HStack
 } from "@chakra-ui/react";
 
-import { UserProps } from "../../../../types";
+import { User } from "../../../../hooks/useUserQuery";
 
-type UserInformationToPrintProps = {
-  user: UserProps;
+type Props = {
+  user: User;
 };
 
-const UserInformationToPrint = ({ user }: UserInformationToPrintProps) => {
+const UserInformationToPrint = ({ user }: Props) => {
   return (
     <VStack spacing={3} align="start" borderWidth="1px" borderRadius="md" p="4">
       <HStack w="100%" spacing={3} align="flex-start" justify="space-between">

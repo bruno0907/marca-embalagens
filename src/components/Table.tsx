@@ -6,11 +6,11 @@ import {
   TableProps as ChakraTableProps,
 } from "@chakra-ui/react";
 
-interface TableProps extends ChakraTableProps {
+interface Props extends ChakraTableProps {
   children: ReactNode;
 }
 
-const TableComponent = ({ children, ...rest }: TableProps) => {
+const TableComponent = ({ children, ...rest }: Props) => {
   return (
     <Box borderRadius="md" overflow="hidden">
       <ChakraTable colorScheme="gray" variant="striped" {...rest}>

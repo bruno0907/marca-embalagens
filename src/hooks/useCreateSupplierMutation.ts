@@ -2,24 +2,40 @@ import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase"
 import { createAddress } from "../services/createAddress"
-import { NewAddressProps, NewSupplierProps, SupplierProps } from "../types"
+import { NewAddress } from "./useCreateAddressMutation"
+import { Supplier } from "./useSupplierQuery"
 
-const createSupplier = async (supplier: NewSupplierProps) => {
+export type NewSupplier = {  
+  user_id: string;
+  natureza_cliente: string;
+  produto: string;
+  nome: string;
+  razao_social: string;
+  contato: string;
+  cpf_cnpj: string;
+  rg_ie: string;  
+  email: string;
+  telefone: string;
+  celular: string;  
+  outras_informacoes: string;
+}  
+
+const createSupplier = async (supplier: NewSupplier) => {
   return await supabase
-    .from<SupplierProps>('suppliers')
+    .from<Supplier>('suppliers')
     .insert(supplier)
 }
 
 const removeSupplier = async (id: string) => {
   return await supabase
-    .from<SupplierProps>('suppliers')
+    .from<Supplier>('suppliers')
     .delete()
     .eq('id', id)
 }
 
 type NewUserMutationProps = {
-  supplierData: NewSupplierProps;
-  addressData: Omit<NewAddressProps, 'user_id'>;
+  supplierData: NewSupplier;
+  addressData: Omit<NewAddress, 'user_id'>;
 }
 
 const useCreateSupplierMutation = () => useMutation(
@@ -55,8 +71,8 @@ const useCreateSupplierMutation = () => useMutation(
     }
 
   }, {    
-    onSuccess: () => queryClient.invalidateQueries(['suppliers[]']),
-    onError: error => console.log('New User Mutation Error: ', error)
+    onSuccess: () => queryClient.invalidateQueries(['supplier[]']),
+    onError: error => console.log('New supplier mutation error: ', error)
   }
 )
 

@@ -20,7 +20,7 @@ const useUpdateEstimateMutation = () => useMutation (
     return data
   }, {    
     onSuccess: response => queryClient.invalidateQueries(['estimate', response[0].id]),
-    onError: error => console.log('New Estimate Mutation Error: ', error)
+    onError: error => console.log('New estimate mutation error: ', error)
   }
 ) 
 

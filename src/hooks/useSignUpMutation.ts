@@ -3,20 +3,17 @@ import { queryClient } from '../contexts/queryContext'
 import { supabase } from '../database/supabase'
 import { createAddress } from '../services/createAddress'
 
-import { 
-  AddressProps, 
-  NewAddressProps,    
-} from '../types'
+import { NewAddress } from './useCreateAddressMutation'
 import { Profile } from './useProfileQuery'
 
-type AuthProps = {
+type SignUp = {
   email: string;
   password: string;
 }
 
-type NewProfileMutationProps = {
+type NewProfileMutation = {
   data: NewProfile;
-  address: AddressProps;
+  address: NewAddress;
 }
 
 export type NewProfile = {  
@@ -37,7 +34,7 @@ const createProfile = async (profile: NewProfile) => {
     .insert(profile)
 }
 
-const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutationProps> => {
+const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> => {
   try {
     const { data: userAlreadyExists } = await supabase
       .from<Profile>('profiles')
@@ -67,7 +64,7 @@ const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutatio
     }
     const { data: newProfile } = await createProfile(profile)
   
-    const address: NewAddressProps = {
+    const address: NewAddress = {
       user_id: newProfile[0].id,
       bairro: undefined,
       cep: undefined,
@@ -92,7 +89,7 @@ const signUp = async ({ email, password }: AuthProps): Promise<NewProfileMutatio
 }
 
 const useSignUpMutation = () => useMutation(
-  async ({ email, password }: AuthProps) => await signUp({ email, password }), {
+  async ({ email, password }: SignUp) => await signUp({ email, password }), {
   onSuccess: async profile => queryClient.setQueryData('profile', profile)
 
 })

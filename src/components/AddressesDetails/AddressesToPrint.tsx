@@ -5,13 +5,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { AddressProps } from "../../types";
+import { Address } from "../../hooks/useAddressQuery";
 
-type AddressesToPrintProps = {
-  addresses: AddressProps[];
+type Props = {
+  addresses: Address[];
 }
 
-const AddressesToPrint = ({ addresses }: AddressesToPrintProps) => {
+const AddressesToPrint = ({ addresses }: Props) => {
   return (
     <VStack spacing={3} align="start">
       { addresses.map((address) => {

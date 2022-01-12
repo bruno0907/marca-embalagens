@@ -1,17 +1,17 @@
 import { ChangeEvent, useEffect, useState } from "react"
 
 import { Select } from "../../../Select"
+import { InformationField } from "../../../InformationField"
 
 import { useCreateOrder } from '../../../../contexts/useCreateOrder'
 
 import { Button, Flex, HStack, Icon, SimpleGrid, Stack, Text } from "@chakra-ui/react"
-import { InformationField } from "../../../InformationField"
 import { FiCreditCard, FiEdit, FiPhone, FiSmartphone, FiUser, FiMail } from "react-icons/fi"
 
-import { UserProps } from "../../../../types"
+import { User } from "../../../../hooks/useUserQuery"
 
 const UserDetails = () => {  
-  const [user, setUser] = useState<UserProps>(null)
+  const [user, setUser] = useState<User>(null)
 
   const { 
     users, 

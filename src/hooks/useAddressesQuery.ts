@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import { supabase } from "../database/supabase";
-import { AddressProps } from "../types";
+import { Address } from "./useAddressQuery";
 
-const getAddresses = async (id: string): Promise<AddressProps[]> => {  
+const getAddresses = async (id: string): Promise<Address[]> => {  
   try {
     const { data, error } = await supabase
-      .from<AddressProps>('addresses')
+      .from<Address>('addresses')
       .select()
       .eq('user_id', id)
       .order('principal', {

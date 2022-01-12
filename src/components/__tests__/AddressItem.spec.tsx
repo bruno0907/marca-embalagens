@@ -2,14 +2,14 @@
 import { ChakraProvider, PortalManager, useDisclosure } from "@chakra-ui/react"
 import { render, screen, fireEvent } from "@testing-library/react"
 
-import { AddressProps } from "../../types"
 import { Modal } from "../Modal"
 
 import { AddressItem } from "../AddressesDetails/AddressItem"
 import { UpdateAddressForm } from "../AddressesDetails/UpdateAddressForm"
 import { theme } from '../../styles/theme'
+import { Address } from "../../hooks/useAddressQuery"
 
-const mockAddress: AddressProps = {
+const mockAddress: Address = {
   id: 'fake-id',
   user_id: 'fake-userId',
   endereco: 'fake-address',

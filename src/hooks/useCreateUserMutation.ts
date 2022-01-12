@@ -2,32 +2,47 @@ import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase";
 import { createAddress } from "../services/createAddress";
-import { NewAddressProps, NewUserProps, UserProps } from "../types"
+import { NewAddress } from "./useCreateAddressMutation";
+import { User } from "./useUserQuery";
 
-const createUser = async (user: NewUserProps) => {
+export type NewUser = {  
+  user_id: string;
+  natureza_cliente: string;  
+  nome: string;
+  razao_social: string;
+  contato: string;
+  cpf_cnpj: string;
+  rg_ie: string;  
+  email: string;
+  telefone: string;
+  celular: string;  
+  outras_informacoes: string;
+} 
+
+const createUser = async (user: NewUser) => {
   return await supabase
-    .from<UserProps>('users')
+    .from<User>('users')
     .insert(user);
 }
 
 const removeUser = async (id: string) => {
   return await supabase
-    .from<UserProps>('users')
+    .from<User>('users')
     .delete()
     .eq('id', id)
 }
 
-type NewUserMutationProps = {
-  userData: NewUserProps;
-  addressData: Omit<NewAddressProps, 'user_id'>;
+type NewUserMutation = {
+  userData: NewUser;
+  addressData: Omit<NewAddress, 'user_id'>;
 }
 
 const useCreateUserMutation = () => useMutation(
-  async ({ userData, addressData }: NewUserMutationProps) => {
+  async ({ userData, addressData }: NewUserMutation) => {
     try {
       const newUserData = await createUser(userData)
   
-      if(newUserData.error) throw Error('Erro ao cadastrar novo cliente.')
+      if(newUserData.error) throw new Error(newUserData.error.details)
   
       const userAddress = {
         user_id: newUserData.data[0].id,
@@ -39,7 +54,7 @@ const useCreateUserMutation = () => useMutation(
       if(newUserAddress.error) {
         await removeUser(newUserData.data[0].id)
   
-        throw Error('Erro ao cadastrar o endereço do cliente.')
+        throw new Error(newUserAddress.error.details)
       }
   
       const mutationResult = {
@@ -55,8 +70,8 @@ const useCreateUserMutation = () => useMutation(
     }
 
   }, {    
-    onSuccess: () => queryClient.invalidateQueries(['users[]']),
-    onError: error => console.log('New User Mutation Error: ', error)
+    onSuccess: () => queryClient.invalidateQueries(['user[]']),
+    onError: error => console.log('New user mutation error: ', error)
   }
 )
 

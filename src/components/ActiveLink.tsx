@@ -9,13 +9,13 @@ import {
   LinkProps,  
 } from '@chakra-ui/react'
 
-interface ActiveLinkProps extends LinkProps {
+interface Props extends LinkProps {
   icon: ElementType;
   label: string;
   href: string;
 }
 
-const ActiveLink = ({ icon, label, href, ...rest }: ActiveLinkProps) => {
+const ActiveLink = ({ icon, label, href, ...rest }: Props) => {
   const { asPath } = useRouter()
 
   const isActive = asPath.startsWith(href)

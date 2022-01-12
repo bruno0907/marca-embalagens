@@ -1,8 +1,8 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { ProductProps } from "../types"
+import { Product } from "./useProductQuery"
 
-const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
+const getProducts = async (pattern?: string): Promise<Product[]> => {
   try {
     const user = supabase.auth.user()
   
@@ -10,7 +10,7 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
   
     if(!pattern) {
       const { data, error } = await supabase
-        .from<ProductProps>('products')
+        .from<Product>('products')
         .select()
         .eq('user_id', user.id)
         .order('nome')
@@ -21,7 +21,7 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
     }
     
     const { data, error } = await supabase
-      .from<ProductProps>('products')
+      .from<Product>('products')
       .select()
       .eq('user_id', user.id)
       .ilike('nome', `%${pattern}%`)
@@ -38,7 +38,7 @@ const getProducts = async (pattern?: string): Promise<ProductProps[]> => {
 }
 
 const useProductsQuery = (pattern?: string) => {
-  const queryKey = pattern ? ['products[]', pattern] : ['products[]']
+  const queryKey = pattern ? ['product[]', pattern] : ['product[]']
 
   return useQuery(
     queryKey, 

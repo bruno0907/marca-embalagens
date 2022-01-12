@@ -10,14 +10,14 @@ import {
   Box
 } from "@chakra-ui/react"
 
-import { OrderItemProps } from "../../../../types"
+import { OrderProduct } from "../../../../hooks/useOrderQuery"
 
-type OrderProductsProps = {
-  order: OrderItemProps[]
+type Props = {
+  order: OrderProduct[]
   total: number;
 }
 
-const OrderProducts = ({ order, total }: OrderProductsProps) => {
+const OrderProducts = ({ order, total }: Props) => {
   
   return (
     <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md" overflow="hidden">      

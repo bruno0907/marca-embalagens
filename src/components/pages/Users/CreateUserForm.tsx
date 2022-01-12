@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -7,10 +7,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useCreateUserMutation } from "../../../hooks/useCreateUserMutation";
-import { useStatesQuery } from "../../../hooks/useStatesQuery";
-import { getCities } from "../../../services/getCities";
 import { useAuth } from '../../../contexts/useAuth'
+import { NewUser, useCreateUserMutation } from "../../../hooks/useCreateUserMutation";
+import { useStatesQuery } from "../../../hooks/useStatesQuery";
+import { useCitiesQuery } from "../../../hooks/useCitiesQuery";
 
 import { Input } from "../../Input";
 import { Select } from "../../Select";
@@ -18,7 +18,7 @@ import { Select } from "../../Select";
 import { InputMask } from "../../../utils/inputMasksHandler";
 
 const newUserSchema= yup.object().shape({
-  nome: yup.string().required("O nome do cliente é necessário").trim(),
+  nome: yup.string().required("O nome do cliente é obrigatório").trim(),
   razao_social: yup.string().trim(),
   telefone: yup.string().trim(),
   celular: yup.string().trim(),
@@ -27,22 +27,22 @@ const newUserSchema= yup.object().shape({
   rg_ie: yup.string().trim(),
   contato: yup.string().trim(),
   outras_informacoes: yup.string().trim(),
-  endereco: yup.string().required("O endereço é necessário").trim(),
-  bairro: yup.string().required("O bairro ou distrito é necessário kkkkkkkkkkkkkkkkkkkkkkk"),
+  endereco: yup.string().required("O endereço é obrigatório").trim(),
+  bairro: yup.string().required("O bairro/distrito é obrigatório"),
   estado: yup
     .string()
-    .required('')
+    .required('O estado é obrigatório')
     .test({
-      message: "Selecione um estado",
-      test: value => value !== "default",
+      message: "O estado é obrigatório",
+      test: value => value !== "defaultValue",
     })
     .trim(),
   cidade: yup
     .string()
-    .required('É preciso selecionar um estado')
+    .required('Selecione um estado')
     .test({
-      message: "Selecione uma cidade",
-      test: value => value !== "default",
+      message: "A cidade é obrigatória",
+      test: value => value !== "defaultValue",
     })
     .trim(),
   cep: yup.string().trim(),
@@ -61,13 +61,9 @@ import {
   RadioGroup,  
 } from "@chakra-ui/react"
 
-import {   
-  NewUserProps,    
-  NewAddressProps,
-  CityProps  
-} from "../../../types";
+import { NewAddress } from "../../../hooks/useCreateAddressMutation";
 
-type HandleNewUserProps = NewUserProps & NewAddressProps
+type HandleNewUser = NewUser & NewAddress
 
 const CreateUserForm = () => {  
   const { session } = useAuth()
@@ -75,18 +71,32 @@ const CreateUserForm = () => {
   const masked = new InputMask()
   const toast = useToast()
 
-  const [cities, setCities] = useState<CityProps[]>([]);  
+  const [selectedState, setSelectedState] = useState('')
   const [isCNPJ, setIsCNPJ] = useState(true);
 
   const states = useStatesQuery()
+  const cities = useCitiesQuery(selectedState)
 
   const handleSelectUserType = () => {
     setIsCNPJ(!isCNPJ)
     reset()
   }  
 
+  const handleSelectState = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    setSelectedState(value)
+    clearErrors(['estado', 'cidade'])
+    return value
+  }
+
+  const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    clearErrors('cidade')
+    return value
+  }
+
   const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
-    useForm<HandleNewUserProps>({
+    useForm<HandleNewUser>({
       resolver: yupResolver(newUserSchema),
     });
 
@@ -94,7 +104,7 @@ const CreateUserForm = () => {
 
   const createUserMutation = useCreateUserMutation()
 
-  const handleNewUser: SubmitHandler<HandleNewUserProps> = async values => {
+  const handleNewUser: SubmitHandler<HandleNewUser> = async values => {
     const {
       nome,
       razao_social,
@@ -113,7 +123,7 @@ const CreateUserForm = () => {
       outras_informacoes,
     } = values
 
-    const userData: NewUserProps = {
+    const userData: NewUser = {
       user_id: session.user.id,      
       natureza_cliente: isCNPJ ? 'Jurídica' : 'Física',
       nome,
@@ -127,7 +137,7 @@ const CreateUserForm = () => {
       outras_informacoes,
     }
 
-    const addressData: Omit<NewAddressProps, 'user_id'> = {
+    const addressData: Omit<NewAddress, 'user_id'> = {
       endereco,
       bairro,
       cidade,
@@ -163,28 +173,13 @@ const CreateUserForm = () => {
   };
 
   const handleCancel = () => {
-    reset();
-     
+    reset()
     router.push('/users')
+    return
   };
-
-  const fetchCities = async (uf: string) => {
-    const { data } = await getCities(uf)    
-
-    setCities(data)
-    
-    clearErrors("estado")
-    setError("cidade", {
-      message: "Você deve selecionar uma cidade",
-    })
-  }
 
   useEffect(() => {
     setFocus('nome')
-
-    return () => {
-      setCities([])
-    }
     
   }, [setFocus])
 
@@ -288,7 +283,7 @@ const CreateUserForm = () => {
           <Box w="40%">
             <Input
               name="bairro"
-              label="Bairro:"              
+              label="Bairro/Distrito:"              
               error={errors.bairro}
               {...register("bairro")}
             />
@@ -302,13 +297,14 @@ const CreateUserForm = () => {
         >
           <Select
             name="estado"
-            label="Estado:"            
+            label="Estado:"  
+            isLoading={states.isFetching}          
             error={errors.estado}
-            defaultValue="default"
+            defaultValue="defaultValue"
             {...register("estado")}
-            onChange={({ target }) => fetchCities(target.value)}
+            onChange={handleSelectState}
           >
-            <option value="default" hidden aria-readonly>
+            <option value="defaultValue" hidden aria-readonly>
               Selecione um estado...
             </option>
             { states.isFetching && <option>Carregando...</option> }
@@ -322,17 +318,18 @@ const CreateUserForm = () => {
           </Select>
           <Select
             name="cidade"
-            label="Cidade:"            
+            label="Cidade:"   
+            isLoading={cities.isFetching}    
+            isDisabled={!selectedState}     
             error={errors.cidade}
-            isDisabled={!cities.length}
-            defaultValue="default"
+            defaultValue="defaultValue"
             {...register("cidade")}
-            onChange={() => clearErrors('cidade')}
+            onChange={handleSelectCity}
           >
-            <option value="default" hidden aria-readonly>
+            <option value="defaultValue" hidden aria-readonly>
               Selecione uma cidade...
             </option>
-            {cities.map(({ id, nome }) => {
+            {cities.data?.map(({ id, nome }) => {
               return <option key={id}>{nome}</option>;
             })}
           </Select>

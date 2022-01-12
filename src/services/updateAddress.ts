@@ -1,9 +1,9 @@
 import { supabase } from "../database/supabase"
-import { AddressProps } from "../types"
+import { Address } from "../hooks/useAddressQuery"
 
-const updateAddress = async (address: AddressProps) => {
+const updateAddress = async (address: Address) => {
   return await supabase
-    .from<AddressProps>('addresses')    
+    .from<Address>('addresses')    
     .update(address)
     .eq('id', address.id)
 }
@@ -11,3 +11,4 @@ const updateAddress = async (address: AddressProps) => {
 export {
   updateAddress
 }
+

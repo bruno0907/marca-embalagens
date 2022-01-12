@@ -1,5 +1,4 @@
-import {
-  Flex,
+import {  
   Box,
   Text,  
   Center,
@@ -8,16 +7,16 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { FiInfo } from 'react-icons/fi'
-import { useAddressQuery } from '../../../../hooks/useAddressQuery'
 
+import { useAddressQuery } from '../../../../hooks/useAddressQuery'
 import { useUserQuery } from '../../../../hooks/useUserQuery'
 
-type OrderUserProps = {
+type Props = {
   userId: string;
   addressId: string;
 }
 
-const OrderUser = ({ userId, addressId }: OrderUserProps) => {
+const OrderUser = ({ userId, addressId }: Props) => {
   const user = useUserQuery(userId)
   const address = useAddressQuery(addressId)
 

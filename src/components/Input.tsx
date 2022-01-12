@@ -1,4 +1,4 @@
-import React, { forwardRef, ForwardRefRenderFunction } from "react"
+import React, { forwardRef, ForwardRefRenderFunction, useState } from "react"
 
 import { FieldError } from "react-hook-form"
 
@@ -9,10 +9,15 @@ import {
   InputProps as ChakraInputProps,
   FormErrorMessage,
   Spinner,
-  FormErrorIcon
+  FormErrorIcon,
+  InputLeftElement,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react"
+import { FiEye, FiEyeOff } from "react-icons/fi"
 
-interface InputProps extends ChakraInputProps {
+interface Props extends ChakraInputProps {
+  type?: string;
   name: string;  
   label?: string;
   error?: FieldError;
@@ -20,8 +25,20 @@ interface InputProps extends ChakraInputProps {
   placeholder?: string;    
 }
 
-const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> = 
-  ({ label, name, error, isLoading, placeholder, ...rest }, ref) => {  
+const InputRef: ForwardRefRenderFunction<HTMLInputElement, Props> = 
+  ({ type, label, name, error, isLoading, placeholder, ...rest }, ref) => {  
+
+    let showPasswordIcon = type === 'password'
+
+    const [showPassword, setShowPassword] = useState(false)
+    const handleShowPassword = () => setShowPassword(!showPassword)
+    const handlePasswordInput = (type?: string) => {
+      if(!type || type !== 'password'){
+        return type || 'text'
+      }
+      return showPassword ? 'text' : 'password'
+    }    
+
     return (
       <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
         { label && 
@@ -30,16 +47,29 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, InputProps> =
             { isLoading && <Spinner ml="2" size="sm" color="blue.500"/>}
           </FormLabel> 
         }
-        <ChakraInput
-          id={label}
-          name={name}            
-          ref={ref}          
-          error={error}
-          borderColor={!error ? "gray.300" : "red"}
-          bgColor={!error ? "gray.50" : "red.50"}
-          flexShrink={0}
-          {...rest}
-        />
+        <InputGroup>
+          <ChakraInput
+            type={handlePasswordInput(type)}
+            id={label}
+            name={name}            
+            ref={ref}
+            autoComplete="off"
+            autoCapitalize="off"
+            error={error}
+            borderColor={!error ? "gray.300" : "red"}
+            bgColor={!error ? "gray.50" : "red.50"}
+            flexShrink={0}
+            {...rest}
+          />
+          { showPasswordIcon && (
+            <InputRightElement fontSize={20} color="blue.500" pr="4">
+              { !showPassword 
+                ? <FiEye onClick={handleShowPassword} /> 
+                : <FiEyeOff onClick={handleShowPassword} /> 
+              }
+            </InputRightElement>
+          )}
+        </InputGroup>
         { !!error && <FormErrorMessage><FormErrorIcon />{error.message}</FormErrorMessage> }
       </FormControl>
     )  

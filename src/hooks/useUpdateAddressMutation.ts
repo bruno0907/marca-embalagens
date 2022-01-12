@@ -1,11 +1,10 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { updateAddress } from "../services/updateAddress"
-
-import { AddressProps } from "../types"
+import { Address } from "./useAddressQuery"
 
 const useUpdateAddressMutation = () => useMutation(
-  async (address: AddressProps) => {
+  async (address: Address) => {
     try {
       const { data, error } = await updateAddress(address)
   

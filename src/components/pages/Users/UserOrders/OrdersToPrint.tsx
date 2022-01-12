@@ -13,13 +13,13 @@ import {
   Spinner,
 } from "@chakra-ui/react"
 
-import { OrderProps } from "../../../../types"
+import { Order } from "../../../../hooks/useOrderQuery"
 
-type OrdersToPrintProps = {
-  orders: OrderProps[]
+type Props = {
+  orders: Order[]
 }
 
-const OrdersToPrint = ({ orders }: OrdersToPrintProps) => {
+const OrdersToPrint = ({ orders }: Props) => {
   return (
     <Box borderWidth="1px" borderRadius="md" p="4">
 

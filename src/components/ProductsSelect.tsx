@@ -2,6 +2,7 @@ import { ChangeEvent, useRef } from "react"
 
 import { Select } from "./Select"
 import { useProductsQuery } from "../hooks/useProductsQuery"
+import { useCartContext } from "../contexts/useCart"
 
 import { 
   HStack, 
@@ -16,7 +17,6 @@ import {
   Spinner
 } from "@chakra-ui/react"
 import { FiMinus, FiPlus } from "react-icons/fi"
-import { useCartContext } from "../contexts/useCart"
 
 const ProductsSelect = () => {
   const {

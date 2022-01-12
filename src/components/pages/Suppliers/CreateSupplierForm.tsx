@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -10,9 +10,8 @@ import { Input } from "../../Input";
 import { Select } from "../../Select";
 
 import { useAuth } from "../../../contexts/useAuth";
-import { useCreateSupplierMutation } from "../../../hooks/useCreateSupplierMutation";
+import { NewSupplier, useCreateSupplierMutation } from "../../../hooks/useCreateSupplierMutation";
 import { useStatesQuery } from "../../../hooks/useStatesQuery";
-import { getCities } from "../../../services/getCities";
 
 import { InputMask } from "../../../utils/inputMasksHandler";
 
@@ -27,9 +26,11 @@ import {
   Radio,
   RadioGroup,  
 } from "@chakra-ui/react"
+import { NewAddress } from "../../../hooks/useCreateAddressMutation";
+import { useCitiesQuery } from "../../../hooks/useCitiesQuery";
 
 const newSupplierSchema = yup.object().shape({
-  nome: yup.string().required("Informe um nome").trim(),
+  nome: yup.string().required("O nome do cliente é obrigatório").trim(),
   razao_social: yup.string().trim(),
   produto: yup.string().trim(),
   telefone: yup.string().trim(),
@@ -39,35 +40,29 @@ const newSupplierSchema = yup.object().shape({
   rg_ie: yup.string().trim(),
   contato: yup.string().trim(),
   outras_informacoes: yup.string().trim(),
-  endereco: yup.string().required("É preciso informar um endereço").trim(),
-  bairro: yup.string().required("Informe o endereço ou distritro"),
+  endereco: yup.string().required("O endereço é obrigatório").trim(),
+  bairro: yup.string().required("O bairro/distrito é obrigatório"),
   estado: yup
     .string()
-    .required("Selecione um estado")
+    .required('O estado é obrigatório')
     .test({
-      message: "Selecione um estado",
-      test: value => value !== "default",
+      message: "O estado é obrigatório",
+      test: value => value !== "defaultValue",
     })
     .trim(),
   cidade: yup
     .string()
-    .required("Selecione um estado")
+    .required('Selecione um estado')
     .test({
-      message: "Selecione uma cidade",
-      test: value => value !== "default",
+      message: "A cidade é obrigatória",
+      test: value => value !== "defaultValue",
     })
     .trim(),
   cep: yup.string().trim(),
   complemento: yup.string().trim(),  
 });
 
-import {   
-  NewSupplierProps,    
-  NewAddressProps, 
-  CityProps 
-} from "../../../types";
-
-type HandleNewSupplierProps = NewSupplierProps & NewAddressProps
+type HandleNewSupplier = NewSupplier & NewAddress
 
 const CreateSupplierForm = () => {
   const { session } = useAuth()  
@@ -75,17 +70,24 @@ const CreateSupplierForm = () => {
   const toast = useToast()
   const masked = new InputMask()
 
-  const [cities, setCities] = useState<CityProps[]>([]);  
+  const [selectedState, setSelectedState] = useState('')
   const [isCNPJ, setIsCNPJ] = useState(true);
 
-  const states = useStatesQuery()  
+  const states = useStatesQuery()
+  const cities = useCitiesQuery(selectedState)  
 
-  const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
-    useForm<HandleNewSupplierProps>({
-      resolver: yupResolver(newSupplierSchema),
-    });
+  const handleSelectState = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    setSelectedState(value)
+    clearErrors(['estado', 'cidade'])
+    return value
+  }
 
-  const { errors, isDirty, isSubmitting } = formState;
+  const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    clearErrors('cidade')
+    return value
+  }
 
   const handleIsCNPJ = () => {
     setIsCNPJ(!isCNPJ)
@@ -93,9 +95,23 @@ const CreateSupplierForm = () => {
     reset()
   }
 
+  const handleCancel = () => {
+    reset()     
+    router.push('/users')
+    return
+  };
+
+  const { handleSubmit, formState, register, reset, clearErrors, setError, setFocus } =
+    useForm<HandleNewSupplier>({
+      resolver: yupResolver(newSupplierSchema),
+    });
+
+  const { errors, isDirty, isSubmitting } = formState;
+
+
   const newSupplierMutation = useCreateSupplierMutation()
 
-  const handleNewUser: SubmitHandler<HandleNewSupplierProps> = async values => {
+  const handleNewUser: SubmitHandler<HandleNewSupplier> = async values => {
     const {
       nome,
       razao_social,
@@ -115,7 +131,7 @@ const CreateSupplierForm = () => {
       outras_informacoes,
     } = values
 
-    const supplierData: NewSupplierProps = {
+    const supplierData: NewSupplier = {
       user_id: session.user.id,      
       natureza_cliente: isCNPJ ? 'Jurídica' : 'Física',
       produto,
@@ -130,7 +146,7 @@ const CreateSupplierForm = () => {
       outras_informacoes,
     }
 
-    const addressData: Omit<NewAddressProps, 'user_id'> = {
+    const addressData: Omit<NewAddress, 'user_id'> = {
       endereco,
       bairro,
       cidade,
@@ -165,26 +181,9 @@ const CreateSupplierForm = () => {
     }
   };
 
-  const handleCancel = () => {
-    reset();   
-    router.push('/suppliers') 
-  };
-
-  const fetchCities = async (uf: string) => {
-    const { data } = await getCities(uf)    
-
-    setCities(data)
-    
-    clearErrors("estado")
-    setError("cidade", {
-      message: "Você deve selecionar uma cidade",
-    })
-  }
-
   useEffect(() => {
     setFocus('nome')
-
-    return () => setCities([])
+    
   }, [setFocus])
 
   return (
@@ -299,12 +298,13 @@ const CreateSupplierForm = () => {
           <Select
             name="estado"
             label="Estado:"
+            isLoading={states.isFetching}
             error={errors?.estado}
-            defaultValue="default"
+            defaultValue="defaultValue"
             {...register("estado")}
-            onChange={(event) => fetchCities(event.target.value)}
+            onChange={handleSelectState}
           >
-            <option value="default" hidden aria-readonly>
+            <option value="defaultValue" hidden aria-readonly>
               Selecione um estado...
             </option>
             { states.isFetching && <option>Carregando...</option> }
@@ -319,16 +319,17 @@ const CreateSupplierForm = () => {
           <Select
             name="cidade"
             label="Cidade:"
+            isLoading={cities.isFetching}
             error={errors?.cidade}
-            isDisabled={!Boolean(cities.length)}
-            defaultValue="default"
+            isDisabled={!selectedState}
+            defaultValue="defaultValue"
             {...register("cidade")}
-            onChange={() => clearErrors('cidade')}
+            onChange={handleSelectCity}
           >
-            <option value="default" hidden aria-readonly>
+            <option value="defaultValue" hidden aria-readonly>
               Selecione uma cidade...
             </option>
-            {cities.map(({ id, nome }) => {
+            {cities.data?.map(({ id, nome }) => {
               return <option key={id}>{nome}</option>;
             })}
           </Select>

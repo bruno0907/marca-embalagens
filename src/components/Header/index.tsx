@@ -9,14 +9,14 @@ import {
   Spacer 
 } from "@chakra-ui/react"
 
-type HeaderProps = FlexProps & {
+type Props = FlexProps & {
   withGoBack?: boolean;
   to?: string;
   children?: ReactNode;
   title?: string;
 }
 
-const HeaderComponent = ({ withGoBack, children, title, to, ...rest }: HeaderProps) => {
+const HeaderComponent = ({ withGoBack, children, title, to, ...rest }: Props) => {
   return (
     <Flex id="header" align="center" justify="space-between" {...rest}>
       { withGoBack && <GoBackButton to={to}/> }

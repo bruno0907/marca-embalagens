@@ -1,16 +1,17 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 import { UseQueryResult } from 'react-query';
-import { OrderQueryProps, useOrdersQuery } from '../hooks/useOrdersQuery';
+import { Address } from '../hooks/useAddressQuery';
+import { OrderQuery, useOrdersQuery } from '../hooks/useOrdersQuery';
+import { User } from '../hooks/useUserQuery';
 import { useUsersQuery } from '../hooks/useUsersQuery'
-import { AddressProps, UserProps } from '../types'
 
 type ContextProps = { 
-  users: UseQueryResult<UserProps[]>;
-  orders: UseQueryResult<OrderQueryProps[]>;
-  selectedUser: UserProps;
-  setSelectedUser: (user: UserProps) => void;
-  selectedAddress: AddressProps;
-  setSelectedAddress: (address: AddressProps) => void;  
+  users: UseQueryResult<User[]>;
+  orders: UseQueryResult<OrderQuery[]>;
+  selectedUser: User;
+  setSelectedUser: (user: User) => void;
+  selectedAddress: Address;
+  setSelectedAddress: (address: Address) => void;  
 }
 
 type ProviderProps = {
@@ -20,8 +21,8 @@ type ProviderProps = {
 const CreateOrderContext = createContext({} as ContextProps)
 
 const CreateOrderProvider = ({ children }: ProviderProps) => {
-  const [selectedUser, setSelectedUser] = useState<UserProps>(null)  
-  const [selectedAddress, setSelectedAddress] = useState<AddressProps>(null)
+  const [selectedUser, setSelectedUser] = useState<User>(null)  
+  const [selectedAddress, setSelectedAddress] = useState<Address>(null)
 
   const users = useUsersQuery()
   const orders = useOrdersQuery()

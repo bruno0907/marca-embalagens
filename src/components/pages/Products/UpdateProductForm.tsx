@@ -26,11 +26,10 @@ import {
   FormControl,  
   Switch
 } from '@chakra-ui/react'
-
-import { ProductProps } from "../../../types"
+import { Product } from '../../../hooks/useProductQuery'
 
 type UpdateProductFormProps = {
-  product: ProductProps;  
+  product: Product;  
 }
 
 const updateProductSchema = yup.object().shape({
@@ -46,7 +45,7 @@ const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 
   const handleEditProduct = () => setIsEditing(!isEditing)
 
-  const { formState, register, handleSubmit } = useForm<ProductProps>({
+  const { formState, register, handleSubmit } = useForm<Product>({
     resolver: yupResolver(updateProductSchema)    
   })
 
@@ -54,7 +53,7 @@ const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 
   const updateProductMutation = useUpdateProductMutation()
 
-  const handleUpdateProduct: SubmitHandler<ProductProps> = async values => {
+  const handleUpdateProduct: SubmitHandler<Product> = async values => {
     try {
       const updatedProduct = {
         ...product,
@@ -84,7 +83,7 @@ const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
     }
   }
 
-  const handleSubmitErrors: SubmitErrorHandler<ProductProps> = errors => console.log(errors)
+  const handleSubmitErrors: SubmitErrorHandler<Product> = errors => console.log(errors)
 
   return (
     <Box as="form" onSubmit={handleSubmit(handleUpdateProduct, handleSubmitErrors)}>

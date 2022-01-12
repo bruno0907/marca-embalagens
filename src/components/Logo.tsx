@@ -3,7 +3,7 @@ import { FiAlertTriangle, FiUserX, FiX } from 'react-icons/fi'
 import { useProfileQuery } from '../hooks/useProfileQuery'
 
 type Props = ImageProps & {
-  logoPath: string;
+  logoPath?: string;
 }
 
 const Logo = ({ logoPath, ...rest }: Props) => {
@@ -38,6 +38,7 @@ const Logo = ({ logoPath, ...rest }: Props) => {
       alt={profile.data.data.nome} 
       h="3rem"
       mb="2"
+      {...rest}
     />
   )
 }

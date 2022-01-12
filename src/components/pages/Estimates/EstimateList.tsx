@@ -6,6 +6,7 @@ import { useEstimatesQuery } from "../../../hooks/useEstimatesQuery"
 import { prefetchEstimate } from "../../../services/prefetchEstimate"
 
 import { handleFormatDate } from "../../../utils/handleFormatDate"
+import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
 import {
   Thead,
@@ -17,7 +18,6 @@ import {
   Flex,
   Badge,
 } from "@chakra-ui/react"
-import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
 type Props = {
   query: number;

@@ -9,6 +9,7 @@ import { prefetchOrder } from '../../../services/prefetchOrder'
 
 import { handleFormatDate } from "../../../utils/handleFormatDate"
 import { handleFormatPrice } from "../../../utils/handleFormatPrice"
+import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
 import {   
   Button, 
@@ -22,13 +23,12 @@ import {
   Badge,  
   Spinner,  
 } from "@chakra-ui/react"
-import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
-type UserOrdersProps = {
+type Props = {
   userId: string;  
 }
 
-const UserOrders = ({ userId }: UserOrdersProps) => { 
+const UserOrders = ({ userId }: Props) => { 
   const router = useRouter()
 
   const orders = useUserOrdersQuery(userId, 3)

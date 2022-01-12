@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 
 import { useForm, SubmitHandler } from "react-hook-form"
 
@@ -8,10 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from "../Input"
 import { Select } from "../Select"
 
-import { useUpdateAddressMutation } from "../../hooks/useUpdateAddressMutation"
 import { useStatesQuery } from "../../hooks/useStatesQuery"
-
-import { getCities } from "../../services/getCities"
+import { useCitiesQuery } from "../../hooks/useCitiesQuery"
+import { useUpdateAddressMutation } from "../../hooks/useUpdateAddressMutation"
 
 const updateAddressSchema = yup.object().shape({  
   endereco: yup.string().required("O endereço é obrigatório").trim(),
@@ -40,31 +39,31 @@ import {
   useToast,
 } from "@chakra-ui/react"
 
-import { AddressProps, CityProps } from "../../types"
+import { Address } from "../../hooks/useAddressQuery"
 
 export type UpdateAddressFormProps = {
-  address: AddressProps;
+  address: Address;
   onClose: () => void;
 }
 
 const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {  
   const toast = useToast()
-
-  const [cities, setCities] = useState<CityProps[]>(null);
+    
   const [selectedState, setSelectedState] = useState('')
-
+    
   const states = useStatesQuery()
+  const cities = useCitiesQuery(selectedState)
 
-  const { handleSubmit, formState, register, reset, clearErrors } =
-    useForm<AddressProps>({
-      resolver: yupResolver(updateAddressSchema),
-    });
+  const { handleSubmit, formState, register, reset, clearErrors, setValue } =
+  useForm<Address>({
+    resolver: yupResolver(updateAddressSchema),
+  });
 
   const { errors, isDirty, isSubmitting } = formState;
   
   const updateAddressMutation = useUpdateAddressMutation()
   
-  const handleUpdateAddress: SubmitHandler<AddressProps> = async values => {
+  const handleUpdateAddress: SubmitHandler<Address> = async values => {
     try {
       const updateAddress = {
         ...address,
@@ -88,34 +87,29 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
         position: 'top-right',
       })
     }
+  }
+  
+  const handleStateSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    setSelectedState(value)
+    setValue('cidade', 'defaultValue')
+    return value
+  }
 
-  }  
+  const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.currentTarget
+    clearErrors('cidade')
+    return value
+  }
 
   useEffect(() => {
-    getCities(selectedState)
-    .then(({ data }) => {
-      setCities(data)
-      return data
-    })
-    .catch(error => error)
-
-    // return () => setCities([])
-
-  }, [selectedState])
-
-  useEffect(() => {    
     const { estado, cidade } = address
+    setSelectedState(estado)
+    reset({ cidade })
 
-    getCities(estado)
-    .then(({ data }) => {
-      setCities(data)
-      reset({ estado, cidade })
-      return data
-    })
+    return () => setSelectedState('')
 
-    // return () => setCities([])
-    
-  }, [address, reset]) 
+  }, [address, reset])
 
   return (
     <Box as="form" onSubmit={handleSubmit(handleUpdateAddress)}>
@@ -139,10 +133,12 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
         <HStack spacing={3} alignItems="flex-start">
           <Select
             name="estado"
-            label="Estado:"                        
-            error={errors.estado}            
+            label="Estado:"  
+            isLoading={states.isFetching}                      
+            error={errors.estado} 
+            defaultValue={address.estado}
             {...register("estado")}
-            onChange={({ currentTarget }) => setSelectedState(currentTarget.value)}
+            onChange={handleStateSelect}
           >
             <option value="defaultValue" hidden aria-readonly>
               Selecione um estado...
@@ -158,14 +154,15 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
           <Select
             name="cidade"
             label="Cidade:"
+            isLoading={cities.isFetching}
             error={errors.cidade}
             {...register("cidade")}
-            onChange={() => clearErrors('cidade')}
+            onChange={handleSelectCity}
           >
             <option value="defaultValue" hidden aria-readonly>
               Selecione uma cidade...
             </option>
-            {cities?.map((city) => {
+            {cities.data?.map((city) => {
               return <option key={city.id}>{city.nome}</option>;
             })}
           </Select>

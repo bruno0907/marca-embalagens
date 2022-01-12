@@ -7,6 +7,7 @@ import { prefetchOrder } from "../../../services/prefetchOrder"
 
 import { handleFormatDate } from "../../../utils/handleFormatDate"
 import { handleFormatPrice } from "../../../utils/handleFormatPrice"
+import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
 import {
   Thead,
@@ -17,13 +18,12 @@ import {
   Spinner,    
   Flex,
 } from "@chakra-ui/react"
-import { handleFormatPadStart } from "../../../utils/handleFormatPadStart"
 
-type OrdersListProps = {
+type Props = {
   filterValue: number;
 }
 
-const OrdersList = ({ filterValue }: OrdersListProps) => {
+const OrdersList = ({ filterValue }: Props) => {
   const router = useRouter()
 
   const orders = useOrdersQuery(filterValue)

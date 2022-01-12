@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import { useCreateProductMutation } from "../../../hooks/useCreateProductMutation";
+import { NewProduct, useCreateProductMutation } from "../../../hooks/useCreateProductMutation";
 import { useAuth } from "../../../contexts/useAuth";
 
 import { Input } from "../../Input";
@@ -28,8 +28,6 @@ const newProductSchema = yup.object().shape({
   preco_unitario: yup.number().required('Informe o valor'),    
 });
 
-import { NewProductProps } from "../../../types";
-
 const CreateProductForm = () => {
   const { session } = useAuth()
   const user_id = session.user.id 
@@ -39,7 +37,7 @@ const CreateProductForm = () => {
   const toast = useToast()
 
   const { handleSubmit, formState, register, reset } =
-    useForm<NewProductProps>({
+    useForm<NewProduct>({
       resolver: yupResolver(newProductSchema),
     });
 
@@ -47,14 +45,14 @@ const CreateProductForm = () => {
 
   const createProductMutation = useCreateProductMutation()
 
-  const handleNewUser: SubmitHandler<NewProductProps> = async values => {
+  const handleNewUser: SubmitHandler<NewProduct> = async values => {
     const {
       nome,
       descricao,
       preco_unitario,
     } = values
 
-    const productData: NewProductProps = {
+    const productData: NewProduct = {
       user_id,      
       nome,
       descricao,

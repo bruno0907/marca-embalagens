@@ -6,7 +6,7 @@ import { ModalProps } from '../../Modal'
 import { InformationField } from '../../InformationField'
 import { UpdateSupplierFormProps } from './UpdateSupplierForm'
 
-import { useSupplierQuery } from '../../../hooks/useSupplierQuery'
+import { Supplier, useSupplierQuery } from '../../../hooks/useSupplierQuery'
 
 import { 
   Text,
@@ -35,8 +35,6 @@ import {
   FiPackage,   
 } from 'react-icons/fi'
 
-import { SupplierProps } from '../../../types'
-
 const Modal = dynamic<ModalProps>(
   async () => {
     const { Modal } = await import('../../Modal')
@@ -63,11 +61,11 @@ type Props = { supplierId: string }
 
 const SupplierDetails = ({ supplierId }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure()
-  const [supplierToEdit, setSupplierToEdit] = useState<SupplierProps>(null)
+  const [supplierToEdit, setSupplierToEdit] = useState<Supplier>(null)
   
   const supplier = useSupplierQuery(supplierId)
 
-  function handleEditSupplier(supplier: SupplierProps) {
+  function handleEditSupplier(supplier: Supplier) {
     setSupplierToEdit(supplier)
     onOpen()
   }  

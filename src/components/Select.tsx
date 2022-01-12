@@ -14,7 +14,7 @@ import {
 
 import { MdArrowDropDown } from 'react-icons/md'
 
-interface SelectProps extends ChakraSelectProps {
+interface Props extends ChakraSelectProps {
   name: string;  
   label?: string;
   error?: FieldError;
@@ -22,7 +22,7 @@ interface SelectProps extends ChakraSelectProps {
   children: ReactNode;  
 }
 
-const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, SelectProps> = 
+const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, Props> = 
   ({ label, name, error = null, isLoading, children, ...rest }, ref) => {    
     return (
       <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">

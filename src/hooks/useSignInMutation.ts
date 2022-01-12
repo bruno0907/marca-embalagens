@@ -2,12 +2,12 @@ import { User } from '@supabase/gotrue-js'
 import { useMutation } from 'react-query'
 import { supabase } from '../database/supabase'
 
-type AuthProps = {
+export type SignIn = {
   email: string;
   password: string;
 }
 
-const signIn = async ({ email, password }: AuthProps): Promise<User> => {
+const signIn = async ({ email, password }: SignIn): Promise<User> => {
   try {
     const { user, error } = await supabase.auth.signIn({ email, password })
   
@@ -23,7 +23,7 @@ const signIn = async ({ email, password }: AuthProps): Promise<User> => {
 
 const useSignInMutation = () => useMutation(
   'signIn', 
-  ({ email, password }: AuthProps) => signIn({ email, password })
+  ({ email, password }: SignIn) => signIn({ email, password })
 )
 
 export {

@@ -3,9 +3,9 @@ import {
   DividerProps as ChakraDividerProps 
 } from "@chakra-ui/react";
 
-interface DividerProps extends ChakraDividerProps {}
+interface Props extends ChakraDividerProps {}
 
-const Divider = ({ ...rest }: DividerProps) => {
+const Divider = ({ ...rest }: Props) => {
   return (
     <ChakraDivider my="12" borderColor="gray.600" {...rest} />
   )

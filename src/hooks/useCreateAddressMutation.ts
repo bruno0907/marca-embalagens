@@ -2,10 +2,19 @@ import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { createAddress } from "../services/createAddress"
 
-import { NewAddressProps } from "../types"
+export type NewAddress = {  
+  user_id: string;
+  endereco: string | undefined;
+  bairro: string | undefined;
+  cidade: string | undefined;
+  estado: string | undefined;
+  cep: string | undefined;
+  complemento: string | undefined;  
+  principal: boolean | undefined;
+}
 
 const useCreateAddressMutation = () => useMutation(
-  async (newAddress: NewAddressProps) => {
+  async (newAddress: NewAddress) => {
     try {
       const { data, error } = await createAddress(newAddress)
   
@@ -20,7 +29,7 @@ const useCreateAddressMutation = () => useMutation(
 
   }, {    
     onSuccess: address => queryClient.invalidateQueries(['address[]', address[0].user_id]),
-    onError: error => console.log('New Product Mutation Error: ', error)
+    onError: error => console.log('New product mutation error: ', error)
   }
 )
 

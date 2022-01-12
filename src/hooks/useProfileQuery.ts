@@ -1,10 +1,10 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
-import { AddressProps } from "../types"
+import { Address } from "./useAddressQuery"
 
 type ProfileQuery = {
   data: Profile;
-  address: AddressProps;
+  address: Address;
 }
 
 export type Profile = {
@@ -37,7 +37,7 @@ const getProfile = async (): Promise<ProfileQuery> => {
     if(profileError) throw new Error(profileError.message)
     
     const { data: profileAddress, error: profileAddressError } = await supabase
-      .from<AddressProps>('addresses')
+      .from<Address>('addresses')
       .select()
       .eq('user_id', profileData.id)
       .single()

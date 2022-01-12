@@ -1,7 +1,7 @@
 import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 
-export type OrderQueryProps = {
+export type OrderQuery = {
   id: string;
   user_id: string;
   numero_pedido: number;
@@ -13,7 +13,7 @@ export type OrderQueryProps = {
   }
 }
 
-const getOrders = async (query?: number): Promise<OrderQueryProps[]> => {
+const getOrders = async (query?: number): Promise<OrderQuery[]> => {
   try {
     const user = supabase.auth.user()
     
@@ -21,7 +21,7 @@ const getOrders = async (query?: number): Promise<OrderQueryProps[]> => {
     
     if(!query) {      
       const { data, error } = await supabase
-      .from<OrderQueryProps>('orders')
+      .from<OrderQuery>('orders')
       .select(`
         id, 
         numero_pedido,
@@ -38,7 +38,7 @@ const getOrders = async (query?: number): Promise<OrderQueryProps[]> => {
     }
     
     const { data, error } = await supabase
-      .from<OrderQueryProps>('orders')
+      .from<OrderQuery>('orders')
       .select(`
         id, 
         numero_pedido,
@@ -63,7 +63,7 @@ const getOrders = async (query?: number): Promise<OrderQueryProps[]> => {
 }
 
 const useOrdersQuery = (query?: number) => {
-  const queryKey = query ? ['orders[]', query] : ['orders[]']
+  const queryKey = query ? ['order[]', query] : ['order[]']
 
   return useQuery(
     queryKey, 

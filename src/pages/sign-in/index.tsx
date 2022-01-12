@@ -4,7 +4,7 @@ import * as yup from 'yup'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
-import { useSignInMutation } from '../../hooks/useSignInMutation'
+import { SignIn, useSignInMutation } from '../../hooks/useSignInMutation'
 
 import { Content } from '../../components/Content'
 import { Input } from '../../components/Input'
@@ -17,17 +17,12 @@ import {
   Heading,
 } from '@chakra-ui/react'
 
-type SignInProps = {
-  email: string;
-  password: string;
-}
-
 const signInFormSchema = yup.object().shape({
   email: yup.string().required('Informe o seu e-mail de acesso').email('O formato de e-mail parece ser inválido').trim(),
   password: yup.string().required('Informe a sua senha').trim()
 })
 
-export default function SignIn () {
+export default function SignInPage () {
   const router = useRouter()
   const toast = useToast()  
 
@@ -51,7 +46,7 @@ export default function SignIn () {
     isDirty,
   } = formState    
 
-  const handleSignIn: SubmitHandler<SignInProps> = async values => {
+  const handleSignIn: SubmitHandler<SignIn> = async values => {
     try {
       const { email, password } = values
     
@@ -106,13 +101,13 @@ export default function SignIn () {
             <Input 
               type="email"
               label="E-mail:"                        
-              isDisabled={isSubmitting}
+              isDisabled={isSubmitting}              
               error={errors.email}
               {...register('email')}
             />
             <Input 
               type="password"
-              label="Senha:"
+              label="Senha:"              
               isDisabled={isSubmitting}
               error={errors.password}
               {...register('password')}

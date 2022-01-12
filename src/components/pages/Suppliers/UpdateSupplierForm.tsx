@@ -16,10 +16,10 @@ import {
   useToast,  
 } from "@chakra-ui/react";
 
-import { SupplierProps } from "../../../types";
+import { Supplier } from "../../../hooks/useSupplierQuery";
 
 export type UpdateSupplierFormProps = {
-  supplier: SupplierProps ;
+  supplier: Supplier;
   onClose: () => void;
 }
 
@@ -44,7 +44,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
     handleSubmit,
     register,   
     reset
-  } = useForm<SupplierProps>({
+  } = useForm<Supplier>({
     defaultValues: {
       nome: supplier?.nome,
       razao_social: supplier?.razao_social,
@@ -68,7 +68,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
 
   const updateUserMutation = useUpdateSupplierMutation()
 
-  const handleUpdateUser: SubmitHandler<SupplierProps> = async values => {
+  const handleUpdateUser: SubmitHandler<Supplier> = async values => {
     const updatedSupplier = {
       ...supplier,
       ...values
@@ -101,7 +101,7 @@ const UpdateSupplierForm = ({ supplier, onClose }: UpdateSupplierFormProps) => {
     }
   }
 
-  const handleUpdateUserErrors: SubmitErrorHandler<SupplierProps> = errors => {
+  const handleUpdateUserErrors: SubmitErrorHandler<Supplier> = errors => {
     console.log(errors)
   }
 

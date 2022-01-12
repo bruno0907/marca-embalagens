@@ -15,7 +15,7 @@ import { Cart } from '../../../Cart'
 import { useCartContext } from '../../../../contexts/useCart'
 import { useCreateOrder } from '../../../../contexts/useCreateOrder'
 import { useAuth } from '../../../../contexts/useAuth'
-import { useCreateOrderMutation } from '../../../../hooks/useCreateOrderMutation'
+import { NewOrder, useCreateOrderMutation } from '../../../../hooks/useCreateOrderMutation'
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
@@ -29,8 +29,6 @@ import {
   useToast,
   Button,
 } from '@chakra-ui/react'
- 
-import { NewOrderProps } from '../../../../types'
 
 const CreateOrderForm = () => {
   const { session } = useAuth()
@@ -49,7 +47,7 @@ const CreateOrderForm = () => {
   const router = useRouter()  
   const toast = useToast()
   
-  const { handleSubmit, register, formState } = useForm<NewOrderProps>({
+  const { handleSubmit, register, formState } = useForm<NewOrder>({
     resolver: yupResolver(newOrderSchema)
   })
 
@@ -59,13 +57,13 @@ const CreateOrderForm = () => {
 
   const ordersAmount = orders.data?.length
 
-  const handleCreateNewOrderMutation: SubmitHandler<NewOrderProps> = async values => {
+  const handleCreateNewOrderMutation: SubmitHandler<NewOrder> = async values => {
     const {       
       data_entrega, 
       condicao_pagamento,      
     } = values
 
-    const newOrder: NewOrderProps = {
+    const newOrder: NewOrder = {
       user_id: session.user.id,
       numero_pedido: ordersAmount + 1,
       cliente: selectedUser.id,

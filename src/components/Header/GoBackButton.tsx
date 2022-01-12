@@ -11,8 +11,6 @@ type Props = {
 const GoBackButton = ({ to }: Props) => {
   const router = useRouter()
 
-  console.log(to)
-
   const handleGoBack = () => {
     if(!to) {
       return router.back()

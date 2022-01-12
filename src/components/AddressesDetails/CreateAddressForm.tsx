@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, ChangeEvent } from "react"
 
 import { useForm, SubmitHandler } from "react-hook-form"
 import * as yup from 'yup'
@@ -7,10 +7,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Input } from "../Input"
 import { Select } from "../Select"
 
-import { useCreateAddressMutation } from "../../hooks/useCreateAddressMutation"
 import { useStatesQuery } from "../../hooks/useStatesQuery"
-
-import { getCities } from "../../services/getCities"
+import { useCitiesQuery } from "../../hooks/useCitiesQuery"
+import { NewAddress, useCreateAddressMutation } from "../../hooks/useCreateAddressMutation"
 
 import { 
   Stack,
@@ -43,8 +42,6 @@ const newAddressSchema = yup.object().shape({
   complemento: yup.string().trim(),  
 });
 
-import { NewAddressProps, CityProps } from "../../types"
-
 export type CreateAddressFormProps = {
   userId: string;
   onClose: () => void;
@@ -53,53 +50,43 @@ export type CreateAddressFormProps = {
 const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {  
   const toast = useToast()
 
-  const [cities, setCities] = useState<CityProps[]>([]);
   const [selectedState, setSelectedState] = useState('')
 
   const states = useStatesQuery()
+  const cities = useCitiesQuery(selectedState)
 
   const { handleSubmit, formState, register, clearErrors, setValue } =
-    useForm<NewAddressProps>({
+    useForm<NewAddress>({
       resolver: yupResolver(newAddressSchema),
     });
 
   const { errors, isSubmitting, isDirty } = formState;
 
-  
-  useEffect(() => {
-    const fetchCities = async (uf: string): Promise<CityProps[]> => {
-      try {
-        const { data } = await getCities(uf)
-        setCities(data)
-        clearErrors(['estado', 'cidade'])
-        setValue('cidade', 'defaultValue')
+  function handleStateSelect(event: ChangeEvent<HTMLSelectElement>) {
+    const { value } = event.currentTarget
+    setSelectedState(value)
+    clearErrors(['estado', 'cidade'])
+    setValue('cidade', 'defaultValue')
+    return value
+  }
 
-        return data        
-      } catch (error) {
-        console.log(error)
-        return error
-      }
-    }
-    fetchCities(selectedState)
-
-    return () => {
-      setCities([])
-
-    }
-   
-  }, [clearErrors, selectedState, setValue])
+  function handleCitySelect(event: ChangeEvent<HTMLSelectElement>) {
+    const { value } = event.currentTarget
+    clearErrors('cidade')
+    return value
+  }
 
   const NewAddressMutation = useCreateAddressMutation()
 
-  const handleNewAddress: SubmitHandler<NewAddressProps> = async values => {
+  const handleNewAddress: SubmitHandler<NewAddress> = async values => {
     try {
-      const newAddress: NewAddressProps = {
+      const newAddress: NewAddress = {
         user_id: userId,
         principal: false,
         ...values
       }
   
-      await NewAddressMutation.mutateAsync(newAddress)
+      await NewAddressMutation.mutateAsync(newAddress) 
   
       toast({
         status: 'success',
@@ -139,10 +126,11 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
           <Select
             name="estado"
             label="Estado:"
+            isLoading={states.isFetching}
             error={errors.estado}
             defaultValue="defaultValue"
             {...register("estado")}
-            onChange={({ currentTarget }) => setSelectedState(currentTarget?.value)}
+            onChange={handleStateSelect}
           >
             <option value="defaultValue" hidden aria-readonly>
               Selecione um estado...
@@ -158,15 +146,16 @@ const CreateAddressForm = ({ userId, onClose }: CreateAddressFormProps) => {
           <Select
             name="cidade"
             label="Cidade:"
+            isLoading={cities.isFetching}
             error={errors.cidade}
             defaultValue="defaultValue"            
-            {...register("cidade")}
-            onChange={() => clearErrors('cidade')}
+            {...register("cidade")}            
+            onChange={handleCitySelect}
           >
             <option value="defaultValue" hidden aria-readonly>
               Selecione uma cidade...
             </option>            
-            {cities.map((city) => {
+            {cities.data?.map((city) => {
               return <option key={city.id}>{city.nome}</option>;
             })}
           </Select>

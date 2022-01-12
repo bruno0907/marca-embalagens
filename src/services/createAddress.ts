@@ -1,9 +1,10 @@
 import { supabase } from "../database/supabase";
-import { AddressProps, NewAddressProps } from "../types"
+import { NewAddress } from "../hooks/useCreateAddressMutation";
 
-const createAddress = async (address: NewAddressProps) => { 
+
+const createAddress = async (address: NewAddress) => { 
   return await supabase
-    .from<AddressProps>('addresses')
+    .from<NewAddress>('addresses')
     .insert(address);
 }
 

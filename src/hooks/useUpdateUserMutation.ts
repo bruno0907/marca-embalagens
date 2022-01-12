@@ -1,18 +1,17 @@
+import { supabase } from "../database/supabase"
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { supabase } from "../database/supabase"
+import { User } from "./useUserQuery"
 
-import { UserProps } from "../types"
-
-const updateUser = async (user: UserProps) => {
+const updateUser = async (user: User) => {
   return await supabase
-    .from<UserProps>('users')    
+    .from<User>('users')    
     .update(user)
     .eq('id', user.id)
 }
 
 const useUpdateUserMutation = () => useMutation(
-  async (user: UserProps) => {
+  async (user: User) => {
     const { data, error } = await updateUser(user)
 
     if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
@@ -22,7 +21,7 @@ const useUpdateUserMutation = () => useMutation(
   }, {
     onSuccess: async (user) => {
       await queryClient.invalidateQueries(['user', user[0].id])
-      await queryClient.invalidateQueries(['users[]'])
+      await queryClient.invalidateQueries(['user[]'])
     }
   }
 )

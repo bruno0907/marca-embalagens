@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react"
-import { AddressProps } from '../../types'
 import { AddressList } from '../AddressesDetails/AddressList'
 
 import { ChakraProvider } from '@chakra-ui/react'
 import { theme } from '../../styles/theme'
+import { Address } from "../../hooks/useAddressQuery"
 
-const mockAddresses: AddressProps[] = [
+const mockAddresses: Address[] = [
   {
     id: 'fake-id',
     user_id: 'fake-userId',

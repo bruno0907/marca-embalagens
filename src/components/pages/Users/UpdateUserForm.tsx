@@ -15,12 +15,11 @@ import {
   useToast,  
 } from "@chakra-ui/react";
 
-import { UserProps } from "../../../types";
-
 import { useUpdateUserMutation } from '../../../hooks/useUpdateUserMutation'
+import { User } from "../../../hooks/useUserQuery";
 
 export type UpdateUserFormProps = {
-  user: UserProps ;
+  user: User ;
   onClose: () => void;
 }
 
@@ -44,7 +43,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     handleSubmit,
     register,   
     reset
-  } = useForm<UserProps>({
+  } = useForm<User>({
     defaultValues: {
       nome: user?.nome,
       razao_social: user?.razao_social,
@@ -68,7 +67,7 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
   const updateUserMutation = useUpdateUserMutation()
 
 
-  const handleUpdateUser: SubmitHandler<UserProps> = async values => {
+  const handleUpdateUser: SubmitHandler<User> = async values => {
     const updatedUser = {
       ...user,
       ...values

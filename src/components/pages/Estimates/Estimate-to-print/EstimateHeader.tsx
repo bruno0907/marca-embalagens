@@ -3,6 +3,7 @@ import { Logo } from "../../../Logo";
 import { useProfileQuery } from "../../../../hooks/useProfileQuery";
 
 import { handleFormatDate } from "../../../../utils/handleFormatDate";
+import { handleFormatPadStart } from "../../../../utils/handleFormatPadStart";
 
 import { 
   Flex,
@@ -11,7 +12,6 @@ import {
   Center,
   Spinner
 } from "@chakra-ui/react";
-import { handleFormatPadStart } from "../../../../utils/handleFormatPadStart";
 
 type Props = {
   estimateNumber: number;

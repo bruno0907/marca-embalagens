@@ -8,13 +8,13 @@ import {
   Text
 } from "@chakra-ui/react"
 
-type InformationFieldProps = FlexProps & {
+type Props = FlexProps & {
   label: string;
   value: string;
   icon: ElementType;
 }
 
-const InformationFieldComponent = ({ label, value, icon }: InformationFieldProps) => {
+const InformationFieldComponent = ({ label, value, icon }: Props) => {
   return (
     <Flex align="center">
       <Icon as={icon} fontSize="24" color="gray.500"/>

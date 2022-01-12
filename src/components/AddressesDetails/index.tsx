@@ -21,11 +21,11 @@ const CreateAddressForm = dynamic<CreateAddressFormProps>(
     .then(({ CreateAddressForm }) => CreateAddressForm)  
 )
 
-export type Props = {
+export type AddressesDetailsProps = {
   userId: string;
 }
   
-const AddressesDetails = ({ userId }: Props) => {   
+const AddressesDetails = ({ userId }: AddressesDetailsProps) => {   
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const addresses = useAddressesQuery(userId)

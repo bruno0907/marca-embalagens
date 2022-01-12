@@ -7,7 +7,7 @@ import { InformationField } from '../../InformationField'
 import { ModalProps } from '../../Modal'
 import { UpdateUserFormProps } from './UpdateUserForm'
 
-import { useUserQuery } from '../../../hooks/useUserQuery'
+import { User, useUserQuery } from '../../../hooks/useUserQuery'
 
 import { 
   Text,
@@ -33,8 +33,6 @@ import {
   FiUser,
   FiCreditCard,   
 } from 'react-icons/fi'
-
-import { UserProps } from '../../../types'
 
 type Props = { userId: string; }
 
@@ -62,11 +60,11 @@ const UpdateUserForm = dynamic<UpdateUserFormProps>(
 
 const UserDetails = ({ userId }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure()  
-  const [userToEdit, setUserToEdit] = useState<UserProps>(null)
+  const [userToEdit, setUserToEdit] = useState<User>(null)
 
   const user = useUserQuery(userId)
 
-  const handleEditUser = (user: UserProps) => {
+  const handleEditUser = (user: User) => {
     setUserToEdit(user)
     onOpen()
     return

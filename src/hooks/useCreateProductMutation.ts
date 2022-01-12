@@ -1,17 +1,23 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase"
+import { Product } from "./useProductQuery"
 
-import { NewProductProps, ProductProps } from "../types"
+export type NewProduct = {  
+  user_id: string;
+  nome: string;
+  descricao: string;  
+  preco_unitario: number;
+}
 
-const createProduct = async(product: NewProductProps) => {  
+const createProduct = async(product: NewProduct) => {  
   return await supabase
-    .from<ProductProps>('products')
+    .from<Product>('products')
     .insert(product)
 }
 
 const useCreateProductMutation = () => useMutation(
-  async (newProduct: NewProductProps) => {
+  async (newProduct: NewProduct) => {
     try {
       const { data, error } = await createProduct(newProduct)
   
@@ -25,8 +31,8 @@ const useCreateProductMutation = () => useMutation(
     }
 
   }, {    
-    onSuccess: () => queryClient.invalidateQueries(['products[]']),
-    onError: error => console.log('New Product Mutation Error: ', error)
+    onSuccess: () => queryClient.invalidateQueries(['product[]']),
+    onError: error => console.log('New product mutation error: ', error)
   }
 )
 

@@ -10,13 +10,13 @@ import {
   TableBodyProps
 } from "@chakra-ui/react"
 
-import { OrderItemProps } from "../../../../types"
+import { OrderProduct } from "../../../../hooks/useOrderQuery"
 
-type OrderItemsListProps = TableBodyProps & {
-  orderItems: OrderItemProps[]
+type Props = TableBodyProps & {
+  orderItems: OrderProduct[]
 }
 
-const OrderItemsList = ({ orderItems }: OrderItemsListProps) => {
+const OrderItemsList = ({ orderItems }: Props) => {
   return (
     <Table variant="striped" size="sm">
       <Thead>
