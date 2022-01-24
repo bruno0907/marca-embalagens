@@ -42,7 +42,7 @@ const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> 
       .eq('username', email)
       .single()
 
-    if(userAlreadyExists) throw new Error('E-mail already in use')
+    if(userAlreadyExists) throw new Error('User already exists')
   
     const { user, error } = await supabase.auth.signUp({
       email,
@@ -91,7 +91,6 @@ const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> 
 const useSignUpMutation = () => useMutation(
   async ({ email, password }: SignUp) => await signUp({ email, password }), {
   onSuccess: async profile => queryClient.setQueryData('profile', profile)
-
 })
 
 export {

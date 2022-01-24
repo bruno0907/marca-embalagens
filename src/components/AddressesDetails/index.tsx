@@ -49,7 +49,10 @@ const AddressesDetails = ({ userId }: AddressesDetailsProps) => {
         </Box>
       </Content>
       <Modal isOpen={isOpen} onClose={onClose} title="Novo endereço">
-        <CreateAddressForm userId={String(userId)} onClose={onClose}/>
+        <CreateAddressForm
+          userId={String(userId)} 
+          onClose={onClose}
+        />
       </Modal>
     </>
   )

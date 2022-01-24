@@ -24,15 +24,27 @@ export type UpdateUserFormProps = {
 }
 
 const updateUserSchema = yup.object().shape({
-  nome: yup.string().required("O nome é obrigatório").trim(),
-  razao_social: yup.string().trim(),
+  nome: yup.string()
+    .required("O nome do cliente é obrigatório")
+    .min(5, 'O nome deve ter no mínimo 5 caracteres')
+    .max(120, 'O nome não deve ultrapassar 120 caracteres')
+    .trim(),
+  razao_social: yup.string()
+    .min(10, 'A razão social deve ter no mínimo 10 caracteres')
+    .max(120, 'A razão social não deve ultrapassar 120 caracteres')    
+    .trim(),
   telefone: yup.string().trim(),
   celular: yup.string().trim(),
-  email: yup.string().email().trim(),
+  email: yup.string()
+    .email('Formato de e-mail inválido')
+    .trim(),
   cpf_cnpj: yup.string().trim(),
   rg_ie: yup.string().trim(),
-  contato: yup.string().trim(),
-  outras_informacoes: yup.string().trim(),  
+  contato: yup.string()
+    .min(5, 'O contato deve ter no mínimo 5 caracteres')
+    .max(120, 'O contato não deve ultrapassar 120 caracteres')
+    .trim(),
+  outras_informacoes: yup.string().trim(), 
 });
 
 const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {    

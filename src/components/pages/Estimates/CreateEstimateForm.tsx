@@ -18,7 +18,11 @@ import { useEstimatesQuery } from '../../../hooks/useEstimatesQuery'
 import { useCartContext } from '../../../contexts/useCart'
 
 const newEstimateSchema = yup.object().shape({
-  cliente: yup.string().required('Digite o nome do cliente').trim(),
+  cliente: yup.string()
+    .required('Digite o nome do cliente')
+    .min(5, 'O nome do cliente deve ter no mínimo 5 caracteres')
+    .max(120, 'O nome do cliente não deve ultrapassar 120 caracteres')
+    .trim(),
   condicao_pagamento: yup.string().trim(),     
   data_entrega: yup.string().trim(),
   observacoes: yup.string().trim(),
@@ -93,7 +97,7 @@ const CreateEstimateForm = () => {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top',
+        position: 'bottom',
       })
     }
   }

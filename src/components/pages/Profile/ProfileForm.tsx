@@ -9,8 +9,8 @@ import { useUpdateProfileMutation } from "../../../hooks/useUpdateProfileMutatio
 import { useStatesQuery } from "../../../hooks/useStatesQuery";
 import { InputMask } from "../../../utils/inputMasksHandler";
 
-import { Input } from "../../../components/Input";
-import { Select } from "../../../components/Select";
+import { Input } from "../../Input";
+import { Select } from "../../Select";
 
 import {
   Box,
@@ -22,25 +22,46 @@ import {
 } from "@chakra-ui/react"
 
 const profileFormSchema = yup.object().shape({
-  nome: yup.string().required("O nome é obrigatório").trim(),
+  nome: yup.string()
+    .required("O nome é obrigatório")
+    .min(5, 'O nome deve ter no mínimo 5 caracteres')
+    .max(120, 'O nome não deve ultrapassar 120 caracteres')
+    .trim(),
   razao_social: yup.string().trim().nullable(),
   telefone: yup.string().trim().nullable(),
-  celular: yup.string().required('O celular é obrigatório').trim(),
-  email: yup.string().required('O e-mail é obrigatório').email().trim(),
+  celular: yup.string()
+    .required('O celular é obrigatório')
+    .trim(),
+  email: yup.string()
+    .required('O e-mail é obrigatório')
+    .email('Formato de e-mail inválido')
+    .trim(),
   cpf_cnpj: yup.string().trim().nullable(),
   rg_ie: yup.string().trim().nullable(),
-  endereco: yup.string().required("O endereço é obrigatório").trim(),
-  bairro: yup.string().required("O bairro/distrito é obrigatório").trim(),
-  estado: yup.string().required('O estado é obrigatório')
+  endereco: yup.string()
+    .required("O endereço é obrigatório")
+    .min(5, 'O endereço deve ter no mínimo 5 caracteres')
+    .max(120, 'O endereço não deve ultrapassar 120 caracteres')
+    .trim(),
+  bairro: yup.string()
+    .required("O bairro/distrito é obrigatório")
+    .min(5, 'O bairro deve ter no mínimo 5 caracteres')
+    .max(120, 'O bairro não deve ultrapassar 120 caracteres')
+    .trim(),
+  estado: yup.string()
+    .required('O estado é obrigatório')
     .test({
       message: "O estado é obrigatório",
       test: value => value !== "defaultValue",
-    }).trim(),
-  cidade: yup.string().required('Selecione um estado')
+    })
+    .trim(),
+  cidade: yup.string()
+    .required('Selecione um estado')
     .test({
       message: "A cidade é obrigatória",
       test: value => value !== "defaultValue",
-    }).trim(),
+    })
+    .trim(),
   cep: yup.string().trim().nullable(),
   complemento: yup.string().trim().nullable(),  
 });
@@ -84,7 +105,7 @@ const ProfileForm = ({ profile }: Props) => {
   const { errors, isDirty, isSubmitting } = formState;
 
   const handleSelectState = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.currentTarget
+    const { value } = event.target
     setSelectedState(value)
     clearErrors(['estado', 'cidade'])
     setValue('cidade', 'defaultValue')
@@ -195,7 +216,7 @@ const ProfileForm = ({ profile }: Props) => {
             defaultValue={profile.data.telefone}
             error={errors.telefone}
             {...register("telefone")}
-            onChange={({ currentTarget }) => currentTarget.value = masked.phone(currentTarget.value)}
+            onChange={({ target }) => target.value = masked.phone(target.value)}
           />
           <Input
             name="celular"
@@ -203,7 +224,7 @@ const ProfileForm = ({ profile }: Props) => {
             defaultValue={profile.data.celular}
             error={errors.celular}
             {...register("celular")}
-            onChange={({ currentTarget }) => currentTarget.value = masked.celphone(currentTarget.value)}
+            onChange={({ target }) => target.value = masked.celphone(target.value)}
           />
           <Input
             name="email"
@@ -221,7 +242,7 @@ const ProfileForm = ({ profile }: Props) => {
             defaultValue={profile.data.cpf_cnpj}
             error={errors.cpf_cnpj}
             {...register("cpf_cnpj")}
-            onChange={({ currentTarget }) => currentTarget.value = masked.cnpj(currentTarget.value)}
+            onChange={({ target }) => target.value = masked.cnpj(target.value)}
           />
           <Input
             name="rg_ie"
@@ -289,7 +310,7 @@ const ProfileForm = ({ profile }: Props) => {
             defaultValue={profile.address.cep}
             error={errors.cep}
             {...register("cep")}
-            onChange={({ currentTarget }) => currentTarget.value = masked.cep(currentTarget.value)}
+            onChange={({ target }) => target.value = masked.cep(target.value)}
           />
         </HStack>
         <Input

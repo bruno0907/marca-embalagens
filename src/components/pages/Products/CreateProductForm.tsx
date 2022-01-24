@@ -23,9 +23,14 @@ import {
 } from "@chakra-ui/react"
 
 const newProductSchema = yup.object().shape({
-  nome: yup.string().required("Informe um nome pro seu produto").trim(),
+  nome: yup.string()
+    .required("O nome do produto é obrigatório")
+    .min(5, 'O nome do produto deve ter no mínimo 5 caracteres')
+    .max(120, 'O nome do produto não deve ultrapassar 120 caracteres')
+    .trim(),
   descricao: yup.string().trim(),
-  preco_unitario: yup.number().required('Informe o valor'),    
+  preco_unitario: yup.number()
+    .required('O valor do produto é obrigatório'),    
 });
 
 const CreateProductForm = () => {

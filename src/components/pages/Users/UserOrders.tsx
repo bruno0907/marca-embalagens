@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 
-import { Content } from "../../../components/Content"
-import { Table } from "../../../components/Table"
+import { Content } from "../../Content"
+import { Table } from "../../Table"
 
 import { useUserOrdersQuery } from "../../../hooks/useUserOrdersQuery"
 

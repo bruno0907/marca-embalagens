@@ -18,17 +18,37 @@ import { Select } from "../../Select";
 import { InputMask } from "../../../utils/inputMasksHandler";
 
 const newUserSchema= yup.object().shape({
-  nome: yup.string().required("O nome do cliente é obrigatório").trim(),
-  razao_social: yup.string().trim(),
+  nome: yup.string()
+    .required("O nome do cliente é obrigatório")
+    .min(5, 'O nome deve ter no mínimo 5 caracteres')
+    .max(120, 'O nome não deve ultrapassar 120 caracteres')
+    .trim(),
+  razao_social: yup.string()
+    .min(10, 'A razão social deve ter no mínimo 10 caracteres')
+    .max(120, 'A razão social não deve ultrapassar 120 caracteres')    
+    .trim(),
   telefone: yup.string().trim(),
   celular: yup.string().trim(),
-  email: yup.string().email().trim(),
+  email: yup.string()
+    .email('Formato de e-mail inválido')
+    .trim(),
   cpf_cnpj: yup.string().trim(),
   rg_ie: yup.string().trim(),
-  contato: yup.string().trim(),
+  contato: yup.string()
+    .min(5, 'O contato deve ter no mínimo 5 caracteres')
+    .max(120, 'O contato não deve ultrapassar 120 caracteres')
+    .trim(),
   outras_informacoes: yup.string().trim(),
-  endereco: yup.string().required("O endereço é obrigatório").trim(),
-  bairro: yup.string().required("O bairro/distrito é obrigatório"),
+  endereco: yup.string()
+    .required("O endereço é obrigatório")
+    .min(5, 'O endereço deve ter no mínimo 5 caracteres')
+    .max(120, 'O endereço não deve ultrapassar 120 caracteres')
+    .trim(),
+  bairro: yup.string()
+    .required("O bairro é obrigatório")
+    .min(5, 'O bairro deve ter no mínimo 5 caracteres')
+    .max(120, 'O bairro não deve ultrapassar 120 caracteres')
+    .trim(),
   estado: yup
     .string()
     .required('O estado é obrigatório')
@@ -46,7 +66,7 @@ const newUserSchema= yup.object().shape({
     })
     .trim(),
   cep: yup.string().trim(),
-  complemento: yup.string().trim(),  
+  complemento: yup.string().trim(),   
 })
 
 import {
@@ -83,14 +103,14 @@ const CreateUserForm = () => {
   }  
 
   const handleSelectState = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.currentTarget
+    const { value } = event.target
     setSelectedState(value)
     clearErrors(['estado', 'cidade'])
     return value
   }
 
   const handleSelectCity = (event: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.currentTarget
+    const { value } = event.target
     clearErrors('cidade')
     return value
   }
@@ -155,7 +175,7 @@ const CreateUserForm = () => {
         status: 'success',
         duration: 3000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
 
       router.push('/users')
@@ -166,7 +186,7 @@ const CreateUserForm = () => {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
 
     }
@@ -283,7 +303,7 @@ const CreateUserForm = () => {
           <Box w="40%">
             <Input
               name="bairro"
-              label="Bairro/Distrito:"              
+              label="Bairro:"              
               error={errors.bairro}
               {...register("bairro")}
             />

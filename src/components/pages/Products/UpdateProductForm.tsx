@@ -33,9 +33,14 @@ type UpdateProductFormProps = {
 }
 
 const updateProductSchema = yup.object().shape({
-  nome: yup.string().required('O nome do produto é obrigatório').trim(),
-  preco_unitario: yup.number().required('O valor unitário do produto é obrigatório'),
-  descricao: yup.string().required('A descrição do produto é obrigatória').trim(),  
+  nome: yup.string()
+    .required("O nome do produto é obrigatório")
+    .min(5, 'O nome do produto deve ter no mínimo 5 caracteres')
+    .max(120, 'O nome do produto não deve ultrapassar 120 caracteres')
+    .trim(),
+  descricao: yup.string().trim(),
+  preco_unitario: yup.number()
+    .required('O valor do produto é obrigatório'),  
 })
 
 const UpdateProductForm = ({ product }: UpdateProductFormProps) => {  
@@ -67,7 +72,7 @@ const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
         status: 'success',
         duration: 3000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
 
       router.push('/products')
@@ -78,7 +83,7 @@ const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
     }
   }

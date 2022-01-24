@@ -18,8 +18,14 @@ import {
 } from '@chakra-ui/react'
 
 const signInFormSchema = yup.object().shape({
-  email: yup.string().required('Informe o seu e-mail de acesso').email('O formato de e-mail parece ser inválido').trim(),
-  password: yup.string().required('Informe a sua senha').trim()
+  email: yup.string()
+    .required('Informe o seu e-mail de acesso')
+    .email('O formato de e-mail parece ser inválido')
+    .trim(),
+  password: yup.string()
+    .required('Informe a sua senha')
+    .min(6, 'A senha deve ter no mínimo 6 caracteres')
+    .trim()
 })
 
 export default function SignInPage () {
@@ -53,22 +59,23 @@ export default function SignInPage () {
       await signInMutation.mutateAsync({ email, password })
     
       toast({
-        title: 'Login Efetuado com sucesso, aguarde...',
+        title: 'Login efetuado com sucesso!',
+        description: 'Redirecionando...',
         duration: 3000,
         status: 'success',
-        position: 'top-right'
+        position: 'bottom'
       })
 
       return router.push('/dashboard')      
       
     } catch (error) {
       toast({
-        title: 'Não foi possível fazer o seu login',
-        description: 'O e-mail ou senha informados são inválidos',
+        title: 'Ocorreu um erro!',
+        description: 'Não foi possível fazer o seu login.',
         duration: 5000,
         status: 'error',
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
   
       reset({

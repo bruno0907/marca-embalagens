@@ -65,7 +65,7 @@ const SupplierDetails = ({ supplierId }: Props) => {
   
   const supplier = useSupplierQuery(supplierId)
 
-  function handleEditSupplier(supplier: Supplier) {
+  function handleEditSupplier(supplier: Supplier ) {
     setSupplierToEdit(supplier)
     onOpen()
   }  

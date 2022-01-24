@@ -19,7 +19,9 @@ import { NewOrder, useCreateOrderMutation } from '../../../../hooks/useCreateOrd
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
-  data_entrega: yup.string().required('A data da entrega é obrigatória').trim(),
+  data_entrega: yup.string()
+    .required('A data da entrega é obrigatória')
+    .trim(),
 })
 
 import {   
@@ -82,7 +84,7 @@ const CreateOrderForm = () => {
         status: 'success',
         isClosable: true,
         duration: 3000,
-        position: 'top-right',
+        position: 'bottom',
       })
 
       router.push(`/orders/${response[0].id}`)
@@ -93,7 +95,7 @@ const CreateOrderForm = () => {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
+        position: 'bottom',
       })
     }
   }

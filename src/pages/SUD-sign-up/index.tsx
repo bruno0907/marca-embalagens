@@ -27,12 +27,18 @@ type SignInProps = {
 }
 
 const signInFormSchema = yup.object().shape({
-  email: yup.string().required('E-mail obrigatório').email('E-mail inválido').trim(),
-  password: yup.string().min(6, 'A senha deve ter no mínimo 6 caracteres').required('Senha obrigatória').trim(),
-  password_verify: yup.string().oneOf(
-    [yup.ref('password')],
-    'As senhas não coincidem'
-    ).required('Por favor confirme a sua senha')
+  email: yup.string()
+    .required('E-mail obrigatório')
+    .email('E-mail inválido')
+    .trim(),
+  password: yup.string()
+    .min(6, 'A senha deve ter no mínimo 6 caracteres')
+    .required('Senha obrigatória')
+    .trim(),
+  password_verify: yup.string()
+    .oneOf([yup.ref('password')], 'As senhas não coincidem')
+    .required('Por favor confirme a sua senha')
+    .trim()
 })
 
 export default function SignUp () {  
@@ -65,23 +71,24 @@ export default function SignUp () {
       await signUpMutation.mutateAsync({ email, password })
 
       toast({
-        title: 'Cadastro efetuado com sucesso! Redirecionando...', 
+        title: 'Cadastro efetuado com sucesso!',        
+        description: 'Redirecionado...',
         status: 'success',
         duration: 5000,
         isClosable: true,
-        position: 'top-right',        
+        position: 'bottom',        
       })
 
       return router.push('/profile')
       
-    } catch (error) {      
+    } catch (error) {
       toast({
-        title: 'Erro ao fazer o cadastro...',
-        description: 'O e-mail informado já está em uso.',
+        title: 'Ocorreu um erro!',
+        description: 'Ocorreu um erro ao criar seu cadastro.',
         status: 'error',
         isClosable: true,
         duration: 5000,
-        position: 'top-right'
+        position: 'bottom'
       })
       
       reset({
