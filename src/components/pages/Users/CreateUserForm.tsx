@@ -30,15 +30,11 @@ const newUserSchema= yup.object().shape({
   telefone: yup.string().trim(),
   celular: yup.string().trim(),
   email: yup.string()
-    .email('Formato de e-mail inválido')
+    .email('E-mail inválido')
     .trim(),
   cpf_cnpj: yup.string().trim(),
   rg_ie: yup.string().trim(),
-  contato: yup.string()
-    .min(5, 'O contato deve ter no mínimo 5 caracteres')
-    .max(120, 'O contato não deve ultrapassar 120 caracteres')
-    .trim(),
-  outras_informacoes: yup.string().trim(),
+  contato: yup.string().trim(),  
   endereco: yup.string()
     .required("O endereço é obrigatório")
     .min(5, 'O endereço deve ter no mínimo 5 caracteres')
@@ -66,7 +62,8 @@ const newUserSchema= yup.object().shape({
     })
     .trim(),
   cep: yup.string().trim(),
-  complemento: yup.string().trim(),   
+  complemento: yup.string().trim(),
+  outras_informacoes: yup.string().trim(),
 })
 
 import {

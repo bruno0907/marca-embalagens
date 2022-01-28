@@ -18,7 +18,7 @@ export type Profile = {
   email: string;
   telefone: string;
   celular: string;
-  logo: string;
+  avatar: string;
   situacao_cadastral: boolean;
 }
 

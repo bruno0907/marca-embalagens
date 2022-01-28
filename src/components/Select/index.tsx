@@ -20,12 +20,14 @@ interface Props extends ChakraSelectProps {
   error?: FieldError;
   isLoading?: boolean;  
   children: ReactNode;  
+  isRequired?: boolean;
+  isDisabled?: boolean;
 }
 
 const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, Props> = 
-  ({ label, name, error = null, isLoading, children, ...rest }, ref) => {    
+  ({ label, name, error = null, isLoading, children, isDisabled, isRequired, ...rest }, ref) => {    
     return (
-      <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
+      <FormControl id={name} isRequired={isRequired} isInvalid={!!error} display="flex" flexDir="column">
         { label && 
           <FormLabel htmlFor={name} display="flex" alignItems="center">
             {label}
@@ -33,9 +35,10 @@ const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, Props> =
           </FormLabel> 
         }
         <ChakraSelect
-          icon={<MdArrowDropDown fontSize="24" />}          
+          icon={<MdArrowDropDown/>}
           id={name}
           name={name}
+          isDisabled={isDisabled}
           borderColor={!error ? "gray.300" : "red"}
           bgColor={!error ? "gray50" : "red.50"}
           ref={ref}

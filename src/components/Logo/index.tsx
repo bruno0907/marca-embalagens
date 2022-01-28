@@ -1,6 +1,6 @@
 import NextImage from 'next/image'
 
-import { SkeletonCircle, Icon } from '@chakra-ui/react'
+import { SkeletonCircle, Icon, Center, Avatar } from '@chakra-ui/react'
 import { FiAlertTriangle } from 'react-icons/fi'
 import { useProfileQuery } from '../../hooks/useProfileQuery'
 
@@ -28,33 +28,26 @@ const Logo = () => {
     )
   }
 
-  /******** TO BE IMPLEMENTED ********
-   * 
-   * 
-  // if(!profile.data.data.avatar) {
-  //   return (
-  //     <Center>
-  //       <Avatar
-  //         name={profile.data.data.nome}
-  //         bgColor="blue.500"
-  //         size="lg" 
-  //       />
-  //     </Center>
-  //   )
-  // }
-  //
-  *
-  *
-  ***********************************/
+  if(!profile.data.data.avatar) {
+    return (
+      <Center>
+        <Avatar
+          name={profile.data.data.nome}
+          bgColor="blue.500"
+          size="lg" 
+        />
+      </Center>
+    )
+  }
 
   return (
     <NextImage 
-      src="/logo.png"
+      src={profile.data.data.avatar}
       alt="Logo"
       width={150}
       height={50}
-      objectFit="cover"      
-    />    
+      objectFit="cover"
+    />
   )
 }
 

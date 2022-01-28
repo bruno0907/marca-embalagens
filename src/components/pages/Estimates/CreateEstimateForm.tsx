@@ -80,7 +80,7 @@ const CreateEstimateForm = () => {
 
     try {
       const response = await createEstimateMutation.mutateAsync(estimate)
-      console.log(estimate)
+      
       toast({
         description: 'Orçamento criado com sucesso!',
         status: 'success',

@@ -9,6 +9,7 @@ import { useSignOutMutation } from '../../hooks/useSignOutMutation'
 import { Logo } from "../Logo"
 
 import {
+  Stack,
   Box,   
   Flex,
   Button,
@@ -42,15 +43,16 @@ const SideMenuComponent = () => {
       bgColor="gray.50"
       boxShadow="sm"
     >
-      <Flex flexDir="column" align="center">
+      <Stack spacing={3} mb="8" align="center" justify="center">
         <Logo />
         <Link href="/profile" passHref>
-          <ChakraLink fontWeight="md" _hover={{ textDecor: 'none', color: 'blue.500' }}>
+          <ChakraLink fontWeight="medium" _hover={{ textDecor: 'none', color: 'blue.500' }}>
             Ver perfil
           </ChakraLink>
         </Link>
-      </Flex>
-      <Box as="nav" mt="16">        
+      </Stack>
+
+      <Box as="nav">        
         <ActiveLink 
           href="/dashboard"
           icon={FiHome}

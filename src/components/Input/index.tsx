@@ -13,6 +13,7 @@ import {
   InputLeftElement,
   InputGroup,
   InputRightElement,
+  FormHelperText,
 } from "@chakra-ui/react"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 
@@ -22,11 +23,12 @@ interface Props extends ChakraInputProps {
   label?: string;
   error?: FieldError;
   isLoading?: boolean;  
-  placeholder?: string;    
+  placeholder?: string;
+  isRequired?: boolean;
 }
 
 const InputRef: ForwardRefRenderFunction<HTMLInputElement, Props> = 
-  ({ type, label, name, error, isLoading, placeholder, ...rest }, ref) => {  
+  ({ type, label, name, error, isLoading, placeholder, isRequired, ...rest }, ref) => {  
 
     let showPasswordIcon = type === 'password'
 
@@ -53,12 +55,13 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, Props> =
             id={label}
             name={name}            
             ref={ref}
+            placeholder={placeholder}
             autoComplete="off"
             autoCapitalize="off"
             error={error}
             borderColor={!error ? "gray.300" : "red"}
             bgColor={!error ? "gray.50" : "red.50"}
-            flexShrink={0}
+            flexShrink={0}            
             {...rest}
           />
           { showPasswordIcon && (

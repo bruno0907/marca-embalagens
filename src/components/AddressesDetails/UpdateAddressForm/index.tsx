@@ -68,7 +68,7 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
     resolver: yupResolver(updateAddressSchema),
   });
 
-  const { errors, isDirty, isSubmitting } = formState;
+  const { errors, isSubmitting } = formState;
   
   const updateAddressMutation = useUpdateAddressMutation()
   

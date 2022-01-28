@@ -30,7 +30,7 @@ export default function Product({ params }: Props) {
   return (
     <>
       <Head>
-        <title>{data?.nome ? `MARCA` : `${data.nome} | MARCA`}</title>
+        <title>{data?.nome ? `MARCA` : `${data?.nome} | MARCA`}</title>
       </Head>
       <AuthWrapper>
         <Header withGoBack title={data?.nome} />

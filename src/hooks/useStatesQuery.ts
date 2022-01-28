@@ -12,7 +12,7 @@ export type State = {
   }
 }
 
-const URL = process.env.NEXT_PUBLIC_IBGE_STATES
+const URL = "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
 
 const fetchStates = async () => {
   const { data } = await axios.get<State[]>(URL)

@@ -24,7 +24,6 @@ const signInFormSchema = yup.object().shape({
     .trim(),
   password: yup.string()
     .required('Informe a sua senha')
-    .min(6, 'A senha deve ter no mínimo 6 caracteres')
     .trim()
 })
 

@@ -39,21 +39,15 @@ const newSupplierSchema = yup.object().shape({
     .min(10, 'A razão social deve ter no mínimo 10 caracteres')
     .max(120, 'A razão social não deve ultrapassar 120 caracteres')    
     .trim(),
-  produto: yup.string()
-    .min(5, 'O produto/serviço deve ter no mínimo 5 caracteres')
-    .max(120, 'O produto/serviço não deve ultrapassar 120 caracteres')
-    .trim(),
+  produto: yup.string().trim(),
   telefone: yup.string().trim(),
   celular: yup.string().trim(),
   email: yup.string()
-    .email('Formato de e-mail inválido')
+    .email('E-mail inválido')
     .trim(),
   cpf_cnpj: yup.string().trim(),
   rg_ie: yup.string().trim(),
-  contato: yup.string()
-    .min(5, 'O contato deve ter no mínimo 5 caracteres')
-    .max(120, 'O contato não deve ultrapassar 120 caracteres')
-    .trim(),
+  contato: yup.string().trim(),
   outras_informacoes: yup.string().trim(),
   endereco: yup.string()
     .required("O endereço é obrigatório")

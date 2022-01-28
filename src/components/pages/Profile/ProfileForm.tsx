@@ -10,12 +10,12 @@ import { useStatesQuery } from "../../../hooks/useStatesQuery";
 import { InputMask } from "../../../utils/inputMasksHandler";
 
 import { Input } from "../../Input";
-import { Select } from "../../Select";
+import { Select } from "../../../components/Select";
+import { Section } from "../../Section";
 
 import {
   Box,
   Button,
-  Flex,  
   Stack,
   HStack,  
   useToast,
@@ -74,14 +74,12 @@ import { useCitiesQuery } from "../../../hooks/useCitiesQuery";
 
 type HandleUpdateProfile = NewProfile & NewAddress
 
-type Props = {
-  profile: {
-    data: Profile;
-    address: Address
-  };  
+type Props = {  
+  profile: Profile;
+  address: Address  
 }
 
-const ProfileForm = ({ profile }: Props) => {
+const ProfileForm = ({ profile, address }: Props) => {
   const toast = useToast()
   const router = useRouter()    
   const masked = new InputMask()  
@@ -114,7 +112,7 @@ const ProfileForm = ({ profile }: Props) => {
 
   const updateProfileMutation = useUpdateProfileMutation()
   
-  const handleUpdateProfile: SubmitHandler<HandleUpdateProfile> = async (values) => {
+  const handleUpdateProfile: SubmitHandler<HandleUpdateProfile> = async values => {
     const {      
       nome,
       razao_social,
@@ -131,8 +129,8 @@ const ProfileForm = ({ profile }: Props) => {
       complemento
     } = values
 
-    const profileData = {
-      ...profile.data,      
+    const profileData: Profile = {
+      ...profile,      
       nome,
       razao_social,
       telefone,
@@ -142,8 +140,8 @@ const ProfileForm = ({ profile }: Props) => {
       rg_ie,
     }
 
-    const profileAddress = {
-      ...profile.address,
+    const profileAddress: Address = {
+      ...address,
       endereco,
       bairro,
       cidade,
@@ -157,170 +155,197 @@ const ProfileForm = ({ profile }: Props) => {
       await updateProfileMutation.mutateAsync({ profileData, profileAddress })
 
       toast({
-        title: 'Perfil atualizado com sucesso!',
+        title: 'Sucesso!',
+        description: 'Perfil atualizado com sucesso.',
         status: 'success',
         duration: 3000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
 
       router.push('/dashboard')
 
     } catch (error) {
-      toast({        
-        title: 'Um erro ocorreu ao atualizar os dados do seu perfil. Tente novamente.',
+      toast({ 
+        title: 'Ocorreu um erro!',        
+        description: 'Não foi possível atualizar os dados do seu perfil.',
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom'
       })
     }
   };
 
   useEffect(() => {
-    const { cidade, estado } = profile.address
-    estado && setSelectedState(estado)
-    cidade && reset({ cidade })
+    if(address.estado) {
+      setSelectedState(address.estado)
+      reset({ 
+        estado: address.estado,
+        cidade: address.cidade
+      })
+    }
 
     return () => setSelectedState('')
 
-  }, [profile.address, reset])
+  }, [address, reset])
 
   return (
-    <Flex
-      as="form"
-      flexDir="column"
-      onSubmit={handleSubmit(handleUpdateProfile)}
-    >
-      <Stack spacing={3}>
-        <HStack spacing={3} align="flex-start">
-          <Input
-            name="nome"
-            label="Nome:"
-            defaultValue={profile.data.nome}
-            error={errors.nome}
-            {...register("nome")}
-          />          
-          <Input
-            name="razao_social"
-            label="Razão Social:"
-            defaultValue={profile.data.razao_social}
-            error={errors.razao_social}
-            {...register("razao_social")}
-          />
-        </HStack>
-        <HStack spacing={3} align="flex-start">
-          <Input
-            name="telefone"
-            label="Telefone:"
-            defaultValue={profile.data.telefone}
-            error={errors.telefone}
-            {...register("telefone")}
-            onChange={({ target }) => target.value = masked.phone(target.value)}
-          />
-          <Input
-            name="celular"
-            label="Celular:"
-            defaultValue={profile.data.celular}
-            error={errors.celular}
-            {...register("celular")}
-            onChange={({ target }) => target.value = masked.celphone(target.value)}
-          />
-          <Input
-            name="email"
-            type="email"
-            label="E-mail:"
-            defaultValue={profile.data.email}
-            error={errors.email}
-            {...register("email")}
-          />
-        </HStack>
-        <HStack spacing={3} align="flex-start">
-          <Input
-            name="cpf_cnpj"
-            label="CNPJ:"
-            defaultValue={profile.data.cpf_cnpj}
-            error={errors.cpf_cnpj}
-            {...register("cpf_cnpj")}
-            onChange={({ target }) => target.value = masked.cnpj(target.value)}
-          />
-          <Input
-            name="rg_ie"
-            label="Inscrição Estadual:"
-            defaultValue={profile.data.rg_ie}
-            error={errors.rg_ie}
-            {...register("rg_ie")}
-          /> 
-        </HStack>
-        <HStack spacing={3} align="flex-start">
-          <Input
-            name="endereco"
-            label="Endereço:"
-            defaultValue={profile.address.endereco}
-            error={errors.endereco}
-            {...register("endereco")}
-          />
-          <Box w="40%">
+    <Stack as="form" spacing={6} flex="1" onSubmit={handleSubmit(handleUpdateProfile)}>
+      <Section title="Informações gerais">
+        <Stack spacing={3}>
+          <HStack spacing={3} align="flex-start">
             <Input
-              name="bairro"
-              label="Bairro:"
-              defaultValue={profile.address.bairro}
-              error={errors.bairro}
-              {...register("bairro")}
+              name="nome"
+              label="Nome:"                
+              defaultValue={profile.nome}
+              isDisabled={isSubmitting}
+              error={errors.nome}
+              {...register("nome")}
+            />          
+            <Input
+              name="razao_social"
+              label="Razão Social:"
+              defaultValue={profile.razao_social}
+              isDisabled={isSubmitting}
+              error={errors.razao_social}
+              {...register("razao_social")}
             />
-          </Box>
-        </HStack>
-        <HStack spacing={3} align="flex-start">
-          <Select
-            name="estado"
-            label="Estado:"
-            isLoading={states.isFetching}
-            defaultValue={profile.address.estado ? profile.address.estado : 'defaultValue'}
-            error={errors.estado}
-            {...register("estado")}
-            onChange={handleSelectState}
-          >
-            <option value="defaultValue" hidden aria-readonly>Selecione um estado...</option>
-            { states.data?.map(({ id, sigla, nome }) => {
-              return (
-                <option key={id} value={sigla}>
-                  {nome}
-                </option>
-              );
-            }) }
-          </Select>
-          <Select
-            name="cidade"
-            label="Cidade:"
-            isLoading={cities.isLoading}
-            isDisabled={!selectedState}
-            defaultValue="defaultValue"
-            error={errors.cidade}
-            {...register("cidade")}
-          >
-            <option value="defaultValue" hidden aria-readonly>Selecione uma cidade...</option>
-            { cities.data?.map(({ id, nome }) => {
-              return <option key={id} value={nome}>{nome}</option>;
-            }) }
-          </Select>
-          
+          </HStack>
+          <HStack spacing={3} align="flex-start">
+            <Input
+              name="telefone"
+              type="tel"
+              label="Telefone:"                
+              defaultValue={profile.telefone}     
+              isDisabled={isSubmitting}           
+              error={errors.telefone}
+              {...register("telefone")}
+              onChange={({ target }) => target.value = masked.phone(target.value)}
+            />
+            <Input
+              name="celular"
+              type="tel"
+              label="Celular:"                                
+              defaultValue={profile.celular}
+              isDisabled={isSubmitting}
+              error={errors.celular}
+              {...register("celular")}
+              onChange={({ target }) => target.value = masked.celphone(target.value)}
+            />
+            <Input
+              name="email"
+              type="email"
+              label="E-mail:"                                                
+              defaultValue={profile.email}
+              isDisabled={isSubmitting}
+              error={errors.email}
+              {...register("email")}
+            />
+          </HStack>
+          <HStack spacing={3} align="flex-start">
+            <Input
+              name="cpf_cnpj"
+              label="CNPJ:"
+              type="tel"                
+              defaultValue={profile.cpf_cnpj}
+              isDisabled={isSubmitting}
+              error={errors.cpf_cnpj}
+              {...register("cpf_cnpj")}
+              onChange={({ target }) => target.value = masked.cnpj(target.value)}
+            />
+            <Input
+              name="rg_ie"
+              type="tel"
+              label="Inscrição Estadual:"                
+              defaultValue={profile.rg_ie}
+              isDisabled={isSubmitting}
+              error={errors.rg_ie}
+              {...register("rg_ie")}
+            /> 
+          </HStack>
+        </Stack>
+      </Section>
+
+      <Section title="Endereço">
+        <Stack spacing={3}>
+          <HStack spacing={3} align="flex-start">
+            <Input
+              name="endereco"
+              label="Endereço:"                
+              defaultValue={address.endereco}
+              isDisabled={isSubmitting}
+              error={errors.endereco}
+              {...register("endereco")}
+            />
+            <Box w="40%">
+              <Input
+                name="bairro"
+                label="Bairro:"                  
+                defaultValue={address.bairro}
+                isDisabled={isSubmitting}
+                error={errors.bairro}
+                {...register("bairro")}
+              />
+            </Box>
+          </HStack>
+          <HStack spacing={3} align="flex-start">
+            <Select
+              name="estado"
+              label="Estado:"                
+              isLoading={states.isFetching}
+              defaultValue={address.estado ?? 'defaultValue'}
+              isDisabled={isSubmitting}
+              error={errors.estado}
+              {...register("estado")}
+              onChange={handleSelectState}
+            >
+              <option value="defaultValue" hidden aria-readonly>Selecione um estado...</option>
+              { states.data?.map(({ id, sigla, nome }) => {
+                return (
+                  <option key={id} value={sigla}>
+                    {nome}
+                  </option>
+                );
+              }) }
+            </Select>
+            <Select
+              name="cidade"
+              label="Cidade:"                
+              isLoading={cities.isLoading}
+              isDisabled={!selectedState || isSubmitting}
+              defaultValue={cities ? address.cidade : 'defaultValue'}
+              error={errors.cidade}
+              {...register("cidade")}
+            >
+              <option value="defaultValue" hidden aria-readonly>Selecione uma cidade...</option>
+              { cities.data?.map(({ id, nome }) => {
+                return <option key={id} value={nome}>{nome}</option>;
+              }) }
+            </Select>
+            
+            <Input
+              name="cep"
+              label="CEP:"
+              type="tel"                
+              defaultValue={address.cep}
+              isDisabled={isSubmitting}
+              error={errors.cep}
+              {...register("cep")}
+              onChange={({ target }) => target.value = masked.cep(target.value)}
+            />
+          </HStack>
           <Input
-            name="cep"
-            label="CEP:"
-            defaultValue={profile.address.cep}
-            error={errors.cep}
-            {...register("cep")}
-            onChange={({ target }) => target.value = masked.cep(target.value)}
+            name="complemento"
+            label="Complemento:"
+            defaultValue={address.complemento}
+            isDisabled={isSubmitting}
+            error={errors.complemento}
+            {...register("complemento")}
           />
-        </HStack>
-        <Input
-          name="complemento"
-          label="Complemento:"
-          defaultValue={profile.address.complemento}
-          error={errors.complemento}
-          {...register("complemento")}
-        />
-      </Stack>
+        </Stack>
+      </Section>
+
       <HStack spacing={3} justifyContent="flex-end" my={4}>        
         <Button        
           type="reset"
@@ -334,8 +359,9 @@ const ProfileForm = ({ profile }: Props) => {
           isLoading={isSubmitting}
           isDisabled={!isDirty}
         >Salvar alterações</Button>
-      </HStack>      
-    </Flex>
+      </HStack>
+      
+    </Stack>      
   );
 }
 

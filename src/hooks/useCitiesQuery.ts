@@ -6,8 +6,8 @@ export type City = {
   nome: string;
 };
 
-const URL = process.env.NEXT_PUBLIC_IBGE_CITIES_URL
-const OPTIONS = process.env.NEXT_PUBLIC_IBGE_CITIES_OPTIONS
+const URL = "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
+const OPTIONS = "municipios?orderBy=nome"
 
 const getCities = async (uf: string ) => {
   return await axios.get<City[]>(`${URL}/${uf}/${OPTIONS}`)

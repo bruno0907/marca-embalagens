@@ -6,6 +6,8 @@ import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
 import { ProfileForm } from "../../components/pages/Profile/ProfileForm";
+import { FormSkeleton } from "../../components/pages/Profile/ProfileSkeleton";
+import { ProfileAvatar } from "../../components/pages/Profile/ProfileAvatar";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 
@@ -13,13 +15,13 @@ import {
   Button,
   Center,
   Flex,
+  HStack,
   Text,  
 } from "@chakra-ui/react";
-import { FormSkeleton } from "../../components/pages/Profile/ProfileSkeleton";
 
 export default function Profile() {
   const router = useRouter()
-  const { data: profile, isLoading, isError } = useProfileQuery()
+  const profile = useProfileQuery()
 
   return (
     <>
@@ -30,12 +32,14 @@ export default function Profile() {
         <Flex>
           <Header title="Perfil" />
         </Flex>
-        <Divider />
-        <Content>
-          {isLoading ? (
+        <Divider />        
+        {profile.isLoading ? (
+          <Content>
             <FormSkeleton />
-          ) : isError || !profile ? (
-            <Center  minH="65vh" flexDir="column">            
+          </Content>
+        ) : profile.isError ? (
+          <Content>
+            <Center flexDir="column">            
               <Text 
                 fontSize="xl" 
                 mb="8" 
@@ -51,10 +55,16 @@ export default function Profile() {
                 Tentar novamente
               </Button>
             </Center>
-          ) : (
-            <ProfileForm profile={profile}/>
-          )}          
-        </Content>
+          </Content>
+        ) : (
+          <HStack spacing={12} align="flex-start">
+            <ProfileAvatar profile={profile.data.data}/>            
+            <ProfileForm 
+              profile={profile.data.data}
+              address={profile.data.address}
+            />
+          </HStack>
+        )}        
       </AuthWrapper>
     </>
   )
