@@ -4,6 +4,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Input } from "../../Input";
 
+import { useUpdateUserMutation } from '../../../hooks/useUpdateUserMutation'
+import { User } from "../../../hooks/useUserQuery";
+import { InputMask } from "../../../utils/inputMasksHandler";
+
 import {
   Flex,  
   Center,
@@ -14,9 +18,6 @@ import {
   Button,
   useToast,  
 } from "@chakra-ui/react";
-
-import { useUpdateUserMutation } from '../../../hooks/useUpdateUserMutation'
-import { User } from "../../../hooks/useUserQuery";
 
 export type UpdateUserFormProps = {
   user: User ;
@@ -29,26 +30,21 @@ const updateUserSchema = yup.object().shape({
     .min(5, 'O nome deve ter no mínimo 5 caracteres')
     .max(120, 'O nome não deve ultrapassar 120 caracteres')
     .trim(),
-  razao_social: yup.string()
-    .min(10, 'A razão social deve ter no mínimo 10 caracteres')
-    .max(120, 'A razão social não deve ultrapassar 120 caracteres')    
-    .trim(),
+  razao_social: yup.string().trim(),
   telefone: yup.string().trim(),
-  celular: yup.string().trim(),
+  celular: yup.string().required().trim(),
   email: yup.string()
     .email('Formato de e-mail inválido')
     .trim(),
   cpf_cnpj: yup.string().trim(),
   rg_ie: yup.string().trim(),
-  contato: yup.string()
-    .min(5, 'O contato deve ter no mínimo 5 caracteres')
-    .max(120, 'O contato não deve ultrapassar 120 caracteres')
-    .trim(),
+  contato: yup.string().trim(),
   outras_informacoes: yup.string().trim(), 
 });
 
 const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {    
   const toast = useToast()  
+  const masked = new InputMask()
 
   const {
     formState,
@@ -56,17 +52,6 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
     register,   
     reset
   } = useForm<User>({
-    defaultValues: {
-      nome: user?.nome,
-      razao_social: user?.razao_social,
-      telefone: user?.telefone,
-      celular: user?.celular,
-      email: user?.email,
-      cpf_cnpj: user?.cpf_cnpj,
-      rg_ie: user?.rg_ie,
-      contato: user?.contato,
-      outras_informacoes: user?.outras_informacoes,
-    },
     resolver: yupResolver(updateUserSchema)
   })
 
@@ -77,7 +62,6 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
   } = formState
 
   const updateUserMutation = useUpdateUserMutation()
-
 
   const handleUpdateUser: SubmitHandler<User> = async values => {
     const updatedUser = {
@@ -138,12 +122,13 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
           <Text color="blue.500" fontWeight="bold">{user.natureza_cliente}</Text>
         </HStack>
         
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
             name="nome"
             label="Nome:"
             isDisabled={isSubmitting}
-            error={errors?.nome}
+            defaultValue={user.nome ?? ''}
+            error={errors.nome}
             {...register("nome")}
           />
           { user.natureza_cliente === 'Jurídica' &&
@@ -151,56 +136,74 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
               name="razao_social"
               label="Razão Social:"
               isDisabled={isSubmitting}
-              error={errors?.razao_social}
-              {...register("razao_social")}
+              defaultValue={user.razao_social ?? ''}
+              error={errors.razao_social}
+              {...register("razao_social")}              
             />
 
           }
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
+            type="tel"
             name="telefone"
             label="Telefone:"
             isDisabled={isSubmitting}
-            error={errors?.telefone}
+            defaultValue={user.telefone ?? ''}
+            error={errors.telefone}
             {...register("telefone")}
+            onChange={({ target }) => target.value = masked.phone(target.value)}
           />
           <Input
+            type="tel"
             name="celular"
             label="Celular:"
             isDisabled={isSubmitting}
-            error={errors?.celular}
+            defaultValue={user.celular ?? ''}
+            error={errors.celular}
             {...register("celular")}
+            onChange={({ target }) => target.value = masked.celphone(target.value)}
           />
           <Input
-            name="email"
             type="email"
+            name="email"
             label="E-mail:"
             isDisabled={isSubmitting}
-            error={errors?.email}
+            defaultValue={user.email ?? ''}
+            error={errors.email}
             {...register("email")}
           />
         </HStack>
-        <HStack spacing={3}>
+        <HStack spacing={3} align="flex-start">
           <Input
+            type="tel"
             name="cpf_cnpj"
             label={ user.natureza_cliente === 'Jurídica' ? 'CNPJ:' : 'CPF:' }
             isDisabled={isSubmitting}
-            error={errors?.cpf_cnpj}
+            defaultValue={user.cpf_cnpj ?? ''}
+            error={errors.cpf_cnpj}
             {...register("cpf_cnpj")}
+            onChange={
+              ({ target }) => user.natureza_cliente === 'Jurídica' 
+              ? target.value = masked.cnpj(target.value) 
+              : masked.cpf(target.value)
+            }
           />
           <Input
+            type="tel"
             name="rg_ie"
             label={ user.natureza_cliente === 'Jurídica' ? 'Inscrição Estadual:' : 'RG:' }
             isDisabled={isSubmitting}
-            error={errors?.rg_ie}
+            defaultValue={user.rg_ie ?? ''}
+            error={errors.rg_ie}
             {...register("rg_ie")}
           />          
           <Input
             name="contato"
             label="Contato:"
             isDisabled={isSubmitting}
-            error={errors?.contato}
+            defaultValue={user.contato ?? ''}
+            error={errors.contato}
             {...register("contato")}
           />          
         </HStack>        
@@ -211,7 +214,8 @@ const UpdateUserForm = ({ user, onClose }: UpdateUserFormProps) => {
           name="outras_informacoes"
           label="Outras Informações:"
           isDisabled={isSubmitting}
-          error={errors?.outras_informacoes}
+          defaultValue={user.outras_informacoes ?? ''}
+          error={errors.outras_informacoes}
           {...register("outras_informacoes")}
         />
       </Stack>
