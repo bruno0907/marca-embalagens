@@ -19,7 +19,10 @@ const useUpdateEstimateMutation = () => useMutation (
 
     return data
   }, {    
-    onSuccess: response => queryClient.invalidateQueries(['estimate', response[0].id]),
+    onSuccess: async response => {
+      await queryClient.invalidateQueries(['estimate', response[0].id]),
+      await queryClient.invalidateQueries(['estimate[]'])
+    },
     onError: error => console.log('New estimate mutation error: ', error)
   }
 ) 
