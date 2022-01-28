@@ -114,7 +114,7 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
   useEffect(() => {
     const { estado, cidade } = address
     setSelectedState(estado)
-    reset({ cidade })
+    reset({ estado, cidade })
 
     return () => setSelectedState('')
 
@@ -144,8 +144,7 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
             name="estado"
             label="Estado:"  
             isLoading={states.isFetching}                      
-            error={errors.estado} 
-            defaultValue={address.estado}
+            error={errors.estado}
             {...register("estado")}
             onChange={handleStateSelect}
           >
