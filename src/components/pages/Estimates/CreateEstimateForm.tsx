@@ -115,7 +115,7 @@ export const CreateEstimateForm = () => {
   }
 
   return (
-    <Section as="form" onSubmit={handleSubmit(handleCreateEstimate, handleSubmitError)} spacing={12}>
+    <Stack as="form" onSubmit={handleSubmit(handleCreateEstimate, handleSubmitError)} spacing={12}>
       
       <Section>
         <SectionHeader>
@@ -138,7 +138,7 @@ export const CreateEstimateForm = () => {
 
       <Section>
         <SectionHeader>
-          <SectionTitle title="Descrição do orçamento"/>
+          <SectionTitle title="Descrição"/>
         </SectionHeader>
         <Content>
           <Stack spacing={6}>
@@ -150,7 +150,7 @@ export const CreateEstimateForm = () => {
 
       <Section>
         <SectionHeader>
-          <SectionTitle title="Informações adicionais"/>
+          <SectionTitle title="Outras informações"/>
         </SectionHeader>
         <Content>
             <Input
@@ -180,6 +180,6 @@ export const CreateEstimateForm = () => {
         >Salvar orçamento</Button>
       </HStack>
 
-    </Section>
+    </Stack>
   )
 }

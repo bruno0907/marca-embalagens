@@ -99,52 +99,44 @@ export const EstimatesList = ({ query }: Props) => {
     <Table>
       <Thead>
         <Tr bgColor="blue.500">
-        <Th color="gray.50" w="28">
-            <Flex align="center" justify="center">
+          <Th color="gray.50" w="28">
+            <Flex align="center">
               Número
-              { isFetching && 
-                <Spinner size="sm" color="gray.50" ml="4"/>
-              }
+              { isFetching && <Spinner size="sm" color="gray.50" ml="4"/>}
             </Flex>
           </Th>            
-            <Th color="gray.50">Cliente</Th>
-            <Th color="gray.50" w="44">Data de emissão</Th>
-            <Th color="gray.50" w="44">Data de entrega</Th>
-            <Th color="gray.50" w="44" textAlign="center">Status</Th>
+            <Th color="gray.50" w="40%">Cliente</Th>
+            <Th color="gray.50">Data de emissão</Th>
+            <Th color="gray.50">Data de entrega</Th>
+            <Th color="gray.50">Status</Th>
         </Tr>
       </Thead>
       <Tbody>
-        { data?.map(estimate => {
-            return (
-              <Tr
-                key={estimate.id}
-                fontWeight="medium"
-                onClick={() => router.push(`/estimates/${estimate.id}`)}
-                onMouseEnter={() => handlePrefetchEstimate(estimate.id)}
-                _hover={{ cursor: 'pointer', color: 'blue.500'}}
-              >
-                <Td textAlign="center">{handleFormatPadStart(estimate.numero_orcamento)}</Td>                        
-                <Td>{estimate.cliente}</Td>
-                <Td>{handleFormatDate(estimate.created_at)}</Td>
-                <Td>{handleFormatDate(estimate.data_entrega)}</Td>
-                <Td textAlign="center">
-                  <Badge 
-                  px="4" 
-                  py="2" 
-                  borderRadius="md" 
+        {data?.map(estimate => {
+          return (
+            <Tr
+              key={estimate.id}
+              fontWeight="medium"
+              onClick={() => router.push(`/estimates/${estimate.id}`)}
+              onMouseEnter={() => handlePrefetchEstimate(estimate.id)}
+              _hover={{ cursor: 'pointer', color: 'blue.500'}}
+            >
+              <Td>{handleFormatPadStart(estimate.numero_orcamento)}</Td>                        
+              <Td>{estimate.cliente}</Td>
+              <Td>{handleFormatDate(estimate.created_at)}</Td>
+              <Td>{handleFormatDate(estimate.data_entrega)}</Td>
+              <Td>
+                <Badge px="2" py="1" borderRadius="md" 
                   colorScheme={
-                      estimate.status === 'Pendente' ? 'linkedin' :
-                      estimate.status === 'Aprovado' ? 'whatsapp' : 
-                      'pink' 
-                    }
-                  >
-                    {estimate.status}
-                  </Badge>
-                </Td>   
-              </Tr>
-            )
-          }
-        )}
+                    estimate.status === 'Pendente' ? 'linkedin' :
+                    estimate.status === 'Aprovado' ? 'whatsapp' : 
+                    'pink' 
+                  }
+                >{estimate.status}</Badge>
+              </Td>   
+            </Tr>
+          )
+        })}
       </Tbody>
     </Table>
     

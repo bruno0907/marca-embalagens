@@ -126,8 +126,7 @@ export default function EstimateToPrint({ params }: Props) {
                   />                  
                   
                   <HStack spacing={3} justify="space-between">
-
-                    <Stack spacing={3}>
+                    <Stack>
                       <Text>
                         <strong>Cliente:</strong> {estimate.data.cliente}
                       </Text>
@@ -136,10 +135,14 @@ export default function EstimateToPrint({ params }: Props) {
                         {handleFormatDate(estimate.data.created_at)}
                       </Text>
                     </Stack>
-
-                    {estimate.data.status === 'Aprovado' && (
-                      <Stack spacing={3} px="16">
-                        <Heading color="green.400">
+                    {estimate.data.status !== 'Pendente' && (
+                      <Stack>
+                        <Heading 
+                          size="lg" 
+                          color={estimate.data.status === 'Não aprovado' 
+                            ? 'red.400' 
+                            : 'green.400'
+                          }>
                           {estimate.data.status}
                         </Heading>
                         <Text fontWeight="bold">
@@ -147,18 +150,9 @@ export default function EstimateToPrint({ params }: Props) {
                         </Text>
                       </Stack>
                     )}
-                    {estimate.data.status === 'Não aprovado' && (
-                      <Stack spacing={3} px="16">
-                        <Heading color="red">
-                          {estimate.data.status}
-                        </Heading>
-                        <Text fontWeight="bold">
-                          Data: {handleFormatDate(estimate.data.created_at)}                      
-                        </Text>
-                      </Stack>
-                    )}
-
                   </HStack>
+
+                  <Heading size="md" textAlign="center">Descrição</Heading>
 
                   <Table>
                     <Thead>
@@ -195,7 +189,7 @@ export default function EstimateToPrint({ params }: Props) {
                         borderWidth="1px"
                         borderColor="gray.300"
                         borderRadius="md"
-                        minH="100px"
+                        minH="80px"
                         w="100%"
                       >
                         {estimate.data.observacoes.split('\n').map((line, index) => {
