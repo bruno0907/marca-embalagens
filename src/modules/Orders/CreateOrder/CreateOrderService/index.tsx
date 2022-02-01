@@ -5,13 +5,13 @@ import { useAuth } from '../../../../contexts/useAuth'
 import { useCreateOrder } from '../../../../contexts/useCreateOrder'
 import { useCartContext } from '../../../../contexts/useCart'
 
-import { CreateOrderUseCase } from '../CreateOrderUseCase'
+import { CreateOrderModel } from '../CreateOrderModel'
 
 import { NewOrder, useCreateOrderMutation } from "../../../../hooks/useCreateOrderMutation"
 
 import { useToast } from '@chakra-ui/react'
 
-const CreateOrderController = () => {
+export const CreateOrderService = () => {
   const router = useRouter()
   const { session } = useAuth()
   const toast = useToast()
@@ -71,10 +71,6 @@ const CreateOrderController = () => {
 
   }
   return (
-    <CreateOrderUseCase onSubmit={handleSubmit}/>
+    <CreateOrderModel onSubmit={handleSubmit}/>
   )
-}
-
-export {
-  CreateOrderController
 }

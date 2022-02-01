@@ -7,22 +7,16 @@ import { Table } from "../Table"
 import { useCartContext } from "../../contexts/useCart"
 
 import { Thead, Tr, Th, Td, Tbody, Button, Flex, Text, Icon,  } from "@chakra-ui/react"
-import { FiMinus, FiPlus, FiTrash2, FiX } from "react-icons/fi"
+import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi"
 
 
 const Cart = () => {
   const {
     cartProducts,
-    setCartProducts,
     cartTotal,
     handleRemoveProductFromCart,
     handleProductAmountInCart, 
   } = useCartContext()
-
-  useEffect(() => {
-
-    return () => setCartProducts([])
-  }, [setCartProducts])
 
   return (
     <Table>

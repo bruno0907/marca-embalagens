@@ -2,7 +2,7 @@ import * as yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import { NewOrder } from "../../../../hooks/useCreateOrderMutation"
-import { CreateOrderForm } from "../CreateOrderForm"
+import { CreateOrderView } from "../CreateOrderView"
 
 const newOrderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
@@ -15,17 +15,13 @@ type Props = {
   onSubmit: (values: NewOrder) => Promise<Response>
 }
 
-const CreateOrderUseCase = ({ onSubmit }: Props) => {
+export const CreateOrderModel = ({ onSubmit }: Props) => {
   const form = useForm<NewOrder>({
     mode: 'onSubmit',
     resolver: yupResolver(newOrderSchema)
   })
   
   return (
-    <CreateOrderForm form={form} onSubmit={onSubmit}/>
+    <CreateOrderView form={form} onSubmit={onSubmit}/>
   )
-}
-
-export {
-  CreateOrderUseCase
 }

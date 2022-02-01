@@ -5,8 +5,8 @@ import { AuthWrapper } from "../../components/AuthWrapper";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
-import { ProfileForm } from "../../modules/ProfileModule/ProfileForm";
-import { ProfileAvatar } from "../../modules/ProfileModule/ProfileAvatar";
+import { ProfileForm } from "../../modules/Profile/ProfileForm";
+import { ProfileAvatar } from "../../modules/Profile/ProfileAvatar";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 

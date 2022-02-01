@@ -27,7 +27,7 @@ type Props = {
   onSubmit: (values: NewOrder) => any;
 }
 
-const CreateOrderForm = ({ onSubmit, form }: Props) => {
+export const CreateOrderView = ({ onSubmit, form }: Props) => {
   const router = useRouter()
 
   const {
@@ -104,8 +104,4 @@ const CreateOrderForm = ({ onSubmit, form }: Props) => {
       </HStack>
     </Stack>
   )
-}
-
-export {
-  CreateOrderForm
 }

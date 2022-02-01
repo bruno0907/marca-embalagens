@@ -4,8 +4,8 @@ import { Header } from '../../components/Header'
 import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 
-import { CreateOrderModule } from '../../modules/Order/CreateOrderModule'
 import { CreateOrderProvider } from '../../contexts/useCreateOrder'
+import { CreateOrderModule } from '../../modules/Orders/CreateOrder'
 
 export default function NewOrder() {
   

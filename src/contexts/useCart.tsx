@@ -37,12 +37,7 @@ const CartContext = createContext({} as ContextProps)
 const CartProvider = ({ children }: ProviderProps) => {
   const [selectedProduct, setSelectedProduct] = useState<Product>(null)
   const [productAmount, setProductAmount] = useState(0)
-  const [cartProducts, setCartProducts] = useState<OrderProduct[]>([{
-    quantidade: 0,
-    produto: '',
-    valor_unitario: 0,
-    valor_total: 0
-  }])
+  const [cartProducts, setCartProducts] = useState<OrderProduct[]>([])
   const [cartTotal, setCartTotal] = useState(0)
   
   const handleAddProductToCart = (ref: MutableRefObject<HTMLSelectElement>) => {    
