@@ -13,7 +13,7 @@ const Content = ({ children, ...rest }: Props) => {
       p="8"
       bgColor="gray.50"
       borderRadius="md"
-      boxShadow="sm"
+      boxShadow="md"
       {...rest}
     >
       {children}

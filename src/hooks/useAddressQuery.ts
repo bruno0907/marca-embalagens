@@ -1,45 +1,20 @@
-import { useQuery } from "react-query";
-import { supabase } from "../database/supabase";
+import router from "next/router";
+import { useQuery, UseQueryResult } from "react-query";
+import { Address, getAddressService } from "../services/address/getAddressService";
 
-export type Address = {
-  id: string;
-  user_id: string;
-  endereco: string;
-  bairro: string;
-  cidade: string;
-  estado: string;
-  cep: string;
-  complemento: string; 
-  principal: boolean; 
-}
-
-const getAddress = async (id: string): Promise<Address> => {
-  try {
-    const { data, error } = await supabase
-      .from<Address>('addresses')
-      .select()
-      .eq('id', id)
-      .single()
-  
-    if(error) throw new Error(error.message)
-  
-    return data
-    
-  } catch (error) {
-    throw error
-    
-  }  
-}
-
-const useAddressQuery = (id: string) => useQuery(
+const useAddressQuery = (id: string): UseQueryResult<Address> => useQuery(
   ['address', id], 
-  () => getAddress(id), {
+  async () => {
+    const { data, error } = await getAddressService(id)
+
+    if(error) throw new Error(error.message)
+
+    return data
+  }, {
     staleTime: 1000 * 60 * 10, //10minutes
-    useErrorBoundary: true
   }
 )  
 
 export {
-  useAddressQuery,
-  getAddress
+  useAddressQuery  
 }

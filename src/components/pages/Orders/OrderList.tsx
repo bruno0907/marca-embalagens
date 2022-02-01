@@ -23,7 +23,7 @@ type Props = {
   filterValue: number;
 }
 
-const OrdersList = ({ filterValue }: Props) => {
+export const OrdersList = ({ filterValue }: Props) => {
   const router = useRouter()
 
   const orders = useOrdersQuery(filterValue)
@@ -132,5 +132,3 @@ const OrdersList = ({ filterValue }: Props) => {
     
   )
 }
-
-export { OrdersList }

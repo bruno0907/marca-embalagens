@@ -1,67 +1,32 @@
-import { useQuery } from "react-query"
-import { supabase } from "../database/supabase"
-import { Address } from "./useAddressQuery"
+import { useQuery, UseQueryResult } from "react-query"
+import { Address } from "../services/address/getAddressService"
+import { getAddressesService } from "../services/addresses/getAddressesService"
+import { getProfileService, Profile } from "../services/profile/getProfileService"
 
 type ProfileQuery = {
-  data: Profile;
-  address: Address;
+  profile: Profile;
+  addresses: Address[];
 }
 
-export type Profile = {
-  id: string;
-  user_id: string;    
-  username: string;
-  nome: string;
-  razao_social: string;  
-  cpf_cnpj: string;
-  rg_ie: string;  
-  email: string;
-  telefone: string;
-  celular: string;
-  avatar: string;
-  situacao_cadastral: boolean;
-}
+const useProfileQuery = (): UseQueryResult<ProfileQuery> => useQuery(
+  ['profile'], async () => {
+    const profile = await getProfileService()
 
-const getProfile = async (): Promise<ProfileQuery> => {
-  try {
-    const user = supabase.auth.user()
-  
-    if(!user) throw new Error('User not authenticated')
+    if(profile.error) throw Error('Profile not found')
+
+    const address = await getAddressesService(profile.data?.id)
     
-    const { data: profileData, error: profileError } = await supabase
-        .from<Profile>('profiles')
-        .select()
-        .eq('user_id', user.id)
-        .single()    
-    
-    if(profileError) throw new Error(profileError.message)
-    
-    const { data: profileAddress, error: profileAddressError } = await supabase
-      .from<Address>('addresses')
-      .select()
-      .eq('user_id', profileData.id)
-      .single()
-      
-    if(profileAddressError) throw new Error(profileAddressError.message)
-  
-    if(!profileAddress) throw new Error('Profile address not found')
-  
-    return {
-      data: profileData,
-      address: profileAddress,
+    if(address.error) throw Error('Address not found')
+
+    const response: ProfileQuery = {
+      profile: profile.data,
+      addresses: address.data
     }
-    
-  } catch (error) {
-    throw error
-    
-  }
-}
 
-const useProfileQuery = () => useQuery(
-  ['profile'], 
-  () => getProfile(), {
-    staleTime: 1000 * 10 * 60,
-    useErrorBoundary: true,
+    return response
+
+  }, {
+    staleTime: 1000 * 10 * 60
   }
 )
 

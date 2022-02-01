@@ -1,15 +1,16 @@
 import dynamic from 'next/dynamic'
 
 import { CreateAddressFormProps } from './CreateAddressForm'
-import { LoadingSkeleton } from './LoadingSkeleton'
-import { ErrorComponent } from './ErrorComponent'
 import { AddressList } from './AddressList'
 import { ModalProps } from '../Modal'
 
 import { useAddressesQuery } from '../../hooks/useAddressesQuery'
 
-import { Box, Button, Flex, Heading, Spacer, useDisclosure } from "@chakra-ui/react"
-import { FiEdit } from 'react-icons/fi'
+import { Text, Skeleton, useDisclosure } from "@chakra-ui/react"
+
+import { Section } from '../Section'
+import { SectionHeader } from '../SectionHeader'
+import { SectionTitle } from '../SectionTitle'
 import { Content } from '../Content'
 
 const Modal = dynamic<ModalProps>(() => import('../Modal')
@@ -30,24 +31,42 @@ const AddressesDetails = ({ userId }: AddressesDetailsProps) => {
 
   const addresses = useAddressesQuery(userId)
 
-  if(addresses.isLoading) return <LoadingSkeleton />    
+  if(addresses.isLoading) {
+    return (
+      <Section flex="1">
+        <SectionHeader>
+          <SectionTitle title="Endereço"/>
+        </SectionHeader>     
+        <Content>
+          <Skeleton h="14" borderRadius="md"/>
+        </Content>
+      </Section>
+    )
+  }
 
-  if(addresses.isError) return <ErrorComponent />
+  if(addresses.isError) {
+    return (
+      <Section flex="1">
+        <SectionHeader>
+          <SectionTitle title="Endereço"/>
+        </SectionHeader>
+        <Content>
+          <Text>Ocorreu um erro ao carregar os endereços.</Text>
+        </Content>
+      </Section>
+    )
+  }
 
   return (
     <>
-      <Content w="100%">
-        <Flex align='center' mb="8">
-          <Heading fontSize="2xl">Endereços</Heading>
-          <Spacer />
-          <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => onOpen()}>
-            Novo endereço
-          </Button>
-        </Flex>
-        <Box mb="8">
-          <AddressList addresses={addresses.data}/>        
-        </Box>
-      </Content>
+      <Section flex="1">
+        <SectionHeader>
+          <SectionTitle title="Endereço"/>
+        </SectionHeader>
+        <Content>
+          <AddressList addresses={addresses.data}/>
+        </Content>
+      </Section>
       <Modal isOpen={isOpen} onClose={onClose} title="Novo endereço">
         <CreateAddressForm
           userId={String(userId)} 

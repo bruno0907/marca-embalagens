@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 
-import { Content } from "../../Content"
+import { Section } from '../../Section'
 
 import { InformationField } from '../../InformationField'
 import { ModalProps } from '../../Modal'
@@ -11,17 +11,14 @@ import { User, useUserQuery } from '../../../hooks/useUserQuery'
 
 import { 
   Text,
-  Button,
-  Stack,  
-  Spinner,  
-  Flex,
-  Heading,
-  Spacer,
+  Stack,
   Skeleton,
   useDisclosure,
-  Center,
-  Box,
-  SimpleGrid
+  SimpleGrid,
+  GridItem,
+  Button,
+  HStack,
+  Icon
 } from "@chakra-ui/react"
 
 import { 
@@ -31,34 +28,24 @@ import {
   FiPhone, 
   FiSmartphone, 
   FiUser,
-  FiCreditCard,   
+  FiCreditCard,
+  FiEdit2,   
 } from 'react-icons/fi'
+import { SectionHeader } from '../../SectionHeader'
+import { SectionTitle } from '../../SectionTitle'
+import { Content } from '../../Content'
 
 type Props = { userId: string; }
 
 const Modal = dynamic<ModalProps>(
-  async () => {
-    const { Modal } = await import('../../Modal')
-
-    return Modal
-  }
+  () => import('../../Modal').then(({ Modal }) => Modal)
 )
 
 const UpdateUserForm = dynamic<UpdateUserFormProps>(
-  async () => {
-    const { UpdateUserForm } = await import('./UpdateUserForm')
-
-    return UpdateUserForm
-  }, {
-    loading: () => (
-      <Center mb="8">
-        <Spinner color="blue.500"/>
-      </Center>
-    )
-  }
+  () => import('./UpdateUserForm').then(({ UpdateUserForm }) => UpdateUserForm)
 )
 
-const UserDetails = ({ userId }: Props) => {
+const UserDetails = ({ userId }: Props) => {  
   const { isOpen, onClose, onOpen } = useDisclosure()  
   const [userToEdit, setUserToEdit] = useState<User>(null)
 
@@ -72,127 +59,144 @@ const UserDetails = ({ userId }: Props) => {
 
   if(user.isLoading || user.isFetching){ 
     return (
-      <Content>
-        <Flex align="center" mb="8">
-          <Heading fontSize="2xl">Dados Principais</Heading>
-          <Spinner size="sm" color="gray.600" ml="4"/>
-        </Flex>
-        <Stack spacing={3}>
-          <Skeleton h="10" borderRadius="md"/>
-          <Skeleton h="10" borderRadius="md"/>
-          <Skeleton h="10" borderRadius="md"/>
-          <Skeleton h="10" borderRadius="md"/>
-        </Stack>
-      </Content>    
+      <Section>
+        <SectionHeader>
+          <SectionTitle title="Dados cadastrais"/>
+        </SectionHeader>
+        <Content>
+          <Stack spacing={3}>
+            <Skeleton h="10" borderRadius="md"/>
+            <Skeleton h="10" borderRadius="md"/>
+            <Skeleton h="10" borderRadius="md"/>
+            <Skeleton h="10" borderRadius="md"/>
+          </Stack>
+        </Content>
+      </Section>    
     )
   }
 
   if(user.isError) {
     return (
-      <Content>
-        <Stack spacing={3}>
-          <Heading fontSize="2xl">Dados Principais</Heading>
-          <Text>Ocorreu um erro ao carregar os dados do cliente. Volte e tente novamente...</Text>
-        </Stack>
-      </Content>    
+      <Section>
+        <SectionHeader>
+          <SectionTitle title="Dados cadastrais"/>
+        </SectionHeader>
+        <Content>
+          <Text>Ocorreu um erro ao carregar os dados do cliente.</Text>
+        </Content>
+      </Section>    
     )
   }
 
   return (
-    <Content>
-      <Flex align="center" mb="8">
-        <Heading fontSize="2xl">Dados Principais</Heading>        
-        <Spacer/>
-        <Button colorScheme="blue" leftIcon={<FiEdit />} onClick={() => handleEditUser(user.data)}>Editar</Button>
-      </Flex>      
-      <SimpleGrid gap={3} columns={2}>
-        {user.data.nome && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiUser}
-              label={`Nome ${user.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
-              value={user.data.nome}
-            />
-          </Box>
-        )}
-        {user.data.natureza_cliente === 'Jurídica' && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiUser}
-              label="Razão Social"
-              value={user.data.razao_social}
-            />
-          </Box>
-        )}
-        {user.data.cpf_cnpj && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiCreditCard}
-              label={user.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
-              value={user.data.cpf_cnpj}
-            />
-          </Box>
-        )}      
-        {user.data.rg_ie && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiCreditCard}
-              label={user.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
-              value={user.data.rg_ie}
-            />
-          </Box>
-        )} 
-        {user.data.contato && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiUser}
-              label="Contato"
-              value={user.data.contato}
-            />
-          </Box>
-        )}
-        {user.data.telefone && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiPhone}
-              label="Telefone"
-              value={user.data.telefone}
-            />
-          </Box>
-        )} 
-        {user.data.celular && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiSmartphone}
-              label="Celular"
-              value={user.data.celular}
-            />
-          </Box>
-        )}
-        {user.data.email && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiMail}
-              label="E-mail"
-              value={user.data.email}
-            />
-          </Box>
-        )}
-        {user.data.outras_informacoes && (
-          <Box py="2" px="4" bgColor="gray.100" borderRadius="md">
-            <InformationField 
-              icon={FiList}
-              label="Outras informacões"
-              value={user.data.outras_informacoes}
-            />
-          </Box>
-        )}
-      </SimpleGrid>
-      
+    <>
+      <Section flex="1">
+        <SectionHeader>
+          <SectionTitle title="Dados cadastrais"/>
+        </SectionHeader>
+        <Content>
+          <HStack spacing={3} py={2} px={4} bgColor="gray.100" borderRadius="md" align="center">
+            <SimpleGrid columns={2} gap={3}>
+              {user.data.nome && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiUser}
+                    label={`Nome ${user.data.natureza_cliente === 'Jurídica' ? 'Fantasia' : ''}`}
+                    value={user.data.nome}
+                  />
+                </GridItem>
+              )}
+              {user.data.natureza_cliente === 'Jurídica' && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiUser}
+                    label="Razão Social"
+                    value={user.data.razao_social}
+                  />
+                </GridItem>
+              )}
+              {user.data.cpf_cnpj && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiCreditCard}
+                    label={user.data.natureza_cliente === 'Jurídica' ? 'CNPJ' : 'CPF'}
+                    value={user.data.cpf_cnpj}
+                  />
+                </GridItem>
+              )}      
+              {user.data.rg_ie && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiCreditCard}
+                    label={user.data.natureza_cliente === 'Jurídica' ? 'IE' : 'RG'}
+                    value={user.data.rg_ie}
+                  />
+                </GridItem>
+              )} 
+              {user.data.contato && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiUser}
+                    label="Contato"
+                    value={user.data.contato}
+                  />
+                </GridItem>
+              )}
+              {user.data.telefone && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiPhone}
+                    label="Telefone"
+                    value={user.data.telefone}
+                  />
+                </GridItem>
+              )} 
+              {user.data.celular && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiSmartphone}
+                    label="Celular"
+                    value={user.data.celular}
+                  />
+                </GridItem>
+              )}
+              {user.data.email && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiMail}
+                    label="E-mail"
+                    value={user.data.email}
+                  />
+                </GridItem>
+              )}
+              {user.data.outras_informacoes && (
+                <GridItem>
+                  <InformationField 
+                    icon={FiList}
+                    label="Outras informacões"
+                    value={user.data.outras_informacoes}
+                  />
+                </GridItem>
+              )}
+            </SimpleGrid>
+            <Button 
+              variant="link" 
+              colorScheme="blue" 
+              alignSelf="flex-start"
+              ml="auto"
+              p="2"
+              onClick={() => handleEditUser(user.data)} 
+              _hover={{ svg: { color: 'blue.600' }}}
+            >
+              <Icon as={FiEdit} fontSize={24} />
+            </Button>
+          </HStack>            
+        </Content>
+      </Section>
       <Modal isOpen={isOpen} onClose={onClose} title="Editar Cadastro">
         <UpdateUserForm user={userToEdit} onClose={onClose}/>
       </Modal>
-    </Content>
+    </>
   )  
 }
 

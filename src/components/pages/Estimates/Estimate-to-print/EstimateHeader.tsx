@@ -18,10 +18,10 @@ type Props = {
   estimateDeliveryDate: Date;
 }
 
-const EstimateHeader = ({ estimateNumber, estimateDeliveryDate }: Props) => {
-  const profile = useProfileQuery()
+export const EstimateHeader = ({ estimateNumber, estimateDeliveryDate }: Props) => {
+  const { data, isLoading, isError } = useProfileQuery()
 
-  if(profile.isLoading) {
+  if(isLoading) {
     return (
       <Center>
         <Spinner size="lg" color="blue.500"/>
@@ -29,7 +29,7 @@ const EstimateHeader = ({ estimateNumber, estimateDeliveryDate }: Props) => {
     )
   }
 
-  if(profile.isError) {
+  if(isError) {
     return (
       <Text>Ocorreu um erro ao carregar as informações do cliente...</Text>
     )
@@ -43,21 +43,23 @@ const EstimateHeader = ({ estimateNumber, estimateDeliveryDate }: Props) => {
       </Center>
 
       <Flex mx="4" flexDir="column" alignItems="flex-start" justify="center">
-        {profile.data.data.razao_social && (
-          <Text fontSize="x-small">{profile.data.data.razao_social}</Text>
+        {data.profile.razao_social && (
+          <Text fontSize="x-small">{data.profile.razao_social}</Text>
         )}
-        <Text fontSize="x-small">{profile.data.data.nome}</Text>
+        <Text fontSize="x-small">{data.profile.nome}</Text>
         <Text fontSize="x-small">
-          {profile.data.data.telefone && `${profile.data.data.telefone} / `}
-          {profile.data.data.celular}
+          {data.profile.telefone && `${data.profile.telefone} / `}
+          {data.profile.celular}
         </Text>
         <Box>
           <Text fontSize="x-small">
-            {profile.data.address.endereco} - {profile.data.address.bairro}
+            {data.addresses[0].endereco} 
+            {data.addresses[0].bairro && `- ${data.addresses[0].bairro}`}
           </Text>
           <Text fontSize="x-small">
-            {profile.data.address.cidade}/{profile.data.address.estado}
-            {profile.data.address.cep && `- ${profile.data.address.cep}`}
+            {data.addresses[0].cidade}
+            {data.addresses[0].estado && `/${data.addresses[0].estado}`}
+            {data.addresses[0].cep && `- ${data.addresses[0].cep}`}
           </Text>
         </Box>
       </Flex>
@@ -81,8 +83,4 @@ const EstimateHeader = ({ estimateNumber, estimateDeliveryDate }: Props) => {
              
     </Flex>
   );
-};
-
-export { 
-  EstimateHeader 
 };

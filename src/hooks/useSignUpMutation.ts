@@ -1,10 +1,9 @@
 import { useMutation } from 'react-query'
 import { queryClient } from '../contexts/queryContext'
 import { supabase } from '../database/supabase'
-import { createAddress } from '../services/createAddress'
-
-import { NewAddress } from './useCreateAddressMutation'
-import { Profile } from './useProfileQuery'
+import { createAddressService, NewAddress } from '../services/createAddressService'
+import { createProfileService, NewProfile } from '../services/profile/createProfileService'
+import { Profile } from '../services/profile/getProfileService'
 
 type SignUp = {
   email: string;
@@ -12,26 +11,8 @@ type SignUp = {
 }
 
 type NewProfileMutation = {
-  data: NewProfile;
+  profile: NewProfile;
   address: NewAddress;
-}
-
-export type NewProfile = {  
-  user_id: string;  
-  username: string;
-  nome: string | undefined;
-  razao_social: string | undefined;  
-  cpf_cnpj: string | undefined; 
-  rg_ie: string | undefined;  
-  email: string;
-  telefone: string | undefined;
-  celular: string | undefined;    
-}
-
-const createProfile = async (profile: NewProfile) => {
-  return await supabase
-    .from<Profile>('profiles')
-    .insert(profile)
 }
 
 const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> => {
@@ -62,7 +43,7 @@ const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> 
       rg_ie: undefined,
       telefone: undefined
     }
-    const { data: newProfile } = await createProfile(profile)
+    const { data: newProfile } = await createProfileService(profile)
   
     const address: NewAddress = {
       user_id: newProfile[0].id,
@@ -75,10 +56,10 @@ const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> 
       principal: true,
     }
   
-    const { data: newAddress } = await createAddress(address)
+    const { data: newAddress } = await createAddressService(address)
     
     return {
-      data: newProfile[0],
+      profile: newProfile[0],
       address: newAddress[0]
     }  
     
@@ -88,11 +69,7 @@ const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> 
   }
 }
 
-const useSignUpMutation = () => useMutation(
+export const useSignUpMutation = () => useMutation(
   async ({ email, password }: SignUp) => await signUp({ email, password }), {
   onSuccess: async profile => queryClient.setQueryData('profile', profile)
 })
-
-export {
-  useSignUpMutation
-}

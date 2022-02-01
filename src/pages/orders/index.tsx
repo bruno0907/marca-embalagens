@@ -42,7 +42,7 @@ export default function Orders() {
         <Divider />
         <Content>
           <Stack spacing={6}>
-            <HStack spacing={3}>
+            <HStack spacing={6}>
               <SearchInput
                 type="number"
                 ref={searchInputRef}

@@ -1,36 +1,17 @@
 import { useQuery } from "react-query";
-import { supabase } from "../database/supabase";
-import { Address } from "./useAddressQuery";
+import { getAddressesService } from "../services/addresses/getAddressesService";
 
-const getAddresses = async (id: string): Promise<Address[]> => {  
-  try {
-    const { data, error } = await supabase
-      .from<Address>('addresses')
-      .select()
-      .eq('user_id', id)
-      .order('principal', {
-        ascending: false,      
-      })
-  
-    if(error) throw new Error(error.message)
-  
-    return data
-    
-  } catch (error) {
-    throw error
-    
-  }  
-}
+export const useAddressesQuery = (userId: string) => useQuery(
+  ['address[]', userId], 
+  async () => { 
+    const { data, error } = await getAddressesService(userId)
 
-const useAddressesQuery = (id: string) => useQuery(
-  ['address[]', id], 
-  () => getAddresses(id), {
+    if(error) throw Error('No addresses found')
+
+    return {
+      addresses: data
+    }
+  }, {
     staleTime: 1000 * 60 * 10, //10minutes
-    useErrorBoundary: true
   }
 )  
-
-export {
-  useAddressesQuery,
-  getAddresses
-}

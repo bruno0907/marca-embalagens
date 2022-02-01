@@ -45,7 +45,7 @@ export default function Supplier({ params }: Props) {
           >Imprimir</Button>
         </Header>
         <Divider />        
-        <HStack spacing={3} align="flex-start" >
+        <HStack spacing={6} align="flex-start" >
           <SupplierDetails supplierId={id}/>
           <AddressesDetails userId={id}/>          
         </HStack>

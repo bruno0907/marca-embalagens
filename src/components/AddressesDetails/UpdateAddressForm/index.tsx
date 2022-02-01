@@ -112,6 +112,8 @@ const UpdateAddressForm = ({ address, onClose }: UpdateAddressFormProps) => {
   }
 
   useEffect(() => {
+    if(!address) return
+    
     const { estado, cidade } = address
     setSelectedState(estado)
     reset({ estado, cidade })

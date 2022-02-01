@@ -8,12 +8,10 @@ import { handleFormatPadStart } from "../../../../utils/handleFormatPadStart";
 import { 
   Flex,
   Text,
-  Box,
   Center,
   Spinner,
   HStack,
   Stack,
-  Image
 } from "@chakra-ui/react";
 
 type Props = {
@@ -21,10 +19,10 @@ type Props = {
   orderDeliveryDate: Date;
 }
 
-const OrderHeader = ({ orderNumber, orderDeliveryDate }: Props) => {
-  const profile = useProfileQuery()
+export const OrderHeader = ({ orderNumber, orderDeliveryDate }: Props) => {
+  const { data, isLoading, isError } = useProfileQuery()  
 
-  if(profile.isLoading) {
+  if(isLoading) {
     return (
       <Center>
         <Spinner size="lg" color="blue.500"/>
@@ -32,38 +30,40 @@ const OrderHeader = ({ orderNumber, orderDeliveryDate }: Props) => {
     )
   }
 
-  if(profile.isError) {
+  if(isError) {
     return (
       <Text>Ocorreu um erro ao carregar as informações do cliente...</Text>
     )
   }
 
   return (    
-    <HStack spacing={6} justify="space-between" w="100%" borderWidth="1px" borderColor="gray.100" borderRadius="md" px={2} py={1}>
-      
+    <HStack spacing={6} justify="space-between" w="100%" borderWidth="1px" borderColor="gray.100" borderRadius="md" px={2} py={1}>      
       <Flex h="20" w="40" align="center">
         <Logo />
       </Flex>
-
       <Stack spacing={0}>
-        {profile.data.data.razao_social ? (
-          <Text fontSize="x-small">{profile.data.data.razao_social}</Text>
+        {data.profile.razao_social ? (
+          <>
+            <Text fontSize="x-small">{data.profile.razao_social}</Text>
+            <Text fontSize="x-small">{data.profile.nome}</Text>
+          </>
         ) : (
-          <Text fontSize="x-small">{profile.data.data.nome}</Text>
+          <Text fontSize="x-small">{data.profile.nome}</Text>
         )}
         <Text fontSize="x-small">
-          {profile.data.data.telefone && `${profile.data.data.telefone} / `}
-          {profile.data.data.celular && `${profile.data.data.celular}`}
-        </Text>        
-        <Text fontSize="x-small">
-          {profile.data.address.endereco} - {profile.data.address.bairro}
-        </Text>
-        <Text fontSize="x-small">
-          {profile.data.address.cidade}/{profile.data.address.estado}
-          {profile.data.address.cep && ` - ${profile.data.address.cep}`}
-        </Text>        
+          {data.profile.telefone && `${data.profile.telefone} / `}
+          {data.profile.celular}
+        </Text>       
+          <Text fontSize="x-small">
+            {data.addresses[0].endereco}
+            {data.addresses[0].bairro && ` - ${data.addresses[0].bairro}`}
+          </Text>
+          <Text fontSize="x-small">
+            {data.addresses[0].cidade}
+            {data.addresses[0].estado && `/${data.addresses[0].estado}`}
+            {data.addresses[0].cep && ` - ${data.addresses[0].cep}`}
+          </Text>
       </Stack>
-
       <Stack spacing={0}>
         <Flex align="center">
           <Text mr="2">Número do pedido:</Text>
@@ -77,10 +77,7 @@ const OrderHeader = ({ orderNumber, orderDeliveryDate }: Props) => {
             {handleFormatDate(orderDeliveryDate)}
           </Text>
         </Flex>
-      </Stack> 
-             
+      </Stack>              
     </HStack>
   );
 };
-
-export { OrderHeader };

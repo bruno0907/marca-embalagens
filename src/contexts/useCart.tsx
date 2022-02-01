@@ -1,4 +1,12 @@
-import { createContext, MutableRefObject, ReactNode, useState, useContext, useEffect } from 'react'
+import { 
+  createContext, 
+  MutableRefObject, 
+  ReactNode, 
+  useState, 
+  useContext, 
+  useEffect 
+} from 'react'
+
 import { OrderProduct } from '../hooks/useOrderQuery'
 import { Product } from '../hooks/useProductQuery'
 
@@ -27,10 +35,14 @@ type ProviderProps = { children: ReactNode; }
 const CartContext = createContext({} as ContextProps)
 
 const CartProvider = ({ children }: ProviderProps) => {
-
   const [selectedProduct, setSelectedProduct] = useState<Product>(null)
   const [productAmount, setProductAmount] = useState(0)
-  const [cartProducts, setCartProducts] = useState<OrderProduct[]>([])
+  const [cartProducts, setCartProducts] = useState<OrderProduct[]>([{
+    quantidade: 0,
+    produto: '',
+    valor_unitario: 0,
+    valor_total: 0
+  }])
   const [cartTotal, setCartTotal] = useState(0)
   
   const handleAddProductToCart = (ref: MutableRefObject<HTMLSelectElement>) => {    

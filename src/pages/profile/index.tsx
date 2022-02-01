@@ -5,9 +5,8 @@ import { AuthWrapper } from "../../components/AuthWrapper";
 import { Divider } from "../../components/Divider";
 import { Header } from "../../components/Header";
 import { Content } from "../../components/Content";
-import { ProfileForm } from "../../components/pages/Profile/ProfileForm";
-import { FormSkeleton } from "../../components/pages/Profile/ProfileSkeleton";
-import { ProfileAvatar } from "../../components/pages/Profile/ProfileAvatar";
+import { ProfileForm } from "../../modules/ProfileModule/ProfileForm";
+import { ProfileAvatar } from "../../modules/ProfileModule/ProfileAvatar";
 
 import { useProfileQuery } from "../../hooks/useProfileQuery";
 
@@ -16,12 +15,14 @@ import {
   Center,
   Flex,
   HStack,
+  SimpleGrid,
+  Skeleton,
   Text,  
 } from "@chakra-ui/react";
 
 export default function Profile() {
   const router = useRouter()
-  const profile = useProfileQuery()
+  const { data, isError, isLoading } = useProfileQuery()  
 
   return (
     <>
@@ -33,11 +34,24 @@ export default function Profile() {
           <Header title="Perfil" />
         </Flex>
         <Divider />        
-        {profile.isLoading ? (
+        {isLoading ? (
           <Content>
-            <FormSkeleton />
+            <SimpleGrid gap={3} columns={2}>      
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>
+              <Skeleton h="10" w="100%" borderRadius="md"/>      
+            </SimpleGrid>
           </Content>
-        ) : profile.isError ? (
+        ) : isError ? (
           <Content>
             <Center flexDir="column">            
               <Text 
@@ -58,10 +72,10 @@ export default function Profile() {
           </Content>
         ) : (
           <HStack spacing={12} align="flex-start">
-            <ProfileAvatar profile={profile.data.data}/>            
+            <ProfileAvatar profile={data.profile}/>            
             <ProfileForm 
-              profile={profile.data.data}
-              address={profile.data.address}
+              profile={data.profile}
+              address={data.addresses[0]}
             />
           </HStack>
         )}        

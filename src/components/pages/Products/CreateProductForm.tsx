@@ -21,6 +21,10 @@ import {
   FormLabel,
   useToast,  
 } from "@chakra-ui/react"
+import { Section } from "../../Section";
+import { SectionHeader } from "../../SectionHeader";
+import { SectionTitle } from "../../SectionTitle";
+import { Content } from "../../Content";
 
 const newProductSchema = yup.object().shape({
   nome: yup.string()
@@ -96,44 +100,45 @@ const CreateProductForm = () => {
   if(!user_id) return null
 
   return (
-    <Flex
-      as="form"
-      flexDir="column"
-      onSubmit={handleSubmit(handleNewUser)}
-    >
-      <Stack spacing={3} mb="12">
-        <HStack spacing={3}>
+    <Section as="form" onSubmit={handleSubmit(handleNewUser)}>
+      <SectionHeader>
+        <SectionTitle title="Dados do produto"/>
+      </SectionHeader>
+      <Content>
+        <Stack spacing={3} mb="12">
+          <HStack spacing={3}>
+            <Input
+              name="nome"
+              label="Nome:"
+              error={errors.nome}
+              {...register("nome")}
+            />
+            <FormControl w="sm">
+              <FormLabel>Valor unitário:</FormLabel>
+              <InputGroup borderColor="gray.300">
+                <InputLeftAddon>R$</InputLeftAddon>
+                <ChakraInput
+                  type="number"
+                  name="preco_unitario"                
+                  step="0.01"
+                  pattern="^\d+(?:\.\d{1,2})?$"                
+                  error={errors.preco_unitario}
+                  {...register("preco_unitario")}
+                />
+              </InputGroup>
+            </FormControl>
+          </HStack>        
           <Input
-            name="nome"
-            label="Nome do produto"
-            error={errors.nome}
-            {...register("nome")}
-          />
-          <FormControl w="sm">
-            <FormLabel>Valor unitário</FormLabel>
-            <InputGroup borderColor="gray.300">
-              <InputLeftAddon>R$</InputLeftAddon>
-              <ChakraInput
-                type="number"
-                name="preco_unitario"                
-                step="0.01"
-                pattern="^\d+(?:\.\d{1,2})?$"                
-                error={errors.preco_unitario}
-                {...register("preco_unitario")}
-              />
-            </InputGroup>
-          </FormControl>
-        </HStack>        
-        <Input
-          as="textarea"
-          h="80px"
-          p="3"
-          name="descricao"
-          label="Descrição do produto"
-          error={errors.descricao}
-          {...register("descricao")}
-        />          
-      </Stack>
+            as="textarea"
+            h="80px"
+            p="3"
+            name="descricao"
+            label="Descrição:"
+            error={errors.descricao}
+            {...register("descricao")}
+          />          
+        </Stack>
+      </Content>
       <HStack
         spacing={3}              
         justifyContent="flex-end"
@@ -158,7 +163,7 @@ const CreateProductForm = () => {
           Cadastrar
         </Button>
       </HStack>
-    </Flex>
+    </Section>
   );
 }
 

@@ -23,14 +23,14 @@ type Props = {
   query: number;
 }
 
-const EstimatesList = ({ query }: Props) => {
+export const EstimatesList = ({ query }: Props) => {
   const router = useRouter()
 
-  const estimates = useEstimatesQuery(query)
+  const { data, isLoading, isError, isFetching } = useEstimatesQuery(query)
 
   const handlePrefetchEstimate = async (id: string) => await prefetchEstimate(id)
 
-  if(estimates.isLoading) {
+  if(isLoading) {
     return (
       <Table>
         <Thead>
@@ -53,7 +53,7 @@ const EstimatesList = ({ query }: Props) => {
     )
   }
 
-  if(estimates.error) {
+  if(isError) {
     return (
       <Table>
         <Thead>
@@ -74,7 +74,7 @@ const EstimatesList = ({ query }: Props) => {
     )
   }
 
-  if(!estimates.data?.length) {
+  if(!data?.length) {
     return (
       <Table>
         <Thead>
@@ -102,7 +102,7 @@ const EstimatesList = ({ query }: Props) => {
         <Th color="gray.50" w="28">
             <Flex align="center" justify="center">
               Número
-              { estimates.isFetching && 
+              { isFetching && 
                 <Spinner size="sm" color="gray.50" ml="4"/>
               }
             </Flex>
@@ -114,7 +114,7 @@ const EstimatesList = ({ query }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { estimates.data?.map(estimate => {
+        { data?.map(estimate => {
             return (
               <Tr
                 key={estimate.id}
@@ -150,5 +150,3 @@ const EstimatesList = ({ query }: Props) => {
     
   )
 }
-
-export { EstimatesList }

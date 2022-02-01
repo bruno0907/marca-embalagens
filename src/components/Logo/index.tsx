@@ -5,9 +5,9 @@ import { FiAlertTriangle } from 'react-icons/fi'
 import { useProfileQuery } from '../../hooks/useProfileQuery'
 
 const Logo = () => {
-  const profile = useProfileQuery()
+  const { data, isLoading, isError } = useProfileQuery()
 
-  if(profile.isLoading) {
+  if(isLoading) {
     return (
       <SkeletonCircle 
         w="4rem" 
@@ -17,7 +17,7 @@ const Logo = () => {
     )
   }
 
-  if(profile.isError || !profile.data) {
+  if(isError || !data.profile) {
     return (
       <Icon 
         as={FiAlertTriangle} 
@@ -28,11 +28,11 @@ const Logo = () => {
     )
   }
 
-  if(!profile.data.data.avatar) {
+  if(!data.profile.avatar) {
     return (
       <Center>
         <Avatar
-          name={profile.data.data.nome}
+          name={data.profile.nome}
           bgColor="blue.500"
           size="lg" 
         />
@@ -42,7 +42,7 @@ const Logo = () => {
 
   return (
     <NextImage 
-      src={profile.data.data.avatar}
+      src={data.profile.avatar}
       alt="Logo"
       width={150}
       height={50}

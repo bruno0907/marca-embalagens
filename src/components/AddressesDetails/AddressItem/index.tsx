@@ -13,6 +13,7 @@ import {
   Text,
   Button,   
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react"
 
 import { FiEdit, FiHome } from "react-icons/fi"
@@ -44,35 +45,47 @@ const AddressItem = ({ address }: AddressItemProps) => {
 
   return (
     <>
-      <Box as="li" listStyleType="none" py="2" px="4" bgColor="gray.100" borderRadius="md">
-        <Flex align="center">        
-          <Icon as={FiHome} fontSize="24" color="gray.500"/>
-          <Box ml="4">
-            <Text fontSize="sm" color="gray.500" fontWeight="medium">
-              { address.principal ? 'Endereço principal' : 'Outro endereço'}
-            </Text>        
-            <Text fontSize="sm" color="gray.700" fontWeight="medium">
-              {address.endereco} - {address.bairro}
-            </Text>
-            <Text fontSize="sm" color="gray.700" fontWeight="medium">
-              {address.cidade}/{address.estado} 
-              {address.cep && ` - ${address.cep}`}
-            </Text>
-            <Text fontSize="sm" color="gray.700" fontWeight="medium">
-              {address.complemento}
-            </Text>
-          </Box>
-          <Button 
-            ml="auto" 
-            variant="link"
-            onMouseEnter={handlePrefetchAddress}
-            onClick={handleOpenModal} 
-            _hover={{ svg: { color: "blue.600" } }}
-          >
-            <Icon as={FiEdit} fontSize="24" color="blue.500"/>
-          </Button>
-        </Flex>         
-      </Box>
+      <HStack 
+        as="li"
+        listStyleType="none" 
+        spacing={3}
+        py={2} 
+        px={4} 
+        bgColor="gray.100" 
+        borderRadius="md"
+        align="center"
+      >
+        <Icon as={FiHome} fontSize="24" color="gray.500"/>
+        
+        <Flex flexDir="column" flex="1">
+          <Text fontSize="sm" color="gray.500" fontWeight="medium">
+            { address.principal ? 'Endereço principal:' : 'Outro endereço'}
+          </Text>        
+          <Text fontSize="sm" color="gray.700" fontWeight="medium">
+            {address.endereco} - {address.bairro}
+          </Text>
+          <Text fontSize="sm" color="gray.700" fontWeight="medium">
+            {address.cidade}/{address.estado} 
+            {address.cep && ` - ${address.cep}`}
+          </Text>
+          <Text fontSize="sm" color="gray.700" fontWeight="medium">
+            {address.complemento}
+          </Text>
+        </Flex>
+        
+        <Button
+          variant="link"
+          colorScheme="blue"
+          alignSelf="flex-start"
+          ml="auto"
+          p="2"
+          onMouseEnter={handlePrefetchAddress}
+          onClick={handleOpenModal} 
+          _hover={{ svg: { color: "blue.600" } }}
+        >
+          <Icon as={FiEdit} fontSize="24"/>
+        </Button>
+      </HStack>
 
       <Modal isOpen={isOpen} onClose={onClose} title="Editar endereço">
         <UpdateAddressForm address={addressToEdit} onClose={onClose}/>

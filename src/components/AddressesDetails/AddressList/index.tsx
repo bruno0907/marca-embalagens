@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 import { AddressItemProps } from "../AddressItem"
-import { Stack } from "@chakra-ui/react"
+import { Stack, StackProps } from "@chakra-ui/react"
 
 const AddressItem = dynamic<AddressItemProps>(
   async () => {
@@ -12,13 +12,13 @@ const AddressItem = dynamic<AddressItemProps>(
   
 import { Address } from "../../../hooks/useAddressQuery"
 
-type Props = {
+type Props = StackProps & {
   addresses: Address[]  
 }
 
-const AddressList = ({ addresses }: Props) => {
+const AddressList = ({ addresses, ...rest }: Props) => {
   return (
-    <Stack as="ul" spacing={3}>
+    <Stack as="ul" spacing={3} {...rest}>
       { addresses?.map(address => (
           <AddressItem key={address.id} address={address}/>
         ))

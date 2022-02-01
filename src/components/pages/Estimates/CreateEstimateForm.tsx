@@ -9,6 +9,9 @@ import { Content } from '../../Content'
 import { Input } from '../../Input'
 import { Cart } from '../../Cart'
 import { ProductsSelect } from '../../ProductsSelect'
+import { Section } from '../../Section'
+import { SectionHeader } from '../../SectionHeader'
+import { SectionTitle } from '../../SectionTitle'
 
 import { useAuth } from '../../../contexts/useAuth'
 import { useUsersQuery } from '../../../hooks/useUsersQuery'
@@ -31,14 +34,13 @@ const newEstimateSchema = yup.object().shape({
 import {   
   Stack,
   HStack,
-  Box,
   Center,
   Spinner,
   useToast,
   Button,
 } from '@chakra-ui/react'
 
-const CreateEstimateForm = () => {
+export const CreateEstimateForm = () => {
   const { session } = useAuth()
   const router = useRouter()  
   const toast = useToast()
@@ -113,12 +115,16 @@ const CreateEstimateForm = () => {
   }
 
   return (
-    <Box as="form" onSubmit={handleSubmit(handleCreateEstimate, handleSubmitError)}>
-      <Stack spacing={3}>    
+    <Section as="form" onSubmit={handleSubmit(handleCreateEstimate, handleSubmitError)} spacing={12}>
+      
+      <Section>
+        <SectionHeader>
+          <SectionTitle title="Cliente"/>
+        </SectionHeader>
         <Content>
           <Input
             list="users"
-            label="Cliente:"
+            label="Nome:"
             name="cliente"
             {...register('cliente')}
           />
@@ -128,46 +134,52 @@ const CreateEstimateForm = () => {
             ))}
           </datalist>
         </Content>
+      </Section>
 
+      <Section>
+        <SectionHeader>
+          <SectionTitle title="Descrição do orçamento"/>
+        </SectionHeader>
         <Content>
           <Stack spacing={6}>
             <ProductsSelect />
             <Cart />
-          </Stack> 
+          </Stack>
         </Content>
+      </Section>
 
+      <Section>
+        <SectionHeader>
+          <SectionTitle title="Informações adicionais"/>
+        </SectionHeader>
         <Content>
-          <Input
-            as="textarea"
-            name="observacoes"
-            label="Observações"
-            h="100px"
-            p="3"
-            {...register('observacoes')}
-          />
+            <Input
+              as="textarea"
+              name="observacoes"
+              label="Observações:"
+              h="100px"
+              p="3"
+              {...register('observacoes')}
+            />
         </Content>
+      </Section>
 
-        <HStack spacing={3} justify="flex-end" pt="8" pr="8">
-          <Button
-            type="reset" 
-            colorScheme="blue"
-            variant="ghost" 
-            onClick={() => router.push('/estimates')} 
-            isDisabled={!cartProducts?.length}
-          >Cancelar</Button>
-          <Button 
-            type="submit"
-            colorScheme="blue" 
-            isDisabled={canSubmit}
-            isLoading={isSubmitting}
-          >Salvar orçamento</Button>
-        </HStack>
-        
-      </Stack>
-    </Box>   
+      <HStack spacing={6} justify="flex-end">
+        <Button
+          type="reset" 
+          colorScheme="blue"
+          variant="ghost" 
+          onClick={() => router.push('/estimates')} 
+          isDisabled={!cartProducts?.length}
+        >Cancelar</Button>
+        <Button 
+          type="submit"
+          colorScheme="blue" 
+          isDisabled={canSubmit}
+          isLoading={isSubmitting}
+        >Salvar orçamento</Button>
+      </HStack>
+
+    </Section>
   )
-}
-
-export { 
-  CreateEstimateForm
 }

@@ -1,8 +1,7 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase";
-import { createAddress } from "../services/createAddress";
-import { NewAddress } from "./useCreateAddressMutation";
+import { createAddressService, NewAddress } from "../services/createAddressService";
 import { User } from "./useUserQuery";
 
 export type NewUser = {  
@@ -49,7 +48,7 @@ const useCreateUserMutation = () => useMutation(
         ...addressData
       }
   
-      const newUserAddress = await createAddress(userAddress)
+      const newUserAddress = await createAddressService(userAddress)
   
       if(newUserAddress.error) {
         await removeUser(newUserData.data[0].id)

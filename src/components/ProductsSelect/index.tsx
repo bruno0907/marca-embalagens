@@ -67,7 +67,7 @@ const ProductsSelect = () => {
   }
 
   return (
-    <HStack spacing={3} align="flex-end">            
+    <HStack spacing={6} align="flex-end">            
       <Select
         label="Produto:"
         name="produto"

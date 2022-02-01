@@ -1,3 +1,6 @@
+import { useAddressQuery } from '../../../../hooks/useAddressQuery'
+import { useUserQuery } from '../../../../hooks/useUserQuery'
+
 import {  
   Box,
   Text,  
@@ -8,15 +11,12 @@ import {
 } from '@chakra-ui/react'
 import { FiInfo } from 'react-icons/fi'
 
-import { useAddressQuery } from '../../../../hooks/useAddressQuery'
-import { useUserQuery } from '../../../../hooks/useUserQuery'
-
 type Props = {
   userId: string;
   addressId: string;
 }
 
-const OrderUser = ({ userId, addressId }: Props) => {
+export const OrderUser = ({ userId, addressId }: Props) => {
   const user = useUserQuery(userId)
   const address = useAddressQuery(addressId)
 
@@ -132,8 +132,4 @@ const OrderUser = ({ userId, addressId }: Props) => {
       </SimpleGrid>
     </Stack>
   )
-}
-
-export {
-  OrderUser
 }

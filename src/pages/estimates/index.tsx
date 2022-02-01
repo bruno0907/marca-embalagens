@@ -34,30 +34,30 @@ export default function Estimates() {
       <AuthWrapper>
         <Header title="Orçamentos"/>
         <Divider />
-        <Stack spacing={3}>
           <Content>
-            <HStack spacing={3} mb={8}>
-              <SearchInput
-                type="number"
-                ref={searchInputRef}
-                placeholder="Pesquise pelo número do orçamento..."
-                onClearSearch={clearSearch}  
-                hasSearch={!!searchValue}                     
-                value={searchValue}
-                onChange={handleSearch}
-              />              
-              <Button 
-                colorScheme="blue"
-                leftIcon={<Icon as={FiPlus} />}
-                onClick={handleNewEstimate}
-                flexShrink={0}
-              >
-                Novo orçamento
-              </Button>
-            </HStack>          
-            <EstimatesList query={Number(toSearch)}/>
-          </Content>
-        </Stack>
+            <Stack spacing={6}>
+              <HStack spacing={6}>
+                <SearchInput
+                  type="number"
+                  ref={searchInputRef}
+                  placeholder="Pesquise pelo número do orçamento..."
+                  onClearSearch={clearSearch}  
+                  hasSearch={!!searchValue}                     
+                  value={searchValue}
+                  onChange={handleSearch}
+                />              
+                <Button 
+                  colorScheme="blue"
+                  leftIcon={<Icon as={FiPlus} />}
+                  onClick={handleNewEstimate}
+                  flexShrink={0}
+                >
+                  Novo orçamento
+                </Button>
+              </HStack>          
+              <EstimatesList query={Number(toSearch)}/>
+          </Stack>
+        </Content>
       </AuthWrapper>
     </>
   )

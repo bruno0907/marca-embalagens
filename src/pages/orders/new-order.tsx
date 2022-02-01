@@ -4,7 +4,7 @@ import { Header } from '../../components/Header'
 import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
 
-import { CreateOrderForm } from '../../components/pages/Orders/CreateOrderForm'
+import { CreateOrderModule } from '../../modules/Order/CreateOrderModule'
 import { CreateOrderProvider } from '../../contexts/useCreateOrder'
 
 export default function NewOrder() {
@@ -18,7 +18,7 @@ export default function NewOrder() {
         <Header title="Novo pedido" withGoBack/>
         <Divider />        
         <CreateOrderProvider>
-          <CreateOrderForm />
+          <CreateOrderModule />
         </CreateOrderProvider>        
       </AuthWrapper> 
     </>   

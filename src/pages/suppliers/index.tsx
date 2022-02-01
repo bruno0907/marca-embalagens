@@ -39,7 +39,7 @@ export default function Suppliers() {
         <Divider />
         <Content>
           <Stack spacing={6}>
-            <HStack spacing={3}>
+            <HStack spacing={6}>
               <SearchInput
                 ref={searchInputRef}
                 placeholder="Pesquise pelo nome do fornecedor..."

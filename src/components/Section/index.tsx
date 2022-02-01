@@ -1,19 +1,14 @@
 import { ReactNode } from "react"
-import { Content } from "../Content"
-import { Heading, Stack, StackProps } from "@chakra-ui/react"
+import { Stack, StackProps } from "@chakra-ui/react"
 
-type Props = StackProps & {
-  title?: string;
+type Props = StackProps & {  
   children: ReactNode;
 }
 
-const Section = ({ title, children, ...rest}: Props) => {
+const Section = ({ children, ...rest}: Props) => {
   return (
     <Stack spacing={6} {...rest}>
-      <Heading size="md">{title}</Heading>
-      <Content>
-        {children}
-      </Content>
+      {children}
     </Stack>
   )
 }

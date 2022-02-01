@@ -1,8 +1,7 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { supabase } from "../database/supabase"
-import { createAddress } from "../services/createAddress"
-import { NewAddress } from "./useCreateAddressMutation"
+import { createAddressService, NewAddress } from "../services/createAddressService"
 import { Supplier } from "./useSupplierQuery"
 
 export type NewSupplier = {  
@@ -50,7 +49,7 @@ const useCreateSupplierMutation = () => useMutation(
         ...addressData
       }
   
-      const newSupplierAddress = await createAddress(supplierAddress)
+      const newSupplierAddress = await createAddressService(supplierAddress)
   
       if(newSupplierAddress.error) {
         await removeSupplier(newSupplier.data[0].id)
