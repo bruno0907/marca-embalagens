@@ -4,7 +4,8 @@ import Head from 'next/head'
 import { Header } from '../../components/Header'
 import { AuthWrapper } from '../../components/AuthWrapper'
 import { Divider } from '../../components/Divider'
-import { CreateEstimateForm } from '../../components/pages/Estimates/CreateEstimateForm'
+
+import { CreateEstimateModule } from '../../modules/Estimates/CreateEstimate'
 
 export default function NewEstimate() {
   return (
@@ -14,8 +15,8 @@ export default function NewEstimate() {
       </Head>
       <AuthWrapper>        
         <Header title="Novo orçamento" withGoBack/>
-        <Divider />        
-        <CreateEstimateForm />                
+        <Divider />
+        <CreateEstimateModule/>
       </AuthWrapper>
     </>   
   )

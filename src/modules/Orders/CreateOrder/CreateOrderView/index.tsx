@@ -22,7 +22,7 @@ import {
   HStack, 
   Stack,
   Button,
-  Heading,
+  Heading,  
 } from '@chakra-ui/react'
 import { FiTrash2 } from 'react-icons/fi'
 

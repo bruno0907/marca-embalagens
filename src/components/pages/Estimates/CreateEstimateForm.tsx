@@ -57,7 +57,7 @@ export const CreateEstimateForm = () => {
     resolver: yupResolver(newEstimateSchema)
   })
 
-  const { isSubmitting } = formState      
+  const { isSubmitting, errors } = formState      
 
   const createEstimateMutation = useCreateEstimateMutation()
   
@@ -126,6 +126,7 @@ export const CreateEstimateForm = () => {
             list="users"
             label="Nome:"
             name="cliente"
+            error={errors?.cliente}
             {...register('cliente')}
           />
           <datalist id="users">
