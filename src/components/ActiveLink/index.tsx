@@ -24,7 +24,7 @@ const ActiveLink = ({ icon, label, href, ...rest }: Props) => {
     <Link href={href} passHref>
       <ChakraLink
         display="flex"
-        px="8"
+        px="14"
         py="4"
         alignItems="center"
         justifyContent="flex-start"

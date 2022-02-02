@@ -18,7 +18,7 @@ export type Supplier = {
   outras_informacoes: string;
 }
 
-const getSupplier = async (id: string): Promise<Supplier> => {
+export const getSupplier = async (id: string): Promise<Supplier> => {
   try {
     const { data, error } = await supabase
       .from<Supplier>('suppliers')
@@ -36,15 +36,9 @@ const getSupplier = async (id: string): Promise<Supplier> => {
   }
 }
 
-const useSupplierQuery = (id: string) => useQuery(
+export const useSupplierQuery = (id: string) => useQuery(
   ['supplier', id], 
   () => getSupplier(id), {
-    staleTime: 1000 * 60 * 10, //10minutes
-    useErrorBoundary: true
+    staleTime: 1000 * 60 * 10 //10minutes    
   }
 )
-
-export {
-  useSupplierQuery,
-  getSupplier,
-}

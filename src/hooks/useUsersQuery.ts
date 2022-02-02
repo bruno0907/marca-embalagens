@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { User } from "./useUserQuery"
 
-const getUsers = async (query?: string): Promise<User[]> => {
+export const getUsers = async (query?: string): Promise<User[]> => {
   try {
     const user = supabase.auth.user()
   
@@ -37,7 +37,7 @@ const getUsers = async (query?: string): Promise<User[]> => {
   }
 }
 
-const useUsersQuery = (query?: string) => {
+export const useUsersQuery = (query?: string) => {
   const queryKey = query ? ['user[]', query] : 'user[]'
   
   return useQuery(
@@ -47,9 +47,4 @@ const useUsersQuery = (query?: string) => {
       useErrorBoundary: true
     }
   )
-}
-
-export {
-  useUsersQuery,
-  getUsers
 }

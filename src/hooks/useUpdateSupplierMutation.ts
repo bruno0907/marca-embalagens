@@ -10,7 +10,7 @@ const updateSupplier = async (supplier: Supplier) => {
     .eq('id', supplier.id)
 }
 
-const useUpdateSupplierMutation = () => useMutation(
+export const useUpdateSupplierMutation = () => useMutation(
   async (supplier: Supplier) => {
     const { data, error } = await updateSupplier(supplier)
 
@@ -24,7 +24,3 @@ const useUpdateSupplierMutation = () => useMutation(
     }
   }
 )
-
-export {
-  useUpdateSupplierMutation
-}

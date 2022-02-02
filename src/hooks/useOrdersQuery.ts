@@ -62,18 +62,13 @@ const getOrders = async (query?: number): Promise<OrderQuery[]> => {
   }
 }
 
-const useOrdersQuery = (query?: number) => {
+export const useOrdersQuery = (query?: number) => {
   const queryKey = query ? ['order[]', query] : ['order[]']
 
   return useQuery(
     queryKey, 
     () => !query ? getOrders() : getOrders(query), {
-      staleTime: 1000 * 10 * 60,
-      useErrorBoundary: true,
+      staleTime: 1000 * 10 * 60
     }
   )
-}
-
-export {
-  useOrdersQuery
 }

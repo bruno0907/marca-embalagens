@@ -16,7 +16,7 @@ const createProduct = async(product: NewProduct) => {
     .insert(product)
 }
 
-const useCreateProductMutation = () => useMutation(
+export const useCreateProductMutation = () => useMutation(
   async (newProduct: NewProduct) => {
     try {
       const { data, error } = await createProduct(newProduct)
@@ -35,7 +35,3 @@ const useCreateProductMutation = () => useMutation(
     onError: error => console.log('New product mutation error: ', error)
   }
 )
-
-export {
-  useCreateProductMutation
-}

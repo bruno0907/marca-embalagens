@@ -14,12 +14,7 @@ const signOut = async () => {
   }
 }
 
-const useSignOutMutation = () => useMutation(() => signOut(), {
-  onSuccess: () => queryClient.removeQueries()
-  
-})
-
-
-export {
-  useSignOutMutation
-}
+export const useSignOutMutation = () => useMutation(
+  () => signOut(), 
+  { onSuccess: () => queryClient.removeQueries()}
+)

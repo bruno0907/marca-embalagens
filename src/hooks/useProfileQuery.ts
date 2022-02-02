@@ -8,8 +8,9 @@ type ProfileQuery = {
   addresses: Address[];
 }
 
-const useProfileQuery = (): UseQueryResult<ProfileQuery> => useQuery(
-  ['profile'], async () => {
+export const useProfileQuery = (): UseQueryResult<ProfileQuery> => useQuery(
+  ['profile'], 
+  async () => {
     const profile = await getProfileService()
 
     if(profile.error) throw Error('Profile not found')
@@ -29,7 +30,3 @@ const useProfileQuery = (): UseQueryResult<ProfileQuery> => useQuery(
     staleTime: 1000 * 10 * 60
   }
 )
-
-export {
-  useProfileQuery
-}

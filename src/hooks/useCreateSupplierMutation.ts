@@ -37,7 +37,7 @@ type NewUserMutationProps = {
   addressData: Omit<NewAddress, 'user_id'>;
 }
 
-const useCreateSupplierMutation = () => useMutation(
+export const useCreateSupplierMutation = () => useMutation(
   async ({ supplierData, addressData }: NewUserMutationProps) => {
     try {
       const newSupplier = await createSupplier(supplierData)
@@ -74,7 +74,3 @@ const useCreateSupplierMutation = () => useMutation(
     onError: error => console.log('New supplier mutation error: ', error)
   }
 )
-
-export {
-  useCreateSupplierMutation
-}

@@ -11,7 +11,7 @@ const updateEstimate = async (estimate: Estimate) => {
     .eq('id', estimate.id)
 }
 
-const useUpdateEstimateMutation = () => useMutation (
+export const useUpdateEstimateMutation = () => useMutation (
   async (estimate: Estimate) => {
     const { data, error } = await updateEstimate(estimate)
 
@@ -26,7 +26,3 @@ const useUpdateEstimateMutation = () => useMutation (
     onError: error => console.log('New estimate mutation error: ', error)
   }
 ) 
-
-export {
-  useUpdateEstimateMutation
-}

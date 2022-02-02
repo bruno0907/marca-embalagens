@@ -36,7 +36,7 @@ type NewUserMutation = {
   addressData: Omit<NewAddress, 'user_id'>;
 }
 
-const useCreateUserMutation = () => useMutation(
+export const useCreateUserMutation = () => useMutation(
   async ({ userData, addressData }: NewUserMutation) => {
     try {
       const newUserData = await createUser(userData)
@@ -73,7 +73,3 @@ const useCreateUserMutation = () => useMutation(
     onError: error => console.log('New user mutation error: ', error)
   }
 )
-
-export {
-  useCreateUserMutation
-}

@@ -2,8 +2,7 @@ import { useQuery } from "react-query"
 import { supabase } from "../database/supabase"
 import { Estimate } from "./useEstimatesQuery"
 
-
-const getEstimate = async (id: string): Promise<Estimate>=> {
+export const getEstimate = async (id: string): Promise<Estimate>=> {
   try {
     const { data, error } = await supabase
       .from<Estimate>('estimates')
@@ -21,15 +20,9 @@ const getEstimate = async (id: string): Promise<Estimate>=> {
   }
 }
 
-const useEstimateQuery = (id: string) => useQuery(
+export const useEstimateQuery = (id: string) => useQuery(
   ['estimate', id], 
   () => getEstimate(id), {
     staleTime: 1000 * 60 * 10, //10minutes
-    useErrorBoundary: true
   }
 )
-
-export {
-  getEstimate,
-  useEstimateQuery
-}

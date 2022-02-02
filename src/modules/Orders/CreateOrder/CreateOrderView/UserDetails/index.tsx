@@ -1,18 +1,20 @@
-import { ChangeEvent, useEffect, useState } from "react"
+import { ChangeEvent } from "react"
 import dynamic from "next/dynamic"
 
 import { Select } from "../../../../../components/Select"
-import { InformationField } from "../../../../../components/InformationField"
-import { Content } from "../../../../../components/Content"
-import { Section } from "../../../../../components/Section"
-import { SectionHeader } from "../../../../../components/SectionHeader"
-import { SectionTitle } from "../../../../../components/SectionTitle"
 import { useCreateOrder } from '../../../../../contexts/useCreateOrder'
 
-import { Button, HStack, Icon, SimpleGrid, Stack, useDisclosure } from "@chakra-ui/react"
-import { FiCreditCard, FiEdit, FiPhone, FiSmartphone, FiUser, FiMail, FiList } from "react-icons/fi"
+import { 
+  Text,
+  Button, 
+  HStack,   
+  SimpleGrid, 
+  Stack, 
+  useDisclosure, 
+  GridItem 
+} from "@chakra-ui/react"
 
-import { User } from "../../../../../hooks/useUserQuery"
+import { FiEdit, FiRefreshCw } from "react-icons/fi"
 
 import { ModalProps } from "../../../../../components/Modal"
 import { UpdateUserFormProps } from "../../../../../components/pages/Users/UpdateUserForm"
@@ -25,8 +27,7 @@ const UpdateUserForm = dynamic<UpdateUserFormProps>(
 )
 
 export const UserDetails = () => {  
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [user, setUser] = useState<User>(null)
+  const { isOpen, onOpen, onClose } = useDisclosure()  
 
   const { 
     users, 
@@ -36,150 +37,99 @@ export const UserDetails = () => {
   } = useCreateOrder()
 
   const handleSelectUser = (event: ChangeEvent<HTMLSelectElement>) => {
-    setUser(null)
+    setSelectedUser(null)
     const { value } = event.target
     const user = users?.data?.find(user => user.id === value)
     setSelectedAddress(null)
-    setSelectedUser(user)    
+    setSelectedUser(user)
+    return
   }
 
-  useEffect(() => {    
-    setUser(selectedUser)
-
-    return () => setUser(null)
-  }, [selectedUser])
+  if(users.isError) {
+    return (
+      <Text>Erro ao carregar a lista de usuários...</Text>
+    )
+  }
 
   return (
-    <>
-      <Section flex="1">
-        <SectionHeader>
-          <SectionTitle title="Dados do cliente"/>
-          {selectedUser && (
-            <Button 
-              colorScheme="blue" 
-              variant="link" 
-              onClick={() => setSelectedUser(null)}
-            >Selecionar outro cliente</Button>
-          )}
-        </SectionHeader>
-        <Content>
-          <Stack spacing={3}>
-            {!selectedUser && (
-              <Select 
-                name="cliente"              
-                isLoading={users.isLoading}
-                value={!selectedUser ? 'defaultValue' : selectedUser.nome}
-                onChange={handleSelectUser}
-              >
-                <option value="defaultValue" disabled>Selecione o cliente...</option>
-                { users.isError
-                  ? <option value="defaultValue" disabled>Houve um erro ao carregar a lista de clientes...</option>
-                  : users.data?.map(user => (
-                      <option key={user.id} value={user.id}>{user.nome}</option>
-                    )
-                  )
-                }
-              </Select>
-            )}
-            { user && 
-              <HStack
-                spacing={3}
-                justify="space-between"
-                py="2"
-                px="4"
-                bgColor="gray.100"
-                borderRadius="md"
-                w="100%"
-              >
-                <SimpleGrid columns={2} spacingX={8} spacingY={3}>
-                  {user.nome && (
-                    <InformationField
-                      label="Nome"
-                      value={user.nome}
-                      icon={FiUser}                  
-                    />
-                  )}
-                  {user.natureza_cliente === 'Jurídica' && (
-                    <InformationField
-                      label="Razão social:"
-                      value={user.razao_social}
-                      icon={FiCreditCard}                  
-                    />
-                  )}
-                
-                  {user.cpf_cnpj && (
-                    <InformationField
-                      label={user.natureza_cliente === 'Física' ? 'CPF:' : 'CPNJ'}
-                      value={user.cpf_cnpj}
-                      icon={FiCreditCard}
-
-                    />
-                  )}
-                  {user.rg_ie && (
-                    <InformationField
-                      label={user.natureza_cliente === 'Física' ? 'RG:' : 'IE'}
-                      value={user.rg_ie}
-                      icon={FiCreditCard}
-                      maxW="60"
-                    />
-                  )}
-                
-                  {user.telefone && (
-                    <InformationField
-                      label="Telefone"
-                      value={user.telefone}
-                      icon={FiPhone}
-                    />            
-                  )}
-                  {user.celular && (
-                    <InformationField
-                      label="Celular:"
-                      value={user.celular}
-                      icon={FiSmartphone}
-                    />            
-                  )}
-                
-                  {user.email && (
-                    <InformationField
-                      label="Email:"
-                      value={user.email}
-                      icon={FiMail}
-                    />
-                  )}          
-                  {user.contato && (
-                    <InformationField
-                      label="Contato:"
-                      value={user.contato}
-                      icon={FiUser}
-                    />
-                  )}
-                  {user.outras_informacoes && (
-                    <InformationField
-                      label="Contato:"
-                      value={user.outras_informacoes}
-                      icon={FiList}
-                    />
-                  )}
-                  
-                </SimpleGrid>          
-                <Button 
-                  ml="auto"
-                  p="2" 
-                  alignSelf="flex-start"
-                  variant="link"
-                  onClick={() => onOpen()} 
-                  _hover={{ svg: { color: "blue.600" } }}
-                >
-                  <Icon as={FiEdit} fontSize="24" color="blue.500"/>
-                </Button>          
-              </HStack>
-            }
+    <>  
+      {!selectedUser && (
+        <Select 
+          name="cliente"              
+          isLoading={users.isLoading}
+          value={!selectedUser ? 'defaultValue' : selectedUser.nome}
+          onChange={handleSelectUser}
+        >
+          <option value="defaultValue" disabled>Selecione o cliente...</option>
+          { users.data?.map(user => {
+            return (
+              <option key={user.id} value={user.id}>{user.nome}</option>
+            )
+          })}
+        </Select>
+      )}
+      {selectedUser && (        
+        <>
+          <Stack spacing={6}>
+            <SimpleGrid columns={3} gap={3}>
+              {selectedUser.nome && 
+                <GridItem px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
+                  <Text fontSize="x-small" fontWeight="bold">Nome:</Text>
+                  <Text fontSize="sm">{selectedUser.nome}</Text>            
+                </GridItem>
+              }
+              {selectedUser.razao_social &&
+                <GridItem px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
+                  <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
+                  <Text fontSize="sm">{selectedUser.razao_social}</Text>
+                </GridItem>
+              }
+              {selectedUser.cpf_cnpj &&
+                <GridItem px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
+                  <Text fontSize="x-small" fontWeight="semibold">{selectedUser.razao_social ? 'CNPJ' : 'CPF'}</Text>
+                  <Text fontSize="sm">{selectedUser.cpf_cnpj}</Text>
+                </GridItem>
+              }
+              {selectedUser.telefone && (
+                <GridItem px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
+                  <Text fontSize="x-small" fontWeight="bold">Telefone:</Text>
+                  <Text fontSize="sm">{selectedUser.telefone}</Text>            
+                </GridItem>
+              )}
+              { selectedUser.celular && 
+                <GridItem px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
+                  <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
+                  <Text fontSize="sm">{selectedUser.celular}</Text>            
+                </GridItem>
+              }
+              { selectedUser.contato && 
+                <GridItem px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
+                  <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
+                  <Text fontSize="sm">{selectedUser.contato}</Text>            
+                </GridItem>
+              }        
+            </SimpleGrid>
+            <HStack spacing={6} alignSelf="flex-end">
+              <Button
+                variant="link"
+                colorScheme="blue"
+                rightIcon={<FiEdit/>}
+                onClick={() => onOpen()}
+              >Editar cliente</Button>
+              <Text>|</Text>
+              <Button 
+                colorScheme="blue" 
+                variant="link"
+                rightIcon={<FiRefreshCw/>}
+                onClick={() => setSelectedUser(null)}
+              >Selecionar outro</Button>
+            </HStack>
           </Stack>
-        </Content>
-      </Section>
-      <Modal isOpen={isOpen} onClose={onClose} title="Editar Cadastro">
-        <UpdateUserForm user={user} onClose={onClose}/>
-      </Modal>
+          <Modal isOpen={isOpen} onClose={onClose} title="Editar Cadastro">
+            <UpdateUserForm user={selectedUser} onClose={onClose}/>
+          </Modal>
+        </>
+      )}
     </>
   )    
 }

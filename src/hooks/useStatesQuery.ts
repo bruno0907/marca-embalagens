@@ -20,8 +20,4 @@ const fetchStates = async () => {
   return data
 }
 
-const useStatesQuery = () => useQuery(['states'], fetchStates)
-
-export {
-  useStatesQuery
-}
+export const useStatesQuery = () => useQuery(['states'], fetchStates)

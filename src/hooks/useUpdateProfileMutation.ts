@@ -1,17 +1,17 @@
-import { supabase } from "../database/supabase"
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { updateAddress } from "../services/updateAddress"
-import { Address } from "./useAddressQuery"
-import { Profile } from "./useProfileQuery"
+
 import { updateProfileService } from "../services/profile/updateProfileService"
+import { Profile } from "../services/profile/getProfileService"
+import { Address } from "../services/address/getAddressService"
 
 type UpdateProfileMutation = {
   profileData: Profile;
   profileAddress: Address;
 }
 
-const useUpdateProfileMutation = () => useMutation(
+export const useUpdateProfileMutation = () => useMutation(
   async ({ profileData, profileAddress }: UpdateProfileMutation) => {
     
     const updatedProfile = await updateProfileService(profileData)
@@ -25,7 +25,3 @@ const useUpdateProfileMutation = () => useMutation(
     onSuccess: async () => await queryClient.invalidateQueries('profile')
   }
 )
-
-export {
-  useUpdateProfileMutation
-}

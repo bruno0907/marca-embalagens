@@ -1,37 +1,25 @@
-import { FormEvent, useRef } from "react"
+import { ReactNode } from "react"
+import { Stack, StackProps } from "@chakra-ui/react"
 
-type Props = {  
-  onSubmit?: ({ name, age }: Person) => Promise<void>
+type Props = StackProps & {  
+  onSubmit: () => any;
+  children: ReactNode;
 }
 
-type Person = {
-  name: string;
-  age: string;
-}
+const Form = ({ onSubmit, children, ...rest }: Props) => {
 
-const Form = ({ onSubmit }: Props) => {
-  const nameRef = useRef<HTMLInputElement>(null)
-  const ageRef = useRef<HTMLInputElement>(null)
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-
-    onSubmit({
-      name: nameRef.current?.value,
-      age: ageRef.current?.value
-    })
-  }
 
   return (
-    <form id="formComponent" onSubmit={handleSubmit}>
-      <label htmlFor="name">Nome</label>
-      <input data-testid="name" id="name" name="name" ref={nameRef}/>
-
-      <label htmlFor="age">Idade</label>
-      <input data-testid="age" id="age" name="age" ref={ageRef}/>
-
-      <button type="submit" data-testid="submit">Enviar</button>
-    </form>
+    <Stack
+      as="form" 
+      onSubmit={onSubmit} 
+      spacing={12}
+      maxW="1080px"
+      m="auto"
+      {...rest}
+    >
+      {children}
+    </Stack>
   )
 }
 

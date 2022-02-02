@@ -20,7 +20,7 @@ type Props = {
 export const OrderProducts = ({ order, total }: Props) => {
   
   return (
-    <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md" overflow="hidden">      
+    <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md" overflow="hidden">      
       <Table variant="striped" size="sm">
         <Thead>
           <Tr>

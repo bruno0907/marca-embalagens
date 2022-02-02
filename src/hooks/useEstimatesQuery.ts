@@ -56,18 +56,13 @@ const getEstimates = async (pattern?: number): Promise<Estimate[]> => {
   }
 }
 
-const useEstimatesQuery = (pattern?: number) => {
+export const useEstimatesQuery = (pattern?: number) => {
   const queryKey = pattern ? ['estimate[]', pattern] : ['estimate[]']
 
   return useQuery(
     queryKey, 
     () => !pattern ? getEstimates() : getEstimates(pattern), {
-      staleTime: 1000 * 10 * 60,
-      useErrorBoundary: true,
+      staleTime: 1000 * 10 * 60,      
     }
   )
-}
-
-export {
-  useEstimatesQuery
 }

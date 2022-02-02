@@ -40,18 +40,13 @@ const getSuppliers = async (pattern?: string): Promise<Supplier[]> => {
   }
 }
 
-const useSuppliersQuery = (pattern?: string) => {
+export const useSuppliersQuery = (pattern?: string) => {
   const queryKey = pattern ? ['supplier[]', pattern] : 'supplier[]'
   
   return useQuery(
     queryKey, 
     () => !pattern ? getSuppliers(): getSuppliers(pattern), {
-      staleTime: 1000 * 60 * 10,
-      useErrorBoundary: true
+      staleTime: 1000 * 60 * 10
     }
   )
-}
-
-export {
-  useSuppliersQuery  
 }

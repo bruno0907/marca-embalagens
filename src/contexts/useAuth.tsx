@@ -47,7 +47,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setSession(null)
         router.push('/')
         return
-      }      
+      }
     })
 
     return () => authListener.unsubscribe()

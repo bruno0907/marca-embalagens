@@ -70,6 +70,6 @@ const signUp = async ({ email, password }: SignUp): Promise<NewProfileMutation> 
 }
 
 export const useSignUpMutation = () => useMutation(
-  async ({ email, password }: SignUp) => await signUp({ email, password }), {
+  ({ email, password }: SignUp) => signUp({ email, password }), {
   onSuccess: async profile => queryClient.setQueryData('profile', profile)
 })

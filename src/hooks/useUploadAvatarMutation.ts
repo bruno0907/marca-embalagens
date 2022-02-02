@@ -1,8 +1,9 @@
 import { useMutation } from 'react-query'
 import { queryClient } from '../contexts/queryContext'
 import { uploadFileService } from '../services/file/uploadFileService'
+import { Profile } from '../services/profile/getProfileService'
 import { updateProfileService } from '../services/profile/updateProfileService'
-import { Profile } from './useProfileQuery'
+
 
 type UploadAvatar = {
   avatar: File;
@@ -11,7 +12,7 @@ type UploadAvatar = {
 
 const BUCKET_URL = `https://${process.env.NEXT_PUBLIC_IMAGE_BUCKET_URL}/storage/v1/object/public/`
 
-const useUploadAvatar = () => useMutation(
+export const useUploadAvatar = () => useMutation(
   async ({ avatar, profile }: UploadAvatar) => {
     const avatarResponse = await uploadFileService(avatar, profile.id)
 
@@ -31,7 +32,3 @@ const useUploadAvatar = () => useMutation(
     onSuccess: async () => await queryClient.invalidateQueries('profile')
   }
 )
-
-export {
-  useUploadAvatar
-}

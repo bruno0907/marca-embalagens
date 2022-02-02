@@ -21,7 +21,7 @@ export type OrderProduct = {
   valor_total: number;  
 }
 
-const getOrder = async (id: string): Promise<Order>=> {
+export const getOrder = async (id: string): Promise<Order>=> {
   try {
     const { data, error } = await supabase
       .from<Order>('orders')
@@ -39,15 +39,9 @@ const getOrder = async (id: string): Promise<Order>=> {
   }
 }
 
-const useOrderQuery = (id: string) => useQuery(
+export const useOrderQuery = (id: string) => useQuery(
   ['order', id], 
   () => getOrder(id), {
-    staleTime: 1000 * 60 * 10, //10minutes
-    useErrorBoundary: true
-  }
+    staleTime: 1000 * 60 * 10, //10minutes  
+  }  
 )
-
-export {
-  getOrder,
-  useOrderQuery
-}

@@ -10,7 +10,7 @@ const updateUser = async (user: User) => {
     .eq('id', user.id)
 }
 
-const useUpdateUserMutation = () => useMutation(
+export const useUpdateUserMutation = () => useMutation(
   async (user: User) => {
     const { data, error } = await updateUser(user)
 
@@ -25,7 +25,3 @@ const useUpdateUserMutation = () => useMutation(
     }
   }
 )
-
-export {
-  useUpdateUserMutation
-}

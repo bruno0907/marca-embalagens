@@ -6,6 +6,9 @@ import { Section } from '../../../../components/Section'
 import { Content } from '../../../../components/Content'
 import { Input } from '../../../../components/Input'
 import { ProductsSelect } from '../../../../components/ProductsSelect'
+import { Form } from '../../../../components/Form'
+import { SectionHeader } from '../../../../components/SectionHeader'
+import { SectionTitle } from '../../../../components/SectionTitle'
 
 import { UserAddress } from './UserAddress'
 import { UserDetails } from './UserDetails'
@@ -21,6 +24,7 @@ import {
   Button,
   Heading,
 } from '@chakra-ui/react'
+import { FiTrash2 } from 'react-icons/fi'
 
 type Props = {
   form: UseFormReturn<NewOrder>
@@ -28,25 +32,34 @@ type Props = {
 }
 
 export const CreateOrderView = ({ onSubmit, form }: Props) => {
-  const router = useRouter()
+  const router = useRouter()  
 
-  const {
-    cartProducts
-  } = useCartContext()
-
-  const {
-    selectedUser
-  } = useCreateOrder()
+  const { cartProducts, setCartProducts } = useCartContext()
+  const { selectedUser } = useCreateOrder()
 
   const { handleSubmit, register, formState } = form
   const { errors, isSubmitting } = formState
 
   return (
-    <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={12}>
-      <HStack spacing={6} align="flex-start">
-        <UserDetails />
-        {selectedUser && <UserAddress />}
-      </HStack>      
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Section>
+        <SectionHeader>
+          <SectionTitle title="Dados do cliente"/>
+        </SectionHeader>
+        <Content>            
+          <UserDetails />
+        </Content>
+      </Section>
+      {selectedUser && (
+        <Section>
+          <SectionHeader>
+            <SectionTitle title="Endereço"/>
+          </SectionHeader>
+          <Content>
+            <UserAddress/>
+          </Content>
+        </Section>
+      )}
       
       <Section>
         <HStack spacing={3}>
@@ -56,36 +69,41 @@ export const CreateOrderView = ({ onSubmit, form }: Props) => {
           <Stack spacing={6}>
             <ProductsSelect />
             <Cart />
+            <HStack spacing={6} alignSelf="flex-end">
+              <Button 
+                variant="link" 
+                colorScheme="blue" 
+                rightIcon={<FiTrash2/>} 
+                onClick={() => setCartProducts([])}
+              >Esvaziar lista</Button>
+            </HStack>
           </Stack>
         </Content>
       </Section>
-
-
-      {cartProducts.length && (
-        <Section>
-          <HStack spacing={3}>
-            <Heading size="md">Entrega e pagamento</Heading>
-          </HStack>
-          <Content>
-            <HStack spacing={6}>                    
-              <Box w="380px">
-                <Input 
-                  type="date"
-                  name="data_entrega"
-                  label="Data de entrega:"
-                  error={errors.data_entrega}
-                  {...register('data_entrega')}
-                />
-              </Box>
+      
+      <Section>
+        <HStack spacing={3}>
+          <Heading size="md">Entrega e pagamento</Heading>
+        </HStack>
+        <Content>
+          <HStack spacing={6}>                    
+            <Box w="380px">
               <Input 
-              name="condicao_pagamento"
-              label="Condição de pagamento:"
-              {...register('condicao_pagamento')}
-            />
-            </HStack>          
-          </Content>
-        </Section>
-      )}
+                type="date"
+                name="data_entrega"
+                label="Data de entrega:"
+                error={errors.data_entrega}
+                {...register('data_entrega')}
+              />
+            </Box>
+            <Input 
+            name="condicao_pagamento"
+            label="Condição de pagamento:"
+            {...register('condicao_pagamento')}
+          />
+          </HStack>          
+        </Content>
+      </Section>      
 
       <HStack spacing={6} justify="flex-end">
         <Button
@@ -102,6 +120,6 @@ export const CreateOrderView = ({ onSubmit, form }: Props) => {
           isLoading={isSubmitting}
         >Salvar pedido</Button>
       </HStack>
-    </Stack>
+    </Form>
   )
 }

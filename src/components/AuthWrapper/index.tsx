@@ -37,14 +37,14 @@ const AuthWrapper = ({ children }: Props) => {
     <Flex maxW="100vw" maxH="100vh">
       <SideMenu />
       <Box
-        as="main"        
-        p="12"        
+        as="main"
+        py={12}
+        px={24}
         w="100vw"
-        h="100vh"    
-        flexDir="column"
+        h="100vh" 
         overflowY="auto"
-      >
-        {children}
+      >        
+        {children}        
       </Box>
     </Flex>
   )  

@@ -20,7 +20,7 @@ const createOrder = async (order: NewOrder) => {
     .insert(order);
 }
 
-const useCreateOrderMutation = () => useMutation(
+export const useCreateOrderMutation = () => useMutation(
   async (newOrder: NewOrder) => {
     try {
       const { data, error } = await createOrder(newOrder)
@@ -39,7 +39,3 @@ const useCreateOrderMutation = () => useMutation(
     onError: error => console.log('New order mutation error: ', error)
   }
 )
-
-export {
-  useCreateOrderMutation
-}

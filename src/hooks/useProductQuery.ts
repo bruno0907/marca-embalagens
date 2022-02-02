@@ -10,7 +10,7 @@ export type Product = {
   preco_unitario: number;
 }
 
-const getProduct = async (id: string): Promise<Product> => {
+export const getProduct = async (id: string): Promise<Product> => {
   try {
     const { data, error } = await supabase
       .from<Product>('products')
@@ -28,14 +28,9 @@ const getProduct = async (id: string): Promise<Product> => {
   }
 }
 
-const useProductQuery = (id: string) => useQuery(
+export const useProductQuery = (id: string) => useQuery(
   ['product', id], 
   () => getProduct(id), {
-  staleTime: 1000 * 60 * 10, //10minutes
-  useErrorBoundary: true
-})
-
-export { 
-  useProductQuery,
-  getProduct 
-}
+    staleTime: 1000 * 60 * 10, //10minutes  
+  }
+)

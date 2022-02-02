@@ -5,7 +5,10 @@ const API = process.env.NEXT_PUBLIC_PUBLIC_API_KEY
 
 const supabase = createClient(
   URL,
-  API
+  API, {
+    autoRefreshToken: true,
+    persistSession: true,
+  }
 )
 
 export { supabase }

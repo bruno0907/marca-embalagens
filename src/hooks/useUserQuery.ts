@@ -17,7 +17,7 @@ export type User = {
   outras_informacoes: string;
 }
 
-const getUser = async (id: string): Promise<User> => {  
+export const getUser = async (id: string): Promise<User> => {  
   try {
     const { data, error } = await supabase
       .from<User>('users')
@@ -35,15 +35,9 @@ const getUser = async (id: string): Promise<User> => {
   }
 }
 
-const useUserQuery = (id: string) => useQuery(
+export const useUserQuery = (id: string) => useQuery(
   ['user', id], 
   () => getUser(id), {
-    staleTime: 1000 * 60 * 10,
-    useErrorBoundary: true
+    staleTime: 1000 * 60 * 10    
   }
 )
-
-export { 
-  useUserQuery,
-  getUser  
-}

@@ -13,7 +13,9 @@ const getCities = async (uf: string ) => {
   return await axios.get<City[]>(`${URL}/${uf}/${OPTIONS}`)
 }
 
-const useCitiesQuery = (uf: string) => useQuery(['city[]', uf], async () => {
+export const useCitiesQuery = (uf: string) => useQuery(
+  ['city[]', uf], 
+  async () => {
   if(!uf) return null
 
   const { data } = await getCities(uf)
@@ -22,4 +24,3 @@ const useCitiesQuery = (uf: string) => useQuery(['city[]', uf], async () => {
 
   return data
 })
-export { useCitiesQuery }

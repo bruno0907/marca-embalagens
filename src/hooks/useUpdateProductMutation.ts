@@ -10,7 +10,7 @@ const updateProduct = async (product: Product) => {
     .eq('id', product.id)  
 }
 
-const useUpdateProductMutation = () => useMutation(
+export const useUpdateProductMutation = () => useMutation(
   async (productToUpdate: Product) => {
     const { data, error } = await updateProduct(productToUpdate)
 
@@ -26,7 +26,3 @@ const useUpdateProductMutation = () => useMutation(
     }
   }
 )
-
-export {
-  useUpdateProductMutation
-}

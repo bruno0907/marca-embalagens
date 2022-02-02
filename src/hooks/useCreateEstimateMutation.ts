@@ -25,7 +25,7 @@ const createEstimate = async (estimate: CreateEstimate) => {
     .insert(estimate);
 }
 
-const useCreateEstimateMutation = () => useMutation(
+export const useCreateEstimateMutation = () => useMutation(
   async (newEstimate: CreateEstimate) => {
     try {
       const { data, error } = await createEstimate(newEstimate)
@@ -44,7 +44,3 @@ const useCreateEstimateMutation = () => useMutation(
     onError: error => console.log('New estimate mutation error: ', error)
   }
 )
-
-export {
-  useCreateEstimateMutation
-}

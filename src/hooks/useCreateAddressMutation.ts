@@ -2,7 +2,7 @@ import { useMutation, UseMutationResult } from "react-query"
 import { queryClient } from "../contexts/queryContext"
 import { createAddressService, NewAddress } from "../services/createAddressService"
 
-const useCreateAddressMutation = () => useMutation(
+export const useCreateAddressMutation = () => useMutation(
   async (newAddress: NewAddress) => {
     const { data, error } = await createAddressService(newAddress)
 
@@ -15,7 +15,3 @@ const useCreateAddressMutation = () => useMutation(
     onError: error => console.log('New product mutation error: ', error)
   }
 )
-
-export {
-  useCreateAddressMutation
-}

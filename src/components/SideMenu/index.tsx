@@ -12,8 +12,7 @@ import {
   Stack,
   Box,   
   Flex,
-  Button,
-  Spacer,
+  Button,  
   Link as ChakraLink
 } from "@chakra-ui/react"
 
@@ -24,6 +23,7 @@ import {
   FiPhoneCall, 
   FiHome,
   FiLogOut,  
+  FiUser
 } from "react-icons/fi"
 
 
@@ -43,16 +43,9 @@ const SideMenuComponent = () => {
       bgColor="gray.50"
       boxShadow="sm"
     >
-      <Stack spacing={3} mb="8" align="center" justify="center">
-        <Logo />
-        <Link href="/profile" passHref>
-          <ChakraLink fontWeight="medium" _hover={{ textDecor: 'none', color: 'blue.500' }}>
-            Ver perfil
-          </ChakraLink>
-        </Link>
-      </Stack>
+      <Logo />
 
-      <Box as="nav">        
+      <Box as="nav" mt="16" mb="auto">        
         <ActiveLink 
           href="/dashboard"
           icon={FiHome}
@@ -81,19 +74,22 @@ const SideMenuComponent = () => {
         <ActiveLink 
           href="/suppliers"
           icon={FiPhoneCall}
-          label="Fornecedores"
+          label="Fornecedores"          
         />        
+        <ActiveLink         
+          href='/profile'
+          label='Meu Perfil'
+          icon={FiUser}          
+        />
       </Box>
-      <Spacer />
-      <Flex px="8" w="100%">
-        <Button
-          rightIcon={<FiLogOut />}
-          onClick={handleSignOut}
-          colorScheme="blue"
-          flexShrink={0}
-          flex="1"
-        >Sair</Button>
-      </Flex>
+      <Button          
+        rightIcon={<FiLogOut />}
+        onClick={handleSignOut}
+        colorScheme="blue"
+        flexShrink={0}
+        mt="auto"
+        px="14"
+      >Sair</Button>        
     </Flex>
   )
 }

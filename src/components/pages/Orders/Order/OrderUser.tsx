@@ -39,21 +39,21 @@ export const OrderUser = ({ userId, addressId }: Props) => {
 
   return (
     <Stack spacing={2} w="100%">
-      <SimpleGrid columns={3} gap={2}>
+      <SimpleGrid columns={3} gap={3}>
         {user.data.nome && (
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Nome:</Text>
             <Text fontSize="sm">{user.data.nome}</Text>            
           </Box>
         )}
         {user.data.razao_social &&
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="semibold">Razão social:</Text>
             <Text fontSize="sm">{user.data.razao_social}</Text>
           </Box>
         }
         {user.data.cpf_cnpj &&
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="semibold">
               {user.data.razao_social ? 'CNPJ' : 'CPF'}
             </Text>
@@ -63,7 +63,7 @@ export const OrderUser = ({ userId, addressId }: Props) => {
           </Box>
         }
         {user.data.telefone && (
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Telefone:</Text>
             <Text fontSize="sm">
               {user.data.telefone}
@@ -71,7 +71,7 @@ export const OrderUser = ({ userId, addressId }: Props) => {
           </Box>
         )}
         { user.data.celular && 
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Celular:</Text>
             <Text fontSize="sm">
               {user.data.celular}
@@ -79,7 +79,7 @@ export const OrderUser = ({ userId, addressId }: Props) => {
           </Box>
         }
         { user.data.contato && 
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Contato:</Text>
             <Text fontSize="sm">
               {user.data.contato}
@@ -88,41 +88,41 @@ export const OrderUser = ({ userId, addressId }: Props) => {
         }        
       </SimpleGrid>
 
-      <SimpleGrid columns={3} gap={2}>
-        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+      <SimpleGrid columns={3} gap={3}>
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
           <Text fontSize="x-small" fontWeight="bold">Endereço:</Text>
           <Text fontSize="sm">
             {address.data.endereco}
           </Text>
         </Box>
-        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
           <Text fontSize="x-small" fontWeight="bold">Bairro:</Text>
           <Text fontSize="sm">
             {address.data.bairro}
           </Text>
         </Box>
         {address.data.cep && (
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">CEP:</Text>
             <Text fontSize="sm">
               {address.data.cep}
             </Text>
           </Box>
         )}
-        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
           <Text fontSize="x-small" fontWeight="bold">Cidade:</Text>
           <Text fontSize="sm">
             {address.data.cidade}
           </Text>
         </Box>
-        <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+        <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
           <Text fontSize="x-small" fontWeight="bold">Estado:</Text>
           <Text fontSize="sm">
             {address.data.estado}
           </Text>
         </Box>
         {address.data.complemento && (
-          <Box px={2} py={1} borderWidth="1px" borderColor="gray.100" borderRadius="md">
+          <Box px={2} py={1} borderWidth="1px" borderColor="gray.200" borderRadius="md">
             <Text fontSize="x-small" fontWeight="bold">Complemento:</Text>
             <Text fontSize="sm">
               {address.data.complemento}

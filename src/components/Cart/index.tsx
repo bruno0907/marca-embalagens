@@ -6,8 +6,8 @@ import { Table } from "../Table"
 
 import { useCartContext } from "../../contexts/useCart"
 
-import { Thead, Tr, Th, Td, Tbody, Button, Flex, Text, Icon,  } from "@chakra-ui/react"
-import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi"
+import { Thead, Tr, Th, Td, Tbody, Button, Flex, Text, Icon, HStack,  } from "@chakra-ui/react"
+import { FiMinus, FiPlus, FiRefreshCw, FiTrash2 } from "react-icons/fi"
 
 
 const Cart = () => {
@@ -18,22 +18,22 @@ const Cart = () => {
     handleProductAmountInCart, 
   } = useCartContext()
 
-  return (
-    <Table>
+  return (    
+    <Table variant="simple">
       <Thead>
-        <Tr bgColor="blue.500">
-          <Th color="gray.50" w="220px" textAlign="center">Quantidade</Th>
-          <Th color="gray.50">Produto</Th>
-          <Th color="gray.50" w="30" textAlign="end">Valor Unitário</Th>
-          <Th color="gray.50" w="30" textAlign="end">Valor Total</Th>
-          <Th color="gray.50" w="150px" textAlign="center"/>
+        <Tr bgColor="gray.100">
+          <Th textAlign="center">Quantidade</Th>
+          <Th>Produto</Th>
+          <Th textAlign="end">Valor Unitário</Th>
+          <Th textAlign="end">Valor Total</Th>
+          <Th textAlign="center">Remover</Th>
         </Tr>
       </Thead>
       <Tbody>
         { cartProducts.map((estimateProduct, index) => {
           return (
             <Tr key={index}>
-              <Td py="2">
+              <Td p={0}>
                 <Flex flex="1" align="center" justify="center">
                   <Button
                     onClick={() => handleProductAmountInCart('decrement', index)}
@@ -52,7 +52,7 @@ const Cart = () => {
                   </Button>
                 </Flex>
               </Td>
-              <Td py="2" minW="30">{estimateProduct.produto}</Td>
+              <Td py="2">{estimateProduct.produto}</Td>
               <Td py="2" textAlign="end">{handleFormatPrice(estimateProduct.valor_unitario)}</Td>
               <Td py="2" textAlign="end">{handleFormatPrice(estimateProduct.valor_total)}</Td>
               <Td py="2" textAlign="center" p="0">
@@ -67,12 +67,12 @@ const Cart = () => {
             </Tr>                    
           )
         })}
-        <Tr>
-          <Td colSpan={5}>
-            <Flex justify="space-between">
+        <Tr bgColor="gray.100">
+          <Td colSpan={5} py={3}>
+            <HStack spacing={6} justify="space-between" px={4}>
               <strong>Total do pedido: </strong> 
               <strong>{handleFormatPrice(cartTotal)}</strong> 
-            </Flex>                    
+            </HStack>                    
           </Td>                  
         </Tr>
       </Tbody>
