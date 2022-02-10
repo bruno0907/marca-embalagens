@@ -23,13 +23,13 @@ const Modal = ({ isOpen, onClose, children, title }: ModalProps) => {
       onClose={onClose}          
       onEsc={onClose}
       useInert={isOpen}
-      size="4xl"
+      size="5xl"
       closeOnOverlayClick={false}
       scrollBehavior="inside"
     >
       <ModalOverlay />
-      <ModalContent bgColor="gray.50" p="4">
-        <ModalHeader fontSize="3xl">{title}</ModalHeader>
+      <ModalContent p={['2', '2', '4']} bgColor="gray.50">
+        <ModalHeader fontSize={['2xl', '2xl', '3xl']}>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           {children}

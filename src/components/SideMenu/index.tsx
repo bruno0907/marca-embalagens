@@ -1,36 +1,51 @@
 import { memo } from 'react'
 
-import Link from 'next/link'
-
-import { ActiveLink } from "../ActiveLink"
-
-import { useSignOutMutation } from '../../hooks/useSignOutMutation'
-
-import { Logo } from "../Logo"
-
 import {
-  Stack,
-  Box,   
-  Flex,
-  Button,  
-  Link as ChakraLink
+  Flex,   
+  Drawer, 
+  DrawerOverlay, 
+  DrawerContent, 
+  DrawerCloseButton, 
+  DrawerBody, 
+  DrawerHeader, 
+  useBreakpointValue 
 } from "@chakra-ui/react"
 
-import { 
-  FiEdit, 
-  FiUsers, 
-  FiPackage, 
-  FiPhoneCall, 
-  FiHome,
-  FiLogOut,  
-  FiUser
-} from "react-icons/fi"
+import { FiLogOut } from 'react-icons/fi'
 
+import { Logo } from "../Logo"
+import { NavBar } from '../NavBar'
+import { ButtonPrimary } from '../ButtonPrimary'
+import { useSignOutMutation } from '../../hooks/useSignOutMutation'
+import { useSidebarDrawer } from '../../contexts/SidebarContext'
 
 const SideMenuComponent = () => {
   const signOutMutation = useSignOutMutation()
 
   const handleSignOut = () => signOutMutation.mutate()
+
+  const { isOpen, onClose } = useSidebarDrawer()
+
+  const isMobile = useBreakpointValue({
+    base: true,
+    lg: false
+  })
+
+  if(isMobile) {
+    return (
+      <Drawer isOpen={isOpen} onClose={onClose} placement="left">
+        <DrawerOverlay>
+          <DrawerContent p={0} maxW="265px" bgColor="gray.50">
+            <DrawerCloseButton p={4} top={3.5}/>
+            <DrawerHeader >Navegação</DrawerHeader>
+            <DrawerBody p={0}>
+              <NavBar />
+            </DrawerBody>
+          </DrawerContent>
+        </DrawerOverlay>
+      </Drawer>
+    )
+  }
 
   return (
     <Flex
@@ -41,57 +56,19 @@ const SideMenuComponent = () => {
       align="center"
       py="12"
       bgColor="gray.50"
-      boxShadow="sm"
+      boxShadow="md"
     >
       <Logo />
-
-      <Box as="nav" mt="16" mb="auto">        
-        <ActiveLink 
-          href="/dashboard"
-          icon={FiHome}
-          label="Página Inicial"
-        />
-        <ActiveLink 
-          href="/estimates"
-          icon={FiEdit}
-          label="Orçamentos"
-        />
-        <ActiveLink 
-          href="/orders"
-          icon={FiEdit}
-          label="Pedidos"
-        />
-        <ActiveLink 
-          href="/users"
-          icon={FiUsers}
-          label="Clientes"
-        />
-        <ActiveLink 
-          href="/products"
-          icon={FiPackage}
-          label="Produtos"
-        />
-        <ActiveLink 
-          href="/suppliers"
-          icon={FiPhoneCall}
-          label="Fornecedores"          
-        />        
-        <ActiveLink         
-          href='/profile'
-          label='Meu Perfil'
-          icon={FiUser}          
-        />
-      </Box>
-      <Button          
+      <NavBar />
+      <ButtonPrimary          
         rightIcon={<FiLogOut />}
-        onClick={handleSignOut}
-        colorScheme="blue"
-        flexShrink={0}
+        onClick={handleSignOut}        
         mt="auto"
         px="14"
-      >Sair</Button>        
+      >Sair</ButtonPrimary>        
     </Flex>
   )
+
 }
 
 const SideMenu = memo(SideMenuComponent)

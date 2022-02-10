@@ -1,14 +1,14 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { Address } from "../services/address/getAddressService"
-import { updateAddress } from "../services/updateAddress"
+import { Address } from "../models"
+import { updateAddress } from "../services"
 
 export const useUpdateAddressMutation = () => useMutation(
   async (address: Address) => {
     try {
       const { data, error } = await updateAddress(address)
   
-      if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')      
+      if(error) throw Error(error.message)      
   
       return data
       

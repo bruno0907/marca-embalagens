@@ -6,15 +6,13 @@ type Props = StackProps & {
   children: ReactNode;
 }
 
-const Form = ({ onSubmit, children, ...rest }: Props) => {
-
-
+export const Form = ({ onSubmit, children, ...rest }: Props) => {
   return (
     <Stack
       as="form" 
       onSubmit={onSubmit} 
-      spacing={12}
-      maxW="1080px"
+      spacing={[6, 6, 12]}
+      maxW="1140px"
       m="auto"
       {...rest}
     >
@@ -22,5 +20,3 @@ const Form = ({ onSubmit, children, ...rest }: Props) => {
     </Stack>
   )
 }
-
-export { Form }

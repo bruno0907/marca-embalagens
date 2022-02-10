@@ -1,32 +1,20 @@
-import { useQuery, UseQueryResult } from "react-query"
-import { Address } from "../services/address/getAddressService"
-import { getAddressesService } from "../services/addresses/getAddressesService"
-import { getProfileService, Profile } from "../services/profile/getProfileService"
+import { useQuery } from "react-query"
+import { getProfile, getAddresses } from "../services"
 
-type ProfileQuery = {
-  profile: Profile;
-  addresses: Address[];
-}
-
-export const useProfileQuery = (): UseQueryResult<ProfileQuery> => useQuery(
+export const useProfileQuery = () => useQuery(
   ['profile'], 
   async () => {
-    const profile = await getProfileService()
+    const profile = await getProfile()
 
     if(profile.error) throw Error('Profile not found')
 
-    const address = await getAddressesService(profile.data?.id)
+    const addresses = await getAddresses(profile.data?.id)
     
-    if(address.error) throw Error('Address not found')
+    if(addresses.error) throw Error('Address not found')
 
-    const response: ProfileQuery = {
+    return {
       profile: profile.data,
-      addresses: address.data
+      addresses: addresses.data
     }
-
-    return response
-
-  }, {
-    staleTime: 1000 * 10 * 60
   }
 )

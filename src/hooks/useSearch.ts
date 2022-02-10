@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { SearchInput } from '../components/SearchInput'
+import { SearchInput } from '../components'
 
 const useSearch = (delay?: number) => {
   const [toSearch, setToSearch] = useState('')

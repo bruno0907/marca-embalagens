@@ -7,7 +7,7 @@ type Props = StackProps & {
 
 const Section = ({ children, ...rest}: Props) => {
   return (
-    <Stack spacing={6} {...rest}>
+    <Stack spacing={[4, 6, 6]} {...rest}>
       {children}
     </Stack>
   )

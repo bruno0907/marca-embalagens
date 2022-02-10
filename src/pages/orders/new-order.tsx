@@ -1,22 +1,15 @@
 import Head from 'next/head'
-
-import { Header } from '../../components/Header'
-import { AuthWrapper } from '../../components/AuthWrapper'
-import { Divider } from '../../components/Divider'
-
+import { AuthWrapper } from '../../components'
+import { CreateOrderModule } from '../../modules'
 import { CreateOrderProvider } from '../../contexts/useCreateOrder'
-import { CreateOrderModule } from '../../modules/Orders/CreateOrder'
 
-export default function NewOrder() {
-  
+export default function NewOrder() {  
   return (
     <>
       <Head>
-        <title>Novo pedido | MARCA</title>        
+        <title>Novo pedido</title>        
       </Head>
-      <AuthWrapper>        
-        <Header title="Novo pedido" withGoBack/>
-        <Divider />        
+      <AuthWrapper>
         <CreateOrderProvider>
           <CreateOrderModule />
         </CreateOrderProvider>        

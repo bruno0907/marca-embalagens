@@ -1,20 +1,13 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { supabase } from "../database/supabase"
-import { Supplier } from "./useSupplierQuery"
-
-const updateSupplier = async (supplier: Supplier) => {
-  return await supabase
-    .from<Supplier>('suppliers')    
-    .update(supplier)
-    .eq('id', supplier.id)
-}
+import { Supplier } from "../models"
+import { updateSupplier } from "../services"
 
 export const useUpdateSupplierMutation = () => useMutation(
   async (supplier: Supplier) => {
     const { data, error } = await updateSupplier(supplier)
 
-    if(error) throw Error('Erro ao atualizar o cadastro. Tente novamente.')
+    if(error) throw Error(error.message)
 
     return data
   }, {

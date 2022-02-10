@@ -1,16 +1,14 @@
 import { useQuery } from "react-query";
-import { getAddressesService } from "../services/addresses/getAddressesService";
+import { getAddresses } from "../services";
 
 export const useAddressesQuery = (userId: string) => useQuery(
   ['address[]', userId], 
   async () => { 
-    const { data, error } = await getAddressesService(userId)
+    const { data, error } = await getAddresses(userId)
 
-    if(error) throw Error('No addresses found')
+    if(error) throw Error(error.message)
 
-    return {
-      addresses: data
-    }
+    return data
   }, {
     staleTime: 1000 * 60 * 10, //10minutes
   }

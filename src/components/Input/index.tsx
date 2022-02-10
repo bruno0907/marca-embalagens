@@ -9,12 +9,11 @@ import {
   InputProps as ChakraInputProps,
   FormErrorMessage,
   Spinner,
-  FormErrorIcon,
-  InputLeftElement,
+  FormErrorIcon,  
   InputGroup,
   InputRightElement,
-  FormHelperText,
 } from "@chakra-ui/react"
+
 import { FiEye, FiEyeOff } from "react-icons/fi"
 
 interface Props extends ChakraInputProps {
@@ -44,7 +43,7 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, Props> =
     return (
       <FormControl id={name} isInvalid={!!error} display="flex" flexDir="column">
         { label && 
-          <FormLabel htmlFor={label} display="flex" alignItems="center">
+          <FormLabel htmlFor={label} display="flex" alignItems="center" fontSize={['sm', 'sm', 'initial']}>
             {label}
             { isLoading && <Spinner ml="2" size="sm" color="blue.500"/>}
           </FormLabel> 
@@ -61,7 +60,8 @@ const InputRef: ForwardRefRenderFunction<HTMLInputElement, Props> =
             error={error}
             borderColor={!error ? "gray.300" : "red"}
             bgColor={!error ? "gray.50" : "red.50"}
-            flexShrink={0}            
+            flexShrink={0}   
+            fontSize={['sm', 'sm', 'initial']}         
             {...rest}
           />
           { showPasswordIcon && (

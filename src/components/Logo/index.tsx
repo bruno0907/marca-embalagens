@@ -1,10 +1,10 @@
 import NextImage from 'next/image'
 
-import { SkeletonCircle, Icon, Center, Avatar } from '@chakra-ui/react'
+import { SkeletonCircle, Icon, Center, Avatar, Box } from '@chakra-ui/react'
 import { FiAlertTriangle } from 'react-icons/fi'
 import { useProfileQuery } from '../../hooks/useProfileQuery'
 
-const Logo = () => {
+export const Logo = () => {
   const { data, isLoading, isError } = useProfileQuery()
 
   if(isLoading) {
@@ -17,7 +17,7 @@ const Logo = () => {
     )
   }
 
-  if(isError || !data.profile) {
+  if(isError) {
     return (
       <Icon 
         as={FiAlertTriangle} 
@@ -41,14 +41,18 @@ const Logo = () => {
   }
 
   return (
-    <NextImage 
-      src={data.profile.avatar}
-      alt="Logo"
-      width={150}
-      height={50}
-      objectFit="cover"
-    />
+    <Box 
+      position="relative" 
+      w={['125px', '125px', '150px']} 
+      h={['40px', '40px', '50px']}
+    >
+      <NextImage
+        src={data.profile.avatar}
+        alt="Logo"
+        loading="eager"
+        objectFit="contain"
+        layout="fill"
+      />
+    </Box>
   )
 }
-
-export { Logo }

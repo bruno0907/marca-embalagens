@@ -34,7 +34,8 @@ const SearchInputComponent: ForwardRefRenderFunction<
       <Input        
         type={type ? type : 'text'}
         borderColor="gray.300"
-        ref={ref}        
+        ref={ref}
+        fontSize={['sm', 'initial', 'initial']}        
         {...rest}
       />
       { hasSearch &&

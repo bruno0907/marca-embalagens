@@ -5,9 +5,11 @@ type Props = StackProps & {
   children: ReactNode;
 }
 
-const SectionHeader = ({ children }: Props) => {
+const SectionHeader = ({ children, ...rest }: Props) => {
   return (
-    <HStack spacing={3} justify="space-between">{children}</HStack>
+    <HStack spacing={3} align="center" {...rest}>
+      {children}
+    </HStack>
   )
 }
 

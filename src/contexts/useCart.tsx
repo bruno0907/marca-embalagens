@@ -7,8 +7,7 @@ import {
   useEffect 
 } from 'react'
 
-import { OrderProduct } from '../hooks/useOrderQuery'
-import { Product } from '../hooks/useProductQuery'
+import { OrderProduct, Product } from '../models'
 
 type ContextProps = {
   selectedProduct: Product;
@@ -23,9 +22,10 @@ type ContextProps = {
   cartTotal: number;
   setCartTotal: (result: number) => void  
 
-  handleAddProductToCart: (ref: MutableRefObject<HTMLSelectElement>) => void;
+  handleAddProductToCart: (ref: MutableRefObject<HTMLInputElement | HTMLSelectElement>) => void;
   handleRemoveProductFromCart: (index: number) => void;
   handleProductAmountInCart: (amount: 'increment' | 'decrement', index: number) => void
+  handleEmptyCart: () => void;
 
   canSubmit: boolean;
 }
@@ -121,6 +121,8 @@ const CartProvider = ({ children }: ProviderProps) => {
     return    
   }
 
+  const handleEmptyCart = () => setCartProducts([])
+
   const canSubmit = !cartProducts?.length
 
   useEffect(() => {
@@ -146,6 +148,7 @@ const CartProvider = ({ children }: ProviderProps) => {
       handleAddProductToCart,
       handleRemoveProductFromCart,
       handleProductAmountInCart,
+      handleEmptyCart,
       canSubmit,
     }}>
       {children}

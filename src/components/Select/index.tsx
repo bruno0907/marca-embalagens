@@ -29,7 +29,7 @@ const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, Props> =
     return (
       <FormControl id={name} isRequired={isRequired} isInvalid={!!error} display="flex" flexDir="column">
         { label && 
-          <FormLabel htmlFor={name} display="flex" alignItems="center">
+          <FormLabel htmlFor={name} display="flex" alignItems="center" fontSize={['sm', 'sm', 'initial']}>
             {label}
             { isLoading && <Spinner ml="2" size="sm" color="blue.500"/>}
           </FormLabel> 
@@ -38,10 +38,11 @@ const SelectRef: ForwardRefRenderFunction<HTMLSelectElement, Props> =
           icon={<MdArrowDropDown/>}
           id={name}
           name={name}
+          ref={ref}
           isDisabled={isDisabled}
           borderColor={!error ? "gray.300" : "red"}
           bgColor={!error ? "gray50" : "red.50"}
-          ref={ref}
+          fontSize={['sm', 'sm', 'initial']}
           error={error}
           {...rest}
         >

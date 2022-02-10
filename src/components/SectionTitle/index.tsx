@@ -1,15 +1,15 @@
-import { Heading, HStack } from "@chakra-ui/react"
+import { Heading, HStack, StackProps } from "@chakra-ui/react"
 import { ReactNode } from "react"
 
-type Props = {
+type Props = StackProps & {
   title?: string;
   children?: ReactNode;
 }
 
-const SectionTitle = ({ title , children}: Props) => {
+const SectionTitle = ({ title , children, ...rest}: Props) => {
   return (
-    <HStack spacing={3} align="center" justify="space-between">
-      <Heading size="md">{title}</Heading>
+    <HStack spacing={3} align="center" justify="space-between" {...rest}>
+      <Heading fontSize={['medium', 'medium', 'x-large']}>{title}</Heading>
       {children}
     </HStack>
   )

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 
-import { Button } from "@chakra-ui/react"
+import { IconButton } from "@chakra-ui/react"
 
 import { FiArrowLeft } from "react-icons/fi"
 
@@ -20,16 +20,18 @@ const GoBackButton = ({ to }: Props) => {
   }
 
   return (
-    <Button      
+    <IconButton
+      aria-label="go-back"  
+      icon={<FiArrowLeft />}    
+      fontSize={[24, 24, 32]}
       display="flex"
+      align="center"
+      justify="center"
       type="button"
       variant="unstyled"
-      mr="auto"
       onClick={handleGoBack}
       _hover={{ svg: { color: 'blue.500' }}}
-    >
-      <FiArrowLeft fontSize="32" />
-    </Button>
+    />
   )
 }
 

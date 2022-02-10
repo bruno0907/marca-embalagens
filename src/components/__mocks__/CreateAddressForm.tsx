@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react"
-import { Input } from "../Input"
-import { Select } from "../Select"
+import { Input } from "../ui/Input"
+import { Select } from "../ui/Select"
 
 const CreateAddressForm = ({ id, onClose }) => {
   return (

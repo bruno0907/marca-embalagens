@@ -1,14 +1,14 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 
-import { supabase } from "../database/supabase";
+import { supabase } from "../infra/database/supabase";
 
 import { Session } from "@supabase/supabase-js";
 
 import axios from "axios";
 
 type AuthContextProps = {    
-  session: Session;
+  session: Session;  
 }
 
 type AuthProviderProps = {
@@ -26,7 +26,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     if(!data) return null
 
     return data
-  })  
+  }) 
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -52,11 +52,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     return () => authListener.unsubscribe()
 
-  }, [router])
+  }, [router])  
 
   return (
     <AuthContext.Provider value={{
-      session,      
+      session,
     }}>
       {children}
     </AuthContext.Provider>

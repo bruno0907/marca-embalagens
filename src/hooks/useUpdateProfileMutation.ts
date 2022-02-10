@@ -1,10 +1,8 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { updateAddress } from "../services/updateAddress"
 
-import { updateProfileService } from "../services/profile/updateProfileService"
-import { Profile } from "../services/profile/getProfileService"
-import { Address } from "../services/address/getAddressService"
+import { updateProfile, updateAddress } from "../services"
+import { Address, Profile } from "../models"
 
 type UpdateProfileMutation = {
   profileData: Profile;
@@ -14,7 +12,7 @@ type UpdateProfileMutation = {
 export const useUpdateProfileMutation = () => useMutation(
   async ({ profileData, profileAddress }: UpdateProfileMutation) => {
     
-    const updatedProfile = await updateProfileService(profileData)
+    const updatedProfile = await updateProfile(profileData)
     const updatedAddress = await updateAddress(profileAddress)
 
     return {

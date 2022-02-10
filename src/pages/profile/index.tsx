@@ -1,84 +1,58 @@
-import { useRouter } from "next/router";
 import Head from "next/head";
-
-import { AuthWrapper } from "../../components/AuthWrapper";
-import { Divider } from "../../components/Divider";
-import { Header } from "../../components/Header";
-import { Content } from "../../components/Content";
-import { ProfileForm } from "../../modules/Profile/ProfileForm";
-import { ProfileAvatar } from "../../modules/Profile/ProfileAvatar";
-
-import { useProfileQuery } from "../../hooks/useProfileQuery";
-
-import {   
-  Button,
-  Center,
-  Flex,
-  HStack,
-  SimpleGrid,
-  Skeleton,
-  Text,  
-} from "@chakra-ui/react";
+import { SimpleGrid, Skeleton } from "@chakra-ui/react";
+import { 
+  AuthWrapper,
+  Divider,
+  Header,
+  Content,  
+  ErrorView,  
+} from "../../components";
+import { useProfileQuery } from "../../hooks";
+import { ProfileModule } from "../../modules";
 
 export default function Profile() {
-  const router = useRouter()
-  const { data, isError, isLoading } = useProfileQuery()  
+  
+  const { data: profile, isError, isLoading } = useProfileQuery()  
+
+  if(isLoading) {
+    return (
+      <>
+        <AuthWrapper>
+          <Header title="Perfil"/>
+          <Divider />
+          <Content>
+            <SimpleGrid gap={3} columns={2}>
+              {Array.from({ length: 12}).map((_, i) => {
+                return (                  
+                  <Skeleton key={i} h="10" w="100%" borderRadius="md"/>
+                )
+              })}   
+            </SimpleGrid>
+          </Content>
+        </AuthWrapper>
+      </>
+    )
+  }
+
+  if(isError) {
+    return (
+      <>
+        <AuthWrapper>
+          <Header title="Perfil" />
+          <Divider />
+          <ErrorView />
+        </AuthWrapper>
+      </>
+    )
+  }
 
   return (
     <>
       <Head>
-        <title>MARCA | Perfil</title>
+        <title>Perfil</title>
       </Head>
-      <AuthWrapper>
-        <Flex>
-          <Header title="Perfil" />
-        </Flex>
-        <Divider />        
-        {isLoading ? (
-          <Content>
-            <SimpleGrid gap={3} columns={2}>      
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>
-              <Skeleton h="10" w="100%" borderRadius="md"/>      
-            </SimpleGrid>
-          </Content>
-        ) : isError ? (
-          <Content>
-            <Center flexDir="column">            
-              <Text 
-                fontSize="xl" 
-                mb="8" 
-                fontWeight="bold"
-                >
-                Não foi possível carregar o perfil.
-              </Text>
-              <Button               
-                colorScheme="blue" 
-                mb="2" 
-                onClick={() => router.reload()}
-                >
-                Tentar novamente
-              </Button>
-            </Center>
-          </Content>
-        ) : (
-          <HStack spacing={12} align="flex-start">
-            <ProfileAvatar profile={data.profile}/>            
-            <ProfileForm 
-              profile={data.profile}
-              address={data.addresses[0]}
-            />
-          </HStack>
-        )}        
+      <AuthWrapper>        
+        <ProfileModule profile={profile} />         
       </AuthWrapper>
     </>
   )

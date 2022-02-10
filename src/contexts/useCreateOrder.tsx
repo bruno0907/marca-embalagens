@@ -1,9 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 import { UseQueryResult } from 'react-query';
-import { Address } from '../hooks/useAddressQuery';
-import { OrderQuery, useOrdersQuery } from '../hooks/useOrdersQuery';
-import { User } from '../hooks/useUserQuery';
+
+import { useOrdersQuery } from '../hooks/useOrdersQuery';
+
 import { useUsersQuery } from '../hooks/useUsersQuery'
+import { Address, User, OrderQuery } from '../models';
 
 type ContextProps = { 
   users: UseQueryResult<User[]>;

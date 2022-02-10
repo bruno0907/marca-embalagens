@@ -1,40 +1,11 @@
 import { useMutation } from "react-query"
 import { queryClient } from "../contexts/queryContext"
-import { supabase } from "../database/supabase"
-import { createAddressService, NewAddress } from "../services/createAddressService"
-import { Supplier } from "./useSupplierQuery"
-
-export type NewSupplier = {  
-  user_id: string;
-  natureza_cliente: string;
-  produto: string;
-  nome: string;
-  razao_social: string;
-  contato: string;
-  cpf_cnpj: string;
-  rg_ie: string;  
-  email: string;
-  telefone: string;
-  celular: string;  
-  outras_informacoes: string;
-}  
-
-const createSupplier = async (supplier: NewSupplier) => {
-  return await supabase
-    .from<Supplier>('suppliers')
-    .insert(supplier)
-}
-
-const removeSupplier = async (id: string) => {
-  return await supabase
-    .from<Supplier>('suppliers')
-    .delete()
-    .eq('id', id)
-}
+import { CreateAddress, CreateSupplier } from "../models"
+import { createAddress, createSupplier, removeSupplier } from "../services/"
 
 type NewUserMutationProps = {
-  supplierData: NewSupplier;
-  addressData: Omit<NewAddress, 'user_id'>;
+  supplierData: CreateSupplier;
+  addressData: Omit<CreateAddress, 'user_id'>;
 }
 
 export const useCreateSupplierMutation = () => useMutation(
@@ -42,19 +13,19 @@ export const useCreateSupplierMutation = () => useMutation(
     try {
       const newSupplier = await createSupplier(supplierData)
   
-      if(newSupplier.error) throw Error('Erro ao cadastrar novo fornecedor.')
+      if(newSupplier.error) throw Error('Error creating new supplier.')
   
       const supplierAddress = {
         user_id: newSupplier.data[0].id,
         ...addressData
       }
   
-      const newSupplierAddress = await createAddressService(supplierAddress)
+      const newSupplierAddress = await createAddress(supplierAddress)
   
       if(newSupplierAddress.error) {
         await removeSupplier(newSupplier.data[0].id)
   
-        throw Error('Erro ao cadastrar o endereço do fornecedor.')
+        throw Error('Error creating new supplier address.')
       }
   
       const mutationResult = {

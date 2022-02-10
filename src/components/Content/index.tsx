@@ -1,23 +1,24 @@
 import { ReactNode } from "react"
-import { Flex, FlexProps } from "@chakra-ui/react"
+import { Box, BoxProps } from "@chakra-ui/react"
 
-interface Props extends FlexProps {
+interface Props extends BoxProps {
   children: ReactNode;
 }
 
 const Content = ({ children, ...rest }: Props) => {
   return (
-    <Flex
-      flexDir="column"
+    <Box
       w="100%"
-      p="8"
+      maxW="1140px"
+      m="auto"
+      p={[4, 6, 8]}
       bgColor="gray.50"
       borderRadius="md"
       boxShadow="md"
       {...rest}
     >
       {children}
-    </Flex>
+    </Box>
   )
 }
 

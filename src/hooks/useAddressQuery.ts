@@ -1,11 +1,13 @@
-import router from "next/router";
 import { useQuery, UseQueryResult } from "react-query";
-import { Address, getAddressService } from "../services/address/getAddressService";
+import { Address } from "../models";
+import { getAddress } from "../services";
 
 export const useAddressQuery = (id: string): UseQueryResult<Address> => useQuery(
   ['address', id], 
   async () => {
-    const { data, error } = await getAddressService(id)
+    if(!id) return
+    
+    const { data, error } = await getAddress(id)
 
     if(error) throw new Error(error.message)
 

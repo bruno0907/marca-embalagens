@@ -1,23 +1,16 @@
-
 import Head from 'next/head'
-
-import { Header } from '../../components/Header'
-import { AuthWrapper } from '../../components/AuthWrapper'
-import { Divider } from '../../components/Divider'
-
-import { CreateEstimateModule } from '../../modules/Estimates/CreateEstimate'
+import { AuthWrapper } from '../../components'
+import { CreateEstimateModule } from '../../modules'
 
 export default function NewEstimate() {
   return (
     <>
       <Head>
-        <title>Novo orçamento | MARCA</title>
+        <title>Novo orçamento</title>
       </Head>
-      <AuthWrapper>        
-        <Header title="Novo orçamento" withGoBack/>
-        <Divider />
+      <AuthWrapper>
         <CreateEstimateModule/>
-      </AuthWrapper>
-    </>   
+      </AuthWrapper>  
+    </>
   )
 }

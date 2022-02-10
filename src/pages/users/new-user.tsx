@@ -1,20 +1,15 @@
 import Head from 'next/head'
-
-import { Header } from '../../components/Header'
-import { AuthWrapper } from '../../components/AuthWrapper'
-import { Divider } from '../../components/Divider'
-import { CreateUserForm } from '../../components/pages/Users/CreateUserForm'
+import { AuthWrapper } from '../../components'
+import { CreateUserModule } from '../../modules'
 
 export default function NewUser() {
   return (
     <>
       <Head>
-        <title>MARCA | Novo Cliente</title>        
+        <title>Novo Cliente</title>        
       </Head>
-      <AuthWrapper>        
-        <Header title="Novo Cliente" withGoBack/>
-        <Divider />        
-        <CreateUserForm />
+      <AuthWrapper>
+        <CreateUserModule />
       </AuthWrapper>
     </>
   )

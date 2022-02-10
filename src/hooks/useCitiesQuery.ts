@@ -1,17 +1,5 @@
-import axios from "axios";
 import { useQuery } from "react-query";
-
-export type City = {
-  id: number;
-  nome: string;
-};
-
-const URL = "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
-const OPTIONS = "municipios?orderBy=nome"
-
-const getCities = async (uf: string ) => {
-  return await axios.get<City[]>(`${URL}/${uf}/${OPTIONS}`)
-}
+import { getCities } from "../services";
 
 export const useCitiesQuery = (uf: string) => useQuery(
   ['city[]', uf], 

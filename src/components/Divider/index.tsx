@@ -7,7 +7,7 @@ interface Props extends ChakraDividerProps {}
 
 const Divider = ({ ...rest }: Props) => {
   return (
-    <ChakraDivider my="12" borderColor="gray.600" {...rest} />
+    <ChakraDivider my={[6, 6, 12]} borderColor="gray.600" {...rest} />
   )
 }
 

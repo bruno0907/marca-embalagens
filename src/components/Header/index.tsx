@@ -2,14 +2,14 @@ import { ReactNode, memo } from "react"
 
 import { GoBackButton } from "./GoBackButton"
 
-import { 
-  Flex, 
-  Heading, 
-  FlexProps, 
-  Spacer 
+import {
+  Heading,   
+  Stack,
+  HStack,
+  StackProps
 } from "@chakra-ui/react"
 
-type Props = FlexProps & {
+type Props = StackProps & {
   withGoBack?: boolean;
   to?: string;
   children?: ReactNode;
@@ -18,11 +18,13 @@ type Props = FlexProps & {
 
 const HeaderComponent = ({ withGoBack, children, title, to, ...rest }: Props) => {
   return (
-    <Flex id="header" align="center" justify="space-between" {...rest}>
-      { withGoBack && <GoBackButton to={to}/> }
-      { title && <Heading fontSize="xx-large" mr="auto">{title}</Heading>}
-      { children ? children : <Flex w="10" h="10"/> }
-    </Flex>
+    <Stack id="header" direction={['column', 'row', 'row']} spacing={6} align={['initial', 'center', 'center']} justify="space-between" {...rest}>
+      <HStack spacing={3} align="center">
+        { withGoBack && <GoBackButton to={to}/> }
+        <Heading fontSize={['xl', 'xl', '3xl']}>{title}</Heading>
+      </HStack>
+      { children }
+    </Stack>
   )
 }
 

@@ -1,7 +1,5 @@
-import { ChakraProvider } from "@chakra-ui/react";
 import { render, screen } from "@testing-library/react";
 import { Content } from ".";
-import { theme } from "../../styles/theme";
 
 describe('<Content/>', () => {
   it('should render properly with its children property', () => {
