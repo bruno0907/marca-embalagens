@@ -6,7 +6,7 @@ import {
   OrderItems 
 } from './components'
 
-import { Order } from "../../models"
+import { Order } from "../../../../models"
 
 import { Box, Stack, Text } from '@chakra-ui/react'
 
@@ -16,8 +16,8 @@ type Props = {
 
 const PrintModule: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ order }, ref) => {   
   return ( 
-    <Box h={0} overflow="hidden">
-      <Stack spacing={2} ref={ref} p={4}>
+    <Box h="0" overflow="hidden">
+      <Stack spacing="0.5" ref={ref} p="4">
         <OrderHeader 
           orderNumber={order?.numero_pedido} 
           orderDeliveryDate={order?.data_entrega}
@@ -26,25 +26,20 @@ const PrintModule: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ order },
           userId={order?.cliente} 
           addressId={order?.endereco_entrega}
         />
+        <Box            
+          px="2"
+          py="1"
+          borderWidth="1px"
+          borderRadius="md"
+          borderColor="gray.200"
+          w="100%"
+          >
+            <Text fontWeight="bold" >Condição de pagamento: {order?.condicao_pagamento ?? ''}</Text>
+          </Box>
         <OrderItems
           order={order?.pedido}
           total={order?.total}
         />
-
-        {order?.condicao_pagamento && (                  
-          <Stack
-            spacing={2}
-            px={2}
-            py={1}
-            borderWidth="1px"
-            borderRadius="md"
-            borderColor="gray.200"
-            w="100%"
-            minH="80px"
-          >
-            <Text fontWeight="bold" >Condição de pagamento: {order?.condicao_pagamento}</Text>
-          </Stack>
-        )}
       </Stack>
     </Box>
   )

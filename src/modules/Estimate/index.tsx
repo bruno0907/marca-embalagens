@@ -31,7 +31,7 @@ import {
   ButtonSecondary 
 } from "../../components"
 
-import { PrintEstimateModule } from '../PrintEstimate'
+import { PrintEstimateModule } from './components'
 
 import { useCartContext } from '../../contexts/useCart'
 
@@ -299,7 +299,7 @@ export const EstimateModule = ({ estimateId }: Props) => {
             isLoading={isSubmitting}
           >Atualizar orçamento</ButtonPrimary>
         </HStack>
-      </Form>
+      </Form>      
       <PrintEstimateModule estimate={estimate} ref={printRef}/>
     </>
   )

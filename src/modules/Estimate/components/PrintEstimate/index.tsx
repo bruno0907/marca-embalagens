@@ -18,17 +18,17 @@ import {
   Spinner,   
 } from "@chakra-ui/react";
 
-import { Logo } from "../../components";
+import { Logo } from "../../../../components";
 
-import { useProfileQuery } from "../../hooks";
+import { useProfileQuery } from "../../../../hooks";
 
 import { 
   handleFormatPadStart,
   handleFormatDate,
   handleFormatPrice 
-} from "../../utils";
+} from "../../../../utils";
 
-import { Estimate } from "../../models";
+import { Estimate } from "../../../../models";
 
 type Props = StackProps & {
   estimate: Estimate;  
@@ -54,7 +54,7 @@ const PrintModule: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ estimate
   }
 
   return (
-    <Box h={0} overflow="hidden">
+    <Box h="0" overflow="hidden">
       <Stack spacing={6} p={4} ref={ref} {...rest}>
         <Flex justify="space-between" w="100%">      
           <Center h="20" w="40">

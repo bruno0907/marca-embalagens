@@ -40,10 +40,9 @@ import {
 import { 
   OrderItems, 
   UserAddress,
-  UserDetails 
+  UserDetails,
+  PrintOrderModule 
 } from './components'
-
-import { PrintOrderModule } from '../PrintOrder'
 
 import { useUpdateOrderMutation, useOrderQuery } from '../../hooks'
 

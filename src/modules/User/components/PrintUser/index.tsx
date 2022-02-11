@@ -7,7 +7,7 @@ import {
   HStack
 } from "@chakra-ui/react";
 
-import { User } from "../../models";
+import { User } from "../../../../models";
 
 type Props = {
   user: User;
