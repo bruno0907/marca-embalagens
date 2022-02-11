@@ -18,7 +18,7 @@ import {
 import { UserDetails, UserOrders } from './components'
 
 import { AddressesModule } from '../Addresses'
-import { PrintUserModule } from './components'
+import { PrintUserModule } from '../'
 
 import { useUserQuery } from '../../hooks'
 

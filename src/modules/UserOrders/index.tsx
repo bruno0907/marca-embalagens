@@ -1,9 +1,9 @@
-import { Content } from "../../../components"
-import { handleFormatPrice } from "../../../utils"
+import { Content } from "../../components"
+import { handleFormatPrice } from "../../utils"
 
 import { OrderHeader, OrderItemsList } from "./components"
 
-import { Order } from "../../../models"
+import { Order } from "../../models"
 
 import { Box, Heading, Stack, Text } from "@chakra-ui/react"
 

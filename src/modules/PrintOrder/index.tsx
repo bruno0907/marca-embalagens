@@ -6,7 +6,7 @@ import {
   OrderItems 
 } from './components'
 
-import { Order } from "../../../../models"
+import { Order } from "../../models"
 
 import { Box, Stack, Text } from '@chakra-ui/react'
 

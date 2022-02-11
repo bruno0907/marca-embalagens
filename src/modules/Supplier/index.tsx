@@ -7,7 +7,9 @@ import { Stack } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
 
-import { AddressesModule } from '..'
+import { AddressesModule, PrintSupplierModule } from '..'
+
+import { SupplierDetails } from './components'
 
 import { 
   Header,
@@ -16,8 +18,6 @@ import {
   LoadingView,
   ButtonPrimary 
 } from '../../components'
-
-import { SupplierDetails, PrintSupplierModule } from './components'
 
 import { useSupplierQuery } from '../../hooks'
 

@@ -20,7 +20,7 @@ import {
   Spacer
 } from '@chakra-ui/react'
 
-import { FiMail, FiPrinter } from 'react-icons/fi'
+import { FiMail, FiPrinter, FiShare } from 'react-icons/fi'
 
 import { 
   Divider,
@@ -40,16 +40,17 @@ import {
 import { 
   OrderItems, 
   UserAddress,
-  UserDetails,
-  PrintOrderModule 
+  UserDetails,   
 } from './components'
 
 import { useUpdateOrderMutation, useOrderQuery } from '../../hooks'
 
-import { handleFormatPadStart } from '../../utils'
+import { handleFormatDate, handleFormatPadStart, handleFormatPrice } from '../../utils'
 
 import { useCreateOrder } from '../../contexts/useCreateOrder'
 import { useCartContext } from '../../contexts/useCart'
+
+import { PrintOrderModule } from '..'
 
 import { Order } from '../../models'
 
@@ -75,6 +76,30 @@ export const OrderModule = ({ orderId }: Props) => {
   const handlePrintOrder = useReactToPrint({
     content: () => printRef.current,
   })
+
+  const OrderToShare = {
+    title: 'MARCA EMBALAGENS',
+    text: 
+    `
+    Orçamento ${handleFormatPadStart(order?.numero_pedido)}
+    ------------------
+    Cliente: ${order?.cliente}
+    Data: ${handleFormatDate(order?.created_at)}
+    ------------------
+    Condição de pagamento:${order?.condicao_pagamento}
+    ------------------
+    Descrição
+    ${order?.pedido?.map(item => (
+      `${item.quantidade} ${item.produto} ${item.valor_total}`
+    ))}
+    ------------------
+    Total: ${handleFormatPrice(order?.total)}
+
+    `
+  }
+
+  const handleShareOrder = async () => await navigator.share(OrderToShare)
+  // const handleShareOrder = () => console.log(OrderToShare)
 
   const { 
     cartProducts,    
@@ -172,13 +197,10 @@ export const OrderModule = ({ orderId }: Props) => {
       </Head>
       <Header withGoBack title={`Pedido: ${handleFormatPadStart(order.numero_pedido)}`}>
         <HStack spacing={3}>
-          <ButtonPrimary             
-            rightIcon={<FiMail/>}
-          >Enviar por whatsapp</ButtonPrimary>
-          <ButtonPrimary             
-            rightIcon={<FiPrinter/>}
-            onClick={handlePrintOrder}
-          >Imprimir</ButtonPrimary>
+          <ButtonPrimary rightIcon={<FiShare/>} onClick={handleShareOrder}/>
+          <ButtonPrimary rightIcon={<FiPrinter/>} onClick={handlePrintOrder}>
+            Imprimir
+          </ButtonPrimary>
         </HStack>
       </Header>
       <Divider/>

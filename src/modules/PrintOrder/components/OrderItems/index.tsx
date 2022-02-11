@@ -8,9 +8,9 @@ import {
   Box
 } from "@chakra-ui/react"
 
-import { handleFormatPrice } from "../../../../../../utils"
+import { handleFormatPrice } from "../../../../utils"
 
-import { OrderProduct } from "../../../../../../models"
+import { OrderProduct } from "../../../../models"
 
 type Props = {
   order: OrderProduct[]

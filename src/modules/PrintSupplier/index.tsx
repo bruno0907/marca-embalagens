@@ -8,7 +8,7 @@ import {
   forwardRef,  
 } from '@chakra-ui/react'
 
-import { Supplier } from '../../../../models'
+import { Supplier } from '../../models'
 
 type Props = {
   supplier: Supplier;

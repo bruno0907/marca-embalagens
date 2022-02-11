@@ -1,7 +1,7 @@
 import { 
   handleFormatDate,
   handleFormatPadStart 
-} from '../../../../../utils'
+} from '../../../../utils'
 
 import {
   HStack,

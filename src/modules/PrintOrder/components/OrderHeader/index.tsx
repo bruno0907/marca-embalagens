@@ -7,11 +7,11 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
-import { Logo } from "../../../../../../components";
+import { Logo } from "../../../../components";
 
-import { useProfileQuery } from "../../../../../../hooks";
+import { useProfileQuery } from "../../../../hooks";
 
-import { handleFormatDate, handleFormatPadStart } from "../../../../../../utils";
+import { handleFormatDate, handleFormatPadStart } from "../../../../utils";
 
 type Props = {
   orderNumber: number;

@@ -9,7 +9,7 @@ import {
 
 import { FiInfo } from 'react-icons/fi'
 
-import { useAddressQuery, useUserQuery } from '../../../../../../hooks'
+import { useAddressQuery, useUserQuery } from '../../../../hooks'
 
 type Props = {
   userId: string;

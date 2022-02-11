@@ -9,9 +9,9 @@ import {
   Box
 } from "@chakra-ui/react"
 
-import { OrderProduct } from "../../../../../models"
+import { OrderProduct } from "../../../../models"
 
-import { handleFormatPrice } from "../../../../../utils"
+import { handleFormatPrice } from "../../../../utils"
 
 type Props = TableBodyProps & {
   orderItems: OrderProduct[]

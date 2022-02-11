@@ -5,7 +5,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { Address } from "../../../../models";
+import { Address } from "../../models";
 
 type Props = {
   addresses: Address[];

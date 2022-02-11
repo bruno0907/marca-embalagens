@@ -18,17 +18,17 @@ import {
   Spinner,   
 } from "@chakra-ui/react";
 
-import { Logo } from "../../../../components";
+import { Logo } from "../../components";
 
-import { useProfileQuery } from "../../../../hooks";
+import { useProfileQuery } from "../../hooks";
 
 import { 
   handleFormatPadStart,
   handleFormatDate,
   handleFormatPrice 
-} from "../../../../utils";
+} from "../../utils";
 
-import { Estimate } from "../../../../models";
+import { Estimate } from "../../models";
 
 type Props = StackProps & {
   estimate: Estimate;  

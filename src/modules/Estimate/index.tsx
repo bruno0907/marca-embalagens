@@ -31,7 +31,7 @@ import {
   ButtonSecondary 
 } from "../../components"
 
-import { PrintEstimateModule } from './components'
+import { PrintEstimateModule } from '../'
 
 import { useCartContext } from '../../contexts/useCart'
 
