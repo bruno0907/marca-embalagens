@@ -6,12 +6,11 @@ export type Estimate = {
   numero_orcamento: number;
   cliente: string;  
   produtos: OrderProduct[];
-  condicao_pagamento: string; 
   total: number;
-  data_entrega: Date;
   status: EstimateStatus;
   descricao_status: string;
   status_data_aprovado: Date;
   observacoes: string;
   created_at: Date;
+  updated_at: Date;
 }

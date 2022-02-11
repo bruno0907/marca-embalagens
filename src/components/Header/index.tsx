@@ -16,7 +16,7 @@ type Props = StackProps & {
   title?: string;
 }
 
-const HeaderComponent = ({ withGoBack, children, title, to, ...rest }: Props) => {
+export const Header = ({ withGoBack, children, title, to, ...rest }: Props) => {
   return (
     <Stack id="header" direction={['column', 'row', 'row']} spacing={6} align={['initial', 'center', 'center']} justify="space-between" {...rest}>
       <HStack spacing={3} align="center">
@@ -27,9 +27,3 @@ const HeaderComponent = ({ withGoBack, children, title, to, ...rest }: Props) =>
     </Stack>
   )
 }
-
-const Header = memo(HeaderComponent, (prevProps, nextProps) => {
-  return Object.is(prevProps.title, nextProps.title)
-})
-
-export { Header }

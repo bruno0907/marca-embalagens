@@ -10,9 +10,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useReactToPrint } from 'react-to-print'
 
-import { Stack, HStack, useToast, Flex } from "@chakra-ui/react"
+import { Stack, HStack, useToast, Flex, Link } from "@chakra-ui/react"
 
-import { FiMail, FiPrinter, FiShare2 } from "react-icons/fi"
+import { FiPrinter, FiShare2 } from "react-icons/fi"
 
 import { 
   Header,
@@ -38,10 +38,10 @@ import { useCartContext } from '../../contexts/useCart'
 import { 
   useUsersQuery,
   useUpdateEstimateMutation,
-  useEstimateQuery
+  useEstimateQuery,
 } from '../../hooks'
 
-import { estimateToShare, handleFormatDate, handleFormatPadStart, handleFormatPrice } from "../../utils"
+import { handleFormatPadStart, handleEstimateToShare } from "../../utils"
 
 import { Estimate } from '../../models'
 
@@ -63,7 +63,6 @@ export const EstimateModule = ({ estimateId }: Props) => {
   const toast = useToast()
 
   const printRef = useRef<HTMLDivElement>(null);
-
 
   const { 
     cartProducts, 
@@ -132,11 +131,7 @@ export const EstimateModule = ({ estimateId }: Props) => {
   const handlePrintOrder = useReactToPrint({
     content: () => printRef.current,    
     onAfterPrint: () => router.push("/estimates"),
-  });  
-
-
-
-  const handleShareOrder = async () => await navigator.share(estimateToShare(estimate))
+  });
 
   useEffect(() => {
     if(!estimate) return 
@@ -192,7 +187,7 @@ export const EstimateModule = ({ estimateId }: Props) => {
 
       <Header withGoBack title={`Orçamento: ${handleFormatPadStart(estimate.numero_orcamento)}`}>
       <Stack direction="row" spacing={3}>
-        <ButtonPrimary rightIcon={<FiShare2/>} onClick={handleShareOrder}>
+        <ButtonPrimary rightIcon={<FiShare2/>} onClick={() => handleEstimateToShare(estimate)}> 
           Compartilhar
         </ButtonPrimary>
         <ButtonPrimary rightIcon={<FiPrinter/>} onClick={handlePrintOrder}>
@@ -258,7 +253,7 @@ export const EstimateModule = ({ estimateId }: Props) => {
                     name="descricao_status"
                     label="Descrição do status"
                     h="80px"
-                    p={3}
+                    p="3"
                     isDisabled={isSubmitting}
                     {...register('descricao_status')}
                   />
@@ -269,7 +264,7 @@ export const EstimateModule = ({ estimateId }: Props) => {
                     name="observacoes"
                     label="Observações:"
                     h="160px"
-                    p={3}
+                    p="3"
                     isDisabled={isSubmitting}
                     {...register('observacoes')}
                   />
