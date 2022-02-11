@@ -12,7 +12,7 @@ import { useReactToPrint } from 'react-to-print'
 
 import { Stack, HStack, useToast, Flex } from "@chakra-ui/react"
 
-import { FiMail, FiPrinter } from "react-icons/fi"
+import { FiMail, FiPrinter, FiShare2 } from "react-icons/fi"
 
 import { 
   Header,
@@ -41,7 +41,7 @@ import {
   useEstimateQuery
 } from '../../hooks'
 
-import { handleFormatPadStart } from "../../utils"
+import { estimateToShare, handleFormatDate, handleFormatPadStart, handleFormatPrice } from "../../utils"
 
 import { Estimate } from '../../models'
 
@@ -134,16 +134,9 @@ export const EstimateModule = ({ estimateId }: Props) => {
     onAfterPrint: () => router.push("/estimates"),
   });  
 
-  const handleSubmitToWhatsapp = () => {
-    const estimateToWhatsapp = {
-      user: estimate.cliente,
-      products: [...estimate.produtos],      
-      total: estimate.total,
-      observacoes: estimate.observacoes,
-    }
 
-    console.log(estimateToWhatsapp)
-  }
+
+  const handleShareOrder = async () => await navigator.share(estimateToShare(estimate))
 
   useEffect(() => {
     if(!estimate) return 
@@ -199,14 +192,12 @@ export const EstimateModule = ({ estimateId }: Props) => {
 
       <Header withGoBack title={`Orçamento: ${handleFormatPadStart(estimate.numero_orcamento)}`}>
       <Stack direction="row" spacing={3}>
-        <ButtonPrimary          
-          rightIcon={<FiMail/>}
-          onClick={handleSubmitToWhatsapp}          
-        >Enviar por Whatsapp</ButtonPrimary>
-        <ButtonPrimary          
-          rightIcon={<FiPrinter/>}
-          onClick={handlePrintOrder}
-        >Imprimir</ButtonPrimary>
+        <ButtonPrimary rightIcon={<FiShare2/>} onClick={handleShareOrder}>
+          Compartilhar
+        </ButtonPrimary>
+        <ButtonPrimary rightIcon={<FiPrinter/>} onClick={handlePrintOrder}>
+          Imprimir
+        </ButtonPrimary>
       </Stack>
       </Header>
 

@@ -20,7 +20,7 @@ import {
   Spacer
 } from '@chakra-ui/react'
 
-import { FiMail, FiPrinter, FiShare } from 'react-icons/fi'
+import { FiPrinter } from 'react-icons/fi'
 
 import { 
   Divider,
@@ -45,7 +45,7 @@ import {
 
 import { useUpdateOrderMutation, useOrderQuery } from '../../hooks'
 
-import { handleFormatDate, handleFormatPadStart, handleFormatPrice } from '../../utils'
+import { handleFormatPadStart } from '../../utils'
 
 import { useCreateOrder } from '../../contexts/useCreateOrder'
 import { useCartContext } from '../../contexts/useCart'
@@ -75,31 +75,7 @@ export const OrderModule = ({ orderId }: Props) => {
 
   const handlePrintOrder = useReactToPrint({
     content: () => printRef.current,
-  })
-
-  const OrderToShare = {
-    title: 'MARCA EMBALAGENS',
-    text: 
-    `
-    Orçamento ${handleFormatPadStart(order?.numero_pedido)}
-    ------------------
-    Cliente: ${order?.cliente}
-    Data: ${handleFormatDate(order?.created_at)}
-    ------------------
-    Condição de pagamento:${order?.condicao_pagamento}
-    ------------------
-    Descrição
-    ${order?.pedido?.map(item => (
-      `${item.quantidade} ${item.produto} ${item.valor_total}`
-    ))}
-    ------------------
-    Total: ${handleFormatPrice(order?.total)}
-
-    `
-  }
-
-  const handleShareOrder = async () => await navigator.share(OrderToShare)
-  // const handleShareOrder = () => console.log(OrderToShare)
+  })  
 
   const { 
     cartProducts,    
@@ -196,8 +172,7 @@ export const OrderModule = ({ orderId }: Props) => {
         <title>Pedido: {handleFormatPadStart(order.numero_pedido)}</title>
       </Head>
       <Header withGoBack title={`Pedido: ${handleFormatPadStart(order.numero_pedido)}`}>
-        <HStack spacing={3}>
-          <ButtonPrimary rightIcon={<FiShare/>} onClick={handleShareOrder}/>
+        <HStack spacing={3}>          
           <ButtonPrimary rightIcon={<FiPrinter/>} onClick={handlePrintOrder}>
             Imprimir
           </ButtonPrimary>
