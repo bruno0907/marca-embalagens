@@ -49,9 +49,7 @@ const newUserSchema= yup.object().shape({
     .trim(),
   razao_social: yup.string().trim(),
   telefone: yup.string().trim(),
-  celular: yup.string()
-    .required('O celular é obrigatório')
-    .trim(),
+  celular: yup.string().trim(),
   email: yup.string()
     .email('E-mail inválido')
     .trim(),
@@ -126,7 +124,7 @@ export const CreateUserModule = () => {
       resolver: yupResolver(newUserSchema),
     });
 
-  const { errors, isDirty, isSubmitting } = formState;
+  const { errors, isSubmitting } = formState;
 
   const createUserMutation = useCreateUserMutation()
 
@@ -264,7 +262,7 @@ export const CreateUserModule = () => {
                 />
                 <Input
                   name="celular"
-                  label="Celular:*"
+                  label="Celular:"
                   type="tel"
                   inputMode="numeric"
                   autoComplete="cel-number"

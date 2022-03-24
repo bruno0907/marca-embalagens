@@ -5,8 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {  
   Text,
   Stack,
-  HStack,  
-  Button,
+  HStack,
   useToast,  
 } from "@chakra-ui/react";
 
@@ -37,7 +36,7 @@ const updateUserSchema = yup.object().shape({
     .trim(),
   razao_social: yup.string().trim(),
   telefone: yup.string().trim(),
-  celular: yup.string().required().trim(),
+  celular: yup.string().trim(),
   email: yup.string()
     .email('Formato de e-mail inválido')
     .trim(),
