@@ -48,9 +48,7 @@ const PrintModule: ForwardRefRenderFunction<HTMLDivElement, Props> = ({ estimate
               {estimate.observacoes.split('\n').map((line, index) => {
                 return (
                   <>
-                    <Text key={index}>{line}</Text>
-                    <Text key={index}>{line}</Text>
-                    <Text key={index}>{line}</Text>
+                    <Text key={index}>{line}</Text>                    
                   </>
                 )
               })}                    
