@@ -71,7 +71,7 @@ export const Cart = ({ isEditing = true, isSubmiting = false, ...rest }: Props) 
           </Tr>
         </Thead>
         <Tbody>
-          { cartProducts?.map((estimateProduct, index) => {
+          { cartProducts?.map((product, index) => {
             return (            
               <Tr key={index}>
                 {isEditing && (
@@ -82,7 +82,7 @@ export const Cart = ({ isEditing = true, isSubmiting = false, ...rest }: Props) 
                         isDisabled={isSubmiting}
                         handleDecrement={() => handleProductAmountInCart('decrement', index)}                      
                       />
-                      <Text px="2">{estimateProduct.quantidade}</Text>
+                      <Text px="2">{product.quantidade}</Text>
                       <IncrementButton 
                         aria-label="increment"
                         isDisabled={isSubmiting}
@@ -91,9 +91,9 @@ export const Cart = ({ isEditing = true, isSubmiting = false, ...rest }: Props) 
                     </Flex>
                   </Td>
                 )}
-                <Td py="2">{estimateProduct.produto}</Td>
-                <Td py="2">{handleFormatPrice(estimateProduct.valor_unitario)}</Td>
-                <Td py="2">{handleFormatPrice(estimateProduct.valor_total)}</Td>
+                <Td py="2">{product.produto}</Td>
+                <Td py="2">{handleFormatPrice(product.valor_unitario)}</Td>
+                <Td py="2">{handleFormatPrice(product.valor_total)}</Td>
                 {isEditing && (
                   <Td py="2" textAlign="center" p="0">
                     <Button

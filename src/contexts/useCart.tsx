@@ -96,9 +96,9 @@ const CartProvider = ({ children }: ProviderProps) => {
 
   const handleProductAmountInCart = (amount: 'increment' | 'decrement', index: number) => {    
     const products = [...cartProducts]
-    const productInEstimate = products.find((_, i) => i === index)
+    const productInDraft = products.find((_, i) => i === index)
 
-    if(amount === 'decrement' && productInEstimate.quantidade <= 1) {
+    if(amount === 'decrement' && productInDraft.quantidade <= 1) {
       const updatedProducts = products.filter((_, i) => i !== index)      
 
       setCartProducts(updatedProducts)
@@ -110,7 +110,7 @@ const CartProvider = ({ children }: ProviderProps) => {
       if(i !== index) return product      
       
       return {
-        ...productInEstimate,
+        ...productInDraft,
         quantidade: amount === 'increment' ? product.quantidade + 1: product.quantidade - 1,
         valor_total: amount === 'increment' ? product.valor_total + product.valor_unitario : product.valor_total - product.valor_unitario
       }

@@ -7,12 +7,11 @@ export * from './address/getStates'
 
 export * from './addresses/getAddresses'
 
-export * from './estimate/createEstimate'
-export * from './estimate/getEstimate'
-export * from './estimate/updateEstimate'
-export * from './estimate/prefetchEstimate'
-
-export * from './estimates/getEstimates'
+export * from './draft/createDraft'
+export * from './draft/getDraft'
+export * from './draft/updateDraft'
+export * from './draft/prefetchDraft'
+export * from './draft/getDrafts'
 
 export * from './orders/getOrdersByUser'
 export * from './orders/getOrders'

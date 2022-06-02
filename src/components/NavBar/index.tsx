@@ -20,7 +20,7 @@ export const NavBar = ({ ...rest }: FlexProps) => {
         label="Página Inicial"
       />
       <ActiveLink 
-        href="/estimates"
+        href="/drafts"
         icon={FiEdit}
         label="Orçamentos"
       />

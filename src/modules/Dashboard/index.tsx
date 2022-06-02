@@ -3,7 +3,7 @@ import { SimpleGrid } from "@chakra-ui/react"
 import { Divider, Header } from "../../components"
 
 import { 
-  EstimatesCard,
+  DraftsCard,
   OrdersCard,
   ProductsCard,
   UsersCard 
@@ -15,7 +15,7 @@ export const DashboardModule = () => {
       <Header title="Dashboard" />
       <Divider />
       <SimpleGrid columns={[1, 2, 2, 2, 4]} gap={6} maxW="1140px" m="auto">
-        <EstimatesCard/>
+        <DraftsCard/>
         <OrdersCard/>
         <UsersCard/>
         <ProductsCard/>

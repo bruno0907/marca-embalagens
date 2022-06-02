@@ -25,7 +25,7 @@ export const ActiveLink = ({ icon, label, href, ...rest }: Props) => {
       <ChakraLink        
         display="flex"
         px={[10, 10, 14]}
-        py={4}
+        py="2"
         alignItems="center"
         justifyContent="flex-start"
         fontWeight="bold"        
@@ -33,9 +33,9 @@ export const ActiveLink = ({ icon, label, href, ...rest }: Props) => {
         borderRightWidth="3px"
         borderColor="gray.50"
         fontSize={['sm', 'sm', 'initial']}
-        borderRightColor={isActive && "blue.500"}         
-        _hover={{ color: "blue.500", borderRightColor: "blue.500" }}
-        _focus={{ boxShadow: 'none', color: "blue.500", borderRightColor: "blue.500" }}
+        borderLeftColor={isActive && "blue.500"}         
+        _hover={{ color: "blue.500", borderLeftColor: "blue.500" }}
+        _focus={{ boxShadow: 'none', color: "blue.500", borderLeftColor: "blue.500" }}
         {...rest}
       >        
         <Icon as={icon} fontSize="xl" mr="4" color={isActive && "blue.500"}/>        

@@ -45,7 +45,7 @@ import {
 
 import { useUpdateOrderMutation, useOrderQuery } from '../../hooks'
 
-import { handleFormatPadStart } from '../../utils'
+import { handleFormatDate, handleFormatPadStart } from '../../utils'
 
 import { useCreateOrder } from '../../contexts/useCreateOrder'
 import { useCartContext } from '../../contexts/useCart'
@@ -53,6 +53,7 @@ import { useCartContext } from '../../contexts/useCart'
 import { PrintOrderModule } from '..'
 
 import { Order } from '../../models'
+import { format } from 'date-fns'
 
 const orderSchema = yup.object().shape({
   condicao_pagamento: yup.string().trim(),     
@@ -134,14 +135,14 @@ export const OrderModule = ({ orderId }: Props) => {
         position: 'bottom',
       })
     })
-  }
+  }  
   
   useEffect(() => {
     if(!order) return
 
     reset({
       condicao_pagamento: order.condicao_pagamento,
-      data_entrega: order.data_entrega
+      data_entrega: new Date(new Date(order.data_entrega)).toISOString().split('T')[0]
     })
 
   }, [order, reset])
