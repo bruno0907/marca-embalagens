@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useReactToPrint } from 'react-to-print'
 
-import { Stack, HStack, useToast, Flex } from "@chakra-ui/react"
+import { Stack, HStack, useToast, Flex, ButtonGroup } from "@chakra-ui/react"
 
 import { FiPrinter, FiShare2 } from "react-icons/fi"
 
@@ -19,8 +19,7 @@ import {
   Content,
   Divider,
   Cart,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Form,
   Input,
@@ -200,9 +199,8 @@ export const DraftModule = ({ draftId }: DraftModuleProps) => {
 
       <Form onSubmit={handleSubmit(handleSubmitDraftUpdate)}>
         <Section>
-          <SectionHeader>
-            <SectionTitle title="Cliente"/>
-          </SectionHeader>
+          
+          <SectionTitle title="Cliente"/>          
           <Content>
             <Input
               name="cliente"
@@ -219,72 +217,64 @@ export const DraftModule = ({ draftId }: DraftModuleProps) => {
               ))}
             </datalist>
           </Content>
-        </Section>
-  
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Descrição do orçamento"/>
-          </SectionHeader>
+        
+          <SectionTitle title="Descrição do orçamento"/>          
           <Content>                          
             <Cart isSubmiting={isSubmitting} />            
           </Content>
+        
+          <SectionTitle title="Outras informações"/>
+          <Content>
+            <Stack direction={['column', 'column', 'row']} spacing={[3, 3, 6]}>
+              <Stack spacing={3} flex="1">
+                <Select
+                  label="Status do orçamento:"
+                  name="status"
+                  isDisabled={isSubmitting} 
+                  defaultValue={data?.status}
+                  {...register('status')}
+                >
+                  <option value="Pendente">Pendente</option>
+                  <option value="Aprovado">Aprovado</option>
+                  <option value="Não aprovado">Não aprovado</option>
+                </Select>
+                <Input
+                  as="textarea"
+                  name="descricao_status"
+                  label="Descrição do status"
+                  h="80px"
+                  p="3"
+                  isDisabled={isSubmitting}
+                  {...register('descricao_status')}
+                />
+              </Stack>     
+              <Flex flex="1">
+                <Input
+                  as="textarea"
+                  name="observacoes"
+                  label="Observações:"
+                  h="160px"
+                  p="3"
+                  isDisabled={isSubmitting}
+                  {...register('observacoes')}
+                />
+              </Flex>                           
+            </Stack>
+          </Content>
+        
+          <ButtonGroup alignSelf="flex-end">
+            <ButtonSecondary
+              type="reset"             
+              isDisabled={isSubmitting}
+              onClick={() => router.back()} 
+            >Cancelar</ButtonSecondary>
+            <ButtonPrimary 
+              type="submit"            
+              isDisabled={canSubmit}
+              isLoading={isSubmitting}
+            >Atualizar orçamento</ButtonPrimary>
+          </ButtonGroup>          
         </Section>
-  
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Outras informações"/>
-          </SectionHeader>          
-            <Content>
-              <Stack direction={['column', 'column', 'row']} spacing={[3, 3, 6]}>
-                <Stack spacing={3} flex="1">
-                  <Select
-                    label="Status do orçamento:"
-                    name="status"
-                    isDisabled={isSubmitting} 
-                    defaultValue={data?.status}
-                    {...register('status')}
-                  >
-                    <option value="Pendente">Pendente</option>
-                    <option value="Aprovado">Aprovado</option>
-                    <option value="Não aprovado">Não aprovado</option>
-                  </Select>
-                  <Input
-                    as="textarea"
-                    name="descricao_status"
-                    label="Descrição do status"
-                    h="80px"
-                    p="3"
-                    isDisabled={isSubmitting}
-                    {...register('descricao_status')}
-                  />
-                </Stack>     
-                <Flex flex="1">
-                  <Input
-                    as="textarea"
-                    name="observacoes"
-                    label="Observações:"
-                    h="160px"
-                    p="3"
-                    isDisabled={isSubmitting}
-                    {...register('observacoes')}
-                  />
-                </Flex>                           
-              </Stack>
-            </Content>
-        </Section>
-  
-        <HStack spacing={[3, 3, 6]} justify="flex-end">
-          <ButtonSecondary
-            type="reset"             
-            isDisabled={isSubmitting}
-            onClick={() => router.back()} 
-          >Cancelar</ButtonSecondary>
-          <ButtonPrimary 
-            type="submit"            
-            isDisabled={canSubmit}
-            isLoading={isSubmitting}
-          >Atualizar orçamento</ButtonPrimary>
-        </HStack>
       </Form>      
       <PrintDraftModule draft={data} ref={printRef}/>
     </>

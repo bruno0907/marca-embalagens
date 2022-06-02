@@ -16,8 +16,7 @@ import { FiAlertCircle, FiPlus } from 'react-icons/fi'
 import { AddressItem } from './components'
 
 import { 
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Content,
   ButtonLink,  
@@ -49,10 +48,8 @@ export const AddressesModule = ({ userId }: AddressesDetailsProps) => {
 
   if(isLoading) {
     return (
-      <Section w="100%">
-        <SectionHeader>
-          <SectionTitle title="Endereço"/>
-        </SectionHeader>     
+      <Section>        
+        <SectionTitle title="Endereço"/>        
         <Content>
           <Skeleton h="14" borderRadius="md"/>
         </Content>
@@ -62,10 +59,8 @@ export const AddressesModule = ({ userId }: AddressesDetailsProps) => {
 
   if(isError) {
     return (
-      <Section w="100%">
-        <SectionHeader>
-          <SectionTitle title="Endereço"/>
-        </SectionHeader>
+      <Section>        
+        <SectionTitle title="Endereço"/>        
         <Content>
           <HStack spacing={3} aling="center">
             <Icon as={FiAlertCircle} fontSize={16} color="red.500"/>
@@ -78,28 +73,25 @@ export const AddressesModule = ({ userId }: AddressesDetailsProps) => {
 
   return (
     <>
-      <Section>
-        <SectionHeader>
-          <SectionTitle title="Endereços"/>
-          {isFetching && <Spinner size="sm" color="blue.500" />}
-          <Spacer />
-          <ButtonLink leftIcon={<FiPlus />} onClick={onOpen}>
-            Cadastrar novo endereço
-          </ButtonLink>
-        </SectionHeader>
-        <Content>
-          <List spacing={3}>
-            {addresses?.map((address: Address) => {
-              return (                
-                <AddressItem key={address.id} address={address}/>
-              )
-            })}
-          </List>
-        </Content>
-      </Section>
+      <SectionTitle title="Endereços">
+        {isFetching && <Spinner size="sm" color="blue.500" />}
+        <Spacer />
+        <ButtonLink leftIcon={<FiPlus />} onClick={onOpen}>
+          Cadastrar novo endereço
+        </ButtonLink>
+      </SectionTitle>
+      <Content>
+        <List spacing={3}>
+          {addresses?.map((address: Address) => {
+            return (
+              <AddressItem key={address.id} address={address} />
+            )
+          })}
+        </List>
+      </Content>
       <Modal isOpen={isOpen} onClose={onClose} title="Novo endereço">
-        <CreateAddressModule userId={String(userId)} onClose={onClose}/>
+        <CreateAddressModule userId={String(userId)} onClose={onClose} />
       </Modal>
-    </>
+    </>    
   )
 }

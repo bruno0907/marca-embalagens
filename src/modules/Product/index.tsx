@@ -7,8 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { SubmitHandler, useForm, SubmitErrorHandler } from 'react-hook-form'
 
-import {       
-  HStack,
+import {         
   Input as ChakraInput,
   Box,  
   FormLabel,
@@ -18,7 +17,8 @@ import {
   FormControl,  
   Switch,
   Stack,
-  Spacer,  
+  
+  ButtonGroup,  
 } from '@chakra-ui/react'
 
 import { 
@@ -29,8 +29,7 @@ import {
   LoadingView,
   ErrorView,
   Form,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   ButtonSecondary,
   ButtonPrimary 
@@ -132,15 +131,13 @@ export const ProductModule = ({ productId }: Props) => {
       <Header withGoBack title={product.nome} />
       <Divider />
       <Form onSubmit={handleSubmit(handleUpdateProduct, handleSubmitErrors)}>        
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Informações do produto"/>
-            <Spacer />
+        <Section>          
+          <SectionTitle title="Informações do produto">
             <FormControl htmlFor="edit-product" w="fit-content" display="flex" align="center">
               <FormLabel mb="0" fontSize={['sm', 'sm', 'initial']}>Editar produto:</FormLabel>
               <Switch id="edit-product" onChange={handleEditProduct}/>
             </FormControl>      
-          </SectionHeader>
+          </SectionTitle>
           <Content>
             <Stack spacing={3} align="flex-start">
               <Stack direction={['column', 'column', 'row']} spacing={[3, 3, 6]} w="100%">
@@ -185,7 +182,7 @@ export const ProductModule = ({ productId }: Props) => {
             </Stack>
           </Content>
           {!isEditing &&
-            <HStack spacing={[3, 3, 6]} justify="flex-end" mt="8">
+            <ButtonGroup alignSelf="flex-end">
               <ButtonSecondary
                 type="reset"
                 isDisabled={isSubmitting}
@@ -195,7 +192,7 @@ export const ProductModule = ({ productId }: Props) => {
                 type="submit" 
                 isDisabled={isSubmitting}
               >Salvar Alterações</ButtonPrimary>
-            </HStack>
+            </ButtonGroup>
           }
         </Section>
       </Form>

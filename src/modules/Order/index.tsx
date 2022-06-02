@@ -17,7 +17,8 @@ import {
   FormLabel,   
   useBoolean, 
   Stack, 
-  Spacer
+  Spacer,
+  ButtonGroup
 } from '@chakra-ui/react'
 
 import { FiPrinter } from 'react-icons/fi'
@@ -27,8 +28,7 @@ import {
   Form,
   Header,
   Content,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Input,
   ErrorView,
@@ -122,7 +122,8 @@ export const OrderModule = ({ orderId }: Props) => {
         isClosable: true,
         duration: 3000,
         position: 'bottom',
-      })      
+      })
+      setIsEditing.off()      
       return response
     })
     .catch(error => {
@@ -182,35 +183,26 @@ export const OrderModule = ({ orderId }: Props) => {
       <Divider/>
 
       <Form onSubmit={handleSubmit(handleSubmitOrderUpdate)}>
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Dados do cliente"/>
-            <Spacer />
+        <Section>          
+          <SectionTitle title="Dados do cliente">
             <FormControl display="flex" align="center" w="fit-content">
               <FormLabel htmlFor="edit-order" mb="0" fontSize={['sm', 'initial', 'initial']}>Editar pedido</FormLabel>
-              <Switch id="edit-order" onChange={setIsEditing.toggle}/>
-            </FormControl>            
-          </SectionHeader>
+              <Switch id="edit-order" isChecked={isEditing} onChange={setIsEditing.toggle}/>
+            </FormControl>
+          </SectionTitle>
           <Content>            
             <UserDetails userId={order.cliente} isEditing={isEditing}/>
           </Content>
-        </Section>
 
-        {selectedUser && (
-          <Section>
-            <SectionHeader>
-              <SectionTitle title="Endereço de entrega"/>
-            </SectionHeader>
-            <Content>
-              <UserAddress addressId={order.endereco_entrega} isEditing={isEditing}/>
-            </Content>
-          </Section>
-        )}
-          
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Descrição do pedido"/>
-          </SectionHeader>
+          {selectedUser && (
+            <>
+              <SectionTitle title="Endereço de entrega"/>            
+              <Content>
+                <UserAddress addressId={order.endereco_entrega} isEditing={isEditing}/>
+              </Content>
+            </>          
+          )}
+          <SectionTitle title="Descrição do pedido"/>          
           <Content>
             <OrderItems 
               orderItems={order.pedido} 
@@ -218,12 +210,8 @@ export const OrderModule = ({ orderId }: Props) => {
               isSubmiting={isSubmitting}
             />
           </Content>
-        </Section>
-          
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Entrega e pagamento"/>
-          </SectionHeader>
+        
+          <SectionTitle title="Entrega e pagamento"/>          
           <Content>
             <Stack direction={['column', 'column', 'row']} spacing={6}>                    
               <Box w={['initial', 'initial', "380px"]}>
@@ -244,22 +232,21 @@ export const OrderModule = ({ orderId }: Props) => {
             />
             </Stack>          
           </Content>
+          {isEditing && (            
+            <ButtonGroup alignSelf="flex-end">
+              <ButtonSecondary
+                type="reset"
+                onClick={() => router.push('/orders')} 
+                isDisabled={isSubmitting}
+              >Cancelar</ButtonSecondary>
+              <ButtonPrimary 
+                type="submit"
+                isDisabled={canSubmit}
+                isLoading={isSubmitting}
+              >Salvar pedido</ButtonPrimary>
+            </ButtonGroup>
+          )}
         </Section>
-
-        {isEditing && (
-          <HStack spacing={[3, 3, 6]} justify="flex-end">
-            <ButtonSecondary
-              type="reset"
-              onClick={() => router.push('/orders')} 
-              isDisabled={isSubmitting}
-            >Cancelar</ButtonSecondary>
-            <ButtonPrimary 
-              type="submit"
-              isDisabled={canSubmit}
-              isLoading={isSubmitting}
-            >Salvar pedido</ButtonPrimary>
-          </HStack>
-        )}
       </Form>      
       <PrintOrderModule ref={printRef} order={order} />
     </>

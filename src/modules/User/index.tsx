@@ -7,6 +7,7 @@ import {
   Header,  
   LoadingView,
   ErrorView,
+  Section,
 } from '../../components'
 
 import { UserDetails, UserOrders } from './components'
@@ -47,11 +48,11 @@ export const UserModule = ({ userId }: Props) => {
       </Head>
       <Header withGoBack title={user?.nome} />
       <Divider />
-      <Stack spacing={12} maxW="1140px" m="auto">
+      <Section>
         <UserDetails user={user} isFetching={isFetching} />
         <AddressesModule userId={user?.id}/>        
         <UserOrders userId={user?.id}/>
-      </Stack>        
+      </Section>        
     </>
   )
 }

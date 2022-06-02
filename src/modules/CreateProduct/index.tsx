@@ -16,8 +16,7 @@ import {
 } from "@chakra-ui/react"
 
 import { 
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Content,
   Input,
@@ -112,10 +111,8 @@ export const CreateProductModule = () => {
       <Header title="Cadastrar novo produto" withGoBack/>
       <Divider />
       <Form onSubmit={handleSubmit(handleNewUser)}>
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Dados do produto"/>
-          </SectionHeader>
+        <Section>          
+          <SectionTitle title="Dados do produto"/>          
           <Content>
             <Stack spacing={3}>
               <Stack direction={['column', 'column', 'row']} spacing={3}>

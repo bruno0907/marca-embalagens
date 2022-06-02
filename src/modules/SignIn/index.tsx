@@ -7,11 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { 
   Container,
   Stack,  
-  useToast,
-  Heading,
-  HStack,
-  Checkbox,
-  Text,  
+  useToast,  
 } from '@chakra-ui/react'
 
 import { 
@@ -19,8 +15,7 @@ import {
   Input,
   Form,
   ButtonPrimary, 
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,  
 } from '../../components'
 
@@ -101,49 +96,46 @@ export const SignInModule = () => {
       
     }
   }
-
   
    //*** TODO ***
    //const handleRememberMe = (event) => console.log(event)   
 
   return (    
     <Container p={12} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-      <Section align="center" w="100%">
-        <SectionHeader>
-          <SectionTitle title="Entrar"/>
-        </SectionHeader>
-          <Content w="100%">
-            <Form onSubmit={handleSubmit(handleSignIn)}>
-              <Stack spacing={3} w="100%" mb="6">
-                <Input 
-                  type="email"
-                  label="E-mail:"                        
-                  isDisabled={isSubmitting}              
-                  error={errors.email}
-                  {...register('email')}
-                />
-                <Input 
-                  type="password"                  
-                  label="Senha:"              
-                  isDisabled={isSubmitting}
-                  error={errors.password}
-                  {...register('password')}
-                  onKeyUp={() => clearErrors(['email', 'password'])}
-                />
-                {/* <Checkbox
-                  onChange={handleRememberMe}
-                >
-                  <Text fontWeight="medium" fontSize={['sm', 'sm', 'md']}>Lembrar-me</Text>
-                </Checkbox> */}
-              </Stack>
-              <ButtonPrimary                  
-                w="100%"
-                type="submit"            
-                isLoading={isSubmitting}
-                isDisabled={!isDirty}                 
-              >Entrar</ButtonPrimary>
-            </Form>
-          </Content>
+      <Section>        
+        <SectionTitle title="Entrar"/>        
+        <Content>
+          <Form onSubmit={handleSubmit(handleSignIn)}>
+            <Stack spacing={3} w="100%">
+              <Input 
+                type="email"
+                label="E-mail:"                        
+                isDisabled={isSubmitting}              
+                error={errors.email}
+                {...register('email')}
+              />
+              <Input 
+                type="password"                  
+                label="Senha:"              
+                isDisabled={isSubmitting}
+                error={errors.password}
+                {...register('password')}
+                onKeyUp={() => clearErrors(['email', 'password'])}
+              />
+              {/* <Checkbox
+                onChange={handleRememberMe}
+              >
+                <Text fontWeight="medium" fontSize={['sm', 'sm', 'md']}>Lembrar-me</Text>
+              </Checkbox> */}
+            </Stack>
+            <ButtonPrimary                  
+              w="100%"
+              type="submit"            
+              isLoading={isSubmitting}
+              isDisabled={!isDirty}                 
+            >Entrar</ButtonPrimary>
+          </Form>
+        </Content>
         {/* <Text>Não é cadastrado?
           <Link href="/sign-up" passHref>
           <ChakraLink fontWeight="bold" color="blue.500" _hover={{ color: 'blue.600' }}> Faça seu cadastro aqui!</ChakraLink>

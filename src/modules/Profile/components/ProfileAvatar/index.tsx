@@ -19,8 +19,7 @@ import { FiCamera } from 'react-icons/fi'
 import { 
   Content,
   SectionTitle,
-  Section,
-  SectionHeader
+  Section  
 } from '../../../../components'
 
 import { useUploadAvatar } from '../../../../hooks'
@@ -97,10 +96,8 @@ export const ProfileAvatar = ({ profile }: Props) => {
   }
 
   return (   
-    <Section w="100%">
-      <SectionHeader>
-        <SectionTitle title="Logo"/>
-      </SectionHeader>
+    <Section>      
+      <SectionTitle title="Logo"/>      
       <Content>
         <FormControl isInvalid={!!error} align="center">
           <Input id="avatar" type="file" display="none" onChange={({ target }) => handleSelectImage(target.files[0])}/>

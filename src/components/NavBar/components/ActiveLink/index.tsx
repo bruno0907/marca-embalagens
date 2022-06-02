@@ -25,7 +25,7 @@ export const ActiveLink = ({ icon, label, href, ...rest }: Props) => {
       <ChakraLink        
         display="flex"
         px={[10, 10, 14]}
-        py="2"
+        py="3"
         alignItems="center"
         justifyContent="flex-start"
         fontWeight="bold"        

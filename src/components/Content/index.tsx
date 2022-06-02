@@ -9,7 +9,7 @@ const Content = ({ children, ...rest }: Props) => {
   return (
     <Box
       w="100%"
-      maxW="1140px"
+      maxW="5xl"
       m="auto"
       p={[4, 6, 8]}
       bgColor="gray.50"

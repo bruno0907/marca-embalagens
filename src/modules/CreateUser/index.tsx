@@ -12,14 +12,14 @@ import {
   Text,
   useToast,
   Radio,
-  RadioGroup,  
+  RadioGroup,
+  ButtonGroup,  
 } from "@chakra-ui/react"
 
 import { 
   Input,
   Select,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Content,
   Form,
@@ -212,10 +212,8 @@ export const CreateUserModule = () => {
       <Header withGoBack title="Novo cliente" />
       <Divider />
       <Form onSubmit={handleSubmit(handleNewUser)} spacing={12}>
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Dados cadastrais"/>
-          </SectionHeader>
+        <Section>          
+          <SectionTitle title="Dados cadastrais"/>          
           <Content>
             <Stack spacing={3}>
               <RadioGroup value={isCNPJ ? 'Jurídica' : 'Física'} onChange={handleSelectUserType} mb={4}>                
@@ -319,12 +317,8 @@ export const CreateUserModule = () => {
               />
             </Stack>
           </Content>
-        </Section>
-
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Endereço"/>
-          </SectionHeader>
+          
+          <SectionTitle title="Endereço"/>          
           <Content>
             <Stack spacing={3}>        
               <Stack direction={['column', 'column', 'row']} spacing={3} align="flex-start">
@@ -403,29 +397,23 @@ export const CreateUserModule = () => {
               />
             </Stack>
           </Content>
+
+          <ButtonGroup alignSelf="flex-end">
+            <ButtonSecondary
+              type="reset"                    
+              isDisabled={isSubmitting}    
+              onClick={handleCancel}
+            >
+              Cancelar
+            </ButtonSecondary>
+            <ButtonPrimary
+              type="submit"            
+              isLoading={isSubmitting}            
+            >
+              Cadastrar
+            </ButtonPrimary>
+          </ButtonGroup>
         </Section>        
-        <HStack
-          spacing={[3, 3, 6]}              
-          justifyContent="flex-end"
-          display="flex"
-          alignItems="flex-start"
-          w="100%"
-          mt={4}
-        >
-          <ButtonSecondary
-            type="reset"                    
-            isDisabled={isSubmitting}    
-            onClick={handleCancel}
-          >
-            Cancelar
-          </ButtonSecondary>
-          <ButtonPrimary
-            type="submit"            
-            isLoading={isSubmitting}            
-          >
-            Cadastrar
-          </ButtonPrimary>
-        </HStack>
       </Form>
     </>
   );

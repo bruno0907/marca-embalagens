@@ -13,7 +13,7 @@ import { ActiveLink } from "./components"
 
 export const NavBar = ({ ...rest }: FlexProps) => {
   return (
-    <Flex as="nav" flexDir="column" mt={['6', '6', '12']} {...rest}>
+    <Flex as="nav" flexDir="column" mt="6" {...rest}>
       <ActiveLink 
         href="/dashboard"
         icon={FiHome}

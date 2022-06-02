@@ -9,16 +9,14 @@ import {
   Spinner,   
   HStack,
   Icon,
-  Text,
-  Spacer,  
+  Text,  
 } from "@chakra-ui/react"
 
 import { FiAlertCircle } from "react-icons/fi"
 
 import { 
   Table,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Content,
   ButtonLink 
@@ -113,14 +111,12 @@ export const UserOrders = ({ userId }: Props) => {
   }  
 
   return (
-    <Section>
-      <SectionHeader>
-        <SectionTitle title="Últimos pedidos"/>
-        <Spacer />
+    <Section>      
+      <SectionTitle title="Últimos pedidos">
         <ButtonLink onClick={handleNavigateToOrder}>
           Ver todos os pedidos
         </ButtonLink>
-      </SectionHeader>
+      </SectionTitle>
       <Content>
         <Table>
           <Thead>

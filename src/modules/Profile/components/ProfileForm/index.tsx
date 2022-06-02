@@ -5,17 +5,15 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-import {
-  Box,  
-  Stack,
-  HStack,  
-  useToast,  
+import {  
+  Stack,   
+  useToast,
+  ButtonGroup,  
 } from "@chakra-ui/react"
 
 import { 
   Content,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Input,
   Select,
@@ -112,7 +110,7 @@ const ProfileForm = ({ profile, address }: Props) => {
       resolver: yupResolver(profileFormSchema)      
     });
 
-  const { errors, isDirty, isSubmitting } = formState;
+  const { errors, isSubmitting } = formState;
 
   const handleSelectState = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
@@ -204,10 +202,8 @@ const ProfileForm = ({ profile, address }: Props) => {
 
   return (
     <Form onSubmit={handleSubmit(handleUpdateProfile)} w="100%">      
-      <Section>
-        <SectionHeader>
-          <SectionTitle title="Dados cadastrais"/>
-        </SectionHeader>        
+      <Section>        
+        <SectionTitle title="Dados cadastrais"/>        
         <Content>
           <Stack spacing={3}>
             <Stack spacing={3} align="flex-start">
@@ -282,11 +278,8 @@ const ProfileForm = ({ profile, address }: Props) => {
             </Stack>
           </Stack>
         </Content>
-      </Section>
-      <Section>
-        <SectionHeader>
-          <SectionTitle title="Endereço"/>
-        </SectionHeader>
+      
+        <SectionTitle title="Endereço"/>        
         <Content>
           <Stack spacing={3}>
           <Stack spacing={3} align="flex-start">
@@ -363,19 +356,20 @@ const ProfileForm = ({ profile, address }: Props) => {
             />
           </Stack>
         </Content>
+        <ButtonGroup alignSelf="flex-end">        
+          <ButtonSecondary        
+            type="reset"
+            isDisabled={isSubmitting}          
+            onClick={() => router.push('/dashboard')}          
+          >Cancelar</ButtonSecondary>
+          <ButtonPrimary
+            type="submit"          
+            isLoading={isSubmitting}          
+          >Salvar alterações</ButtonPrimary>
+        </ButtonGroup>
+
       </Section>
      
-      <HStack spacing={3} justifyContent="flex-end">        
-        <ButtonSecondary        
-          type="reset"
-          isDisabled={isSubmitting}          
-          onClick={() => router.push('/dashboard')}          
-        >Cancelar</ButtonSecondary>
-        <ButtonPrimary
-          type="submit"          
-          isLoading={isSubmitting}          
-        >Salvar alterações</ButtonPrimary>
-      </HStack>
       
     </Form>      
   );

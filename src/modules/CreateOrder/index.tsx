@@ -6,15 +6,14 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import {  
-  Box, 
-  HStack,  
+  Box,    
   useToast,
-  Stack,  
+  Stack,
+  ButtonGroup,  
 } from '@chakra-ui/react'
 
 import { 
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   Content,
   Input,
@@ -114,36 +113,27 @@ export const CreateOrderModule = () => {
       <Header title="Novo pedido" withGoBack/>
       <Divider />
       <Form onSubmit={handleSubmit(handleSubmitNewOrder)}>
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Dados do cliente"/>
-          </SectionHeader>
+        <Section>          
+          <SectionTitle title="Dados do cliente"/>          
           <Content>            
             <UserDetails isSubmitting={isSubmitting} />
           </Content>
-        </Section>        
-        {selectedUser && (
-          <Section>
-            <SectionHeader>
-              <SectionTitle title="Endereço de entrega"/>
-            </SectionHeader>
-            <Content>
-              <UserAddress isSubmitting={isSubmitting}/>
-            </Content>
-          </Section>
-        )}        
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Descrição do pedido"/>
-          </SectionHeader>
+        
+          {selectedUser && (
+            <>              
+              <SectionTitle title="Endereço de entrega"/>              
+              <Content>
+                <UserAddress isSubmitting={isSubmitting}/>
+              </Content>
+            </>            
+          )}
+
+          <SectionTitle title="Descrição do pedido"/>          
           <Content>
             <Cart isSubmiting={isSubmitting} />
-          </Content>
-        </Section>        
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Entrega e pagamento"/>
-          </SectionHeader>
+          </Content>        
+          
+          <SectionTitle title="Entrega e pagamento"/>          
           <Content>
             <Stack direction={['column', 'column', 'row']} spacing={6}>                    
               <Box w={['initial', 'initial', "380px"]}>
@@ -164,19 +154,20 @@ export const CreateOrderModule = () => {
             />
             </Stack>          
           </Content>
+                  
+          <ButtonGroup spacing={[3, 3, 6]} alignSelf="flex-end">
+            <ButtonSecondary
+              type="reset"             
+              onClick={() => router.push('/orders')} 
+              isDisabled={isSubmitting}
+            >Cancelar</ButtonSecondary>
+            <ButtonPrimary 
+              type="submit"            
+              isDisabled={canSubmit}
+              isLoading={isSubmitting}
+            >Salvar pedido</ButtonPrimary>
+          </ButtonGroup>        
         </Section>
-        <HStack spacing={[3, 3, 6]} justify="flex-end">
-          <ButtonSecondary
-            type="reset"             
-            onClick={() => router.push('/orders')} 
-            isDisabled={isSubmitting}
-          >Cancelar</ButtonSecondary>
-          <ButtonPrimary 
-            type="submit"            
-            isDisabled={canSubmit}
-            isLoading={isSubmitting}
-          >Salvar pedido</ButtonPrimary>
-        </HStack>        
       </Form>
     </>
   )

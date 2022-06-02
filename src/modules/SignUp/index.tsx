@@ -9,8 +9,7 @@ import {
   Stack,  
   useToast,
   Text,
-  Link as ChakraLink,
-  Heading
+  Link as ChakraLink,  
 } from '@chakra-ui/react'
 
 import { 
@@ -18,8 +17,7 @@ import {
   Form,
   Input,
   ButtonPrimary,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle
 } from '../../components'
 
@@ -114,10 +112,8 @@ export const SignUpModule = () => {
 
   return (
     <Container p={12} display="flex" flexDir="column" alignItems="center" justifyContent="center" h="100vh">
-      <Section align="center" w="100%">
-        <SectionHeader>
-          <SectionTitle title="Entrar"/>
-        </SectionHeader>
+      <Section align="center" w="100%">        
+        <SectionTitle title="Entrar"/>        
         <Content>
           <Form onSubmit={handleSubmit(handleSignUp)}>
             <Stack spacing={3}>

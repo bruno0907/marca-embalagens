@@ -45,6 +45,7 @@ export const Logo = () => {
       position="relative" 
       w={['125px', '125px', '150px']} 
       h={['40px', '40px', '50px']}
+      m="2"
     >
       <NextImage
         src={data.profile.avatar}

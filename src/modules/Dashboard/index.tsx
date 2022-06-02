@@ -14,7 +14,7 @@ export const DashboardModule = () => {
     <>     
       <Header title="Dashboard" />
       <Divider />
-      <SimpleGrid columns={[1, 2, 2, 2, 4]} gap={6} maxW="1140px" m="auto">
+      <SimpleGrid columns={[1, 2, 2, 2, 4]} gap={6} maxW="5xl" m="auto">
         <DraftsCard/>
         <OrdersCard/>
         <UsersCard/>

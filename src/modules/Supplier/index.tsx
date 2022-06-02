@@ -16,7 +16,8 @@ import {
   Divider,
   ErrorView,
   LoadingView,
-  ButtonPrimary 
+  ButtonPrimary, 
+  Section
 } from '../../components'
 
 import { useSupplierQuery } from '../../hooks'
@@ -67,10 +68,10 @@ export const SupplierModule = ({ supplierId }: Props) => {
       </ButtonPrimary>
       </Header>
       <Divider />        
-      <Stack spacing={12} maxW="1140px" m="auto">
-        <SupplierDetails supplierId={supplier.id}/>
+      <Section>
+        <SupplierDetails supplier={supplier} isFetching={isFetching}/>
         <AddressesModule userId={supplier.id}/>          
-      </Stack>
+      </Section>
       <PrintSupplierModule ref={printRef} supplier={supplier}/>
     </>
   )

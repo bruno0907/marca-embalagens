@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 
 import { SubmitHandler, useForm } from "react-hook-form"
 
-import { HStack, useToast } from "@chakra-ui/react"
+import { ButtonGroup, useToast } from "@chakra-ui/react"
 
 import { 
   Header,
@@ -14,8 +14,7 @@ import {
   Cart,
   Content,
   Form,
-  Section,
-  SectionHeader,
+  Section,  
   SectionTitle,
   ButtonPrimary,
   ButtonSecondary
@@ -104,10 +103,8 @@ export const CreateDraftModule = () => {
       <Header title="Novo orçamento" withGoBack/>
       <Divider />
       <Form onSubmit={handleSubmit(handleSubmitNewDraft)}>
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Cliente"/>
-          </SectionHeader>
+        <Section>          
+          <SectionTitle title="Cliente"/>          
           <Content>
             <Input
               list="users"
@@ -124,21 +121,13 @@ export const CreateDraftModule = () => {
               ))}
             </datalist>
           </Content>
-        </Section>
-
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Descrição"/>
-          </SectionHeader>
+        
+          <SectionTitle title="Descrição"/>          
           <Content>
             <Cart isSubmiting={isSubmitting} />
           </Content>
-        </Section>
-
-        <Section>
-          <SectionHeader>
-            <SectionTitle title="Outras informações"/>
-          </SectionHeader>
+        
+          <SectionTitle title="Outras informações"/>          
           <Content>
             <Input
               as="textarea"
@@ -150,20 +139,20 @@ export const CreateDraftModule = () => {
               {...register('observacoes')}
             />
           </Content>
-        </Section>
 
-        <HStack spacing={[3, 3, 6]} justify="flex-end">
-          <ButtonSecondary
-            type="reset"             
-            onClick={() => router.push('/drafts')} 
-            isDisabled={isSubmitting}
-          >Cancelar</ButtonSecondary>
-          <ButtonPrimary 
-            type="submit"
-            isDisabled={canSubmit}
-            isLoading={isSubmitting}
-          >Salvar orçamento</ButtonPrimary>
-        </HStack>
+          <ButtonGroup spacing={[3, 3, 6]} alignSelf="flex-end">
+            <ButtonSecondary
+              type="reset"             
+              onClick={() => router.push('/drafts')} 
+              isDisabled={isSubmitting}
+            >Cancelar</ButtonSecondary>
+            <ButtonPrimary 
+              type="submit"
+              isDisabled={canSubmit}
+              isLoading={isSubmitting}
+            >Salvar orçamento</ButtonPrimary>
+          </ButtonGroup>
+        </Section>
       </Form>
     </>
   )
