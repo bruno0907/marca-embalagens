@@ -1,4 +1,4 @@
-import { ElementType, memo } from "react"
+import { ElementType } from "react"
 
 import { 
   Box,
@@ -14,7 +14,7 @@ type Props = StackProps & {
   icon?: ElementType;
 }
 
-const GridItemComponent = ({ label, value, icon }: Props) => {
+export const GridItem = ({ label, value, icon }: Props) => {
   return (
     <HStack       
       spacing={3}    
@@ -35,6 +35,3 @@ const GridItemComponent = ({ label, value, icon }: Props) => {
   )
 }
 
-export const GridItem = memo(GridItemComponent, (prevProps, nextProps) => {
-  return prevProps.value !== nextProps.value
-})

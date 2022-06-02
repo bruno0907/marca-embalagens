@@ -13,8 +13,8 @@ export const useUpdateUserMutation = () => useMutation(
 
   }, {
     onSuccess: async (user) => {
-      await queryClient.invalidateQueries(['user', user[0].id])
-      await queryClient.invalidateQueries(['user[]'])
+      await queryClient.invalidateQueries(["user", user[0].id])
+      await queryClient.invalidateQueries(["user[]"])
     }
   }
 )

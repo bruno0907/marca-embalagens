@@ -1,15 +1,12 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 
-import { 
-  Text,
-  Stack,
-  Skeleton,
+import {   
+  Stack,  
   useDisclosure,
   SimpleGrid,
   Spinner,  
-  HStack,
-  Icon
+  
 } from "@chakra-ui/react"
 
 import { 
@@ -19,8 +16,7 @@ import {
   FiPhone, 
   FiSmartphone, 
   FiUser,
-  FiCreditCard,
-  FiAlertCircle,  
+  FiCreditCard,  
 } from 'react-icons/fi'
 
 import { 
@@ -32,11 +28,12 @@ import {
   ButtonLink 
 } from '../../../../components'
 
-import { useUserQuery } from '../../../../hooks'
-
 import { User } from '../../../../models'
 
-type Props = { userId: string; }
+type UserDetailsProps = { 
+  user: User; 
+  isFetching: boolean;
+}
 
 import { ModalProps } from '../../../../components/Modal'
 
@@ -50,51 +47,15 @@ const UpdateUserForm = dynamic<UpdateUserModuleProps>(
   () => import('../../../UpdateUser').then(({ UpdateUserModule }) => UpdateUserModule)
 )
   
-export const UserDetails = ({ userId }: Props) => {  
+export const UserDetails = ({ user, isFetching }: UserDetailsProps) => {  
   const { isOpen, onClose, onOpen } = useDisclosure()  
-  const [userToEdit, setUserToEdit] = useState<User>(null)
-
-  const { data: user, isLoading, isError, isFetching } = useUserQuery(userId)
+  const [userToEdit, setUserToEdit] = useState<User>(null)  
   
   const handleEditUser = (user: User) => {
     setUserToEdit(user)
     onOpen()
     return
-  }
-
-  if(isLoading) {
-    return (
-      <Section w="100%">
-        <SectionHeader>
-          <SectionTitle title="Dados cadastrais"/>
-        </SectionHeader>
-        <Content>
-          <SimpleGrid columns={[1, 1, 3]} gap={3}>
-            {Array.from({length: 9}).map((_, i) => (            
-                <Skeleton key={i} h={10} borderRadius="md"/>
-              )
-            )}        
-          </SimpleGrid>
-        </Content>
-      </Section>
-    )
-  }
-
-  if(isError) {
-    return (
-      <Section w="100%">
-        <SectionHeader>
-          <SectionTitle title="Dados cadastrais" />
-        </SectionHeader>
-        <Content>
-          <HStack spacing={3} aling="center">
-            <Icon as={FiAlertCircle} fontSize={16} color="red.500"/>
-            <Text fontWeight="medium">Erro ao carregar os dados do cliente...</Text>
-          </HStack>
-        </Content>
-      </Section>
-    )
-  }
+  }  
 
   return (
     <>
