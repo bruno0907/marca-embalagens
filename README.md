@@ -26,12 +26,12 @@ MARCA Embalagens is an ERP under development to solve a local business necessiti
 - [x] Jest
 
 ## Screenshots
-<div align="center">
-  <img src="https://user-images.githubusercontent.com/54812906/165386345-385e59d1-07e6-495d-b47a-8fa6f577cee8.jpg" height="160px" />
-  <img src="https://user-images.githubusercontent.com/54812906/165386376-d6305e53-7aff-463b-b024-2a4dcaab45de.jpg" height="160px" />
-  <img src="https://user-images.githubusercontent.com/54812906/165386388-066c4796-3924-4dfa-9edb-ae56dca857f4.jpg" height="160px" />
-  <img src="https://user-images.githubusercontent.com/54812906/165386408-4f7a36e0-4da1-4a26-a5ad-34478fa998e4.jpg" height="160px" />
-  <img src="https://user-images.githubusercontent.com/54812906/165386413-5ebdba88-111a-4ce8-82f7-36fe6345abda.jpg" height="160px" />
+<div>
+  <img src="https://user-images.githubusercontent.com/54812906/165386345-385e59d1-07e6-495d-b47a-8fa6f577cee8.jpg" height="220px" />
+  <img src="https://user-images.githubusercontent.com/54812906/165386376-d6305e53-7aff-463b-b024-2a4dcaab45de.jpg" height="220px" />
+  <img src="https://user-images.githubusercontent.com/54812906/165386388-066c4796-3924-4dfa-9edb-ae56dca857f4.jpg" height="220px" />
+  <img src="https://user-images.githubusercontent.com/54812906/165386408-4f7a36e0-4da1-4a26-a5ad-34478fa998e4.jpg" height="220px" />
+  <img src="https://user-images.githubusercontent.com/54812906/165386413-5ebdba88-111a-4ce8-82f7-36fe6345abda.jpg" height="220px" />
 </div>
 
 ## And if I want to try it out?
